@@ -1,4 +1,15 @@
 my-own-world
 ============
 
-An app I'm building to learn more about Node/Express/Polymer
+World creation tools using:
+
+Backend
+
+Node
+Koa
+Typescript
+Babel
+
+Frontend:
+
+TBD

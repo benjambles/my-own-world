@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "outDir": "../../built/server",
+        "allowJs": true,
+        "checkJs": true,
+        "target": "es2017",
+        "module": "commonjs",
+        "removeComments": true,
+        "sourceMap": true,
+        "moduleResolution": "node"
+    },
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "../../node_modules",
+        "**/*.spec.ts"
+    ],
+    "compileOnSave": true
+}

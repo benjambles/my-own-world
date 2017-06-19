@@ -1,0 +1,45 @@
+{
+  "name": "my-own-world",
+  "version": "1.0.0",
+  "description": "Tools for world builders",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildserver": "gulp --cwd ./src/server",
+    "runserver": "nodemon ./built/server/bin/api.js"
+  },
+  "author": "Ben Allen",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "debug": "*",
+    "inflight": "^1.0.6",
+    "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-compress": "^1.0.7",
+    "koa-morgan": "^1.0.1",
+    "koa-response-time": "^2.0.0",
+    "koa-router": "^7.2.1",
+    "systemjs": "^0.20.14",
+    "wrappy": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/debug": "0.0.29",
+    "@types/koa": "^2.0.39",
+    "@types/koa-bodyparser": "^3.0.23",
+    "@types/koa-morgan": "^1.0.0",
+    "@types/koa-router": "^7.0.22",
+    "@types/node": "^7.0.31",
+    "babel-core": "^6.25.0",
+    "babel-preset-env": "^1.5.2",
+    "eslint": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.1.7",
+    "once": "^1.4.0",
+    "postcss": "^6.0.2",
+    "postcss-cssnext": "^2.11.0",
+    "source-map-loader": "^0.2.1",
+    "tslint": "^5.4.3",
+    "typescript": "^2.3.4"
+  }
+}
