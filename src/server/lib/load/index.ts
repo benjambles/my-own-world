@@ -13,12 +13,12 @@ const debug = createDebug('api');
 /**
  * Load resources in `root` directory.
  *
- * @param {Application} app
- * @param {String} root
+ * @param router A koa router instance to map paths onto
+ * @param root The path within which to search for route configs
  * @api private
  */
 
-export = function load(router, root: string): void {
+export default function load(router, root: string): void {
     readdir(root).forEach(function loadConfig(file): void {
         const dir = join(root, file);
         const stats = fs.lstatSync(dir);
@@ -32,7 +32,9 @@ export = function load(router, root: string): void {
 };
 
 /**
- * Define routes in `conf`.
+ * Map routes onto the router through configuration
+ * @param router A koa router instance to map paths onto
+ * @param conf A configuration object for a route loaded from a json file
  */
 
 function generateRoutes(router, conf): void {

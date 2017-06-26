@@ -121,6 +121,26 @@
                 "responses": {},
                 "security": []
             }
+        },
+        "/users/authenticate": {
+            "post": {
+                "tags": [
+                    "user",
+                    "authentication"
+                ],
+                "summary": "Validate user authentication details",
+                "description": "",
+                "operationId": "authenticateUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            }
         }
     }
 }

@@ -1,13 +1,20 @@
-interface UserData {
-    id: string;
-    screenName: string;
-    firstName: string;
-    lastName: string;
+declare namespace User {
+    interface UserData {
+        id: string;
+        screenName: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+    }
 }
 
-class User {
+import * as Security from '../../lib/security';
 
-    constructor(private data: UserData) {
+export default class User {
+    private _data: User.UserData
+
+    constructor() {
 
     }
 
@@ -17,28 +24,115 @@ class User {
         return Promise.all(users);
     }
 
-    static async createUser(data: UserData): Promise<User> {
-        return new User(data);
+    static async createUser(data: User.UserData): Promise<User> {
+        return await new User().populate(data);
     }
 
     static async getUserById(id: string): Promise<User> {
-        let newUser: User = new User({
+        const data = {
             id: id,
             screenName: "Shambles",
             firstName: "Ben",
-            lastName: "Allen"
-        });
+            lastName: "Allen",
+            email: "ben@ben-allen.com",
+            password: "12345"
+        };
 
-        return newUser;
+        return await new User().populate(data);
     }
 
-    async update(data: UserData): Promise<User> {
-        return this;
+    static async getUserByEmail(email: string): Promise<User> {
+        const data = {
+            id: "1",
+            screenName: "Shambles",
+            firstName: "Ben",
+            lastName: "Allen",
+            email: email,
+            password: "12345"
+        };
+
+        return await new User().populate(data);
+    }
+
+    static validateData(data: User.UserData): User.UserData {
+        return data;
+    }
+
+    private static async createDBRepresentation(data: User.UserData): Promise<User.UserData> {
+        const encryptedProperties = ['email'];
+        const hashedProperties = ['password'];
+        const readOnlyProperties = ['id'];
+        const dbRespresentation = Object.assign({}, data);
+
+        await Object.entries(dbRespresentation).forEach(async ([key, value]): Promise<void> => {
+            if (~readOnlyProperties.indexOf(key)) return;
+
+            if (~encryptedProperties.indexOf(key)) {
+                value = await Security.encryptValue(value);
+            } else if (~hashedProperties.indexOf(key)) {
+                value = await Security.hash(value);
+            }
+
+            dbRespresentation[key] = value;
+        });
+
+        return dbRespresentation;
+    }
+
+    async update(data: User.UserData): Promise<User> {
+        try {
+            // TODO: Validate first
+            let saveable = await User.createDBRepresentation(data);
+
+            // TODO: save to database
+
+            return this;
+        } catch (e) {
+            throw new Error(e.message || 'The user could not be saved');
+        }
     }
 
     async delete(): Promise<boolean> {
         return true;
     }
-}
 
-export = User;
+    async validatePassword(password: string): Promise<boolean> {
+        return await Security.compare(password, this.password);
+    }
+
+    async populate(data: User.UserData): Promise<User> {
+        try {
+            const validData = await User.validateData(data);
+            this.data = validData;
+
+            return this;
+        } catch (e) {
+            throw new Error('Invalid data provided');
+        }
+
+    }
+
+    get password(): string {
+        try {
+            return this._data.password;
+        }
+        catch (e) {
+            throw new Error('No password has been set yet');
+        }
+    }
+
+    set data(values: User.UserData) {
+        this._data = Object.assign({}, values);
+    }
+
+    get data(): User.UserData {
+        try {
+            let safeData = Object.assign({}, this._data);
+            delete safeData.password;
+
+            return this._data;
+        } catch (e) {
+            throw new Error('No data has been set yet for this user.');
+        }
+    }
+}
