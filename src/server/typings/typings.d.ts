@@ -23,3 +23,31 @@ interface APIError {
     message: String;
     id: String;
 }
+
+declare function router(): iRouter;
+
+interface iRouter {
+    route(routes: joiRoute[]);
+    middleware();
+}
+
+interface joiRoute {
+    method: string;
+    path: string;
+    handler: Function[];
+}
+
+interface swaggerParam {
+    name: string;
+    in: string;
+    description: string;
+    required: boolean;
+    type: string;
+    opts: swaggerParamOpts;
+}
+
+interface swaggerParamOpts {
+    lowercase: boolean;
+    email: boolean;
+    max: number;
+}

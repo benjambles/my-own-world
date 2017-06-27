@@ -43,7 +43,7 @@ export default class User {
             firstName: "Ben",
             lastName: "Allen",
             email: "ben@ben-allen.com",
-            password: "12345"
+            password: "$2a$10$3Wao.HJP.J2LM.rtzofxleYrkEDjaatuiHu15ZODA4CvRurnN.hbK"
         };
 
         return await new User().populate(data);
@@ -56,7 +56,7 @@ export default class User {
             firstName: "Ben",
             lastName: "Allen",
             email: email,
-            password: "12345"
+            password: "$2a$10$3Wao.HJP.J2LM.rtzofxleYrkEDjaatuiHu15ZODA4CvRurnN.hbK"
         };
 
         return await new User().populate(data);
@@ -138,7 +138,7 @@ export default class User {
             let safeData = Object.assign({}, this._data);
             delete safeData.password;
 
-            return this._data;
+            return safeData;
         } catch (e) {
             throw new Error('No data has been set yet for this user.');
         }

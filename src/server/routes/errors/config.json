@@ -1,0 +1,59 @@
+{
+    "info": {
+        "name": "Errors",
+        "description": "Error routes"
+    },
+    "paths": {
+        "/404": {
+            "get": {
+                "tags": [
+                    "error"
+                ],
+                "summary": "Resource not found error",
+                "description": "",
+                "operationId": "throw404",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            }
+        },
+        "/500": {
+            "get": {
+                "tags": [
+                    "error"
+                ],
+                "summary": "An internal server error",
+                "description": "",
+                "operationId": "throw500",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            }
+        },
+        "/401": {
+            "get": {
+                "tags": [
+                    "error"
+                ],
+                "summary": "Invalid or missing access token",
+                "description": "",
+                "operationId": "throw401",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            }
+        }
+    }
+}

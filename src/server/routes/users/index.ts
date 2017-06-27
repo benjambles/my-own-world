@@ -122,6 +122,11 @@ export async function authenticateUser(ctx: Koa.Context): Promise<void> {
     try {
         let user = await User.getUserByEmail(ctx.request.body.email);
         let isValid = await user.validatePassword(ctx.request.body.password);
+
+        if (!isValid) {
+            ctx.throw('Unauthorized access', 401);
+        }
+
         let token = await Security.getToken(user);
 
         return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { token, user: user.data });

@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import * as responseTime from 'koa-response-time';
 import * as compress from 'koa-compress';
 import * as morgan from 'koa-morgan';
-import * as Router from 'koa-router';
 import * as Koa from 'koa';
 import * as bodyParser from 'koa-bodyparser';
 import errorHandler from 'koa-better-error-handler';
@@ -10,14 +9,11 @@ import * as conditionalGet from 'koa-conditional-get';
 import * as etag from 'koa-etag';
 import load from './lib/load';
 
-const router: Router = new Router();
 const env: string = process.env.NODE_ENV || 'development';
 const accessLogStream: fs.WriteStream = fs.createWriteStream(__dirname + '/access.log', { flags: 'a' });
 
 // Load routes into the router
-load(router, __dirname + '/routes');
-router.get('/404', ctx => ctx.throw(404));
-router.get('/500', ctx => ctx.throw(500));
+let routers = load(__dirname + '/routes');
 
 /**
  * Initialize an app
@@ -46,8 +42,6 @@ export default function api(): Koa {
     // compression
     app.use(compress());
 
-    //app.use(koaJWT({ secret: jwtSecret }).unless({ path: [/^(?!\/api\/).*/] }));
-
     // Body parser only on certain methods
     app.use(async (ctx, next) => {
         if (~['put', 'post'].indexOf(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
@@ -57,9 +51,7 @@ export default function api(): Koa {
     app.use(bodyParser());
 
     // routing
-    app
-        .use(router.routes())
-        .use(router.allowedMethods());
+    routers.forEach((route) => app.use(route.middleware()));
 
     // custom 404 handler since it's not already built in
     // custom 401 message to prevent JWT errors leaking to the user

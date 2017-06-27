@@ -75,7 +75,12 @@
                 ],
                 "parameters": [
                     {
-                        "id": "string"
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a user",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
                     }
                 ],
                 "responses": {},
@@ -101,7 +106,16 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a user",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
                 "responses": {},
                 "security": [
                     {
@@ -123,7 +137,16 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a user",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
                 "responses": {},
                 "security": [
                     {
@@ -144,7 +167,16 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a user",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
                 "responses": {},
                 "security": []
             }
@@ -164,7 +196,29 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "body",
+                        "description": "The email address of the user wishing to log in",
+                        "required": true,
+                        "type": "string",
+                        "opts": {
+                            "lowercase": true,
+                            "email": true
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "A password to test the stored hash against",
+                        "required": true,
+                        "type": "string",
+                        "opts": {
+                            "max": 100
+                        }
+                    }
+                ],
                 "responses": {},
                 "security": []
             }
