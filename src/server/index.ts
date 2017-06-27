@@ -8,7 +8,6 @@ import * as bodyParser from 'koa-bodyparser';
 import errorHandler from 'koa-better-error-handler';
 import * as conditionalGet from 'koa-conditional-get';
 import * as etag from 'koa-etag';
-
 import load from './lib/load';
 
 const router: Router = new Router();
@@ -27,50 +26,56 @@ router.get('/500', ctx => ctx.throw(500));
  * @api public
  */
 export default function api(): Koa {
-  const app: Koa = new Koa();
+    const app: Koa = new Koa();
 
-  // override koa's undocumented error handler
-  app.context.onerror = errorHandler;
+    // override koa's undocumented error handler
+    app.context.onerror = errorHandler;
 
-  // specify that this is our api
-  app.context.api = true;
+    // specify that this is our api
+    app.context.api = true;
 
-  // logging
-  if ('test' != env) app.use(morgan('combined', { stream: accessLogStream }));
+    // logging
+    if ('test' != env) app.use(morgan('combined', { stream: accessLogStream }));
 
-  // x-response-time
-  app.use(responseTime());
+    // x-response-time
+    app.use(responseTime());
 
-  app.use(conditionalGet());
-  app.use(etag());
+    app.use(conditionalGet());
+    app.use(etag());
 
-  // compression
-  app.use(compress());
+    // compression
+    app.use(compress());
 
-  // Body parser only on certain methods
-  app.use(async (ctx, next) => {
-    if (~['put', 'post'].indexOf(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
-    await next();
-  });
+    //app.use(koaJWT({ secret: jwtSecret }).unless({ path: [/^(?!\/api\/).*/] }));
 
-  app.use(bodyParser());
+    // Body parser only on certain methods
+    app.use(async (ctx, next) => {
+        if (~['put', 'post'].indexOf(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
+        await next();
+    });
 
-  // routing
-  app
-    .use(router.routes())
-    .use(router.allowedMethods());
+    app.use(bodyParser());
 
-  // custom 404 handler since it's not already built in
-  app.use(async (ctx, next) => {
-    try {
-      await next();
-      if (ctx.status === 404)
-        ctx.throw(404);
-    } catch (err) {
-      ctx.throw(err);
-      ctx.app.emit('error', err, ctx);
-    }
-  });
+    // routing
+    app
+        .use(router.routes())
+        .use(router.allowedMethods());
 
-  return app;
+    // custom 404 handler since it's not already built in
+    // custom 401 message to prevent JWT errors leaking to the user
+    app.use(async (ctx, next) => {
+        try {
+            await next();
+            if (ctx.status === 404)
+                ctx.throw(404);
+        } catch (err) {
+            if (err.status && err.status === 401) {
+                err.message = 'Protected resource, use a valid Authorization header to access this route\n';
+            }
+            ctx.throw(err);
+            ctx.app.emit('error', err, ctx);
+        }
+    });
+
+    return app;
 }

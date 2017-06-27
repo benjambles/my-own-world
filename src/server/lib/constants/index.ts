@@ -10,3 +10,4 @@ export const EncryptionData = Object.freeze({
 export const HashType = 'sha256';
 export const hex = 'hex';
 export const utf8 = 'utf8';
+export const jwtSecret = 'dummy secret';

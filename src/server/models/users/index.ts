@@ -11,6 +11,9 @@ declare namespace User {
 
 import * as Security from '../../lib/security';
 
+/**
+ * A class representing a user of the platform
+ */
 export default class User {
     private _data: User.UserData
 
@@ -18,6 +21,11 @@ export default class User {
 
     }
 
+    /**
+     * Retrieve an array of users, optionally filtered
+     * @param count The number of users to return 
+     * @param offset The offset to begin fetching users from
+     */
     static async getUsers(pageNumber: number, pageCount: number): Promise<User[]> {
         let users = ['1', '2', '3', '4', '5'].map(await User.getUserById);
 

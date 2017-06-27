@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { EncryptionData, utf8, hex, HashType } from '../../lib/constants';
+import * as jwt from 'jsonwebtoken';
+import { EncryptionData, utf8, hex, HashType, jwtSecret } from '../../lib/constants';
 
 const saltRounds = 10;
 const EncType = EncryptionData.type;
@@ -45,4 +46,8 @@ export async function hash(value: string): Promise<string> {
  */
 export async function compare(value: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(value, hash);
+}
+
+export async function getToken(data: object): Promise<string> {
+    return jwt.sign(data, jwtSecret, { expiresIn: '1h' });
 }

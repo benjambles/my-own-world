@@ -2,9 +2,11 @@
  * Module dependencies.
  */
 
-import createDebug = require('debug');
-import path = require('path');
-import fs = require('fs');
+import * as createDebug from 'debug';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as koaJWT from 'koa-jwt';
+import { jwtSecret } from '../../lib/constants';
 
 const join = path.resolve;
 const readdir = fs.readdirSync;
@@ -45,7 +47,15 @@ function generateRoutes(router, conf): void {
 
     Object.entries(conf.paths).forEach(([path, methods]) => {
         Object.entries(methods).forEach(([method, spec]) => {
-            router[method](path, routeFunctions[spec.operationId]);
+            let middleware = [routeFunctions[spec.operationId]];
+
+            spec.security.forEach((item) => {
+                if (~Object.keys(item).indexOf('jwt')) {
+                    middleware = [koaJWT({ secret: jwtSecret }), ...middleware];
+                }
+            });
+
+            router[method](path, ...middleware);
         });
     });
 }

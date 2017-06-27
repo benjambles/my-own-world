@@ -4,6 +4,7 @@ import User from "../../models/users";
 import * as response from "../../lib/response";
 import * as Koa from "koa";
 import { responseStatuses } from '../../lib/constants';
+import * as Security from '../../lib/security';
 
 /**
  * Return the options and config for the route
@@ -121,8 +122,9 @@ export async function authenticateUser(ctx: Koa.Context): Promise<void> {
     try {
         let user = await User.getUserByEmail(ctx.request.body.email);
         let isValid = await user.validatePassword(ctx.request.body.password);
+        let token = await Security.getToken(user);
 
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { user: user.data });
+        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { token, user: user.data });
     } catch (e) {
         let message = e.message || 'There was an error whilst authenticating the user.';
         let status = e.status || 400;
