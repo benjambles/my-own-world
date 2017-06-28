@@ -105,6 +105,8 @@ export default class User {
     }
 
     async validatePassword(password: string): Promise<boolean> {
+        if(typeof password !== 'string') return false;
+        
         return await Security.compare(password, this.password);
     }
 

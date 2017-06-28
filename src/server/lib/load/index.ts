@@ -2,10 +2,10 @@
  * Module dependencies.
  */
 
-import * as createDebug from 'debug';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as koaJWT from 'koa-jwt';
+import * as Koa from 'koa';
 import { jwtSecret } from '../../lib/constants';
 import * as router from 'koa-joi-router';
 import { flatten } from '../../lib/utils';
@@ -13,7 +13,6 @@ import * as Joi from 'joi';
 
 const join = path.resolve;
 const readdir = fs.readdirSync;
-const debug = createDebug('api');
 
 /**
  * Load resources in `root` directory.
@@ -60,19 +59,35 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
     return flatten(
         Object.entries(conf.paths).map(([path, methods]) =>
             Object.entries(methods).map(([method, spec]) => {
-                let validate = buildJoiSpec(spec);
-                let handler: Function[] = [routeFunctions[spec.operationId]];
+                const validate = buildJoiSpec(spec);
+                const meta = {
+                    summary: spec.summary,
+                    description: spec.description
+                };
 
-                spec.security.forEach((item) => {
-                    if (~Object.keys(item).indexOf('jwt')) {
-                        handler = [koaJWT({ secret: jwtSecret }), ...handler];
-                    }
-                });
+                const handler = mapHandlers(spec, routeFunctions);
 
-                return { method, path, validate, handler };
+                return { method, path, validate, handler, meta };
             })
         )
     );
+}
+
+/**
+ * Returns an array of middleware to be used by the route
+ * @param spec The swagger configuration for a single route
+ * @param routeFunctions object of functions that can be mapped to a route
+ */
+function mapHandlers(spec, routeFunctions) {
+    return flatten(spec.security.map((item) => {
+        const handlers = [];
+
+        if (~Object.keys(item).indexOf('jwt')) {
+            handlers.push(koaJWT({ secret: jwtSecret }));
+        }
+
+        return handlers;
+    })).concat([catchErrors, routeFunctions[spec.operationId]]);
 }
 
 /**
@@ -91,21 +106,21 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
  * }
  * 
  * In to:
- * email: Joi.string().lowercase().email()
+ * email: Joi.string().required().lowercase().email()
  * 
  * @param config 
  */
 function buildJoiSpec(config) {
-    const spec = {};
+    const spec = {
+        continueOnError: true
+    };
 
     config.parameters.forEach(function (paramConf: swaggerParam) {
         if (!spec[paramConf.in]) {
             spec[paramConf.in] = {}; // create the key if it doesn't exist
         }
 
-        let loc = spec[paramConf.in];
-
-        loc[paramConf.name] = buildParameter(paramConf);
+        spec[paramConf.in][paramConf.name] = buildParameter(paramConf);
     });
 
     if (spec['body']) {
@@ -123,6 +138,10 @@ function buildParameter(paramConf: swaggerParam) {
     let type = swaggerToJoiType(paramConf.type);
     let validator = Joi[type]();
 
+    if (paramConf.required) {
+        validator = validator.required();
+    }
+
     if (paramConf.opts) {
         Object.entries(paramConf.opts).forEach(([key, value]) => {
             if (value === true) {
@@ -133,13 +152,13 @@ function buildParameter(paramConf: swaggerParam) {
         });
     }
 
-    if (paramConf.required) {
-        validator = validator.required();
-    }
-
     return validator;
 }
 
+/**
+ * Converts swagger parameter types to JOI validation types
+ * @param type 
+ */
 function swaggerToJoiType(type): string {
     switch (type) {
         case 'token':
@@ -157,4 +176,33 @@ function swaggerToJoiType(type): string {
  */
 function isRouter(mappedRouter): boolean {
     return (mappedRouter && typeof mappedRouter.middleware === 'function');
+}
+
+/**
+ * Custom error handling middleware to format JOI errors into JSON errors instead of default text.
+ * @param ctx Koa context
+ * @param next Next middleware to call if validation passes
+ */
+async function catchErrors(ctx: Koa.Context, next): Promise<any> {
+    if (ctx.invalid) {
+        let message = {};
+
+        Object
+            .entries(ctx.invalid)
+            .forEach(([k, v]) => {
+                if (!v.details) {
+                    message[k] = v.msg;
+                    return;
+                }
+
+                message[k] = v.details.map((err) => ({
+                    error: err.message,
+                    field: err.path
+                }));
+            });
+
+        ctx.throw(JSON.stringify(message), 400);
+    }
+
+    await next();
 }

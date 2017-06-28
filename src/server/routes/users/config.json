@@ -16,7 +16,24 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "How many records to fetch",
+                        "default": 10,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "How many records to skip",
+                        "default": 0,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
                 "responses": {},
                 "security": [
                     {
