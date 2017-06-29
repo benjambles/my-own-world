@@ -34,7 +34,9 @@ interface iRouter {
 interface joiRoute {
     method: string;
     path: string;
+    validate: any;
     handler: Function[];
+    meta: object;
 }
 
 interface swaggerParam {

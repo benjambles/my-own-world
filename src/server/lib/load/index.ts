@@ -58,7 +58,7 @@ function generateRouter(root: string, name: string): iRouter {
 function generateRoutes(conf, routeFunctions): joiRoute[] {
     return flatten(
         Object.entries(conf.paths).map(([path, methods]) =>
-            Object.entries(methods).map(([method, spec]) => {
+            Object.entries(methods).map(([method, spec]): joiRoute => {
                 const validate = buildJoiSpec(spec);
                 const meta = {
                     summary: spec.summary,
@@ -78,7 +78,7 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
  * @param spec The swagger configuration for a single route
  * @param routeFunctions object of functions that can be mapped to a route
  */
-function mapHandlers(spec, routeFunctions) {
+function mapHandlers(spec, routeFunctions): Function[] {
     return flatten(spec.security.map((item) => {
         const handlers = [];
 
@@ -159,14 +159,14 @@ function buildParameter(paramConf: swaggerParam) {
  * Converts swagger parameter types to JOI validation types
  * @param type 
  */
-function swaggerToJoiType(type): string {
+function swaggerToJoiType(type: string): string {
     switch (type) {
         case 'token':
             return 'string';
         case 'integer':
             return 'number';
         default:
-            return type;
+            return '' + type;
     }
 }
 
