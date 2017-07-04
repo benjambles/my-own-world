@@ -68,7 +68,7 @@
                 ],
                 "summary": "Check which endpoints are available to the authenticated user",
                 "description": "",
-                "operationId": "userOptions",
+                "operationId": "sendOptions",
                 "consumes": [],
                 "produces": [
                     "application/json"
@@ -175,11 +175,12 @@
             },
             "options": {
                 "tags": [
-                    "user"
+                    "user",
+                    "options"
                 ],
                 "summary": "Check which endpoints are valid for the authenticated user",
                 "description": "",
-                "operationId": "findUserOptions",
+                "operationId": "sendOptions",
                 "consumes": [],
                 "produces": [
                     "application/json"
@@ -236,6 +237,22 @@
                         }
                     }
                 ],
+                "responses": {},
+                "security": []
+            },
+            "options": {
+                "tags": [
+                    "user",
+                    "options"
+                ],
+                "summary": "Check which endpoints are valid for authenticating a user",
+                "description": "",
+                "operationId": "sendOptions",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
                 "responses": {},
                 "security": []
             }

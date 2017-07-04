@@ -31,9 +31,15 @@ interface iRouter {
     middleware();
 }
 
+interface migration {
+    up();
+    down();
+    version: string;
+}
+
 interface joiRoute {
     method: string;
-    path: string;
+    routePath: string;
     validate: any;
     handler: Function[];
     meta: object;
@@ -45,6 +51,7 @@ interface swaggerParam {
     description: string;
     required: boolean;
     type: string;
+    format: string;
     opts: swaggerParamOpts;
 }
 
@@ -52,4 +59,15 @@ interface swaggerParamOpts {
     lowercase: boolean;
     email: boolean;
     max: number;
+}
+
+declare namespace User {
+    interface UserData {
+        id: string;
+        screenName: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+    }
 }

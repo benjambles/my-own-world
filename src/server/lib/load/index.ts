@@ -23,7 +23,7 @@ const readdir = fs.readdirSync;
 
 export default function load(root: string): iRouter[] {
     return readdir(root)
-        .map((path: string) => generateRouter(root, path))
+        .map((filePath: string) => generateRouter(root, filePath))
         .filter(isRouter);
 };
 
@@ -33,12 +33,12 @@ export default function load(root: string): iRouter[] {
  * @param name The name of the current directory
  */
 function generateRouter(root: string, name: string): iRouter {
-    const path: string = join(root, name);
-    const stats: fs.Stats = fs.lstatSync(path);
+    const filePath: string = join(root, name);
+    const stats: fs.Stats = fs.lstatSync(filePath);
 
     if (stats.isDirectory()) {
-        const conf = require(join(path, 'config.json'));
-        const routeFunctions = require(path);
+        const conf = require(join(filePath, 'config.json'));
+        const routeFunctions = require(filePath);
         const mappedRouter = router().route(generateRoutes(conf, routeFunctions));
 
         mappedRouter.prefix('/api');
@@ -57,7 +57,7 @@ function generateRouter(root: string, name: string): iRouter {
 
 function generateRoutes(conf, routeFunctions): joiRoute[] {
     return flatten(
-        Object.entries(conf.paths).map(([path, methods]) =>
+        Object.entries(conf.paths).map(([routePath, methods]) =>
             Object.entries(methods).map(([method, spec]): joiRoute => {
                 const validate = buildJoiSpec(spec);
                 const meta = {
@@ -67,7 +67,7 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
 
                 const handler = mapHandlers(spec, routeFunctions);
 
-                return { method, path, validate, handler, meta };
+                return { method, routePath, validate, handler, meta };
             })
         )
     );
@@ -135,8 +135,11 @@ function buildJoiSpec(config) {
  * @param paramConf Swagger parameter definition
  */
 function buildParameter(paramConf: swaggerParam) {
-    let type = swaggerToJoiType(paramConf.type);
-    let validator = Joi[type]();
+    let validator = Joi[swaggerToJoiType(paramConf.type)]();
+
+    if (paramConf.format) {
+        validator = validator[swaggerToJoiType(paramConf.format)]();
+    }
 
     if (paramConf.required) {
         validator = validator.required();
@@ -165,6 +168,8 @@ function swaggerToJoiType(type: string): string {
             return 'string';
         case 'integer':
             return 'number';
+        case 'int64':
+            return 'integer';
         default:
             return '' + type;
     }

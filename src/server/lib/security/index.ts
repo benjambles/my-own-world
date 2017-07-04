@@ -53,5 +53,5 @@ export async function compare(value: string, hash: string): Promise<boolean> {
  * @param data Object representing the data to be stored for later user
  */
 export async function getToken(data: object): Promise<string> {
-    return jwt.sign(data, jwtSecret, { expiresIn: '1h' });
+    return jwt.sign(data, jwtSecret, { expiresIn: '1d' });
 }

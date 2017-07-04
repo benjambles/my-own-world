@@ -5,19 +5,11 @@ import * as response from "../../lib/response";
 import * as Koa from "koa";
 import { responseStatuses } from '../../lib/constants';
 import * as Security from '../../lib/security';
+import { bindOptions } from '../';
 
-/**
- * Return the options and config for the route
- * @route [OPTIONS] /user
- * @param ctx A Koa context object
- */
-export async function userOptions(ctx: Koa.Context): Promise<void> {
-    try {
-        return response.sendOptions(ctx, Object.assign({}, config.paths['/users']));
-    } catch (e) {
-        ctx.throw('There was an error whilst generating options', 400);
-    }
-}
+export const sendOptions = bindOptions(config);
+
+//--- /users ---//
 
 /**
  * Get users, optionally filtered by parameters
@@ -26,7 +18,7 @@ export async function userOptions(ctx: Koa.Context): Promise<void> {
  */
 export async function getUsers(ctx: Koa.Context): Promise<void> {
     try {
-        let users = await User.getUsers(1, 1);
+        let users = await User.getUsers(ctx.request.query.count, ctx.request.query.offset);
         let userData = users.map((user) => user.data);
 
         return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { userData });
@@ -53,18 +45,7 @@ export async function createUser(ctx: Koa.Context): Promise<void> {
 
 }
 
-/**
- * Return the options and config for the route
- * @route [OPTIONS] /user/id
- * @param ctx A Koa context object 
- */
-export async function findUserOptions(ctx: Koa.Context): Promise<void> {
-    try {
-        return response.sendOptions(ctx, Object.assign({}, config.paths['/users/:id']));
-    } catch (e) {
-        ctx.throw('There was an error whilst generating the options', 400);
-    }
-}
+//--- /users/:id ---//
 
 /**
  * Get a user and return it's data object
@@ -112,6 +93,8 @@ export async function deleteUserById(ctx: Koa.Context): Promise<void> {
         ctx.throw('There was an error whilst deleting the user.', 400);
     }
 }
+
+//--- /users/authenticate ---//
 
 /**
  * fetch related user and if found test their password
