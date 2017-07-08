@@ -6,13 +6,10 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as koaJWT from 'koa-jwt';
 import * as Koa from 'koa';
-import { jwtSecret } from '../../lib/constants';
 import * as router from 'koa-joi-router';
-import { flatten } from '../../lib/utils';
 import * as Joi from 'joi';
-
-const join = path.resolve;
-const readdir = fs.readdirSync;
+import { flatten } from '../../lib/utils';
+import { jwtSecret } from '../../lib/config';
 
 /**
  * Load resources in `root` directory.
@@ -22,7 +19,7 @@ const readdir = fs.readdirSync;
  */
 
 export default function load(root: string): iRouter[] {
-    return readdir(root)
+    return fs.readdirSync(root)
         .map((filePath: string) => generateRouter(root, filePath))
         .filter(isRouter);
 };
@@ -33,11 +30,11 @@ export default function load(root: string): iRouter[] {
  * @param name The name of the current directory
  */
 function generateRouter(root: string, name: string): iRouter {
-    const filePath: string = join(root, name);
+    const filePath: string = path.resolve(root, name);
     const stats: fs.Stats = fs.lstatSync(filePath);
 
     if (stats.isDirectory()) {
-        const conf = require(join(filePath, 'config.json'));
+        const conf = require(path.resolve(filePath, 'config.json'));
         const routeFunctions = require(filePath);
         const mappedRouter = router().route(generateRoutes(conf, routeFunctions));
 
@@ -67,7 +64,7 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
 
                 const handler = mapHandlers(spec, routeFunctions);
 
-                return { method, routePath, validate, handler, meta };
+                return { method, path: routePath, validate, handler, meta };
             })
         )
     );

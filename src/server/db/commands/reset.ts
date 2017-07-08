@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { pool } from './utils';
-import { NODE_ENV } from '../../lib/constants';
+import { pool } from '../';
+import { NODE_ENV } from '../../lib/config';
 
 // //////////////////////////////////////////////////////////
 
@@ -14,8 +14,7 @@ if (NODE_ENV !== 'development') {
 // //////////////////////////////////////////////////////////
 
 function slurpSql(filePath) {
-    const relativePath = 'sql/' + filePath
-    const fullPath = path.join(__dirname, relativePath)
+    const fullPath = path.join(__dirname, filePath)
 
     return new Promise((resolve, reject) => {
         fs.readFile(fullPath, 'utf8', (err, text) => {
@@ -31,7 +30,7 @@ async function seed() {
     console.log('Resetting the database...')
 
     await (async () => {
-        const sql = await slurpSql('schema.sql');
+        const sql = await slurpSql('../sql/schema.sql');
         console.log('-- Executing schema.sql...');
         await pool._query(sql);
     })();

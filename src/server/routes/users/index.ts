@@ -1,11 +1,8 @@
 const config = require('./config.json');
 
-import User from "../../models/users";
-import * as response from "../../lib/response";
 import * as Koa from "koa";
-import { responseStatuses } from '../../lib/constants';
-import * as Security from '../../lib/security';
-import { bindOptions } from '../';
+import { send, bindOptions } from '../';
+import User from "../../models/users";
 
 export const sendOptions = bindOptions(config);
 
@@ -17,14 +14,14 @@ export const sendOptions = bindOptions(config);
  * @param ctx A Koa context object
  */
 export async function getUsers(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst fetching users.', status: 400 };
+
+    await send(ctx, error, async function () {
         let users = await User.getUsers(ctx.request.query.count, ctx.request.query.offset);
         let userData = users.map((user) => user.data);
 
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { userData });
-    } catch (e) {
-        ctx.throw('There was an error whilst fetching users.', 400);
-    }
+        return { parts: [{ userData }] };
+    });
 }
 
 /**
@@ -33,16 +30,13 @@ export async function getUsers(ctx: Koa.Context): Promise<void> {
  * @param ctx A Koa context object 
  */
 export async function createUser(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst saving the user', status: 400 };
+
+    await send(ctx, error, async function () {
         let user = await User.createUser(ctx.request.body);
 
-        response.sendAPIResponse(ctx, { message: responseStatuses.success }, { user });
-    } catch (e) {
-        let message = e.message || 'There was an error whilst creating the user';
-        let status = e.status || 400;
-        ctx.throw(message, status);
-    }
-
+        return { parts: [user.data] };
+    });
 }
 
 //--- /users/:id ---//
@@ -53,13 +47,13 @@ export async function createUser(ctx: Koa.Context): Promise<void> {
  * @param ctx A Koa context object 
  */
 export async function getUserById(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst fetching the user.', status: 400 };
+
+    await send(ctx, error, async function () {
         let user = await User.getUserById(ctx.params.id);
 
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, user.data);
-    } catch (e) {
-        ctx.throw('There was an error whilst fetching the user.', 400);
-    }
+        return { parts: [user.data] };
+    });
 }
 
 /**
@@ -68,14 +62,14 @@ export async function getUserById(ctx: Koa.Context): Promise<void> {
  * @param ctx A Koa context object 
  */
 export async function updateUser(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst updating the user.', status: 400 };
+
+    await send(ctx, error, async function () {
         let user = await User.getUserById(ctx.params.id);
         let updatedUser = await user.update(ctx.request.body);
 
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, user.data);
-    } catch (e) {
-        ctx.throw('There was an error whilst updating the user.', 400);
-    }
+        return { parts: [user.data] };
+    });
 }
 
 /**
@@ -84,14 +78,14 @@ export async function updateUser(ctx: Koa.Context): Promise<void> {
  * @param ctx 
  */
 export async function deleteUserById(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst deleting the user.', status: 400 };
+
+    await send(ctx, error, async function () {
         let user = await User.getUserById(ctx.params.id);
         let deletedUser = await user.delete();
 
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, {});
-    } catch (e) {
-        ctx.throw('There was an error whilst deleting the user.', 400);
-    }
+        return { parts: [user.data] };
+    });
 }
 
 //--- /users/authenticate ---//
@@ -102,20 +96,13 @@ export async function deleteUserById(ctx: Koa.Context): Promise<void> {
  * @param ctx A Koa context object 
  */
 export async function authenticateUser(ctx: Koa.Context): Promise<void> {
-    try {
+    const error = { message: 'There was an error whilst authenticating the user.', status: 400 };
+
+    await send(ctx, error, async function () {
         let user = await User.getUserByEmail(ctx.request.body.email);
         let isValid = await user.validatePassword(ctx.request.body.password);
+        let token = await user.getToken();
 
-        if (!isValid) {
-            ctx.throw('Unauthorized access', 401);
-        }
-
-        let token = await Security.getToken(user);
-
-        return response.sendAPIResponse(ctx, { message: responseStatuses.success }, { token, user: user.data });
-    } catch (e) {
-        let message = e.message || 'There was an error whilst authenticating the user.';
-        let status = e.status || 400;
-        ctx.throw(message, status);
-    }
+        return { parts: [{ token, user: user.data }] };
+    });
 }

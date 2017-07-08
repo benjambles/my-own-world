@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
-import { EncryptionData, utf8, hex, HashType, jwtSecret } from '../../lib/constants';
+import * as createError from 'http-errors';
+import { EncryptionData, utf8, hex, HashType, jwtSecret } from '../../lib/config';
 
 const saltRounds = 10;
 const EncType = EncryptionData.type;
@@ -10,7 +11,7 @@ const EncType = EncryptionData.type;
  * Decrypt a string encrypted using crypto.createCipher
  * @param value A string in the format of encType:cipher
  */
-export async function decryptValue(value: string): Promise<string> {
+export function decryptValue(value: string): string {
     const [key, cipher] = value.split(':');
     const decipher = crypto.createDecipher(key, EncryptionData.password);
     let decrypted = decipher.update(cipher, hex, utf8);
@@ -23,7 +24,7 @@ export async function decryptValue(value: string): Promise<string> {
  * Generate an encrypted value in the format of EncType:cipher
  * @param value A string to be encrypted
  */
-export async function encryptValue(value: string): Promise<string> {
+export function encryptValue(value: string): string {
     const Cipher = crypto.createCipher(EncType, EncryptionData.password);
     let encrypted = Cipher.update(value, utf8, hex);
     encrypted += Cipher.final(hex);
@@ -44,8 +45,14 @@ export async function hash(value: string): Promise<string> {
  * @param value The string to be tested
  * @param hash  A bcrypted hash to compare against
  */
-export async function compare(value: string, hash: string): Promise<boolean> {
-    return await bcrypt.compare(value, hash);
+export async function compare(value: string, hash: string): Promise<true> {
+    const isValid = await bcrypt.compare(value, hash);
+
+    if (!isValid) {
+        throw createError(401, 'You are not authorised to access this endpoint');
+    }
+
+    return isValid;
 }
 
 /**

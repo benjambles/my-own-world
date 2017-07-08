@@ -3,6 +3,10 @@ import * as path from 'path';
 const envPath = path.resolve(__dirname, '../../.env');
 const env = require('dotenv').config({ path: envPath }).parsed;
 
+export const migrationsPath = path.resolve(__dirname, '../../db/sql/migrations');
+export const routesPath = path.resolve(__dirname, '../../routes');
+export const modelsPath = path.resolve(__dirname, '../../models');
+
 export const responseStatuses = Object.freeze({
     success: "success"
 });

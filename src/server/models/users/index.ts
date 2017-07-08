@@ -1,7 +1,8 @@
-import * as Security from '../../lib/security';
 import * as pg from 'pg';
 import * as pgExtra from 'pg-extra';
+import * as Security from '../../lib/security';
 import * as db from '../../db/users';
+import { getUUID } from '../../lib/utils';
 
 /**
  * A class representing a user of the platform
@@ -18,8 +19,8 @@ export default class User {
      * @param offset The offset to begin fetching users from
      */
     static async getUsers(count: number = 10, offset: number = 0): Promise<User[]> {
-        let users = [];
-
+        let data = await db.getActiveUsers(count, offset);
+        let users = data.map(await User.createUser);
         return Promise.all(users);
     }
 
@@ -37,7 +38,6 @@ export default class User {
     static async getUserByEmail(email: string): Promise<User> {
         let emailHash = await Security.encryptValue(email);
         const data = await db.getUserByEmail(emailHash);
-
         return new User(data);
     }
 
@@ -51,7 +51,7 @@ export default class User {
             if (~readOnlyProperties.indexOf(key)) return;
 
             if (~encryptedProperties.indexOf(key)) {
-                value = await Security.encryptValue(value);
+                value = Security.encryptValue(value);
             } else if (~hashedProperties.indexOf(key)) {
                 value = await Security.hash(value);
             }
@@ -92,6 +92,10 @@ export default class User {
         return await Security.compare(password, this.password);
     }
 
+    async getToken(): Promise<string> {
+        return await Security.getToken(this.data);
+    }
+
     get password(): string {
         try {
             return this._data.password;
@@ -109,6 +113,8 @@ export default class User {
         try {
             let safeData = Object.assign({}, this._data);
             delete safeData.password;
+
+            safeData.email = Security.decryptValue(safeData.email);
 
             return safeData;
         } catch (e) {

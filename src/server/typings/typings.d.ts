@@ -14,14 +14,19 @@ interface APIMeta {
 }
 
 interface APIBody {
-    description?: String;
+    description?: string;
     [propName: string]: any;
+}
+
+interface iError {
+    status: number;
+    message: string;
 }
 
 interface APIError {
     statusCode: number;
-    message: String;
-    id: String;
+    message: string;
+    id: string;
 }
 
 declare function router(): iRouter;
@@ -39,7 +44,7 @@ interface migration {
 
 interface joiRoute {
     method: string;
-    routePath: string;
+    path: string;
     validate: any;
     handler: Function[];
     meta: object;
