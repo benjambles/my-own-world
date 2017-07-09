@@ -44,15 +44,15 @@ export default class User {
     private static async createDBRepresentation(data: User.UserData): Promise<User.UserData> {
         const encryptedProperties = ['email'];
         const hashedProperties = ['password'];
-        const readOnlyProperties = ['id'];
+        const readOnlyProperties = ['uuid'];
         const dbRespresentation = Object.assign({}, data);
 
         await Object.entries(dbRespresentation).forEach(async ([key, value]): Promise<void> => {
-            if (~readOnlyProperties.indexOf(key)) return;
+            if (readOnlyProperties.includes(key)) return;
 
-            if (~encryptedProperties.indexOf(key)) {
+            if (encryptedProperties.includes(key)) {
                 value = Security.encryptValue(value);
-            } else if (~hashedProperties.indexOf(key)) {
+            } else if (hashedProperties.includes(key)) {
                 value = await Security.hash(value);
             }
 
@@ -83,7 +83,7 @@ export default class User {
     }
 
     async delete(): Promise<boolean> {
-        return true;
+        return await db.deleteUser(this._data.uuid);
     }
 
     async validatePassword(password: string): Promise<boolean> {

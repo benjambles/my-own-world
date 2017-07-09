@@ -10,7 +10,7 @@ export function createMigration(rl): void {
     rl.question(`Version type for this patch? [${validTypes.join(', ')}] default 'patch'`, function (type): void {
         type = type.toLowerCase();
 
-        if (!~validTypes.indexOf(type)) {
+        if (!validTypes.includes(type)) {
             console.log('Invalid version type provided');
             rl.close();
         }

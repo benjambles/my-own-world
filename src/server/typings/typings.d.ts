@@ -68,7 +68,7 @@ interface swaggerParamOpts {
 
 declare namespace User {
     interface UserData {
-        id: string;
+        uuid: string;
         screenName: string;
         firstName: string;
         lastName: string;

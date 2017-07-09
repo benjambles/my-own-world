@@ -8,7 +8,7 @@ export function createRoute(rl) {
     rl.question('Do you wish to generate a route from existing config? [yes/no]', function (answer: string): void {
         answer = answer.toLowerCase();
 
-        if (!~validAnswers.indexOf(answer)) {
+        if (!validAnswers.includes(answer)) {
             console.log('Please choose yes or no');
             rl.close();
         }

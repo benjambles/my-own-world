@@ -46,7 +46,7 @@ export default function api(): Koa {
 
     // Body parser only on certain methods
     app.use(async (ctx, next) => {
-        if (~['put', 'post'].indexOf(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
+        if (['put', 'post'].includes(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
         await next();
     });
 

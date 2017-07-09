@@ -35,14 +35,7 @@
                     }
                 ],
                 "responses": {},
-                "security": [
-                    {
-                        "jwt": [
-                            "role:admin",
-                            "role:user"
-                        ]
-                    }
-                ]
+                "security": []
             },
             "post": {
                 "tags": [
@@ -101,14 +94,7 @@
                     }
                 ],
                 "responses": {},
-                "security": [
-                    {
-                        "jwt": [
-                            "role:admin",
-                            "role:user"
-                        ]
-                    }
-                ]
+                "security": []
             },
             "put": {
                 "tags": [
@@ -138,7 +124,7 @@
                     {
                         "jwt": [
                             "role:admin",
-                            "role:user"
+                            "role:owner"
                         ]
                     }
                 ]
@@ -168,7 +154,8 @@
                 "security": [
                     {
                         "jwt": [
-                            "role:admin"
+                            "role:admin",
+                            "role:owner"
                         ]
                     }
                 ]

@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, function (type: string): void {
     type = type.toLowerCase();
 
-    if (!~validTypes.indexOf(type)) {
+    if (!validTypes.includes(type)) {
         console.log('No generator found for the type provided');
         rl.close();
     }

@@ -13,10 +13,11 @@ export function bindOptions(config): Function {
      */
     return async function sendOptions(ctx: Koa.Context): Promise<void> {
         const error = { message: 'There was an error whilst generating options', status: 400 };
-        let response = Object.assign({}, config.paths[ctx.request.path.replace('/api', '')])
-        delete response.options;
 
         await send(ctx, error, async function () {
+            let response = Object.assign({}, config.paths[ctx.request.path.replace('/api', '')])
+            delete response.options;
+
             ctx.set('Allow', Object.keys(response).join(', ').toUpperCase());
 
             return { data: response };

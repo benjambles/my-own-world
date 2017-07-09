@@ -8,8 +8,9 @@ import * as koaJWT from 'koa-jwt';
 import * as Koa from 'koa';
 import * as router from 'koa-joi-router';
 import * as Joi from 'joi';
-import { flatten } from '../../lib/utils';
-import { jwtSecret } from '../../lib/config';
+import { flatten } from '../utils';
+import { jwtSecret } from '../config';
+import { catchErrors, setAccessRoles } from '../middleware';
 
 /**
  * Load resources in `root` directory.
@@ -53,21 +54,19 @@ function generateRouter(root: string, name: string): iRouter {
  */
 
 function generateRoutes(conf, routeFunctions): joiRoute[] {
-    return flatten(
-        Object.entries(conf.paths).map(([routePath, methods]) =>
-            Object.entries(methods).map(([method, spec]): joiRoute => {
-                const validate = buildJoiSpec(spec);
-                const meta = {
-                    summary: spec.summary,
-                    description: spec.description
-                };
+    return Object.entries(conf.paths).map(([routePath, methods]) =>
+        Object.entries(methods).map(([method, spec]): joiRoute => {
+            const validate = buildJoiSpec(spec);
+            const meta = {
+                summary: spec.summary,
+                description: spec.description
+            };
 
-                const handler = mapHandlers(spec, routeFunctions);
+            const handler = mapHandlers(spec, routeFunctions);
 
-                return { method, path: routePath, validate, handler, meta };
-            })
-        )
-    );
+            return { method, path: routePath, validate, handler, meta };
+        }).reduce(flatten, [])
+    ).reduce(flatten, []);
 }
 
 /**
@@ -76,15 +75,8 @@ function generateRoutes(conf, routeFunctions): joiRoute[] {
  * @param routeFunctions object of functions that can be mapped to a route
  */
 function mapHandlers(spec, routeFunctions): Function[] {
-    return flatten(spec.security.map((item) => {
-        const handlers = [];
-
-        if (~Object.keys(item).indexOf('jwt')) {
-            handlers.push(koaJWT({ secret: jwtSecret }));
-        }
-
-        return handlers;
-    })).concat([catchErrors, routeFunctions[spec.operationId]]);
+    return bindSecurity(spec.security)
+        .concat([catchErrors, routeFunctions[spec.operationId], routeFunctions.checkAccess]);
 }
 
 /**
@@ -181,30 +173,17 @@ function isRouter(mappedRouter): boolean {
 }
 
 /**
- * Custom error handling middleware to format JOI errors into JSON errors instead of default text.
- * @param ctx Koa context
- * @param next Next middleware to call if validation passes
+ * 
+ * @param security 
  */
-async function catchErrors(ctx: Koa.Context, next): Promise<any> {
-    if (ctx.invalid) {
-        let message = {};
+function bindSecurity(security: any[]): Koa.Middleware[] {
+    return security.map((item) => {
+        const handlers: Koa.Middleware[] = [];
 
-        Object
-            .entries(ctx.invalid)
-            .forEach(([k, v]) => {
-                if (!v.details) {
-                    message[k] = v.msg;
-                    return;
-                }
+        if (Object.keys(item).includes('jwt')) {
+            handlers.push(koaJWT({ secret: jwtSecret }), setAccessRoles(item.jwt));
+        }
 
-                message[k] = v.details.map((err) => ({
-                    error: err.message,
-                    field: err.path
-                }));
-            });
-
-        ctx.throw(JSON.stringify(message), 400);
-    }
-
-    await next();
+        return handlers;
+    }).reduce(flatten, []);
 }

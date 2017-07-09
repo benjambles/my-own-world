@@ -16,10 +16,10 @@ let rl = readline.createInterface({
  * @param direction Up/Down direction to run migrations in
  * @param target Which version to end up at
  */
-function migrate(direction: string = 'up', target: string = null): string {
+async function migrate(direction: string = 'up', target: string = null): Promise<string> {
     try {
         let migrations = load(migrationsPath);
-        let dbVersion = pool.one(sql`
+        let dbVersion = await pool.one(sql`
             SELECT "value"
             FROM "System"
             WHERE "key" = "db_version"
@@ -88,18 +88,20 @@ function* step(migrations: any[], target: string = '', direction: string = 'up',
 rl.question("Which direction would you like to run your migrations in? [up/down] default: up", function (direction) {
     direction = direction ? direction.toLowerCase() : 'up';
 
-    if (!~['up', 'down'].indexOf(direction)) {
+    if (!['up', 'down'].includes(direction)) {
         console.log("Invalid direction, please choose up or down");
         rl.close();
     }
 
-    rl.question("What is the target version that you wish to migrate to", function (version = '') {
+    rl.question("What is the target version that you wish to migrate to", async function (version = '') {
         if (version !== '' && !semver.valid(version)) {
             console.log("The version must be a valid semver target, or blank");
             rl.close();
         }
 
-        console.log(migrate(direction, version));
+        let newVersion = await migrate(direction, version);
+
+        console.log(`Database successfully migrated to version ${newVersion}`);
 
         rl.close();
     });

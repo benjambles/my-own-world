@@ -45,5 +45,5 @@ function compare(a: migration, b: migration): number {
  * @param fileContents a migrations object retrieved from a migrations file
  */
 function isMigration(fileContents): boolean {
-    return typeof fileContents.version === 'string' && typeof fileContents.up === 'function' && typeof fileContents.down === 'function';
+    return (typeof fileContents.version === 'string' && typeof fileContents.up === 'function' && typeof fileContents.down === 'function');
 }
