@@ -1,8 +1,9 @@
-import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
-import * as jwt from 'jsonwebtoken';
-import * as createError from 'http-errors';
-import { EncryptionData, utf8, hex, HashType, jwtSecret } from '../../lib/config';
+import * as bcrypt from "bcrypt";
+import * as crypto from "crypto";
+import * as createError from "http-errors";
+import * as jwt from "jsonwebtoken";
+
+import { EncryptionData, hex, jwtSecret, utf8 } from "../config";
 
 const saltRounds = 10;
 const EncType = EncryptionData.type;
@@ -12,7 +13,7 @@ const EncType = EncryptionData.type;
  * @param value A string in the format of encType:cipher
  */
 export function decryptValue(value: string): string {
-    const [key, cipher] = value.split(':');
+    const [key, cipher] = value.split(":");
     const decipher = crypto.createDecipher(key, EncryptionData.password);
     let decrypted = decipher.update(cipher, hex, utf8);
     decrypted += decipher.final(utf8);
@@ -29,7 +30,7 @@ export function encryptValue(value: string): string {
     let encrypted = Cipher.update(value, utf8, hex);
     encrypted += Cipher.final(hex);
 
-    return [EncType, encrypted].join(':');
+    return [EncType, encrypted].join(":");
 }
 
 /**
@@ -49,7 +50,7 @@ export async function compare(value: string, hash: string): Promise<true> {
     const isValid = await bcrypt.compare(value, hash);
 
     if (!isValid) {
-        throw createError(401, 'You are not authorised to access this endpoint');
+        throw createError(401, "You are not authorised to access this endpoint");
     }
 
     return isValid;
@@ -60,5 +61,5 @@ export async function compare(value: string, hash: string): Promise<true> {
  * @param data Object representing the data to be stored for later user
  */
 export async function getToken(data: object): Promise<string> {
-    return jwt.sign(data, jwtSecret, { expiresIn: '1d' });
+    return jwt.sign(data, jwtSecret, { expiresIn: "1d" });
 }

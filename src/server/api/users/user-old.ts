@@ -1,25 +1,19 @@
-import * as pg from 'pg';
-import * as pgExtra from 'pg-extra';
-import * as Security from '../../lib/security';
-import * as db from '../../db/users';
-import { getUUID } from '../../lib/utils';
+import * as Security from "../../utils/security";
+import * as db from "./users-queries";
 
 /**
  * A class representing a user of the platform
  */
 export default class User {
-
-    constructor(private _data: User.UserData) {
-
-    }
+    constructor(private _data: User.UserData) {}
 
     /**
      * Retrieve an array of users, optionally filtered
-     * @param count The number of users to return 
+     * @param count The number of users to return
      * @param offset The offset to begin fetching users from
      */
     static async getUsers(count: number = 10, offset: number = 0): Promise<User[]> {
-        let data = await db.getActiveUsers(count, offset);
+        let data = await db.getActiveUsers({ limit: count, offset: offset });
         let users = data.map(await User.createUser);
         return Promise.all(users);
     }
@@ -42,9 +36,9 @@ export default class User {
     }
 
     private static async createDBRepresentation(data: User.UserData): Promise<User.UserData> {
-        const encryptedProperties = ['email'];
-        const hashedProperties = ['password'];
-        const readOnlyProperties = ['uuid'];
+        const encryptedProperties = ["email"];
+        const hashedProperties = ["password"];
+        const readOnlyProperties = ["uuid"];
         const dbRespresentation = Object.assign({}, data);
 
         await Object.entries(dbRespresentation).forEach(async ([key, value]): Promise<void> => {
@@ -66,7 +60,7 @@ export default class User {
         try {
             return data;
         } catch (e) {
-            throw new Error('Invalid data provided');
+            throw new Error("Invalid data provided");
         }
     }
 
@@ -78,7 +72,7 @@ export default class User {
 
             return this;
         } catch (e) {
-            throw new Error(e.message || 'The user could not be saved');
+            throw new Error(e.message || "The user could not be saved");
         }
     }
 
@@ -87,7 +81,7 @@ export default class User {
     }
 
     async validatePassword(password: string): Promise<boolean> {
-        if (typeof password !== 'string') return false;
+        if (typeof password !== "string") return false;
 
         return await Security.compare(password, this.password);
     }
@@ -99,9 +93,8 @@ export default class User {
     get password(): string {
         try {
             return this._data.password;
-        }
-        catch (e) {
-            throw new Error('No password has been set yet');
+        } catch (e) {
+            throw new Error("No password has been set yet");
         }
     }
 
@@ -118,7 +111,7 @@ export default class User {
 
             return safeData;
         } catch (e) {
-            throw new Error('No data has been set yet for this user.');
+            throw new Error("No data has been set yet for this user.");
         }
     }
 }

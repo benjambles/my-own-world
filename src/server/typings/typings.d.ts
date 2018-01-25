@@ -31,6 +31,11 @@ interface APIError {
 
 declare function router(): iRouter;
 
+interface dbGet {
+    limit: number;
+    offset: number;
+}
+
 interface iRouter {
     route(routes: joiRoute[]);
     middleware();

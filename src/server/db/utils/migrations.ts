@@ -1,6 +1,6 @@
-import * as path from 'path';
-import * as fs from 'fs';
-import * as semver from 'semver';
+import * as fs from "fs";
+import * as path from "path";
+import * as semver from "semver";
 
 /**
  * Load resources in `root` directory.
@@ -8,11 +8,12 @@ import * as semver from 'semver';
  * @api private
  */
 export function load(root: string): migration[] {
-    return fs.readdirSync(root)
+    return fs
+        .readdirSync(root)
         .map((filePath: string) => loadFiles(root, filePath))
         .filter(isMigration)
         .sort(compare);
-};
+}
 
 /**
  * Register a new migration if the path provided is not a folder
@@ -45,5 +46,9 @@ function compare(a: migration, b: migration): number {
  * @param fileContents a migrations object retrieved from a migrations file
  */
 function isMigration(fileContents): boolean {
-    return (typeof fileContents.version === 'string' && typeof fileContents.up === 'function' && typeof fileContents.down === 'function');
+    return (
+        typeof fileContents.version === "string" &&
+        typeof fileContents.up === "function" &&
+        typeof fileContents.down === "function"
+    );
 }

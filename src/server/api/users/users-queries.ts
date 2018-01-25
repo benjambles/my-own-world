@@ -1,6 +1,6 @@
-import { sql } from 'pg-extra';
-import { pool } from '../';
-import { getUUID } from '../../lib/utils';
+import { sql } from "pg-extra";
+import { pool } from "../../db";
+import { getUUID } from "../../utils";
 
 /**
  * Retrieve a user with a matching email hash from the database
@@ -17,7 +17,7 @@ export async function getUserByEmail(email: string): Promise<User.UserData> {
 }
 
 /**
- * Retrieve a user with a matching uuid from the database 
+ * Retrieve a user with a matching uuid from the database
  * @param uuid a valid uuid
  */
 export async function getActiveUserByUUID(uuid: string): Promise<User.UserData> {
@@ -34,13 +34,13 @@ export async function getActiveUserByUUID(uuid: string): Promise<User.UserData> 
  * @param limit The number of users to fetch
  * @param offset The number of records to skip
  */
-export async function getActiveUsers(limit: number = 10, offset: number = 0): Promise<User.UserData[]> {
+export async function getActiveUsers(props = { limit: 10, offset: 0 }): Promise<User.UserData[]> {
     return await pool.many(sql`
         SELECT *
         FROM "Users"
         WHERE "isActive" = true
-        LIMIT ${limit}
-        OFFSET ${offset}
+        LIMIT ${props.limit}
+        OFFSET ${props.offset}
     `);
 }
 
@@ -63,4 +63,8 @@ export async function deleteUser(uuid): Promise<boolean> {
         WHERE uuid = ${uuid}
         RETURNING "isActive"
     `);
+}
+
+export async function updateUser(data): Promise<boolean> {
+    return await pool.one();
 }

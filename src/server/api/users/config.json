@@ -6,16 +6,12 @@
     "paths": {
         "/users": {
             "get": {
-                "tags": [
-                    "user"
-                ],
+                "tags": ["user"],
                 "summary": "Fetches all users for the platform",
                 "description": "",
                 "operationId": "getUsers",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "count",
@@ -38,34 +34,23 @@
                 "security": []
             },
             "post": {
-                "tags": [
-                    "user"
-                ],
+                "tags": ["user"],
                 "summary": "Add a new user to the platform",
                 "description": "",
                 "operationId": "createUser",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
                 "parameters": [],
                 "responses": {},
                 "security": []
             },
             "options": {
-                "tags": [
-                    "user",
-                    "options"
-                ],
+                "tags": ["user", "options"],
                 "summary": "Check which endpoints are available to the authenticated user",
                 "description": "",
                 "operationId": "sendOptions",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [],
                 "responses": {},
                 "security": []
@@ -73,16 +58,12 @@
         },
         "/users/:id": {
             "get": {
-                "tags": [
-                    "user"
-                ],
+                "tags": ["user"],
                 "summary": "Fetches the user with the ID matching the url parameter",
                 "description": "",
                 "operationId": "getUserById",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "id",
@@ -97,18 +78,12 @@
                 "security": []
             },
             "put": {
-                "tags": [
-                    "user"
-                ],
+                "tags": ["user"],
                 "summary": "Updates the user at the ID given with the values provided",
                 "description": "",
                 "operationId": "updateUser",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "id",
@@ -122,24 +97,17 @@
                 "responses": {},
                 "security": [
                     {
-                        "jwt": [
-                            "role:admin",
-                            "role:owner"
-                        ]
+                        "jwt": ["role:admin", "role:owner"]
                     }
                 ]
             },
             "delete": {
-                "tags": [
-                    "user"
-                ],
+                "tags": ["user"],
                 "summary": "Deletes the user with the given ID",
                 "description": "",
                 "operationId": "deleteUserById",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "id",
@@ -153,25 +121,17 @@
                 "responses": {},
                 "security": [
                     {
-                        "jwt": [
-                            "role:admin",
-                            "role:owner"
-                        ]
+                        "jwt": ["role:admin", "role:owner"]
                     }
                 ]
             },
             "options": {
-                "tags": [
-                    "user",
-                    "options"
-                ],
+                "tags": ["user", "options"],
                 "summary": "Check which endpoints are valid for the authenticated user",
                 "description": "",
                 "operationId": "sendOptions",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "id",
@@ -188,19 +148,12 @@
         },
         "/users/authenticate": {
             "post": {
-                "tags": [
-                    "user",
-                    "authentication"
-                ],
+                "tags": ["user", "authentication"],
                 "summary": "Validate user authentication details",
                 "description": "",
                 "operationId": "authenticateUser",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "email",
@@ -228,17 +181,12 @@
                 "security": []
             },
             "options": {
-                "tags": [
-                    "user",
-                    "options"
-                ],
+                "tags": ["user", "options"],
                 "summary": "Check which endpoints are valid for authenticating a user",
                 "description": "",
                 "operationId": "sendOptions",
                 "consumes": [],
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [],
                 "responses": {},
                 "security": []

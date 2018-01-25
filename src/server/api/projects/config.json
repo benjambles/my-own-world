@@ -1,0 +1,187 @@
+{
+    "info": {
+        "name": "Projects",
+        "description":
+            "Routes relating to the creation and management of projects for the platform."
+    },
+    "paths": {
+        "/projects": {
+            "get": {
+                "tags": ["project"],
+                "summary": "Fetches all projects on the platform",
+                "description": "",
+                "operationId": "getProjects",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "How many records to fetch",
+                        "default": 10,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "How many records to skip",
+                        "default": 0,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": []
+            },
+            "post": {
+                "tags": ["project"],
+                "summary": "Create a new project to the platform",
+                "description": "",
+                "operationId": "createProject",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            },
+            "options": {
+                "tags": ["project", "options"],
+                "summary":
+                    "Check which endpoints are available to the authenticated user for the project",
+                "description": "",
+                "operationId": "sendOptions",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {},
+                "security": []
+            }
+        },
+        "/projects/:id": {
+            "get": {
+                "tags": ["project"],
+                "summary": "Fetches the project with the ID matching the url parameter",
+                "description": "",
+                "operationId": "getProjectById",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a project",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": []
+            },
+            "put": {
+                "tags": ["project"],
+                "summary": "Updates the project at the ID given with the values provided",
+                "description": "",
+                "operationId": "updateProject",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a project",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": [
+                    {
+                        "jwt": ["role:admin", "role:owner"]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["project"],
+                "summary": "Deletes the project with the given ID",
+                "description": "",
+                "operationId": "deleteProjectById",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a project",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": [
+                    {
+                        "jwt": ["role:admin", "role:owner"]
+                    }
+                ]
+            },
+            "options": {
+                "tags": ["project", "options"],
+                "summary":
+                    "Check which endpoints are valid for the authenticated user on the project",
+                "description": "",
+                "operationId": "sendOptions",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a project",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": []
+            }
+        },
+        "/projects/:id/roles": {
+            "options": {
+                "tags": ["project", "options", "roles"],
+                "summary": "Check which endpoints are valid for the authenticated user",
+                "description": "",
+                "operationId": "sendOptions",
+                "consumes": [],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Unique id representing a project",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {},
+                "security": [
+                    {
+                        "role": ["not:guest"]
+                    }
+                ]
+            }
+        }
+    },
+    "schemas": {
+        "project": {
+            "name": {
+                "maxLength": 250,
+                "type": "string"
+            }
+        }
+    }
+}
