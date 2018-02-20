@@ -16,7 +16,6 @@
         "commander": "^2.13.0",
         "debug": "^2.6.9",
         "dotenv": "^4.0.0",
-        "folktale": "^2.0.1",
         "glob": "^7.1.2",
         "http-errors": "^1.6.2",
         "inflight": "^1.0.6",

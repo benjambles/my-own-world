@@ -16,13 +16,14 @@ export function bindOptions(config): Function {
         const error = { message: "There was an error whilst generating options", status: 400 };
 
         await send(ctx, error, async function() {
-            // TODO: Replace this with a method that searches for the given route in the tree
-            let response = Object.assign({}, config.paths[ctx.request.path.replace("/api", "")]);
-            delete response.options;
+            const pathParts = ctx.state.route.path.split("/").filter(part => part !== "");
+            const response = Object.assign({}, findRouteConfig(config, pathParts));
+            console.log(response);
+            delete response.verbs.options;
 
             ctx.set(
                 "Allow",
-                Object.keys(response)
+                Object.keys(response.verbs)
                     .join(", ")
                     .toUpperCase()
             );
@@ -40,11 +41,26 @@ export function bindOptions(config): Function {
  */
 export async function send(ctx: Koa.Context, error: iError, data: Function): Promise<void> {
     try {
-        let message = await data();
+        const message = await data();
         sendAPIResponse(ctx, message);
     } catch (e) {
         sendError(ctx, e, error);
     }
+}
+
+function findRouteConfig(config: any, pathParts: string[]) {
+    if (
+        !pathParts.length ||
+        typeof config.paths === "undefined" ||
+        (pathParts.length === 1 && config.route === `/${pathParts[0]}`)
+    ) {
+        return config;
+    }
+
+    const newConfig = config.paths.filter(path => path.route === `/${pathParts[0]}`)[0];
+    const newPathParts = [pathParts.slice(0, 2).join("/")].concat(pathParts.slice(2));
+
+    return findRouteConfig(newConfig, newPathParts);
 }
 
 /**
@@ -54,7 +70,7 @@ export async function send(ctx: Koa.Context, error: iError, data: Function): Pro
  * @param body Additional parameters to append to the response body object
  */
 function sendAPIResponse(ctx: Koa.Context, data): void {
-    let status = data.status || 200;
+    const status = data.status || 200;
     let responseData = data.data || {};
 
     if (data.parts) {
