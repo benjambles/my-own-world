@@ -16,6 +16,7 @@ export function bindOptions(config): Function {
         const error = { message: "There was an error whilst generating options", status: 400 };
 
         await send(ctx, error, async function() {
+            // TODO: Replace this with a method that searches for the given route in the tree
             let response = Object.assign({}, config.paths[ctx.request.path.replace("/api", "")]);
             delete response.options;
 
@@ -91,6 +92,5 @@ function sendError(ctx, error, safe = { message: "", status: 400 }) {
  */
 function buildMeta(meta: APIMeta, additionalData): APIMeta {
     const newMeta = Object.assign({}, meta, additionalData);
-    newMeta.lastModified = new Date().toISOString();
     return newMeta;
 }

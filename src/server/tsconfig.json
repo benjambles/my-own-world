@@ -9,12 +9,7 @@
         "sourceMap": true,
         "moduleResolution": "node"
     },
-    "include": [
-        "**/*"
-    ],
-    "exclude": [
-        "../../node_modules",
-        "**/*.spec.ts"
-    ],
+    "include": ["**/*"],
+    "exclude": ["../../node_modules", "**/*.spec.ts"],
     "compileOnSave": true
 }

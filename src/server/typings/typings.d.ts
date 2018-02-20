@@ -18,15 +18,15 @@ interface APIBody {
     [propName: string]: any;
 }
 
-interface iError {
-    status: number;
-    message: string;
-}
-
 interface APIError {
     statusCode: number;
     message: string;
     id: string;
+}
+
+interface iError {
+    status: number;
+    message: string;
 }
 
 declare function router(): iRouter;
@@ -34,6 +34,10 @@ declare function router(): iRouter;
 interface dbGet {
     limit: number;
     offset: number;
+}
+
+interface dbData {
+    [propName: string]: string;
 }
 
 interface iRouter {
@@ -77,7 +81,13 @@ declare namespace User {
         screenName: string;
         firstName: string;
         lastName: string;
-        email: string;
         password: string;
+    }
+
+    interface Identity {
+        uuid: string;
+        type: string;
+        identity: string;
+        userId: string;
     }
 }

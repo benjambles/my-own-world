@@ -1,7 +1,7 @@
-import { compose, curry } from "ramda";
 import * as uuidv5 from "uuid/v5";
 
 import { uuidv5_NS } from "./config";
+import * as Security from "./security";
 
 /**
  * Deep flatten an array
@@ -70,6 +70,35 @@ export function cloneData(data) {
     return data; // Simple types aren't passed by reference, we're good to go.
 }
 
-export const cleanData = curry(function(cloneData, formatter, data) {
-    return compose(formatter, cloneData)(data);
-});
+export function cleanData(formatter) {
+    return data => formatter(cloneData(data));
+}
+
+/**
+ *
+ * @param data
+ */
+export function format(model = { encrypted: [], hashed: [], readOnly: ["uuid"] }) {
+    const { encrypted, hashed, readOnly } = model;
+    const formattedData = {};
+
+    return async function(data: dbData) {
+        await Object.entries(data).forEach(async ([key, value]): Promise<void> => {
+            if (readOnly.includes(key)) return;
+
+            if (encrypted.includes(key)) {
+                value = Security.encryptValue(value);
+            } else if (hashed.includes(key)) {
+                value = await Security.hash(value);
+            }
+
+            formattedData[key] = value;
+        });
+
+        return data;
+    };
+}
+
+export function isNil(value) {
+    return value == null;
+}

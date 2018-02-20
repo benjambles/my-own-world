@@ -4,6 +4,7 @@ import * as bodyParser from "koa-bodyparser";
 import * as compress from "koa-compress";
 import * as conditionalGet from "koa-conditional-get";
 import * as etag from "koa-etag";
+import * as helmet from "koa-helmet";
 import * as morgan from "koa-morgan";
 import * as responseTime from "koa-response-time";
 import * as path from "path";
@@ -47,6 +48,8 @@ export default function api(): Koa {
 
     // compression
     app.use(compress());
+
+    app.use(helmet()); // security
 
     // Body parser only on certain methods
     app.use(async (ctx, next) => {

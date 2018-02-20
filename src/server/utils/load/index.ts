@@ -8,9 +8,10 @@ import * as router from "koa-joi-router";
 import * as koaJWT from "koa-jwt";
 import * as path from "path";
 
-import { flatten } from "../";
+import { flatten, deepFlatten } from "../";
 import { jwtSecret } from "../config";
 import { catchErrors, setAccessRoles } from "../middleware";
+import { isNil } from "../";
 
 /**
  * Load resources in `root` directory.
@@ -35,56 +36,78 @@ function generateRouter(root: string, name: string, prefix: string = ""): iRoute
     const filePath: string = path.resolve(root, name);
     const stats: fs.Stats = fs.lstatSync(filePath);
 
-    if (stats.isDirectory()) {
-        const conf = require(path.resolve(filePath, "config.json"));
-        const routeFunctions = require(filePath);
-        const mappedRouter = router()
-            .route(generateRoutes(conf, routeFunctions))
-            .prefix(`/${prefix}`);
-
-        return mappedRouter;
+    if (!stats.isDirectory()) {
+        return;
     }
 
-    return;
+    const conf = require(path.resolve(filePath, "config.json"));
+    const routeHandlers = require(filePath);
+    const mappedRouter = router()
+        .route(mapRoutes(conf.paths, routeHandlers))
+        .prefix(`/${prefix}`);
+
+    return mappedRouter;
 }
 
 /**
  * Map routes onto the router through configuration
- * @param conf A configuration object for a route loaded from a json file
- * @param routeFunctions The functions to be used as the final middleware for the routes
+ * @param paths A configuration object for a route loaded from a json file
+ * @param routeHandlers The functions to be used as the final middleware for the routes
  */
+function mapRoutes(paths, routeHandlers) {
+    const dfs = (stack, head) => (head.paths || []).concat(stack);
 
-function generateRoutes(conf, routeFunctions): joiRoute[] {
-    return Object.entries(conf.paths)
-        .map(([routePath, methods]) =>
-            Object.entries(methods)
-                .map(([method, spec]): joiRoute => {
-                    const validate = buildJoiSpec(spec);
-                    const meta = {
-                        summary: spec.summary,
-                        description: spec.description
-                    };
+    const loop = (acc, stack) => {
+        if (stack.length === 0) {
+            return acc;
+        }
 
-                    const handler = mapHandlers(spec, routeFunctions);
+        const [head, ...tail] = stack;
+        const mappedRoutes = mapMethods(head.route, head.verbs, routeHandlers).filter(
+            route => !isNil(route)
+        );
 
-                    return { method, path: routePath, validate, handler, meta };
-                })
-                .reduce(flatten, [])
-        )
-        .reduce(flatten, []);
+        return loop(acc.concat(mappedRoutes), dfs(tail, head));
+    };
+
+    return loop([], paths);
+}
+
+/**
+ * Maps an object containing swagger and joi docs into a JOI route object
+ * @param route A string representing the path of an URI, using :varName for variables
+ * @param verbs An object containing http verbs and the swagger/joi docs describing them
+ * @param routeHandlers An object containing the handlers to map to the routes
+ */
+function mapMethods(route: string, verbs: object, routeHandlers: object) {
+    return Object.entries(verbs).map(([method, spec]): joiRoute => {
+        const handler = mapHandlers(spec, routeHandlers);
+
+        if (!handler.length) return null;
+
+        const validate = buildJoiSpec(spec);
+        const meta = {
+            summary: spec.summary,
+            description: spec.description
+        };
+
+        return { method, path: route, validate, handler, meta };
+    });
 }
 
 /**
  * Returns an array of middleware to be used by the route
  * @param spec The swagger configuration for a single route
- * @param routeFunctions object of functions that can be mapped to a route
+ * @param routeHandlers object of functions that can be mapped to a route
  */
-function mapHandlers(spec, routeFunctions): Function[] {
-    return bindSecurity(spec.security).concat([
-        catchErrors,
-        routeFunctions[spec.operationId],
-        routeFunctions.checkAccess
-    ]);
+function mapHandlers(spec, routeHandlers): Function[] {
+    return typeof routeHandlers[spec.operationId] === "function"
+        ? bindSecurity(spec.security).concat([
+              catchErrors,
+              routeHandlers[spec.operationId],
+              routeHandlers.checkAccess
+          ])
+        : [];
 }
 
 /**
@@ -112,13 +135,15 @@ function buildJoiSpec(config) {
         continueOnError: true
     };
 
-    config.parameters.forEach(function(paramConf: swaggerParam) {
-        if (!spec[paramConf.in]) {
-            spec[paramConf.in] = {}; // create the key if it doesn't exist
-        }
+    if (config.parameters.length) {
+        config.parameters.forEach(function(paramConf: swaggerParam) {
+            if (!spec[paramConf.in]) {
+                spec[paramConf.in] = {}; // create the key if it doesn't exist
+            }
 
-        spec[paramConf.in][paramConf.name] = buildParameter(paramConf);
-    });
+            spec[paramConf.in][paramConf.name] = buildParameter(paramConf);
+        });
+    }
 
     if (spec["body"]) {
         spec["type"] = config.consumes[0].split("/")[1];

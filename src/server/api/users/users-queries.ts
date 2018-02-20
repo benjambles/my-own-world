@@ -1,32 +1,48 @@
 import { sql } from "pg-extra";
+
 import { pool } from "../../db";
-import { getUUID } from "../../utils";
+import { dbFormat, result } from "../../utils/db";
+
+export async function getUserByEmail(email: string): Promise<User.UserData> {
+    const query = await pool.one(sql`
+        SELECT *
+        FROM "Users"
+        WHERE email = ${email}
+        AND "isActive" = true
+    `);
+
+    return result("There was an error whilst fetching the user", query);
+}
 
 /**
  * Retrieve a user with a matching email hash from the database
  * @param email an encrypted email address
  */
-export async function getUserByEmail(email: string): Promise<User.UserData> {
-    return await pool.one(sql`
-        UPDATE "Users"
-        SET "lastLoggedIn" = NOW()
-        WHERE "email" = ${email}
-        AND "isActive" = true
+export async function getUserByIdentity(identity: string): Promise<User.UserData> {
+    const query = await pool.one(sql`
+        SELECT *
+        FROM "Identities"
+        WHERE "identity" = ${identity}
+        AND "Users".isActive" = true
         RETURNING *
     `);
+
+    return result("There was an error whilst fetching the user", query);
 }
 
 /**
  * Retrieve a user with a matching uuid from the database
  * @param uuid a valid uuid
  */
-export async function getActiveUserByUUID(uuid: string): Promise<User.UserData> {
-    return await pool.one(sql`
+export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> {
+    const query = await pool.one(sql`
         SELECT *
         FROM "Users"
         WHERE uuid = ${uuid}
         AND "isActive" = true
     `);
+
+    return result("There was an error whilst fetching the user", query);
 }
 
 /**
@@ -34,14 +50,19 @@ export async function getActiveUserByUUID(uuid: string): Promise<User.UserData> 
  * @param limit The number of users to fetch
  * @param offset The number of records to skip
  */
-export async function getActiveUsers(props = { limit: 10, offset: 0 }): Promise<User.UserData[]> {
-    return await pool.many(sql`
+export async function getActiveUsers(
+    props: dbGet = { limit: 10, offset: 0 }
+): Promise<User.UserData[]> {
+    const { limit, offset } = props;
+    const query = await pool.many(sql`
         SELECT *
         FROM "Users"
         WHERE "isActive" = true
-        LIMIT ${props.limit}
-        OFFSET ${props.offset}
+        LIMIT ${limit}
+        OFFSET ${offset}
     `);
+
+    return result("There was an error whilst fetching users", query);
 }
 
 /**
@@ -49,15 +70,22 @@ export async function getActiveUsers(props = { limit: 10, offset: 0 }): Promise<
  * @param data formatted data ready for storage
  */
 export async function createUser(data): Promise<User.UserData> {
-    return await pool.one();
+    const { keys, values } = dbFormat(data);
+
+    return pool.one(sql`
+        INSERT (${keys})
+        INTO "Users"
+        VALUES (${values})
+        RETURNING *
+    `);
 }
 
 /**
  * Delete a user with a given ID
  * @param uuid A valid uuid
  */
-export async function deleteUser(uuid): Promise<boolean> {
-    return await pool.one(sql`
+export async function deleteUser(uuid: string): Promise<boolean> {
+    return pool.one(sql`
         UPDATE "Users"
         SET "isActive" = false
         WHERE uuid = ${uuid}
@@ -65,6 +93,15 @@ export async function deleteUser(uuid): Promise<boolean> {
     `);
 }
 
-export async function updateUser(data): Promise<boolean> {
-    return await pool.one();
+export async function updateUser(uuid: string, data): Promise<User.UserData> {
+    const { keys, values } = dbFormat(data);
+    const query = await pool.one(sql`
+        INSERT (${keys})
+        INTO "Users"
+        VALUES (${values})
+        WHERE uuid = ${uuid}
+        RETURNING *
+    `);
+
+    return result("There was an error whilst updating the user", query);
 }

@@ -34,8 +34,7 @@ CREATE TABLE "Users" (
     "firstName" varchar(50) NOT NULL,
     "lastName" varchar(50) NOT NULL,
     "screenName" varchar(50),
-    email varchar(256) NOT NULL,
-    password varchar(500) NOT NULL,
+    "password" varchar(500) NOT NULL,
     "createdOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastLoggedIn" timestamptz NOT NULL DEFAULT NOW(),
@@ -44,10 +43,23 @@ CREATE TABLE "Users" (
 
 ALTER TABLE "Users" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_screenname ON "Users" (lower("screenName"));
-CREATE INDEX lower_email ON "Users" (lower(email));
 
-INSERT INTO "Users" ("uuid", "firstName", "lastName", "screenName", "email", "password") VALUES 
-('38ef3e09-cdcd-543c-bc39-c7b4f21db98d', 'Ben', 'Allen', 'Shambles', 'aes192:a6f759b3e35225fae6495918bfc5dc9864d8f82b27c6bb99337f16d52ffb4568', '$2a$10$3Wao.HJP.J2LM.rtzofxleYrkEDjaatuiHu15ZODA4CvRurnN.hbK');
+INSERT INTO "Users" ("uuid", "firstName", "lastName", "screenName", "password") VALUES 
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98d', 'Ben', 'Allen', 'Shambles', '$2a$10$3Wao.HJP.J2LM.rtzofxleYrkEDjaatuiHu15ZODA4CvRurnN.hbK');
+
+-- Accounts -- 
+CREATE TABLE "Identities" (
+    uuid uuid PRIMARY KEY,
+    "type" VARCHAR(50) NOT NULL,
+    "identifier" varchar(256) NOT NULL,
+    "userId" uuid REFERENCES "Users"
+);
+
+ALTER TABLE "Identities" OWNER TO postgres;
+CREATE UNIQUE INDEX unique_identifier ON "Identities" (lower("identifier"));
+
+INSERT INTO "Identities" ("uuid", "type", "identifier") VALUES 
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'email', 'aes192:a6f759b3e35225fae6495918bfc5dc9864d8f82b27c6bb99337f16d52ffb4568', '38ef3e09-cdcd-543c-bc39-c7b4f21db98d');
 
 -- Languages -- 
 

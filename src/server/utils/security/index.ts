@@ -50,7 +50,7 @@ export async function compare(value: string, hash: string): Promise<true> {
     const isValid = await bcrypt.compare(value, hash);
 
     if (!isValid) {
-        throw createError(401, "You are not authorised to access this endpoint");
+        throw createError(401, "Unable to authenticate user, please check the details provided");
     }
 
     return isValid;

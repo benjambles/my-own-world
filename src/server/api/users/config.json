@@ -3,194 +3,223 @@
         "name": "Users",
         "description": "Routes relating to the creation and management of users for the platform."
     },
-    "paths": {
-        "/users": {
-            "get": {
-                "tags": ["user"],
-                "summary": "Fetches all users for the platform",
-                "description": "",
-                "operationId": "getUsers",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "count",
-                        "in": "query",
-                        "description": "How many records to fetch",
-                        "default": 10,
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "name": "offset",
-                        "in": "query",
-                        "description": "How many records to skip",
-                        "default": 0,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {},
-                "security": []
+    "paths": [
+        {
+            "route": "/users",
+            "verbs": {
+                "get": {
+                    "tags": ["user"],
+                    "summary": "Fetches all users for the platform",
+                    "description": "",
+                    "operationId": "getUsers",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "count",
+                            "in": "query",
+                            "description": "How many records to fetch",
+                            "default": 10,
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        {
+                            "name": "offset",
+                            "in": "query",
+                            "description": "How many records to skip",
+                            "default": 0,
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    ],
+                    "responses": {},
+                    "security": []
+                },
+                "post": {
+                    "tags": ["user"],
+                    "summary": "Add a new user to the platform",
+                    "description": "",
+                    "operationId": "createUser",
+                    "consumes": ["application/json"],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                },
+                "options": {
+                    "tags": ["user", "options"],
+                    "summary": "Check which endpoints are available to the authenticated user",
+                    "description": "",
+                    "operationId": "sendOptions",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                }
             },
-            "post": {
-                "tags": ["user"],
-                "summary": "Add a new user to the platform",
-                "description": "",
-                "operationId": "createUser",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [],
-                "responses": {},
-                "security": []
-            },
-            "options": {
-                "tags": ["user", "options"],
-                "summary": "Check which endpoints are available to the authenticated user",
-                "description": "",
-                "operationId": "sendOptions",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [],
-                "responses": {},
-                "security": []
-            }
-        },
-        "/users/:id": {
-            "get": {
-                "tags": ["user"],
-                "summary": "Fetches the user with the ID matching the url parameter",
-                "description": "",
-                "operationId": "getUserById",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Unique id representing a user",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {},
-                "security": []
-            },
-            "put": {
-                "tags": ["user"],
-                "summary": "Updates the user at the ID given with the values provided",
-                "description": "",
-                "operationId": "updateUser",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Unique id representing a user",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {},
-                "security": [
-                    {
-                        "jwt": ["role:admin", "role:owner"]
-                    }
-                ]
-            },
-            "delete": {
-                "tags": ["user"],
-                "summary": "Deletes the user with the given ID",
-                "description": "",
-                "operationId": "deleteUserById",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Unique id representing a user",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {},
-                "security": [
-                    {
-                        "jwt": ["role:admin", "role:owner"]
-                    }
-                ]
-            },
-            "options": {
-                "tags": ["user", "options"],
-                "summary": "Check which endpoints are valid for the authenticated user",
-                "description": "",
-                "operationId": "sendOptions",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Unique id representing a user",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {},
-                "security": []
-            }
-        },
-        "/users/authenticate": {
-            "post": {
-                "tags": ["user", "authentication"],
-                "summary": "Validate user authentication details",
-                "description": "",
-                "operationId": "authenticateUser",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "body",
-                        "description": "The email address of the user wishing to log in",
-                        "required": true,
-                        "type": "string",
-                        "opts": {
-                            "lowercase": true,
-                            "email": true
+            "paths": [
+                {
+                    "route": "/users/:userId",
+                    "verbs": {
+                        "get": {
+                            "tags": ["user"],
+                            "summary": "Fetches the user with the ID matching the url parameter",
+                            "description": "",
+                            "operationId": "getUserById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "userIdid",
+                                    "in": "path",
+                                    "description": "Unique id representing a user",
+                                    "required": true,
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            ],
+                            "responses": {},
+                            "security": []
+                        },
+                        "put": {
+                            "tags": ["user"],
+                            "summary": "Updates the user at the ID given with the values provided",
+                            "description": "",
+                            "operationId": "updateUserById",
+                            "consumes": ["application/json"],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "userId",
+                                    "in": "path",
+                                    "description": "Unique id representing a user",
+                                    "required": true,
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:owner"]
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "tags": ["user"],
+                            "summary": "Deletes the user with the given ID",
+                            "description": "",
+                            "operationId": "deleteUserById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "userId",
+                                    "in": "path",
+                                    "description": "Unique id representing a user",
+                                    "required": true,
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:owner"]
+                                }
+                            ]
+                        },
+                        "options": {
+                            "tags": ["user", "options"],
+                            "summary": "Check which endpoints are valid for the authenticated user",
+                            "description": "",
+                            "operationId": "sendOptions",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "userId",
+                                    "in": "path",
+                                    "description": "Unique id representing a user",
+                                    "required": true,
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            ],
+                            "responses": {},
+                            "security": []
                         }
                     },
-                    {
-                        "name": "password",
-                        "in": "body",
-                        "description": "A password to test the stored hash against",
-                        "required": true,
-                        "type": "string",
-                        "opts": {
-                            "max": 100
+                    "paths": [
+                        {
+                            "route": "/users/:userId/identities",
+                            "verbs": {
+                                "get": {},
+                                "post": {},
+                                "options": {}
+                            },
+                            "paths": [
+                                {
+                                    "route": "/users/:userId/identities/:identityId",
+                                    "verbs": {
+                                        "put": {},
+                                        "delete": {},
+                                        "options": {}
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "route": "/users/authentication",
+                    "verbs": {
+                        "post": {
+                            "tags": ["user", "authentication"],
+                            "summary": "Validate user authentication details",
+                            "description":
+                                "Valid combinations are: [email], [email, password], [screenName, password], [identifier]. Passing an email address without a password will trigger the magic link login flow. Passing and email or screenName with a password will trigger the normal login process and passing a social identifier will trigger the normal login process.",
+                            "operationId": "authenticateUser",
+                            "consumes": ["application/json"],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "identifier",
+                                    "in": "body",
+                                    "description":
+                                        "An identifier of type email, social token or screen name",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "password",
+                                    "in": "body",
+                                    "description": "A password to test the stored hash against",
+                                    "required": true,
+                                    "type": "string",
+                                    "opts": {
+                                        "max": 100
+                                    }
+                                }
+                            ],
+                            "responses": {},
+                            "security": []
+                        },
+                        "options": {
+                            "tags": ["user", "options"],
+                            "summary": "Check which endpoints are valid for authenticating a user",
+                            "description": "",
+                            "operationId": "sendOptions",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [],
+                            "responses": {},
+                            "security": []
                         }
                     }
-                ],
-                "responses": {},
-                "security": []
-            },
-            "options": {
-                "tags": ["user", "options"],
-                "summary": "Check which endpoints are valid for authenticating a user",
-                "description": "",
-                "operationId": "sendOptions",
-                "consumes": [],
-                "produces": ["application/json"],
-                "parameters": [],
-                "responses": {},
-                "security": []
-            }
+                }
+            ]
         }
-    }
+    ]
 }
