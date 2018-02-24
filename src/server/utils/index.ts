@@ -71,7 +71,7 @@ export function cloneData(data) {
 }
 
 export function cleanData(formatter) {
-    return data => formatter(cloneData(data));
+    return async data => await formatter(cloneData(data));
 }
 
 /**
@@ -80,22 +80,24 @@ export function cleanData(formatter) {
  */
 export function format(model = { encrypted: [], hashed: [], readOnly: ["uuid"] }) {
     const { encrypted, hashed, readOnly } = model;
-    const formattedData = {};
-
     return async function(data: dbData) {
-        await Object.entries(data).forEach(async ([key, value]): Promise<void> => {
-            if (readOnly.includes(key)) return;
+        const formattedData = {};
 
-            if (encrypted.includes(key)) {
-                value = Security.encryptValue(value);
-            } else if (hashed.includes(key)) {
-                value = await Security.hash(value);
-            }
+        await Promise.all(
+            Object.entries(data).map(async ([key, value]): Promise<void> => {
+                if (readOnly.includes(key)) return;
 
-            formattedData[key] = value;
-        });
+                if (encrypted.includes(key)) {
+                    value = Security.encryptValue(value);
+                } else if (hashed.includes(key)) {
+                    value = await Security.hash(value);
+                }
 
-        return data;
+                formattedData[key] = value;
+            })
+        );
+
+        return formattedData;
     };
 }
 

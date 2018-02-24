@@ -1,7 +1,7 @@
 import { cleanData, cloneData, format } from "../../utils";
 import * as Security from "../../utils/security";
-import * as db from "./users-queries";
-import * as Identities from "./identities/identities";
+import * as db from "./queries";
+import * as Identities from "./identifiers/identifiers";
 
 const model = {
     encrypted: ["email"],
@@ -48,7 +48,7 @@ export async function getByEmail(identifier: string): Promise<User.UserData> {
  * @returns {Promise<User.UserData}
  */
 export async function create(data: User.UserData): Promise<User.UserData> {
-    const cleanData = cleanUserData(data);
+    const cleanData = await cleanUserData(data);
     const user = await db.createUser(cleanData);
     return sanitizedResponse(user);
 }
@@ -57,7 +57,7 @@ export async function create(data: User.UserData): Promise<User.UserData> {
  *
  */
 export async function update(uuid: string, data: User.UserData): Promise<User.UserData> {
-    const cleanData = cleanUserData(data);
+    const cleanData = await cleanUserData(data);
     const user = await db.updateUser(uuid, cleanData);
     return sanitizedResponse(user);
 }

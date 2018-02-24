@@ -58,7 +58,7 @@ CREATE TABLE "Identities" (
 ALTER TABLE "Identities" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_identifier ON "Identities" (lower("identifier"));
 
-INSERT INTO "Identities" ("uuid", "type", "identifier") VALUES 
+INSERT INTO "Identities" ("uuid", "type", "identifier", "userId") VALUES 
 ('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'email', 'aes192:a6f759b3e35225fae6495918bfc5dc9864d8f82b27c6bb99337f16d52ffb4568', '38ef3e09-cdcd-543c-bc39-c7b4f21db98d');
 
 -- Languages -- 

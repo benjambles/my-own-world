@@ -1,10 +1,10 @@
-import { cleanData, cloneData, format } from "../../../utils";
+import { cleanData, cloneData, format, getUUID } from "../../../utils";
 import * as Security from "../../../utils/security";
-import * as db from "./identities-queries";
+import * as db from "./queries";
 
 const model = {
-    encrypted: [],
-    hashed: ["identity"],
+    encrypted: ["identifier"],
+    hashed: [],
     readOnly: ["uuid"]
 };
 const formatIdentity = format(model);
@@ -12,25 +12,21 @@ const cleanIdentityData = cleanData(formatIdentity);
 
 export async function getByIndentifier(identifier: string) {
     const identifierHash = await Security.encryptValue(identifier);
-    const identity = await db.getOne(identifierHash);
-    return respond(identity);
+    const identifierData = await db.getOne(identifierHash);
+    return respond(identifierData);
 }
 
 export async function getByUserId(userId: string, props: dbGet = { limit: 10, offset: 0 }) {
-    const identities = await db.getByUserId(userId, props);
-    return identities.map(respond);
+    const identifiers = await db.getByUserId(userId, props);
+    return identifiers.map(respond);
 }
 
-export async function create(data) {
-    const cleanData = cleanIdentityData(data);
-    const user = await db.create(cleanData);
-    return respond(user);
-}
-
-export async function update(uuid: string, data) {
-    const cleanData = cleanIdentityData(data);
-    const user = await db.update(uuid, cleanData);
-    return respond(user);
+export async function create(userId: string, data) {
+    const cleanData = await cleanIdentityData(data);
+    cleanData.uuid = getUUID(cleanData.identifier);
+    cleanData.userId = userId;
+    const identifierData = await db.create(cleanData);
+    return respond(identifierData);
 }
 
 export const remove = db.remove;

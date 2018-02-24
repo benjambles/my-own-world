@@ -71,7 +71,7 @@
                             "produces": ["application/json"],
                             "parameters": [
                                 {
-                                    "name": "userIdid",
+                                    "name": "userId",
                                     "in": "path",
                                     "description": "Unique id representing a user",
                                     "required": true,
@@ -153,19 +153,177 @@
                     },
                     "paths": [
                         {
-                            "route": "/users/:userId/identities",
+                            "route": "/users/:userId/identifiers",
                             "verbs": {
-                                "get": {},
-                                "post": {},
-                                "options": {}
+                                "get": {
+                                    "tags": ["user", "identifier"],
+                                    "summary": "Get all identifiers for the requested user",
+                                    "description": "",
+                                    "operationId": "getUserIdentifiers",
+                                    "consumes": [],
+                                    "produces": ["application/json"],
+                                    "parameters": [
+                                        {
+                                            "name": "userId",
+                                            "in": "path",
+                                            "description": "Unique id representing a user",
+                                            "required": true,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        {
+                                            "name": "count",
+                                            "in": "query",
+                                            "description": "How many records to fetch",
+                                            "default": 10,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        {
+                                            "name": "offset",
+                                            "in": "query",
+                                            "description": "How many records to skip",
+                                            "default": 0,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    ],
+                                    "responses": {},
+                                    "security": [
+                                        {
+                                            "jwt": ["role:admin", "role:owner"]
+                                        }
+                                    ]
+                                },
+                                "post": {
+                                    "tags": ["user", "identifier"],
+                                    "summary": "Store a new identifier for the user",
+                                    "description": "",
+                                    "operationId": "createUserIdentifier",
+                                    "consumes": ["application/json"],
+                                    "produces": ["application/json"],
+                                    "parameters": [
+                                        {
+                                            "name": "userId",
+                                            "in": "path",
+                                            "description": "Unique id representing a user",
+                                            "required": true,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        {
+                                            "name": "identifier",
+                                            "in": "body",
+                                            "description":
+                                                "A unique identifier for the user either email or social token",
+                                            "required": true,
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "type",
+                                            "in": "body",
+                                            "description":
+                                                "The type of identifier being stored, email or social",
+                                            "required": true,
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "responses": {},
+                                    "security": [
+                                        {
+                                            "jwt": ["role:admin", "role:owner"]
+                                        }
+                                    ]
+                                },
+                                "options": {
+                                    "tags": ["user", "identifier", "options"],
+                                    "summary":
+                                        "Check which endpoints are available for working with identifiers",
+                                    "description": "",
+                                    "operationId": "sendOptions",
+                                    "consumes": [],
+                                    "produces": ["application/json"],
+                                    "parameters": [
+                                        {
+                                            "name": "userId",
+                                            "in": "path",
+                                            "description": "Unique id representing a user",
+                                            "required": true,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    ],
+                                    "responses": {},
+                                    "security": []
+                                }
                             },
                             "paths": [
                                 {
-                                    "route": "/users/:userId/identities/:identityId",
+                                    "route": "/users/:userId/identifiers/:identifierId",
                                     "verbs": {
-                                        "put": {},
-                                        "delete": {},
-                                        "options": {}
+                                        "delete": {
+                                            "tags": ["user", "identifier", "options"],
+                                            "summary": "Remove the identifier for the given user",
+                                            "description": "",
+                                            "operationId": "deleteUserIdentifier",
+                                            "consumes": [],
+                                            "produces": ["application/json"],
+                                            "parameters": [
+                                                {
+                                                    "name": "userId",
+                                                    "in": "path",
+                                                    "description": "Unique id representing a user",
+                                                    "required": true,
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                },
+                                                {
+                                                    "name": "identifierId",
+                                                    "in": "path",
+                                                    "description":
+                                                        "Unique id representing a identifier for the user",
+                                                    "required": true,
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                }
+                                            ],
+                                            "responses": {},
+                                            "security": [
+                                                {
+                                                    "jwt": ["role:admin", "role:owner"]
+                                                }
+                                            ]
+                                        },
+                                        "options": {
+                                            "tags": ["user", "identifier", "options"],
+                                            "summary":
+                                                "Check which endpoints are available for working with an identifier",
+                                            "description": "",
+                                            "operationId": "sendOptions",
+                                            "consumes": [],
+                                            "produces": ["application/json"],
+                                            "parameters": [
+                                                {
+                                                    "name": "userId",
+                                                    "in": "path",
+                                                    "description": "Unique id representing a user",
+                                                    "required": true,
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                },
+                                                {
+                                                    "name": "identifierId",
+                                                    "in": "path",
+                                                    "description":
+                                                        "Unique id representing a identifier for the user",
+                                                    "required": true,
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                }
+                                            ],
+                                            "responses": {},
+                                            "security": []
+                                        }
                                     }
                                 }
                             ]

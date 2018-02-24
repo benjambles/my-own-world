@@ -1,12 +1,9 @@
 import { isNil } from "../";
 
 export function dbFormat(data: object): any {
-    const keys = Object.keys(data).join(",");
-    const values = Object.values(data).join(" ,");
-
     return {
-        keys,
-        values
+        keys: Object.keys(data),
+        values: Object.values(data)
     };
 }
 

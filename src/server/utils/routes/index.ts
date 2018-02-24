@@ -98,6 +98,8 @@ function sendError(ctx, error, safe = { message: "", status: 400 }) {
         message = safe.message;
     }
 
+    console.log(error);
+
     ctx.throw(status, message);
 }
 
