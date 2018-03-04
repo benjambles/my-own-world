@@ -1,4 +1,4 @@
-import { isNil } from "../";
+import { isNil } from '../';
 
 export function dbFormat(data: object): any {
     return {

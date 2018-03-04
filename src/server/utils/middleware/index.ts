@@ -1,4 +1,4 @@
-import * as Koa from "koa";
+import * as Koa from 'koa';
 
 /**
  * Custom error handling middleware to format JOI errors into JSON errors instead of default text.

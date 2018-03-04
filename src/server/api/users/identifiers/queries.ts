@@ -1,45 +1,62 @@
-import { sql, _raw } from "pg-extra";
+import { sql, _raw } from 'pg-extra';
 
-import { pool, knex } from "../../../db";
-import { dbFormat, result } from "../../../utils/db";
+import { pool, knex } from '../../../db';
+import { dbFormat, result } from '../../../utils/db';
 
+/**
+ *
+ * @param userId
+ * @param props
+ */
 export async function getByUserId(
     userId: string,
     props: dbGet = { limit: 10, offset: 0 }
 ): Promise<any[]> {
     const { limit, offset } = props;
-    const queryString = knex("Identities")
-        .select("*")
+    const queryString = knex('Identities')
+        .select('*')
         .where({ userId })
         .limit(limit)
         .offset(offset)
         .toString();
     const query = await pool.many(_raw`${queryString}`);
 
-    return result("There was an error whilst fetching the identities for the user", query);
+    return result('There was an error whilst fetching the identities for the user', query);
 }
 
+/**
+ *
+ * @param identifier
+ */
 export async function getOne(identifier): Promise<any> {
-    const queryString = knex("Identities")
-        .select("*")
+    const queryString = knex('Identities')
+        .select('*')
         .where({ identifier })
         .toString();
-    const query = await pool.many(_raw`${queryString}`);
-    return result("There was an error whilst fetching the identitiy", query);
+    const query = await pool.one(_raw`${queryString}`);
+    return result('There was an error whilst fetching the identitiy', query);
 }
 
+/**
+ *
+ * @param data
+ */
 export async function create(data): Promise<any> {
-    const queryString = knex("Identities")
-        .returning("*")
+    const queryString = knex('Identities')
+        .returning('*')
         .insert(data)
         .toString();
     const query = await pool.one(_raw`${queryString}`);
-    return result("There was an error whilst creating the identitiy", query);
+    return result('There was an error whilst creating the identitiy', query);
 }
 
+/**
+ *
+ * @param uuid
+ */
 export async function remove(uuid: string): Promise<Boolean> {
-    const queryString = knex("Identities")
-        .returning("true")
+    const queryString = knex('Identities')
+        .returning('true')
         .where({ uuid })
         .del()
         .toString();
@@ -47,9 +64,13 @@ export async function remove(uuid: string): Promise<Boolean> {
     return result(`There was an error whilst deleting the identitiy with uuid ${uuid}`, !!query);
 }
 
+/**
+ *
+ * @param userId
+ */
 export async function removeAllByUserId(userId: string): Promise<Boolean> {
-    const queryString = knex("Identities")
-        .returning("true")
+    const queryString = knex('Identities')
+        .returning('true')
         .where({ userId })
         .del()
         .toString();

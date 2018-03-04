@@ -1,6 +1,6 @@
-import * as Koa from "koa";
+import * as Koa from 'koa';
 
-import { NODE_ENV, responseStatuses } from "../config";
+import { NODE_ENV, responseStatuses } from '../config';
 
 /**
  * Returns a middleware for generating OPTIONS and returning the swagger conf for the given route to the browser
@@ -10,21 +10,22 @@ export function bindOptions(config): Function {
     /**
      * Return the options and config for the route
      * @route [OPTIONS] /users
-     * @param ctx A Koa context object
+     * @param ctx - A Koa context object
+     * @param next - Following Koa Middleware
      */
-    return async function sendOptions(ctx: Koa.Context): Promise<void> {
-        const error = { message: "There was an error whilst generating options", status: 400 };
-
+    return async function sendOptions(ctx: Koa.Context, next: Function): Promise<void> {
+        const error = { message: 'There was an error whilst generating options', status: 400 };
+        await next();
         await send(ctx, error, async function() {
-            const pathParts = ctx.state.route.path.split("/").filter(part => part !== "");
+            const pathParts = ctx.state.route.path.split('/').filter(part => part !== '');
             const response = Object.assign({}, findRouteConfig(config, pathParts));
             console.log(response);
             delete response.verbs.options;
 
             ctx.set(
-                "Allow",
+                'Allow',
                 Object.keys(response.verbs)
-                    .join(", ")
+                    .join(', ')
                     .toUpperCase()
             );
 
@@ -51,14 +52,14 @@ export async function send(ctx: Koa.Context, error: iError, data: Function): Pro
 function findRouteConfig(config: any, pathParts: string[]) {
     if (
         !pathParts.length ||
-        typeof config.paths === "undefined" ||
+        typeof config.paths === 'undefined' ||
         (pathParts.length === 1 && config.route === `/${pathParts[0]}`)
     ) {
         return config;
     }
 
     const newConfig = config.paths.filter(path => path.route === `/${pathParts[0]}`)[0];
-    const newPathParts = [pathParts.slice(0, 2).join("/")].concat(pathParts.slice(2));
+    const newPathParts = [pathParts.slice(0, 2).join('/')].concat(pathParts.slice(2));
 
     return findRouteConfig(newConfig, newPathParts);
 }
@@ -90,10 +91,10 @@ function sendAPIResponse(ctx: Koa.Context, data): void {
  * @param error A JS, or http-errors error object
  * @param safe Default error parameters for when an error isn't sent, or to hide dev errors
  */
-function sendError(ctx, error, safe = { message: "", status: 400 }) {
+function sendError(ctx, error, safe = { message: '', status: 400 }) {
     let { status = safe.status, message = safe.message } = error;
 
-    if (NODE_ENV === "production") {
+    if (NODE_ENV === 'production') {
         status = safe.status;
         message = safe.message;
     }

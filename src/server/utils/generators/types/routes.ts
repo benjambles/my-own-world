@@ -1,25 +1,25 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
-import { routesPath } from "../../config";
+import { routesPath } from '../../config';
 
-const validAnswers: string[] = ["yes", "no"];
+const validAnswers: string[] = ['yes', 'no'];
 
 export function createRoute(rl) {
-    rl.question("Do you wish to generate a route from existing config? [yes/no]", function(
+    rl.question('Do you wish to generate a route from existing config? [yes/no]', function(
         answer: string
     ): void {
         answer = answer.toLowerCase();
 
         if (!validAnswers.includes(answer)) {
-            console.log("Please choose yes or no");
+            console.log('Please choose yes or no');
             rl.close();
         }
 
         switch (answer) {
-            case "yes":
+            case 'yes':
                 return createRouteFromConfig(rl);
-            case "no":
+            case 'no':
                 return createRouteWithConfig(rl);
         }
     });
@@ -27,16 +27,16 @@ export function createRoute(rl) {
 
 function createRouteFromConfig(rl): void {
     // ask for the name of the route folder
-    rl.question("What is the folder containing the config called?", function(answer) {
+    rl.question('What is the folder containing the config called?', function(answer) {
         const routeDir = path.resolve(routesPath, answer.toLowerCase);
-        const configPath = path.resolve(routeDir, "config.json");
+        const configPath = path.resolve(routeDir, 'config.json');
 
         if (!fs.exists(routeDir) || !fs.exists(configPath)) {
-            rl.question("That folder does not exist, create it? [yes/no]", function(confirm) {
+            rl.question('That folder does not exist, create it? [yes/no]', function(confirm) {
                 switch (confirm) {
-                    case "yes":
+                    case 'yes':
                         return;
-                    case "no":
+                    case 'no':
                         return createRouteWithConfig(rl);
                 }
             });

@@ -1,18 +1,20 @@
-import * as Koa from "koa";
+import * as Koa from 'koa';
 
-import { send } from "../../../utils/routes";
-import * as identifiers from "./identifiers";
+import { send } from '../../../utils/routes';
+import * as identifiers from './identifiers';
 
 //--- /users/:userId/identifiers ---//
 
 /**
- *
- * @param ctx
- * @param next
+ * Returns all of the identifiers for the requested user
+ * @route [Get] /users/:userId/identifiers
+ * @param {Koa.Context} ctx - A Koa context object
+ * @param {Function} next - Following Koa Middleware
+ * @returns {Promise<void>}
  */
 export async function getUserIdentifiers(ctx: Koa.Context, next: Function): Promise<void> {
     const defaultError = {
-        message: "There was an error whilst fetching identities for the user.",
+        message: 'There was an error whilst fetching identities for the user.',
         status: 400
     };
     await next();
@@ -26,9 +28,16 @@ export async function getUserIdentifiers(ctx: Koa.Context, next: Function): Prom
     });
 }
 
+/**
+ * Creates a new identifier for the given user id
+ * @route [Post] /users/:userId/identifiers
+ * @param {Koa.Context} ctx - A Koa context object
+ * @param {Function} next - Following Koa Middleware
+ * @returns {Promise<void>}
+ */
 export async function createUserIdentifier(ctx: Koa.Context, next: Function): Promise<void> {
     const defaultError = {
-        message: "There was an error whilst adding the identifier to the user.",
+        message: 'There was an error whilst adding the identifier to the user.',
         status: 400
     };
     await next();
@@ -44,13 +53,15 @@ export async function createUserIdentifier(ctx: Koa.Context, next: Function): Pr
 //--- /users/:userId/identifiers/:identifierId --/
 
 /**
- *
- * @param ctx
- * @param next
+ * Deletes an identifier represented by the uuid given
+ * @route [Delete] /users/:userId/identifiers/:identifierId
+ * @param {Koa.Context} ctx - A Koa context object
+ * @param {Function} next - Following Koa Middleware
+ * @returns {Promise<void>}
  */
 export async function deleteUserIdentifier(ctx: Koa.Context, next: Function): Promise<void> {
     const defaultError = {
-        message: "There was an error whilst deleting the users identity.",
+        message: 'There was an error whilst deleting the users identity.',
         status: 400
     };
     await next();

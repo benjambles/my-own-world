@@ -1,26 +1,25 @@
-import * as fs from "fs";
-import * as Koa from "koa";
-import * as bodyParser from "koa-bodyparser";
-import * as compress from "koa-compress";
-import * as conditionalGet from "koa-conditional-get";
-import * as etag from "koa-etag";
-import * as helmet from "koa-helmet";
-import * as morgan from "koa-morgan";
-import * as responseTime from "koa-response-time";
-import * as path from "path";
+import * as fs from 'fs';
+import * as Koa from 'koa';
+import * as bodyParser from 'koa-bodyparser';
+import * as compress from 'koa-compress';
+import * as conditionalGet from 'koa-conditional-get';
+import * as etag from 'koa-etag';
+import * as helmet from 'koa-helmet';
+import * as morgan from 'koa-morgan';
+import * as responseTime from 'koa-response-time';
+import * as path from 'path';
 
-import load from "./utils/load";
+import load from './utils/load';
 
-const errorHandler = require("koa-better-error-handler");
-
-const env: string = process.env.NODE_ENV || "development";
+const errorHandler = require('koa-better-error-handler');
+const env: string = process.env.NODE_ENV || 'development';
 const accessLogStream: fs.WriteStream = fs.createWriteStream(
-    path.resolve(__dirname, "access.log"),
-    { flags: "a" }
+    path.resolve(__dirname, 'access.log'),
+    { flags: 'a' }
 );
 
 // Load routes into the router
-let routers = load(path.resolve(__dirname, "api"), "api");
+let routers: iRouter[] = load(path.resolve(__dirname, 'api'), 'api');
 
 /**
  * Initialize an app
@@ -38,25 +37,14 @@ export default function api(): Koa {
     app.context.api = true;
 
     // logging
-    if ("test" != env) app.use(morgan("combined", { stream: accessLogStream }));
+    if ('test' != env) app.use(morgan('combined', { stream: accessLogStream }));
 
-    // x-response-time
     app.use(responseTime());
-
     app.use(conditionalGet());
     app.use(etag());
-
-    // compression
-    app.use(compress());
-
-    app.use(helmet()); // security
-
-    // Body parser only on certain methods
-    app.use(async (ctx, next) => {
-        if (["put", "post"].includes(ctx.method.toLowerCase())) ctx.disableBodyParser = true;
-        await next();
-    });
-
+    app.use(compress()); //ctx.compress = false to disable compression
+    app.use(helmet());
+    app.use(conditionalBodyParser());
     app.use(bodyParser());
 
     // routing
@@ -69,9 +57,19 @@ export default function api(): Koa {
             if (ctx.status === 404) ctx.throw(404);
         } catch (err) {
             ctx.throw(err);
-            ctx.app.emit("error", err, ctx);
+            ctx.app.emit('error', err, ctx);
         }
     });
 
     return app;
+}
+
+/**
+ * Only enable body parser for put and post requests
+ */
+function conditionalBodyParser() {
+    return async (ctx, next) => {
+        ctx.disableBodyParser = ['patch', 'post', 'put'].includes(ctx.method.toLowerCase());
+        await next();
+    };
 }

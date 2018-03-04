@@ -1,18 +1,34 @@
-import { cleanData, cloneData, format } from "../../utils";
-import * as Security from "../../utils/security";
-import * as db from "./queries";
-import * as Identities from "./identifiers/identifiers";
+import { cleanData, cloneData, format } from '../../utils';
+import * as Security from '../../utils/security';
+import * as db from './queries';
+import * as Identities from './identifiers/identifiers';
 
-const model = {
-    encrypted: ["email"],
-    hashed: ["password"],
-    readOnly: ["uuid"]
+const formatters = {
+    encrypted: ['email'],
+    hashed: ['password'],
+    readOnly: ['uuid']
 };
-const formatUser = format(model);
+
+/**
+ * Prepares a user object for database insertion
+ */
+const formatUser = format(formatters);
 const cleanUserData = cleanData(formatUser);
 
+/**
+ * Returns a sanitised object representing a user, removing private properties
+ * @param {User.UserData} data - A database record representing a user
+ * @returns {User.UserData}
+ */
 const sanitizedResponse = respond(true);
+
+/**
+ * Returns a clone of an object representing a user
+ * @param {User.UserData} data - A database record representing a user
+ * @returns {User.UserData}
+ */
 const unsanitizedResponse = respond(false);
+
 /**
  * Get a list of active users
  * @param {dbGet} props - A limit and offset provided as integers
@@ -54,7 +70,10 @@ export async function create(data: User.UserData): Promise<User.UserData> {
 }
 
 /**
- *
+ * Updates a users profile data in the database
+ * @param {string} uuid - The UUID for the user to be updated
+ * @param {User.UserData} data - An object representing a portion of a user object
+ * @returns {Promise<User.UserData>}
  */
 export async function update(uuid: string, data: User.UserData): Promise<User.UserData> {
     const cleanData = await cleanUserData(data);
@@ -63,14 +82,17 @@ export async function update(uuid: string, data: User.UserData): Promise<User.Us
 }
 
 /**
- *
+ * Mark a user as inactive
+ * @param {string} uuid - The UUID of the user
+ * @returns {Promise<boolean>}
  */
 export const remove = db.deleteUser;
 
 /**
- *
- * @param identifier
- * @param password
+ * Compares a submitted password for the given itentifier to a password stored on the system
+ * @param {string} identifier - A hashed user identifier
+ * @param {string} password - A plain text password
+ * @returns {Promise<User.UserData>}
  */
 export async function authenticate(identifier: string, password: string): Promise<User.UserData> {
     const identity = await Identities.getByIndentifier(identifier);
@@ -81,18 +103,19 @@ export async function authenticate(identifier: string, password: string): Promis
 }
 
 /**
- *
- * @param email
+ * Sends an email with a magic activation link.
+ * @param {string} email - An identifier ID that represents to account to generate the magic link for
  */
 export async function sendMagicLink(email: string): Promise<Boolean> {
     return true;
 }
 
 /**
- *
- * @param data
+ * Returns a function that clones of the data retrieved from the database and sanitizes it if necessary
+ * @param {boolean} secure - True if sanitization is required
+ * @returns {Function}
  */
-function respond(secure) {
+function respond(secure: boolean) {
     return (data: User.UserData) => {
         let safeData = cloneData(data);
 

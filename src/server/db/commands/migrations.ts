@@ -1,10 +1,10 @@
-import { sql } from "pg-extra";
-import * as readline from "readline";
-import * as semver from "semver";
+import { sql } from 'pg-extra';
+import * as readline from 'readline';
+import * as semver from 'semver';
 
-import { pool } from "../";
-import { migrationsPath } from "../../utils/config";
-import { load } from "../utils/migrations";
+import { pool } from '../';
+import { migrationsPath } from '../../utils/config';
+import { load } from '../utils/migrations';
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -16,7 +16,7 @@ const rl = readline.createInterface({
  * @param direction Up/Down direction to run migrations in
  * @param target Which version to end up at
  */
-async function migrate(direction: string = "up", target: string = null): Promise<string> {
+async function migrate(direction: string = 'up', target: string = null): Promise<string> {
     try {
         let migrations = load(migrationsPath);
         let dbVersion = await pool.one(sql`
@@ -35,7 +35,7 @@ async function migrate(direction: string = "up", target: string = null): Promise
         });
 
         if (!valid.length) {
-            throw new Error("The target chosen does not exist as an accessible migration");
+            throw new Error('The target chosen does not exist as an accessible migration');
         }
 
         for (let v of step(migrations, target, direction, startPosition)) {
@@ -57,15 +57,15 @@ async function migrate(direction: string = "up", target: string = null): Promise
  */
 function* step(
     migrations: any[],
-    target: string = "",
-    direction: string = "up",
+    target: string = '',
+    direction: string = 'up',
     startPosition: number = 0
 ): IterableIterator<string> {
     let position: number = startPosition;
-    let previousVersion: string = "";
+    let previousVersion: string = '';
 
     switch (direction) {
-        case "down":
+        case 'down':
             while (true) {
                 const migration: migration = migrations[position];
                 if (!migration || target === migration.version) return;
@@ -73,7 +73,7 @@ function* step(
                 --position;
                 yield migration.version;
             }
-        case "up":
+        case 'up':
         default:
             while (true) {
                 const migration: migration = migrations[position];
@@ -90,20 +90,20 @@ function* step(
  * Terminal prompt Q&A to establish migration requirements
  */
 rl.question(
-    "Which direction would you like to run your migrations in? [up/down] default: up",
+    'Which direction would you like to run your migrations in? [up/down] default: up',
     function(direction) {
-        direction = direction ? direction.toLowerCase() : "up";
+        direction = direction ? direction.toLowerCase() : 'up';
 
-        if (!["up", "down"].includes(direction)) {
-            console.log("Invalid direction, please choose up or down");
+        if (!['up', 'down'].includes(direction)) {
+            console.log('Invalid direction, please choose up or down');
             rl.close();
         }
 
-        rl.question("What is the target version that you wish to migrate to", async function(
-            version = ""
+        rl.question('What is the target version that you wish to migrate to', async function(
+            version = ''
         ) {
-            if (version !== "" && !semver.valid(version)) {
-                console.log("The version must be a valid semver target, or blank");
+            if (version !== '' && !semver.valid(version)) {
+                console.log('The version must be a valid semver target, or blank');
                 rl.close();
             }
 

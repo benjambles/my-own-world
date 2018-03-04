@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as semver from "semver";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as semver from 'semver';
 
 /**
  * Load resources in `root` directory.
@@ -47,8 +47,8 @@ function compare(a: migration, b: migration): number {
  */
 function isMigration(fileContents): boolean {
     return (
-        typeof fileContents.version === "string" &&
-        typeof fileContents.up === "function" &&
-        typeof fileContents.down === "function"
+        typeof fileContents.version === 'string' &&
+        typeof fileContents.up === 'function' &&
+        typeof fileContents.down === 'function'
     );
 }

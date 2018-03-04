@@ -1,17 +1,17 @@
 /**
  * Module dependencies.
  */
-import * as fs from "fs";
-import * as Joi from "joi";
-import * as Koa from "koa";
-import * as router from "koa-joi-router";
-import * as koaJWT from "koa-jwt";
-import * as path from "path";
+import * as fs from 'fs';
+import * as Joi from 'joi';
+import * as Koa from 'koa';
+import * as router from 'koa-joi-router';
+import * as koaJWT from 'koa-jwt';
+import * as path from 'path';
 
-import { flatten, deepFlatten } from "../";
-import { jwtSecret } from "../config";
-import { catchErrors, setAccessRoles } from "../middleware";
-import { isNil } from "../";
+import { flatten, deepFlatten } from '../';
+import { jwtSecret } from '../config';
+import { catchErrors, setAccessRoles } from '../middleware';
+import { isNil } from '../';
 
 /**
  * Load resources in `root` directory.
@@ -20,7 +20,7 @@ import { isNil } from "../";
  * @api private
  */
 
-export default function load(root: string, prefix: string = ""): iRouter[] {
+export default function load(root: string, prefix: string = ''): iRouter[] {
     return fs
         .readdirSync(root)
         .map((filePath: string) => generateRouter(root, filePath, prefix))
@@ -32,7 +32,7 @@ export default function load(root: string, prefix: string = ""): iRouter[] {
  * @param root The path within which to search for route configs
  * @param name The name of the current directory
  */
-function generateRouter(root: string, name: string, prefix: string = ""): iRouter {
+function generateRouter(root: string, name: string, prefix: string = ''): iRouter {
     const filePath: string = path.resolve(root, name);
     const stats: fs.Stats = fs.lstatSync(filePath);
 
@@ -40,7 +40,7 @@ function generateRouter(root: string, name: string, prefix: string = ""): iRoute
         return;
     }
 
-    const conf = require(path.resolve(filePath, "config.json"));
+    const conf = require(path.resolve(filePath, 'config.json'));
     const routeHandlers = require(filePath);
     const mappedRouter = router()
         .route(mapRoutes(conf.paths, routeHandlers))
@@ -101,7 +101,7 @@ function mapMethods(route: string, verbs: object, routeHandlers: object) {
  * @param routeHandlers object of functions that can be mapped to a route
  */
 function mapHandlers(spec, routeHandlers): Function[] {
-    return typeof routeHandlers[spec.operationId] === "function"
+    return typeof routeHandlers[spec.operationId] === 'function'
         ? bindSecurity(spec.security).concat([
               catchErrors,
               routeHandlers[spec.operationId],
@@ -145,8 +145,8 @@ function buildJoiSpec(config) {
         });
     }
 
-    if (spec["body"]) {
-        spec["type"] = config.consumes[0].split("/")[1];
+    if (spec['body']) {
+        spec['type'] = config.consumes[0].split('/')[1];
     }
 
     return spec;
@@ -186,14 +186,14 @@ function buildParameter(paramConf: swaggerParam) {
  */
 function swaggerToJoiType(type: string): string {
     switch (type) {
-        case "token":
-            return "string";
-        case "integer":
-            return "number";
-        case "int64":
-            return "integer";
+        case 'token':
+            return 'string';
+        case 'integer':
+            return 'number';
+        case 'int64':
+            return 'integer';
         default:
-            return "" + type;
+            return '' + type;
     }
 }
 
@@ -202,7 +202,7 @@ function swaggerToJoiType(type: string): string {
  * @param mappedRouter A router instance or undefined
  */
 function isRouter(mappedRouter): boolean {
-    return mappedRouter && typeof mappedRouter.middleware === "function";
+    return mappedRouter && typeof mappedRouter.middleware === 'function';
 }
 
 /**
@@ -214,7 +214,7 @@ function bindSecurity(security: any[]): Koa.Middleware[] {
         .map(item => {
             const handlers: Koa.Middleware[] = [];
 
-            if (Object.keys(item).includes("jwt")) {
+            if (Object.keys(item).includes('jwt')) {
                 handlers.push(koaJWT({ secret: jwtSecret }), setAccessRoles(item.jwt));
             }
 

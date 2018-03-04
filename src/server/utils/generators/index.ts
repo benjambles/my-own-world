@@ -1,30 +1,30 @@
-import * as readline from "readline";
+import * as readline from 'readline';
 
-import { createMigration } from "./types/migrations";
-import { createRoute } from "./types/routes";
+import { createMigration } from './types/migrations';
+import { createRoute } from './types/routes';
 
-const validTypes: string[] = ["migration", "route"];
+const validTypes: string[] = ['migration', 'route'];
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-rl.question(`What would you like to generate? [${validTypes.join(", ")}]`, function(
+rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, function(
     type: string
 ): void {
     type = type.toLowerCase();
 
     if (!validTypes.includes(type)) {
-        console.log("No generator found for the type provided");
+        console.log('No generator found for the type provided');
         rl.close();
     }
 
     switch (type) {
-        case "migration":
+        case 'migration':
             createMigration(rl);
             break;
-        case "route":
+        case 'route':
             createRoute(rl);
             break;
     }

@@ -1,7 +1,7 @@
-import * as uuidv5 from "uuid/v5";
+import * as uuidv5 from 'uuid/v5';
 
-import { uuidv5_NS } from "./config";
-import * as Security from "./security";
+import { uuidv5_NS } from './config';
+import * as Security from './security';
 
 /**
  * Deep flatten an array
@@ -63,7 +63,7 @@ export function cloneData(data) {
         return data.slice();
     }
 
-    if (typeof data === "object") {
+    if (typeof data === 'object') {
         return Object.assign({}, data);
     }
 
@@ -78,7 +78,7 @@ export function cleanData(formatter) {
  *
  * @param data
  */
-export function format(model = { encrypted: [], hashed: [], readOnly: ["uuid"] }) {
+export function format(model = { encrypted: [], hashed: [], readOnly: ['uuid'] }) {
     const { encrypted, hashed, readOnly } = model;
     return async function(data: dbData) {
         const formattedData = {};
