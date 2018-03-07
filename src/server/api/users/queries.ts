@@ -13,7 +13,7 @@ export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> 
         .select('*')
         .where({
             uuid,
-            isActive: true
+            isDeleted: false
         });
     const query = await pool.one(_raw`${queryString}`);
     return result('There was an error whilst fetching the user', query);
@@ -32,7 +32,7 @@ export async function getActiveUsers(
     const queryString = knex('Users')
         .select('*')
         .where({
-            isActive: true
+            isDeleted: false
         })
         .limit(limit)
         .offset(offset);
@@ -60,9 +60,9 @@ export async function createUser(data): Promise<User.UserData> {
  */
 export async function deleteUser(uuid: string): Promise<boolean> {
     const queryString = knex('Users')
-        .returning('isActive')
+        .returning('isDeleted')
         .where({ uuid })
-        .update({ isActive: false });
+        .update({ isDeleted: true });
     const query = await pool.one(_raw`${queryString}`);
     return result('There was an error whilst updating the user', query);
 }

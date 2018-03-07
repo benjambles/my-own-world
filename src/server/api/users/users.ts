@@ -104,7 +104,7 @@ export async function authenticate(identifier: string, password: string): Promis
 
 /**
  * Sends an email with a magic activation link.
- * @param {string} email - An identifier ID that represents to account to generate the magic link for
+ * @param {string} email - An identifier ID that represents to aclimit to generate the magic link for
  */
 export async function sendMagicLink(email: string): Promise<Boolean> {
     return true;

@@ -20,7 +20,7 @@ export async function getUserIdentifiers(ctx: Koa.Context, next: Function): Prom
     await next();
     await send(ctx, defaultError, async function() {
         const identityData = await identifiers.getByUserId(ctx.request.params.userId, {
-            limit: ctx.request.query.count,
+            limit: ctx.request.query.limit,
             offset: ctx.request.query.offset
         });
 

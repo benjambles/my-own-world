@@ -67,12 +67,14 @@ interface swaggerParam {
     type: string;
     format: string;
     opts: swaggerParamOpts;
+    values: swaggerParam[];
 }
 
 interface swaggerParamOpts {
     lowercase: boolean;
     email: boolean;
     max: number;
+    min: number;
 }
 
 declare namespace User {

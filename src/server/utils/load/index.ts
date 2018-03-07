@@ -128,6 +128,7 @@ function mapHandlers(spec, routeHandlers): Function[] {
  * In to:
  * email: Joi.string().required().lowercase().email()
  *
+ *
  * @param config
  */
 function buildJoiSpec(config) {
@@ -163,10 +164,6 @@ function buildParameter(paramConf: swaggerParam) {
         validator = validator[swaggerToJoiType(paramConf.format)]();
     }
 
-    if (paramConf.required) {
-        validator = validator.required();
-    }
-
     if (paramConf.opts) {
         Object.entries(paramConf.opts).forEach(([key, value]) => {
             if (value === true) {
@@ -175,6 +172,11 @@ function buildParameter(paramConf: swaggerParam) {
                 validator = validator[key](value);
             }
         });
+    }
+
+    if (paramConf.type === 'array' && Array.isArray(paramConf.values)) {
+        const childValidators = paramConf.values.map(param => buildParameter(param));
+        validator = validator.items(childValidators);
     }
 
     return validator;

@@ -19,15 +19,14 @@ export function bindOptions(config): Function {
         await send(ctx, error, async function() {
             const pathParts = ctx.state.route.path.split('/').filter(part => part !== '');
             const response = Object.assign({}, findRouteConfig(config, pathParts));
-            console.log(response);
             delete response.verbs.options;
+            const verbs = Object.keys(response.verbs);
 
-            ctx.set(
-                'Allow',
-                Object.keys(response.verbs)
-                    .join(', ')
-                    .toUpperCase()
-            );
+            if (verbs.includes('get')) {
+                verbs.push('head');
+            }
+
+            ctx.set('Allow', verbs.join(', ').toUpperCase());
 
             return { data: response };
         });

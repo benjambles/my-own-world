@@ -25,8 +25,9 @@ ALTER TABLE "System" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_key ON "System" (lower("key"));
 
 INSERT INTO "System" ("key", "value") VALUES 
-('api_version', 'v1'), 
-('db_version', '1.0');
+('api_version', '0.1'), 
+('db_version', '0.1'),
+('maintenance', 'false');
 
 -- Users --
 CREATE TABLE "Users" (
@@ -38,7 +39,7 @@ CREATE TABLE "Users" (
     "createdOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastLoggedIn" timestamptz NOT NULL DEFAULT NOW(),
-    "isActive" boolean DEFAULT true NOT NULL
+    "isDeleted" boolean DEFAULT true NOT NULL
 );
 
 ALTER TABLE "Users" OWNER TO postgres;

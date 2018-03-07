@@ -16,7 +16,7 @@
                     "produces": ["application/json"],
                     "parameters": [
                         {
-                            "name": "count",
+                            "name": "limit",
                             "in": "query",
                             "description": "How many records to fetch",
                             "default": 10,
@@ -74,7 +74,7 @@
                                     "name": "userId",
                                     "in": "path",
                                     "description": "Unique id representing a user",
-                                    "required": true,
+                                    "opts": { "required": true },
                                     "type": "integer",
                                     "format": "int64"
                                 }
@@ -94,7 +94,7 @@
                                     "name": "userId",
                                     "in": "path",
                                     "description": "Unique id representing a user",
-                                    "required": true,
+                                    "opts": { "required": true },
                                     "type": "integer",
                                     "format": "int64"
                                 }
@@ -118,7 +118,7 @@
                                     "name": "userId",
                                     "in": "path",
                                     "description": "Unique id representing a user",
-                                    "required": true,
+                                    "opts": { "required": true },
                                     "type": "integer",
                                     "format": "int64"
                                 }
@@ -142,7 +142,7 @@
                                     "name": "userId",
                                     "in": "path",
                                     "description": "Unique id representing a user",
-                                    "required": true,
+                                    "opts": { "required": true },
                                     "type": "integer",
                                     "format": "int64"
                                 }
@@ -167,12 +167,12 @@
                                             "name": "userId",
                                             "in": "path",
                                             "description": "Unique id representing a user",
-                                            "required": true,
+                                            "opts": { "required": true },
                                             "type": "integer",
                                             "format": "int64"
                                         },
                                         {
-                                            "name": "count",
+                                            "name": "limit",
                                             "in": "query",
                                             "description": "How many records to fetch",
                                             "default": 10,
@@ -207,7 +207,7 @@
                                             "name": "userId",
                                             "in": "path",
                                             "description": "Unique id representing a user",
-                                            "required": true,
+                                            "opts": { "required": true },
                                             "type": "integer",
                                             "format": "int64"
                                         },
@@ -216,7 +216,7 @@
                                             "in": "body",
                                             "description":
                                                 "A unique identifier for the user either email or social token",
-                                            "required": true,
+                                            "opts": { "required": true },
                                             "type": "string"
                                         },
                                         {
@@ -224,7 +224,7 @@
                                             "in": "body",
                                             "description":
                                                 "The type of identifier being stored, email or social",
-                                            "required": true,
+                                            "opts": { "required": true },
                                             "type": "string"
                                         }
                                     ],
@@ -248,7 +248,7 @@
                                             "name": "userId",
                                             "in": "path",
                                             "description": "Unique id representing a user",
-                                            "required": true,
+                                            "opts": { "required": true },
                                             "type": "integer",
                                             "format": "int64"
                                         }
@@ -273,7 +273,7 @@
                                                     "name": "userId",
                                                     "in": "path",
                                                     "description": "Unique id representing a user",
-                                                    "required": true,
+                                                    "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
                                                 },
@@ -282,7 +282,7 @@
                                                     "in": "path",
                                                     "description":
                                                         "Unique id representing a identifier for the user",
-                                                    "required": true,
+                                                    "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
                                                 }
@@ -307,7 +307,7 @@
                                                     "name": "userId",
                                                     "in": "path",
                                                     "description": "Unique id representing a user",
-                                                    "required": true,
+                                                    "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
                                                 },
@@ -316,7 +316,7 @@
                                                     "in": "path",
                                                     "description":
                                                         "Unique id representing a identifier for the user",
-                                                    "required": true,
+                                                    "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
                                                 }
@@ -347,17 +347,17 @@
                                     "in": "body",
                                     "description":
                                         "An identifier of type email, social token or screen name",
-                                    "required": true,
+                                    "opts": { "required": true },
                                     "type": "string"
                                 },
                                 {
                                     "name": "password",
                                     "in": "body",
                                     "description": "A password to test the stored hash against",
-                                    "required": true,
                                     "type": "string",
                                     "opts": {
-                                        "max": 100
+                                        "max": 100,
+                                        "required": true
                                     }
                                 }
                             ],

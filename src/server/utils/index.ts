@@ -54,6 +54,10 @@ export function isAdmin(token): boolean {
     return userData.admin && userData.admin === true;
 }
 
+export function isUser(token): boolean {
+    return !!token.userData;
+}
+
 export function isDefined(value: any): boolean {
     return typeof value !== undefined;
 }

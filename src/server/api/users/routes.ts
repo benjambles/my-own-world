@@ -22,7 +22,7 @@ export async function getUsers(ctx: Koa.Context, next: Function): Promise<void> 
     await next();
     await send(ctx, defaultError, async function() {
         const usersData: User.UserData[] = await users.get({
-            limit: ctx.request.query.count,
+            limit: ctx.request.query.limit,
             offset: ctx.request.query.offset
         });
 
