@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as Koa from 'koa';
-import * as bodyParser from 'koa-bodyparser';
 import * as compress from 'koa-compress';
 import * as conditionalGet from 'koa-conditional-get';
 import * as etag from 'koa-etag';
@@ -8,6 +7,7 @@ import * as helmet from 'koa-helmet';
 import * as morgan from 'koa-morgan';
 import * as responseTime from 'koa-response-time';
 import * as path from 'path';
+import * as koa404Handler from 'koa-404-handler';
 
 import load from './utils/load';
 
@@ -44,9 +44,7 @@ export default function api(): Koa {
     app.use(etag());
     app.use(compress()); //ctx.compress = false to disable compression
     app.use(helmet());
-    app.use(conditionalBodyParser());
-    app.use(bodyParser());
-
+    app.use(koa404Handler);
     // routing
     routers.forEach(route => app.use(route.middleware()));
 
@@ -62,14 +60,4 @@ export default function api(): Koa {
     });
 
     return app;
-}
-
-/**
- * Only enable body parser for put and post requests
- */
-function conditionalBodyParser() {
-    return async (ctx, next) => {
-        ctx.disableBodyParser = ['patch', 'post', 'put'].includes(ctx.method.toLowerCase());
-        await next();
-    };
 }

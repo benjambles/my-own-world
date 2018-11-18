@@ -16,7 +16,7 @@ CREATE SCHEMA public;
 -- System --
 
 CREATE TABLE "System" (
-    id serial PRIMARY KEY,
+    uuid uuid PRIMARY KEY,
     "key" varchar(30) NOT NULL,
     "value" varchar(50) NOT NULL
 );
@@ -24,10 +24,10 @@ CREATE TABLE "System" (
 ALTER TABLE "System" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_key ON "System" (lower("key"));
 
-INSERT INTO "System" ("key", "value") VALUES 
-('api_version', '0.1'), 
-('db_version', '0.1'),
-('maintenance', 'false');
+INSERT INTO "System" ("uuid", "key", "value") VALUES 
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98d', 'api_version', '0.1'), 
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'db_version', '0.1'),
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98b', 'maintenance', 'false');
 
 -- Users --
 CREATE TABLE "Users" (
@@ -35,11 +35,11 @@ CREATE TABLE "Users" (
     "firstName" varchar(50) NOT NULL,
     "lastName" varchar(50) NOT NULL,
     "screenName" varchar(50),
-    "password" varchar(500) NOT NULL,
+    "password" varchar(128) NOT NULL,
     "createdOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
     "lastLoggedIn" timestamptz NOT NULL DEFAULT NOW(),
-    "isDeleted" boolean DEFAULT true NOT NULL
+    "isDeleted" boolean DEFAULT FALSE NOT NULL
 );
 
 ALTER TABLE "Users" OWNER TO postgres;
@@ -52,15 +52,16 @@ INSERT INTO "Users" ("uuid", "firstName", "lastName", "screenName", "password") 
 CREATE TABLE "Identities" (
     uuid uuid PRIMARY KEY,
     "type" VARCHAR(50) NOT NULL,
-    "identifier" varchar(256) NOT NULL,
+    "identifier" varchar(128) NOT NULL,
+    "hash" varchar(128) NOT NULL,
     "userId" uuid REFERENCES "Users"
 );
 
 ALTER TABLE "Identities" OWNER TO postgres;
-CREATE UNIQUE INDEX unique_identifier ON "Identities" (lower("identifier"));
+CREATE UNIQUE INDEX unique_identifier ON "Identities" (lower("hash"));
 
 INSERT INTO "Identities" ("uuid", "type", "identifier", "userId") VALUES 
-('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'email', 'aes192:a6f759b3e35225fae6495918bfc5dc9864d8f82b27c6bb99337f16d52ffb4568', '38ef3e09-cdcd-543c-bc39-c7b4f21db98d');
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'email', 'aes-256-cbc:93386ce51744179eaf071f4dce152397:36ce9e2d085c3cda43409463abb6115794ffabd9a4d2c4ec3d10b31f502c8862', 'd60041a180da76c5c48df967cb334b2eb220a4b5391ae0e0f18bfcc6d5528122', '38ef3e09-cdcd-543c-bc39-c7b4f21db98d');
 
 -- Languages -- 
 
@@ -82,39 +83,38 @@ CREATE TABLE "i18n" (
 ALTER TABLE "i18n" OWNER TO postgres;
 CREATE INDEX i18n__culture_code ON "i18n" ("cultureCode");
 
--- Projects --
+-- Realms --
+-- CREATE TABLE "Realms" (
+--     uuid uuid PRIMARY KEY,
+--     "ownerId" uuid REFERENCES "Users",
+--     "name" varchar(100) NOT NULL,
+--     "summary" varchar(300),
+--     "description" TEXT,
+--     "baseLanguage" varchar(5) REFERENCES "Languages",
+--     "createdOn" timestamptz NOT NULL DEFAULT NOW(),
+--     "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
+--     "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
+-- );
 
-CREATE TABLE "Projects" (
-    id serial PRIMARY KEY,
-    "ownerId" uuid REFERENCES "Users",
-    "name" varchar(100) NOT NULL,
-    "summary" varchar(300),
-    "description" TEXT,
-    "baseLanguage" varchar(5) REFERENCES "Languages",
-    "createdOn" timestamptz NOT NULL DEFAULT NOW(),
-    "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
-    "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
-);
-
-ALTER TABLE "Projects" OWNER TO postgres;
-CREATE INDEX projects__owner_id ON "Projects" ("ownerId");
+-- ALTER TABLE "Realms" OWNER TO postgres;
+-- CREATE INDEX realms__owner_id ON "Realms" ("ownerId");
 
 -- ROLES --
 
 CREATE TABLE "Roles" (
-    id serial PRIMARY KEY,
-    "projectId" INT REFERENCES "Projects",
+    id INT PRIMARY KEY,
+    "realmId" uuid REFERENCES "Realms",
     "name" varchar(50) NOT NULL,
     "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 ALTER TABLE "Roles" OWNER TO postgres;
-CREATE INDEX roles__project_id ON "Roles" ("projectId");
+CREATE INDEX roles__realm_id ON "Roles" ("realmId");
 
 -- Permissions --
 
 CREATE TABLE "Permissions" (
-    id serial PRIMARY KEY,
+    id INT PRIMARY KEY,
     "name" varchar(20) NOT NULL,
     "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
 );
@@ -124,22 +124,22 @@ ALTER TABLE "Permissions" OWNER TO postgres;
 -- User_Roles --
 
 CREATE TABLE "User_Roles" (
-    id serial PRIMARY KEY,
+    uuid uuid PRIMARY KEY,
     "userId" uuid REFERENCES "Users",
-    "projectId" INT REFERENCES "Projects",
+    "realmId" uuid REFERENCES "Realms",
     "roleId" INT REFERENCES "Roles",
-    UNIQUE("userId", "projectId")
+    UNIQUE("userId", "realmId")
 );
 
 ALTER TABLE "User_Roles" OWNER TO postgres;
-CREATE INDEX user_roles__project_id ON "User_Roles" ("projectId");
+CREATE INDEX user_roles__realm_id ON "User_Roles" ("realmId");
 CREATE INDEX user_roles__user_id ON "User_Roles" ("userId");
 
 
 -- Role_Permissions --
 
 CREATE TABLE "Role_Permissions" (
-    id serial PRIMARY KEY,
+    uuid uuid PRIMARY KEY,
     "roleId" int REFERENCES "Roles",
     "permissionId" int REFERENCES "Permissions",
     UNIQUE("roleId", "permissionId")

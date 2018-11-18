@@ -10,9 +10,9 @@ import { dbFormat, result } from '../../../utils/db';
  */
 export async function getByUserId(
     userId: string,
-    props: dbGet = { limit: 10, offset: 0 }
-): Promise<any[]> {
-    const { limit, offset } = props;
+    limit: number = 10,
+    offset: number = 0
+): Promise<User.Identitfier[]> {
     const queryString = knex('Identities')
         .select('*')
         .where({ userId })
@@ -28,10 +28,10 @@ export async function getByUserId(
  *
  * @param identifier
  */
-export async function getOne(identifier): Promise<any> {
+export async function getOne(hash): Promise<User.Identitfier> {
     const queryString = knex('Identities')
         .select('*')
-        .where({ identifier })
+        .where({ hash })
         .toString();
     const query = await pool.one(_raw`${queryString}`);
     return result('There was an error whilst fetching the identitiy', query);
@@ -41,7 +41,7 @@ export async function getOne(identifier): Promise<any> {
  *
  * @param data
  */
-export async function create(data): Promise<any> {
+export async function create(data): Promise<User.Identitfier> {
     const queryString = knex('Identities')
         .returning('*')
         .insert(data)

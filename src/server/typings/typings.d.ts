@@ -3,9 +3,18 @@ declare module '*.json' {
     export default value;
 }
 
-interface APIResponse {
-    meta: APIMeta;
-    body: APIBody;
+declare function router(): iRouter;
+
+declare namespace ApiResponse {
+    interface parts {
+        parts: any[];
+    }
+
+    interface data {
+        data: any;
+    }
+
+    type response = parts | data;
 }
 
 interface APIMeta {
@@ -13,23 +22,17 @@ interface APIMeta {
     lastModified?: string;
 }
 
-interface APIBody {
-    description?: string;
-    [propName: string]: any;
-}
-
-interface APIError {
-    statusCode: number;
-    message: string;
-    id: string;
-}
-
 interface iError {
     status: number;
     message: string;
 }
 
-declare function router(): iRouter;
+declare namespace iDB {
+    interface kv {
+        keys: string[];
+        values: string[];
+    }
+}
 
 interface dbGet {
     limit: number;
@@ -75,21 +78,4 @@ interface swaggerParamOpts {
     email: boolean;
     max: number;
     min: number;
-}
-
-declare namespace User {
-    interface UserData {
-        uuid: string;
-        screenName: string;
-        firstName: string;
-        lastName: string;
-        password: string;
-    }
-
-    interface Identity {
-        uuid: string;
-        type: string;
-        identity: string;
-        userId: string;
-    }
 }

@@ -2,16 +2,15 @@
  * Module dependencies.
  */
 import * as fs from 'fs';
-import * as Joi from 'joi';
 import * as Koa from 'koa';
 import * as router from 'koa-joi-router';
 import * as koaJWT from 'koa-jwt';
 import * as path from 'path';
-
-import { flatten, deepFlatten } from '../';
 import { jwtSecret } from '../config';
 import { catchErrors, setAccessRoles } from '../middleware';
 import { isNil } from '../';
+
+const Joi = router.Joi;
 
 /**
  * Load resources in `root` directory.
@@ -80,19 +79,21 @@ function mapRoutes(paths, routeHandlers) {
  * @param routeHandlers An object containing the handlers to map to the routes
  */
 function mapMethods(route: string, verbs: object, routeHandlers: object) {
-    return Object.entries(verbs).map(([method, spec]): joiRoute => {
-        const handler = mapHandlers(spec, routeHandlers);
+    return Object.entries(verbs).map(
+        ([method, spec]): joiRoute => {
+            const handler = mapHandlers(spec, routeHandlers);
 
-        if (!handler.length) return null;
+            if (!handler.length) return null;
 
-        const validate = buildJoiSpec(spec);
-        const meta = {
-            summary: spec.summary,
-            description: spec.description
-        };
+            const validate = buildJoiSpec(spec);
+            const meta = {
+                summary: spec.summary,
+                description: spec.description
+            };
 
-        return { method, path: route, validate, handler, meta };
-    });
+            return { method, path: route, validate, handler, meta };
+        }
+    );
 }
 
 /**
@@ -158,28 +159,21 @@ function buildJoiSpec(config) {
  * @param paramConf Swagger parameter definition
  */
 function buildParameter(paramConf: swaggerParam) {
-    let validator = Joi[swaggerToJoiType(paramConf.type)]();
+    const hasChildren = paramConf.type === 'array' && Array.isArray(paramConf.values);
+    const childValidators = hasChildren
+        ? paramConf.values.map(param => buildParameter(param))
+        : null;
+    const validators = {
+        [swaggerToJoiType(paramConf.type)]: true,
+        ...(paramConf.format ? { [swaggerToJoiType(paramConf.format)]: true } : {}),
+        ...(paramConf.opts || {}),
+        ...(hasChildren ? { items: childValidators } : {})
+    };
 
-    if (paramConf.format) {
-        validator = validator[swaggerToJoiType(paramConf.format)]();
-    }
-
-    if (paramConf.opts) {
-        Object.entries(paramConf.opts).forEach(([key, value]) => {
-            if (value === true) {
-                validator = validator[key]();
-            } else {
-                validator = validator[key](value);
-            }
-        });
-    }
-
-    if (paramConf.type === 'array' && Array.isArray(paramConf.values)) {
-        const childValidators = paramConf.values.map(param => buildParameter(param));
-        validator = validator.items(childValidators);
-    }
-
-    return validator;
+    return Object.entries(validators).reduce(
+        (acc, [name, value]) => (value === true ? acc[name]() : acc[name](value)),
+        Joi
+    );
 }
 
 /**
@@ -222,5 +216,5 @@ function bindSecurity(security: any[]): Koa.Middleware[] {
 
             return handlers;
         })
-        .reduce(flatten, []);
+        .flat();
 }

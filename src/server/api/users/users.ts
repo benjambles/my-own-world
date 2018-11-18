@@ -1,41 +1,42 @@
-import { cleanData, cloneData, format } from '../../utils';
-import * as Security from '../../utils/security';
+import { cleanData, cloneData, format, getUUID } from '../../utils';
+import { compareBHash } from '../../utils/security';
 import * as db from './queries';
 import * as Identities from './identifiers/identifiers';
 
 const formatters = {
     encrypted: ['email'],
-    hashed: ['password'],
+    hashed: { salted: ['password'] },
     readOnly: ['uuid']
 };
 
 /**
  * Prepares a user object for database insertion
  */
-const formatUser = format(formatters);
-const cleanUserData = cleanData(formatUser);
+export const formatUser = format(formatters);
+export const cleanUserData = cleanData(formatUser);
 
 /**
  * Returns a sanitised object representing a user, removing private properties
  * @param {User.UserData} data - A database record representing a user
  * @returns {User.UserData}
  */
-const sanitizedResponse = respond(true);
+export const sanitizedResponse = respond(true);
 
 /**
  * Returns a clone of an object representing a user
  * @param {User.UserData} data - A database record representing a user
  * @returns {User.UserData}
  */
-const unsanitizedResponse = respond(false);
+export const unsanitizedResponse = respond(false);
 
 /**
  * Get a list of active users
- * @param {dbGet} props - A limit and offset provided as integers
+ * @param {number} limit - The number of records to fetch
+ * @param {number} offset - The number of records to skip
  * @returns {Promise<User.UserData[]}
  */
-export async function get(props: dbGet = { limit: 10, offset: 0 }): Promise<User.UserData[]> {
-    const users = await db.getActiveUsers(props);
+export async function get(limit: number = 10, offset: number = 0): Promise<User.UserData[]> {
+    const users = await db.getActiveUsers(limit, offset);
     return users.map(sanitizedResponse);
 }
 
@@ -65,6 +66,7 @@ export async function getByEmail(identifier: string): Promise<User.UserData> {
  */
 export async function create(data: User.UserData): Promise<User.UserData> {
     const cleanData = await cleanUserData(data);
+    cleanData.uuid = getUUID(JSON.stringify(data));
     const user = await db.createUser(cleanData);
     return sanitizedResponse(user);
 }
@@ -97,7 +99,7 @@ export const remove = db.deleteUser;
 export async function authenticate(identifier: string, password: string): Promise<User.UserData> {
     const identity = await Identities.getByIndentifier(identifier);
     const user = await db.getActiveUserByUuid(identity.userId);
-    const isValid = await Security.compare(password, user.password);
+    await compareBHash(password, user.password);
 
     return sanitizedResponse(user);
 }
@@ -115,8 +117,8 @@ export async function sendMagicLink(email: string): Promise<Boolean> {
  * @param {boolean} secure - True if sanitization is required
  * @returns {Function}
  */
-function respond(secure: boolean) {
-    return (data: User.UserData) => {
+export function respond(secure: boolean) {
+    return (data: User.UserData): User.UserData => {
         let safeData = cloneData(data);
 
         if (secure) {

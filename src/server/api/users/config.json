@@ -214,16 +214,14 @@
                                         {
                                             "name": "identifier",
                                             "in": "body",
-                                            "description":
-                                                "A unique identifier for the user either email or social token",
+                                            "description": "A unique identifier for the user either email or social token",
                                             "opts": { "required": true },
                                             "type": "string"
                                         },
                                         {
                                             "name": "type",
                                             "in": "body",
-                                            "description":
-                                                "The type of identifier being stored, email or social",
+                                            "description": "The type of identifier being stored, email or social",
                                             "opts": { "required": true },
                                             "type": "string"
                                         }
@@ -237,8 +235,7 @@
                                 },
                                 "options": {
                                     "tags": ["user", "identifier", "options"],
-                                    "summary":
-                                        "Check which endpoints are available for working with identifiers",
+                                    "summary": "Check which endpoints are available for working with identifiers",
                                     "description": "",
                                     "operationId": "sendOptions",
                                     "consumes": [],
@@ -280,8 +277,7 @@
                                                 {
                                                     "name": "identifierId",
                                                     "in": "path",
-                                                    "description":
-                                                        "Unique id representing a identifier for the user",
+                                                    "description": "Unique id representing a identifier for the user",
                                                     "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
@@ -296,8 +292,7 @@
                                         },
                                         "options": {
                                             "tags": ["user", "identifier", "options"],
-                                            "summary":
-                                                "Check which endpoints are available for working with an identifier",
+                                            "summary": "Check which endpoints are available for working with an identifier",
                                             "description": "",
                                             "operationId": "sendOptions",
                                             "consumes": [],
@@ -314,8 +309,7 @@
                                                 {
                                                     "name": "identifierId",
                                                     "in": "path",
-                                                    "description":
-                                                        "Unique id representing a identifier for the user",
+                                                    "description": "Unique id representing a identifier for the user",
                                                     "opts": { "required": true },
                                                     "type": "integer",
                                                     "format": "int64"
@@ -329,55 +323,52 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "route": "/users/authentication",
-                    "verbs": {
-                        "post": {
-                            "tags": ["user", "authentication"],
-                            "summary": "Validate user authentication details",
-                            "description":
-                                "Valid combinations are: [email], [email, password], [screenName, password], [identifier]. Passing an email address without a password will trigger the magic link login flow. Passing and email or screenName with a password will trigger the normal login process and passing a social identifier will trigger the normal login process.",
-                            "operationId": "authenticateUser",
-                            "consumes": ["application/json"],
-                            "produces": ["application/json"],
-                            "parameters": [
-                                {
-                                    "name": "identifier",
-                                    "in": "body",
-                                    "description":
-                                        "An identifier of type email, social token or screen name",
-                                    "opts": { "required": true },
-                                    "type": "string"
-                                },
-                                {
-                                    "name": "password",
-                                    "in": "body",
-                                    "description": "A password to test the stored hash against",
-                                    "type": "string",
-                                    "opts": {
-                                        "max": 100,
-                                        "required": true
-                                    }
-                                }
-                            ],
-                            "responses": {},
-                            "security": []
-                        },
-                        "options": {
-                            "tags": ["user", "options"],
-                            "summary": "Check which endpoints are valid for authenticating a user",
-                            "description": "",
-                            "operationId": "sendOptions",
-                            "consumes": [],
-                            "produces": ["application/json"],
-                            "parameters": [],
-                            "responses": {},
-                            "security": []
-                        }
-                    }
                 }
             ]
+        },
+        {
+            "route": "/authentication",
+            "verbs": {
+                "post": {
+                    "tags": ["user", "authentication"],
+                    "summary": "Validate user authentication details",
+                    "description": "Valid combinations are: [email], [email, password], [screenName, password], [identifier]. Passing an email address without a password will trigger the magic link login flow. Passing and email or screenName with a password will trigger the normal login process and passing a social identifier will trigger the normal login process.",
+                    "operationId": "authenticateUser",
+                    "consumes": ["application/json"],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "identifier",
+                            "in": "body",
+                            "description": "An identifier of type email, social token or screen name",
+                            "opts": { "required": true },
+                            "type": "string"
+                        },
+                        {
+                            "name": "password",
+                            "in": "body",
+                            "description": "A password to test the stored hash against",
+                            "type": "string",
+                            "opts": {
+                                "max": 100
+                            }
+                        }
+                    ],
+                    "responses": {},
+                    "security": []
+                },
+                "options": {
+                    "tags": ["user", "options"],
+                    "summary": "Check which endpoints are valid for authenticating a user",
+                    "description": "",
+                    "operationId": "sendOptions",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                }
+            }
         }
     ]
 }

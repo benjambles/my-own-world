@@ -5,5 +5,5 @@ import * as libKnex from 'knex';
 
 const postgres = extend(pg);
 
-export const pool = new postgres.Pool(db);
+export const pool = new postgres.extra.Pool(db);
 export const knex = libKnex({ client: 'pg' });

@@ -1,9 +1,10 @@
 import * as Koa from 'koa';
 
-import { isAdmin, isTrue } from '../../utils';
-import { bindOptions } from '../../utils/routes';
+import { isAdmin } from '../../utils';
+import { bindOptions, bindCheckAccess } from '../../utils/routes';
 import * as userRoutes from './routes';
 import * as identifierRoutes from './identifiers/routes';
+import { getObjectMemberFromString } from '../../utils/dataAccessor';
 
 const config = require('./config.json');
 
@@ -31,37 +32,42 @@ export const sendOptions = bindOptions(config);
  * @param {Koa.Context} ctx - A Koa context object
  * @param {Function} next - Following Koa Middleware
  */
-export async function checkAccess(ctx: Koa.Context, next: Function): Promise<void> {
-    const roles = ctx.state.accessRoles || [];
-
-    if (roles.length) {
-        const hasAccess: boolean = roles
-            .map(role => {
-                switch (role) {
-                    case 'role:admin':
-                        return isAdmin(ctx.state);
-                    case 'role:owner':
-                        return isCurrentUser(ctx);
-                    default:
-                        return false; // role unrelated to these routes, assume no access
-                }
-            })
-            .some(isTrue);
-
-        if (!hasAccess) {
-            ctx.throw(401, 'Unauthorised access to endpoint');
-        }
-    }
-}
+export const checkAccess = bindCheckAccess(accessMap);
 
 /**
  * Checks to see if the user making the request is the target of the request
  * @param {Koa.Context} ctx - A Koa context object
  */
-function isCurrentUser(ctx: Koa.Context): boolean {
-    const user = ctx.state.user;
-    const requestUuid = ctx.request.params.userId;
-    if (!requestUuid) return true;
-    if (!user || !user.uuid) return false;
-    return user.uuid === requestUuid;
+export function isCurrentUser(ctx: Koa.Context): boolean {
+    const requestUuid = getRequestedUser(ctx);
+    if (!requestUuid) return true; // No user was needed
+    const uuid = getLoggedInUser(ctx);
+    if (!uuid) return false; // No logged in user
+    return uuid === requestUuid;
+}
+
+export function getLoggedInUser(ctx) {
+    return getObjectMemberFromString('state.user.uuid', ctx);
+}
+
+export function getRequestedUser(ctx) {
+    return getObjectMemberFromString('request.params.userId', ctx);
+}
+
+/**
+ * Map of functions to test against roles for granting access to endpoints
+ * @param ctx Koa context object
+ * @returns {boolean}
+ */
+export function accessMap(ctx) {
+    return role => {
+        switch (role) {
+            case 'role:admin':
+                return isAdmin(ctx.state);
+            case 'role:owner':
+                return isCurrentUser(ctx);
+            default:
+                return false; // role unrelated to these routes, assume no access
+        }
+    };
 }

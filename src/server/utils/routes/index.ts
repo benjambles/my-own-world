@@ -1,6 +1,45 @@
 import * as Koa from 'koa';
 
+import { isAdmin, isTrue, isUser } from '../../utils';
 import { NODE_ENV, responseStatuses } from '../config';
+
+/**
+ * Map of functions to test against roles for granting access to endpoints
+ * @param ctx Koa context object
+ * @returns {boolean}
+ */
+export function baseAccessMap(ctx) {
+    return role => {
+        switch (role) {
+            case 'role:admin':
+                return isAdmin(ctx.state);
+            case 'role:user':
+                return isUser(ctx.state);
+            default:
+                return false; // role unrelated to these routes, assume no access
+        }
+    };
+}
+
+export function bindCheckAccess(accessMap?: any): Function {
+    const map = accessMap;
+    /**
+     * Throwns an error if the users system roles and access rights don't match requirements
+     * @param {Koa.Context} ctx - A Koa context object
+     * @param {Function} next - Following Koa Middleware
+     */
+    return async function checkAccess(ctx: Koa.Context, next: Function): Promise<void> {
+        const roles = ctx.state.accessRoles || [];
+
+        if (roles.length) {
+            const hasAccess: boolean = roles.map(map(ctx)).some(isTrue);
+
+            if (!hasAccess) {
+                ctx.throw(401, 'Unauthorised access to endpoint');
+            }
+        }
+    };
+}
 
 /**
  * Returns a middleware for generating OPTIONS and returning the swagger conf for the given route to the browser
@@ -41,13 +80,18 @@ export function bindOptions(config): Function {
  */
 export async function send(ctx: Koa.Context, error: iError, data: Function): Promise<void> {
     try {
-        const message = await data();
+        const message = await data(ctx);
         sendAPIResponse(ctx, message);
     } catch (e) {
         sendError(ctx, e, error);
     }
 }
 
+/**
+ *
+ * @param config
+ * @param pathParts
+ */
 function findRouteConfig(config: any, pathParts: string[]) {
     if (
         !pathParts.length ||
@@ -66,17 +110,16 @@ function findRouteConfig(config: any, pathParts: string[]) {
 /**
  * Builds a formatted API response and returns it to the middleware stack
  * @param ctx A Koa context
- * @param meta Additional parameters to append to the response meta object
- * @param body Additional parameters to append to the response body object
+ * @param response Additional parameters to append to the response meta object
  */
-function sendAPIResponse(ctx: Koa.Context, data): void {
-    const status = data.status || 200;
-    let responseData = data.data || {};
+function sendAPIResponse(ctx: Koa.Context, response): void {
+    const status = response.status || 200;
+    let responseData = response.data || undefined;
 
-    if (data.parts) {
+    if (response && response.parts) {
         responseData = {
-            meta: buildMeta(data.parts[1] || {}, { status, message: responseStatuses.success }),
-            body: data.parts[0]
+            meta: buildMeta(response.parts[1] || {}, { status, message: responseStatuses.success }),
+            body: response.parts[0]
         };
     }
 
@@ -98,8 +141,6 @@ function sendError(ctx, error, safe = { message: '', status: 400 }) {
         message = safe.message;
     }
 
-    console.log(error);
-
     ctx.throw(status, message);
 }
 
@@ -111,4 +152,28 @@ function sendError(ctx, error, safe = { message: '', status: 400 }) {
 function buildMeta(meta: APIMeta, additionalData): APIMeta {
     const newMeta = Object.assign({}, meta, additionalData);
     return newMeta;
+}
+
+/**
+ * Utility function for creating route middleware that allows for setup and response stages.
+ * @param defaultError - Error to throw when an uncaught exception is thrown
+ * @param response - Async function taking a koa context as an argument that responds to a request
+ * @param setup - Async function taking a koa context as an argument that can be used to add pre-response checks
+ */
+export function generateRoute(
+    defaultError: any,
+    response: Function,
+    setup: Function | null = null
+): Function {
+    /**
+     * Get a user and return it's data object
+     * @param {Koa.Context} ctx - A Koa context object
+     * @param {Function} next - Following Koa Middleware
+     * @returns {Promise<void>}
+     */
+    return async function getUserById(ctx: Koa.Context, next: Function): Promise<void> {
+        if (typeof setup === 'function') await setup(ctx);
+        await next();
+        await send(ctx, defaultError, response);
+    };
 }

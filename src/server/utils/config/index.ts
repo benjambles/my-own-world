@@ -1,25 +1,24 @@
 import * as path from 'path';
 
-const envPath = path.resolve(__dirname, '../../.env');
+const envPath: string = path.resolve(__dirname, '../../.env');
 const env = require('dotenv').config({ path: envPath }).parsed;
 
-export const serverRootPath = path.resolve(__dirname, '../../');
-export const schemaPath = path.resolve(serverRootPath, 'db/sql');
-export const routesPath = path.resolve(serverRootPath, 'routes');
-export const migrationsPath = path.resolve(schemaPath, 'migrations');
+export const serverRootPath: string = path.resolve(__dirname, '../../');
+export const schemaPath: string = path.resolve(serverRootPath, 'db/sql');
+export const routesPath: string = path.resolve(serverRootPath, 'routes');
+export const migrationsPath: string = path.resolve(schemaPath, 'migrations');
 
 export const responseStatuses = Object.freeze({
     success: 'success'
 });
 
 export const EncryptionData = Object.freeze({
-    type: 'aes192',
-    password: env.ENC_SECRET // TODO have this as env var or pulled from amazon keystore
+    ivLength: 16,
+    password: env.ENC_SECRET, // TODO have this as env var or pulled from amazon keystore
+    type: 'aes-256-cbc'
 });
 
 export const HashType: string = 'sha256';
-export const hex = 'hex';
-export const utf8 = 'utf8';
 export const jwtSecret: string = env.JWT_SECRET;
 export const uuidv5_NS: string = env.UUIDV5_NS;
 
@@ -34,12 +33,10 @@ export const db = Object.freeze({
 });
 
 // Ensure require('dotenv').config() is run before this module is required
-
 export const NODE_ENV: string = env.NODE_ENV || 'development';
 export const PORT: number = Number.parseInt(env.PORT, 10) || 3000;
 
 // Set the HOSTNAME in production for basic CSRF prevention
-//
 // Ex: example.com, subdomain.example.com
 export const HOSTNAME: string = env.HOSTNAME;
 

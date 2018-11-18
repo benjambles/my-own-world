@@ -3,42 +3,49 @@ import * as crypto from 'crypto';
 import * as createError from 'http-errors';
 import * as jwt from 'jsonwebtoken';
 
-import { EncryptionData, hex, jwtSecret, utf8 } from '../config';
+import { EncryptionData, jwtSecret, HashType } from '../config';
 
-const saltRounds = 10;
-const EncType = EncryptionData.type;
+const ENCRYPTION_TYPE = EncryptionData.type;
+const IV_LENGTH = EncryptionData.ivLength;
+const ENCRYPTION_KEY = EncryptionData.password;
 
 /**
  * Decrypt a string encrypted using crypto.createCipher
- * @param value A string in the format of encType:cipher
+ * @param value A string in the format of ENCRYPTION_TYPE:cipher
  */
 export function decryptValue(value: string): string {
-    const [key, cipher] = value.split(':');
-    const decipher = crypto.createDecipher(key, EncryptionData.password);
-    let decrypted = decipher.update(cipher, hex, utf8);
-    decrypted += decipher.final(utf8);
+    const [type, iv, ...data] = value.split(':');
+    const ivBuffer = iv === 'null' ? null : Buffer.from(iv, 'hex');
+    const encryptedText = Buffer.from(data.join(':'), 'hex');
+    const decipher = crypto.createDecipheriv(type, Buffer.from(ENCRYPTION_KEY), ivBuffer);
+    const decrypted = decipher.update(encryptedText);
 
-    return decrypted;
+    return Buffer.concat([decrypted, decipher.final()]).toString();
 }
 
 /**
- * Generate an encrypted value in the format of EncType:cipher
+ * Generate an encrypted value in the format of ENCRYPTION_TYPE:cipher
  * @param value A string to be encrypted
  */
 export function encryptValue(value: string): string {
-    const Cipher = crypto.createCipher(EncType, EncryptionData.password);
-    let encrypted = Cipher.update(value, utf8, hex);
-    encrypted += Cipher.final(hex);
+    const iv = IV_LENGTH ? crypto.randomBytes(IV_LENGTH) : null;
+    const cipher = crypto.createCipheriv(ENCRYPTION_TYPE, Buffer.from(ENCRYPTION_KEY), iv);
+    const encrypted = cipher.update(value);
 
-    return [EncType, encrypted].join(':');
+    return [
+        ENCRYPTION_TYPE,
+        iv.toString('hex'),
+        Buffer.concat([encrypted, cipher.final()]).toString('hex')
+    ].join(':');
 }
 
 /**
  * Generate a blowfish based hash of a value using bcrypt
  * @param value A string to be hashed
  */
-export async function hash(value: string): Promise<string> {
-    return await bcrypt.hash(value, saltRounds);
+export async function bHash(value: string): Promise<string> {
+    const SALT_ROUNDS = 10;
+    return await bcrypt.hash(value, SALT_ROUNDS);
 }
 
 /**
@@ -46,11 +53,11 @@ export async function hash(value: string): Promise<string> {
  * @param value The string to be tested
  * @param hash  A bcrypted hash to compare against
  */
-export async function compare(value: string, hash: string): Promise<true> {
+export async function compareBHash(value: string, hash: string): Promise<true> {
     const isValid = await bcrypt.compare(value, hash);
 
     if (!isValid) {
-        throw createError(401, 'Unable to authenticate user, please check the details provided');
+        throw createError(401, 'No match found');
     }
 
     return isValid;
@@ -62,4 +69,14 @@ export async function compare(value: string, hash: string): Promise<true> {
  */
 export async function getToken(data: object): Promise<string> {
     return jwt.sign(data, jwtSecret, { expiresIn: '1d' });
+}
+
+/**
+ * Returns a hmac of the value provided without a salt
+ * @param value
+ */
+export async function hmac(value: string): Promise<string> {
+    const hmac = crypto.createHmac(HashType, ENCRYPTION_KEY);
+    hmac.update(value);
+    return hmac.digest('hex');
 }

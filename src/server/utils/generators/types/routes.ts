@@ -31,17 +31,17 @@ function createRouteFromConfig(rl): void {
         const routeDir = path.resolve(routesPath, answer.toLowerCase);
         const configPath = path.resolve(routeDir, 'config.json');
 
-        if (!fs.exists(routeDir) || !fs.exists(configPath)) {
-            rl.question('That folder does not exist, create it? [yes/no]', function(confirm) {
-                switch (confirm) {
-                    case 'yes':
-                        return;
-                    case 'no':
-                        return createRouteWithConfig(rl);
-                }
-            });
-        } else {
-        }
+        // if (!fs.exists(routeDir) || !fs.exists(configPath)) {
+        //     rl.question('That folder does not exist, create it? [yes/no]', function(confirm) {
+        //         switch (confirm) {
+        //             case 'yes':
+        //                 return;
+        //             case 'no':
+        //                 return createRouteWithConfig(rl);
+        //         }
+        //     });
+        // } else {
+        // }
     });
     // load the folder and check that config exists
     // if it does

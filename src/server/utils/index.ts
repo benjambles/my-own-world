@@ -4,26 +4,6 @@ import { uuidv5_NS } from './config';
 import * as Security from './security';
 
 /**
- * Deep flatten an array
- * @param arr array of arrays to any depth
- */
-export function deepFlatten(arr: any[]): any[] {
-    return arr.reduce(
-        (acc: any[], val: any) => acc.concat(Array.isArray(val) ? deepFlatten(val) : val),
-        []
-    );
-}
-
-/**
- * Flatten a 2 dimensional array
- * @param acc accumulator array
- * @param val value to add to the array
- */
-export function flatten(acc: any[], val: any): any[] {
-    return acc.concat(val);
-}
-
-/**
  * Return a namespaced UUID using UUIDv5
  * @param value A value to convert into a namespaced uuidv5 string
  */
@@ -46,29 +26,53 @@ export function isValidUuid(uuid: string): boolean {
  * @param value
  */
 export function isTrue(value: any): boolean {
-    return !!value === true;
+    return Boolean(value);
 }
 
+/**
+ *
+ * @param token
+ */
 export function isAdmin(token): boolean {
     const userData = token.user;
     return userData.admin && userData.admin === true;
 }
 
+/**
+ *
+ * @param token
+ */
 export function isUser(token): boolean {
     return !!token.userData;
 }
 
+/**
+ *
+ * @param value
+ */
 export function isDefined(value: any): boolean {
     return typeof value !== undefined;
 }
 
+/**
+ *
+ * @param value
+ */
+export function isNil(value) {
+    return value === null;
+}
+
+/**
+ *
+ * @param data
+ */
 export function cloneData(data) {
     if (Array.isArray(data)) {
-        return data.slice();
+        return [...data];
     }
 
     if (typeof data === 'object') {
-        return Object.assign({}, data);
+        return { ...data };
     }
 
     return data; // Simple types aren't passed by reference, we're good to go.
@@ -82,29 +86,37 @@ export function cleanData(formatter) {
  *
  * @param data
  */
-export function format(model = { encrypted: [], hashed: [], readOnly: ['uuid'] }) {
+export function format(model = { encrypted: [], hashed: {}, readOnly: ['uuid'] }) {
     const { encrypted, hashed, readOnly } = model;
+    const { salted, hmac } = Object.entries(hashed).reduce(
+        (acc, [type, fields]) => {
+            acc[type].concat(fields);
+            return acc;
+        },
+        { salted: [], hmac: [] }
+    );
+
     return async function(data: dbData) {
         const formattedData = {};
 
         await Promise.all(
-            Object.entries(data).map(async ([key, value]): Promise<void> => {
-                if (readOnly.includes(key)) return;
+            Object.entries(data).map(
+                async ([key, value]): Promise<void> => {
+                    if (readOnly.includes(key)) return;
 
-                if (encrypted.includes(key)) {
-                    value = Security.encryptValue(value);
-                } else if (hashed.includes(key)) {
-                    value = await Security.hash(value);
+                    if (encrypted.includes(key)) {
+                        value = Security.encryptValue(value);
+                    } else if (salted.includes(key)) {
+                        value = await Security.bHash(value);
+                    } else if (hmac.includes(key)) {
+                        value = await Security.hmac(value);
+                    }
+
+                    formattedData[key] = value;
                 }
-
-                formattedData[key] = value;
-            })
+            )
         );
 
         return formattedData;
     };
-}
-
-export function isNil(value) {
-    return value == null;
 }

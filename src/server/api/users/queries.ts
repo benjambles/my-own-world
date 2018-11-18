@@ -21,14 +21,14 @@ export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> 
 
 /**
  * Fetch a list of active users from the database filtered by parameters
- * @param {number} limit - The number of users to fetch
+ * @param {number} limit - The number of records to fetch
  * @param {number} offset - The number of records to skip
  * @returns {Promise<User.UserData>}
  */
 export async function getActiveUsers(
-    props: dbGet = { limit: 10, offset: 0 }
+    limit: number = 10,
+    offset: number = 0
 ): Promise<User.UserData[]> {
-    const { limit, offset } = props;
     const queryString = knex('Users')
         .select('*')
         .where({

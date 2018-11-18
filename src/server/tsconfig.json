@@ -7,7 +7,8 @@
         "module": "commonjs",
         "removeComments": true,
         "sourceMap": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "lib": ["es2017", "esnext.array", "dom"]
     },
     "include": ["**/*"],
     "exclude": ["../../node_modules", "**/*.spec.ts"],

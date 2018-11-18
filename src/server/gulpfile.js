@@ -1,22 +1,25 @@
-const gulp = require('gulp');
+const { parallel, src, dest } = require('gulp');
 const ts = require('gulp-typescript');
 const tsProject = ts.createProject('tsconfig.json');
 
 const serverBuildPath = '../../built/server';
 
-gulp.task('copy-env', () => {
-    return gulp.src('**/.env').pipe(gulp.dest(serverBuildPath));
-});
+function copyApiConfig() {
+    return src('**/.env').pipe(dest(serverBuildPath));
+}
 
-gulp.task('copy-api-config', () => {
-    return gulp.src('**/*.json').pipe(gulp.dest(serverBuildPath));
-});
+function copyEnv() {
+    return src('**/*.json').pipe(dest(serverBuildPath));
+}
 
-gulp.task('build-server', () => {
+function buildServer() {
     return tsProject
         .src()
         .pipe(tsProject())
-        .js.pipe(gulp.dest(serverBuildPath));
-});
+        .js.pipe(dest(serverBuildPath));
+}
 
-gulp.task('default', ['copy-env', 'copy-api-config', 'build-server']);
+exports.copyEnv = copyEnv;
+exports.copyApiConfig = copyApiConfig;
+exports.buildServer = buildServer;
+exports.default = parallel(copyEnv, copyApiConfig, buildServer);

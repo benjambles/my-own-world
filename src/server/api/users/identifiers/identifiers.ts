@@ -2,23 +2,24 @@ import { cleanData, cloneData, format, getUUID } from '../../../utils';
 import * as Security from '../../../utils/security';
 import * as db from './queries';
 
-const model = {
+const formatters = {
     encrypted: ['identifier'],
-    hashed: [],
+    hashed: { hmac: ['hash'] },
     readOnly: ['uuid']
 };
 /**
  * Prepares am identifier object for database insertion
  */
-const formatIdentity = format(model);
+const formatIdentity = format(formatters);
 const cleanIdentityData = cleanData(formatIdentity);
 
 /**
- *
- * @param identifier
+ * Fetches an identifier object record when given a plain text identifier
+ * @param identifier - An identifier string to be encrypted and fetched
+ * @returns {User.Identitfier}
  */
-export async function getByIndentifier(identifier: string) {
-    const identifierHash = await Security.encryptValue(identifier);
+export async function getByIndentifier(identifier: string): Promise<User.Identitfier> {
+    const identifierHash = await Security.hmac(identifier);
     const identifierData = await db.getOne(identifierHash);
     return respond(identifierData);
 }
@@ -28,8 +29,12 @@ export async function getByIndentifier(identifier: string) {
  * @param userId
  * @param props
  */
-export async function getByUserId(userId: string, props: dbGet = { limit: 10, offset: 0 }) {
-    const identifiers = await db.getByUserId(userId, props);
+export async function getByUserId(
+    userId: string,
+    limit: number = 10,
+    offset: number = 0
+): Promise<User.Identitfier[]> {
+    const identifiers = await db.getByUserId(userId, limit, offset);
     return identifiers.map(respond);
 }
 
@@ -38,7 +43,7 @@ export async function getByUserId(userId: string, props: dbGet = { limit: 10, of
  * @param userId
  * @param data
  */
-export async function create(userId: string, data) {
+export async function create(userId: string, data: any): Promise<User.Identitfier> {
     const cleanData = await cleanIdentityData(data);
     cleanData.uuid = getUUID(cleanData.identifier);
     cleanData.userId = userId;
