@@ -1,8 +1,11 @@
-import { sql, _raw } from 'pg-extra';
+import { _raw } from 'pg-extra';
 
 import { pool, knex } from '../../db';
-import { dbFormat, result } from '../../utils/db';
+import { result } from '../../utils/db';
 
+/**
+ *
+ */
 export async function getVersion(): Promise<any> {
     const queryString = knex('System')
         .select('*')

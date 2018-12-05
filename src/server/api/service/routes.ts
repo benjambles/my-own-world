@@ -6,16 +6,13 @@ import { generateRoute } from '../../utils/routes';
 /**
  * Gets the API health
  * @route [GET] /health
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getHealth: Function = generateRoute(
+export const getHealth: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
         status: 503
     },
-    async function() {
+    async (): Promise<ApiResponse> => {
         return { data: undefined };
     }
 );
@@ -23,16 +20,13 @@ export const getHealth: Function = generateRoute(
 /**
  * Gets the API version
  * @route [GET] /version
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getVersion: Function = generateRoute(
+export const getVersion: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
         status: 503
     },
-    async function() {
+    async (): Promise<ApiResponse> => {
         const { key, value } = await getVersionData();
         return {
             data: {
@@ -45,16 +39,13 @@ export const getVersion: Function = generateRoute(
 /**
  * Gets metrics regarding platform health and status
  * @route [GET] /status
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getStatus: Function = generateRoute(
+export const getStatus: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
         status: 503
     },
-    async function() {
+    async (): Promise<ApiResponse> => {
         return { parts: [] };
     }
 );
@@ -62,16 +53,13 @@ export const getStatus: Function = generateRoute(
 /**
  * Gets metrics and API uptime and usage
  * @route [GET] /metrics
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getMetrics: Function = generateRoute(
+export const getMetrics: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
         status: 503
     },
-    async function() {
+    async (): Promise<ApiResponse> => {
         return { parts: [] };
     }
 );
@@ -79,16 +67,13 @@ export const getMetrics: Function = generateRoute(
 /**
  * Gets debug metrics for dev purposes
  * @route [GET] /debug
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getDebugData: Function = generateRoute(
+export const getDebugData: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
         status: 503
     },
-    async function() {
+    async (): Promise<ApiResponse> => {
         return { parts: [] };
     }
 );

@@ -1,15 +1,14 @@
 import * as Koa from 'koa';
 
-import { isAdmin, isTrue, isUser } from '../../utils';
+import { isAdmin, isTrue, isUser } from '../compares';
 import { NODE_ENV, responseStatuses } from '../config';
 
 /**
  * Map of functions to test against roles for granting access to endpoints
  * @param ctx Koa context object
- * @returns {boolean}
  */
-export function baseAccessMap(ctx) {
-    return role => {
+export function baseAccessMap(ctx): Function {
+    return (role: string): boolean => {
         switch (role) {
             case 'role:admin':
                 return isAdmin(ctx.state);
@@ -21,17 +20,21 @@ export function baseAccessMap(ctx) {
     };
 }
 
-export function bindCheckAccess(accessMap?: any): Function {
+/**
+ *
+ * @param accessMap
+ */
+export function bindCheckAccess(accessMap?: any): Koa.Middleware {
     const map = accessMap;
     /**
      * Throwns an error if the users system roles and access rights don't match requirements
-     * @param {Koa.Context} ctx - A Koa context object
-     * @param {Function} next - Following Koa Middleware
+     * @param ctx - A Koa context object
+     * @param next - Following Koa Middleware
      */
     return async function checkAccess(ctx: Koa.Context, next: Function): Promise<void> {
-        const roles = ctx.state.accessRoles || [];
+        const roles = [...ctx.state.accessRoles];
 
-        if (roles.length) {
+        if (roles.length && map) {
             const hasAccess: boolean = roles.map(map(ctx)).some(isTrue);
 
             if (!hasAccess) {
@@ -45,7 +48,7 @@ export function bindCheckAccess(accessMap?: any): Function {
  * Returns a middleware for generating OPTIONS and returning the swagger conf for the given route to the browser
  * @param config Configs for the given route
  */
-export function bindOptions(config): Function {
+export function bindOptions(config): Koa.Middleware {
     /**
      * Return the options and config for the route
      * @route [OPTIONS] /users
@@ -112,7 +115,7 @@ function findRouteConfig(config: any, pathParts: string[]) {
  * @param ctx A Koa context
  * @param response Additional parameters to append to the response meta object
  */
-function sendAPIResponse(ctx: Koa.Context, response): void {
+function sendAPIResponse(ctx: Koa.Context, response: ApiResponse): void {
     const status = response.status || 200;
     let responseData = response.data || undefined;
 
@@ -164,12 +167,12 @@ export function generateRoute(
     defaultError: any,
     response: Function,
     setup: Function | null = null
-): Function {
+): Koa.Middleware {
     /**
      * Get a user and return it's data object
-     * @param {Koa.Context} ctx - A Koa context object
-     * @param {Function} next - Following Koa Middleware
-     * @returns {Promise<void>}
+     * @param ctx - A Koa context object
+     * @param next - Following Koa Middleware
+     * @returns
      */
     return async function getUserById(ctx: Koa.Context, next: Function): Promise<void> {
         if (typeof setup === 'function') await setup(ctx);

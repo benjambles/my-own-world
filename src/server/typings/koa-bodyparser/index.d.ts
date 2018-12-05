@@ -7,11 +7,11 @@ declare module 'koa' {
     }
 
     interface Context {
-        disableBodyParser: Boolean;
+        disableBodyParser: boolean;
         invalid: object;
     }
 
     interface BaseContext {
-        api: Boolean;
+        api: boolean;
     }
 }

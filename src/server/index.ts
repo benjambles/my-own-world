@@ -23,8 +23,6 @@ let routers: iRouter[] = load(path.resolve(__dirname, 'api'), 'api');
 
 /**
  * Initialize an app
- *
- * @return {Koa}
  * @api public
  */
 export default function api(): Koa {

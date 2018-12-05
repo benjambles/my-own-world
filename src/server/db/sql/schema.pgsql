@@ -46,7 +46,7 @@ ALTER TABLE "Users" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_screenname ON "Users" (lower("screenName"));
 
 INSERT INTO "Users" ("uuid", "firstName", "lastName", "screenName", "password") VALUES 
-('38ef3e09-cdcd-543c-bc39-c7b4f21db98d', 'Ben', 'Allen', 'Shambles', '$2a$10$3Wao.HJP.J2LM.rtzofxleYrkEDjaatuiHu15ZODA4CvRurnN.hbK');
+('38ef3e09-cdcd-543c-bc39-c7b4f21db98d', 'Ben', 'Allen', 'Shambles', '$2b$10$UxZhfwzwV0P.9b.4A/pxJOWAb0qwWeXSlp5s1VNQvenFHCSfDca7S');
 
 -- Accounts -- 
 CREATE TABLE "Identities" (
@@ -60,7 +60,7 @@ CREATE TABLE "Identities" (
 ALTER TABLE "Identities" OWNER TO postgres;
 CREATE UNIQUE INDEX unique_identifier ON "Identities" (lower("hash"));
 
-INSERT INTO "Identities" ("uuid", "type", "identifier", "userId") VALUES 
+INSERT INTO "Identities" ("uuid", "type", "identifier", "hash", "userId") VALUES 
 ('38ef3e09-cdcd-543c-bc39-c7b4f21db98a', 'email', 'aes-256-cbc:93386ce51744179eaf071f4dce152397:36ce9e2d085c3cda43409463abb6115794ffabd9a4d2c4ec3d10b31f502c8862', 'd60041a180da76c5c48df967cb334b2eb220a4b5391ae0e0f18bfcc6d5528122', '38ef3e09-cdcd-543c-bc39-c7b4f21db98d');
 
 -- Languages -- 
@@ -83,33 +83,33 @@ CREATE TABLE "i18n" (
 ALTER TABLE "i18n" OWNER TO postgres;
 CREATE INDEX i18n__culture_code ON "i18n" ("cultureCode");
 
--- Realms --
--- CREATE TABLE "Realms" (
---     uuid uuid PRIMARY KEY,
---     "ownerId" uuid REFERENCES "Users",
---     "name" varchar(100) NOT NULL,
---     "summary" varchar(300),
---     "description" TEXT,
---     "baseLanguage" varchar(5) REFERENCES "Languages",
---     "createdOn" timestamptz NOT NULL DEFAULT NOW(),
---     "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
---     "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
--- );
+-- Projects --
+CREATE TABLE "Projects" (
+    uuid uuid PRIMARY KEY,
+    "ownerId" uuid REFERENCES "Users",
+    "name" varchar(100) NOT NULL,
+    "summary" varchar(300),
+    "description" TEXT,
+    "baseLanguage" varchar(5) REFERENCES "Languages",
+    "createdOn" timestamptz NOT NULL DEFAULT NOW(),
+    "lastModifiedOn" timestamptz NOT NULL DEFAULT NOW(),
+    "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
+);
 
--- ALTER TABLE "Realms" OWNER TO postgres;
--- CREATE INDEX realms__owner_id ON "Realms" ("ownerId");
+ALTER TABLE "Projects" OWNER TO postgres;
+CREATE INDEX projects__owner_id ON "Projects" ("ownerId");
 
 -- ROLES --
 
 CREATE TABLE "Roles" (
     id INT PRIMARY KEY,
-    "realmId" uuid REFERENCES "Realms",
+    "projectId" uuid REFERENCES "Projects",
     "name" varchar(50) NOT NULL,
     "isDeleted" BOOLEAN DEFAULT FALSE NOT NULL
 );
 
 ALTER TABLE "Roles" OWNER TO postgres;
-CREATE INDEX roles__realm_id ON "Roles" ("realmId");
+CREATE INDEX roles__project_id ON "Roles" ("projectId");
 
 -- Permissions --
 
@@ -126,13 +126,13 @@ ALTER TABLE "Permissions" OWNER TO postgres;
 CREATE TABLE "User_Roles" (
     uuid uuid PRIMARY KEY,
     "userId" uuid REFERENCES "Users",
-    "realmId" uuid REFERENCES "Realms",
+    "projectId" uuid REFERENCES "Projects",
     "roleId" INT REFERENCES "Roles",
-    UNIQUE("userId", "realmId")
+    UNIQUE("userId", "projectId")
 );
 
 ALTER TABLE "User_Roles" OWNER TO postgres;
-CREATE INDEX user_roles__realm_id ON "User_Roles" ("realmId");
+CREATE INDEX user_roles__project_id ON "User_Roles" ("projectId");
 CREATE INDEX user_roles__user_id ON "User_Roles" ("userId");
 
 

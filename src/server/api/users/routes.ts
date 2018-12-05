@@ -7,16 +7,13 @@ import { generateRoute } from '../../utils/routes';
 /**
  * Get users, optionally filtered by parameters
  * @route [GET] /users
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getUsers: Function = generateRoute(
+export const getUsers: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching users.',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
         const usersData: User.UserData[] = await users.get(limit, offset);
 
@@ -27,16 +24,13 @@ export const getUsers: Function = generateRoute(
 /**
  * Create a new user
  * @route [POST] /users
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const createUser: Function = generateRoute(
+export const createUser: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst saving the user',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { user, identifier } = ctx.request.body as User.Request;
         const userData: User.UserData = await users.create(user);
         await identifiers.create(userData.uuid, identifier);
@@ -48,16 +42,13 @@ export const createUser: Function = generateRoute(
 /**
  * Get a user and return it's data object
  * @route [GET] /users/:userId
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getUserById: Function = generateRoute(
+export const getUserById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching the user.',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userData = await users.getOne(ctx.request.params.userId);
 
         return { parts: [userData] };
@@ -67,15 +58,13 @@ export const getUserById: Function = generateRoute(
 /**
  * Update a user and return the updated data
  * @route [PUT] /users/:userId
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
  */
-export const updateUserById: Function = generateRoute(
+export const updateUserById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst updating the user.',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userUpdated = await users.update(ctx.request.params.userId, ctx.request
             .body as User.UserData);
         return { parts: [userUpdated] };
@@ -85,16 +74,13 @@ export const updateUserById: Function = generateRoute(
 /**
  * Mark a user as deleted
  * @route [DELETE] /users/:userId
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const deleteUserById: Function = generateRoute(
+export const deleteUserById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst deleting the user.',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userDeleted = await users.remove(ctx.request.params.userId);
         return { parts: [userDeleted] };
     }
@@ -103,17 +89,14 @@ export const deleteUserById: Function = generateRoute(
 /**
  * fetch related user and if found test their password
  * @route [POST] /users/authentication
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
 
-export const authenticateUser: Function = generateRoute(
+export const authenticateUser: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst authenticating the user.',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { identifier = null, password = null } = ctx.request.body as any;
         const userData = await users.authenticate(identifier, password);
         const token = await Security.getToken(userData);
@@ -125,16 +108,13 @@ export const authenticateUser: Function = generateRoute(
 /**
  * Requests a magic link for user access be sent to the identifier provided
  * @route [Post] /users/access
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
- * @returns {Promise<void>}
  */
-export const getAccessLink: Function = generateRoute(
+export const getAccessLink: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst requesting the access link',
         status: 400
     },
-    async ctx => {
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { email } = ctx.request.body as any;
         await users.sendMagicLink(email);
 

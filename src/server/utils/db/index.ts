@@ -1,12 +1,10 @@
-import { isNil } from '../';
+import { isNil } from '../compares';
 
-export function dbFormat(data: object): iDB.kv {
-    return {
-        keys: Object.keys(data),
-        values: Object.values(data)
-    };
-}
-
+/**
+ *
+ * @param error
+ * @param data
+ */
 export function result(error: string, data: any): never | any {
     if (isNil(data)) {
         throw new Error(error);

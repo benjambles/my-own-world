@@ -7,8 +7,8 @@ import { result } from '../../utils/db';
  * Retrieve a user with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> {
-    const queryString = knex('Users')
+export async function getActiveProjectByUuid(uuid: string): Promise<Project.ProjectData> {
+    const queryString = knex('Projects')
         .select('*')
         .where({
             uuid,
@@ -23,11 +23,11 @@ export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> 
  * @param limit - The number of records to fetch
  * @param offset - The number of records to skip
  */
-export async function getActiveUsers(
+export async function getActiveProjects(
     limit: number = 10,
     offset: number = 0
-): Promise<User.UserData[]> {
-    const queryString = knex('Users')
+): Promise<Project.ProjectData[]> {
+    const queryString = knex('Projects')
         .select('*')
         .where({
             isDeleted: false
@@ -42,8 +42,8 @@ export async function getActiveUsers(
  * Create a new user from validated data
  * @param data - The formatted data ready for storage
  */
-export async function createUser(data: User.UserData): Promise<User.UserData> {
-    const queryString = knex('Users')
+export async function createProject(data: Project.ProjectData): Promise<Project.ProjectData> {
+    const queryString = knex('Projects')
         .returning('*')
         .insert(data);
     const query = await pool.one(_raw`${queryString}`);
@@ -54,8 +54,8 @@ export async function createUser(data: User.UserData): Promise<User.UserData> {
  * Delete a user with a given ID
  * @param uuid - A valid uuid
  */
-export async function deleteUser(uuid: string): Promise<boolean> {
-    const queryString = knex('Users')
+export async function deleteProject(uuid: string): Promise<boolean> {
+    const queryString = knex('Projects')
         .returning('isDeleted')
         .where({ uuid })
         .update({ isDeleted: true });
@@ -66,10 +66,13 @@ export async function deleteUser(uuid: string): Promise<boolean> {
 /**
  * Updates a user record with the patch provided
  * @param uuid - A UUID representing the user profile to be updated
- * @param data - An object representing a patch on a User profile
+ * @param data - An object representing a patch on a Project profile
  */
-export async function updateUser(uuid: string, data: User.UserData): Promise<User.UserData> {
-    const queryString = knex('Users')
+export async function updateProject(
+    uuid: string,
+    data: Project.ProjectData
+): Promise<Project.ProjectData> {
+    const queryString = knex('Projects')
         .returning('*')
         .where({ uuid })
         .update(data);

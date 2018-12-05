@@ -1,12 +1,11 @@
-import * as path from 'path';
+import { resolve } from 'path';
 
-const envPath: string = path.resolve(__dirname, '../../.env');
+const envPath: string = resolve(__dirname, '../../.env');
 const env = require('dotenv').config({ path: envPath }).parsed;
 
-export const serverRootPath: string = path.resolve(__dirname, '../../');
-export const schemaPath: string = path.resolve(serverRootPath, 'db/sql');
-export const routesPath: string = path.resolve(serverRootPath, 'routes');
-export const migrationsPath: string = path.resolve(schemaPath, 'migrations');
+export const serverRootPath: string = resolve(__dirname, '../../');
+export const schemaPath: string = resolve(serverRootPath, 'db/sql');
+export const routesPath: string = resolve(serverRootPath, 'routes');
 
 export const responseStatuses = Object.freeze({
     success: 'success'

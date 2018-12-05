@@ -1,7 +1,7 @@
-import { sql, _raw } from 'pg-extra';
+import { _raw } from 'pg-extra';
 
 import { pool, knex } from '../../../db';
-import { dbFormat, result } from '../../../utils/db';
+import { result } from '../../../utils/db';
 
 /**
  *
@@ -54,7 +54,7 @@ export async function create(data): Promise<User.Identitfier> {
  *
  * @param uuid
  */
-export async function remove(uuid: string): Promise<Boolean> {
+export async function remove(uuid: string): Promise<boolean> {
     const queryString = knex('Identities')
         .returning('true')
         .where({ uuid })
@@ -68,7 +68,7 @@ export async function remove(uuid: string): Promise<Boolean> {
  *
  * @param userId
  */
-export async function removeAllByUserId(userId: string): Promise<Boolean> {
+export async function removeAllByUserId(userId: string): Promise<boolean> {
     const queryString = knex('Identities')
         .returning('true')
         .where({ userId })

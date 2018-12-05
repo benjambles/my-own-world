@@ -5,17 +5,19 @@ declare module '*.json' {
 
 declare function router(): iRouter;
 
-declare namespace ApiResponse {
-    interface parts {
-        parts: any[];
-    }
+type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+    { [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, undefined>> }[Keys];
 
-    interface data {
-        data: any;
-    }
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+    { [K in Keys]-?: Required<Pick<T, K>> }[Keys];
 
-    type response = parts | data;
+interface ResponseData {
+    parts?: any[];
+    data?: any;
+    status?: number;
 }
+
+type ApiResponse = RequireOnlyOne<ResponseData, 'parts' | 'data'>;
 
 interface APIMeta {
     message?: string;

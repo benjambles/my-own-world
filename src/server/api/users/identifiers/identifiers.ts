@@ -7,16 +7,16 @@ const formatters = {
     hashed: { hmac: ['hash'] },
     readOnly: ['uuid']
 };
+
 /**
  * Prepares am identifier object for database insertion
  */
-const formatIdentity = format(formatters);
-const cleanIdentityData = cleanData(formatIdentity);
+export const formatIdentity = format(formatters);
+export const cleanIdentityData = cleanData(formatIdentity);
 
 /**
  * Fetches an identifier object record when given a plain text identifier
  * @param identifier - An identifier string to be encrypted and fetched
- * @returns {User.Identitfier}
  */
 export async function getByIndentifier(identifier: string): Promise<User.Identitfier> {
     const identifierHash = await Security.hmac(identifier);
@@ -61,7 +61,7 @@ export const removeAll = db.removeAllByUserId;
  *
  * @param data
  */
-function respond(data) {
+export function respond(data) {
     const clonedData = cloneData(data);
     clonedData.identifier = Security.decryptValue(clonedData.identifier);
 

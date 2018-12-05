@@ -1,4 +1,4 @@
-import { extend, parseUrl } from 'pg-extra';
+import { extend } from 'pg-extra';
 import * as pg from 'pg';
 import { db } from '../utils/config';
 import * as libKnex from 'knex';

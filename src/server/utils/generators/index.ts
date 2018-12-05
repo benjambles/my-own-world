@@ -1,9 +1,8 @@
 import * as readline from 'readline';
 
-import { createMigration } from './types/migrations';
 import { createRoute } from './types/routes';
 
-const validTypes: string[] = ['migration', 'route'];
+const validTypes: string[] = ['route'];
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -21,9 +20,6 @@ rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, funct
     }
 
     switch (type) {
-        case 'migration':
-            createMigration(rl);
-            break;
         case 'route':
             createRoute(rl);
             break;

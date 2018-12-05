@@ -5,7 +5,7 @@ import * as Koa from 'koa';
  * @param ctx Koa context
  * @param next Next middleware to call if validation passes
  */
-export async function catchErrors(ctx: Koa.Context, next): Promise<any> {
+export async function catchErrors(ctx: Koa.Context, next: () => Promise<any>): Promise<any> {
     if (ctx.invalid) {
         let message = {};
 
@@ -27,10 +27,14 @@ export async function catchErrors(ctx: Koa.Context, next): Promise<any> {
     await next();
 }
 
-export function setAccessRoles(roles) {
+/**
+ * Binds access roles for the current route to the Koa context for authorization checks
+ * @param roles
+ */
+export function setAccessRoles(roles: string[]): Koa.Middleware {
     const accessRoles = roles;
 
-    return async function set(ctx: Koa.Context, next) {
+    return async function set(ctx: Koa.Context, next: () => Promise<any>): Promise<any> {
         ctx.state.accessRoles = accessRoles;
         await next();
     };

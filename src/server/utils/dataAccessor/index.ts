@@ -9,16 +9,14 @@
  *    },
  *    nonNested: 'otheValue';
  * }
- * Utils.getObjectMemberFromString(someObject, 'deeply.nested.key');      // 'value'
- * Utils.getObjectMemberFromString(someObject, 'nonNested');              // 'otherValue'
- * Utils.getObjectMemberFromString(someObject, 'nonExistant');            // false
+ * Utils.getObjectMemberFromString('deeply.nested.key', someObject);      // 'value'
+ * Utils.getObjectMemberFromString('nonNested', someObject);              // 'otherValue'
+ * Utils.getObjectMemberFromString('nonExistant', someObject);            // undefined
  * ````
- * @param {object} obj The object to search
- * @param {string} namespace The string describing the namespace on the object
- * @param {string} delimiter Optional delimiter, defaults to '.'
- * @return {mixed} The namespaced member or false
+ * @param namespace The string describing the namespace on the object
+ * @param obj The object to search
  */
-export function getObjectMemberFromString(namespace, obj) {
+export function getObjectMemberFromString(namespace: string, obj: object): any {
     return prop(namespace.split('.'), obj, undefined);
 }
 
@@ -30,11 +28,10 @@ export function getObjectMemberFromString(namespace, obj) {
  * prop('test', {test: true}, false);
  * prop(['test', 'nested'], {test: {nested: true}}, false);
  *
- * @param {(string|array)} paths - The property name to look for
- * @param {object} obj - The object where the property should reside
- * @return {*} - The property value
+ * @param paths - The property name to look for
+ * @param obj - The object where the property should reside
  */
-export function prop(paths, obj, fallback = undefined) {
+export function prop(paths: string | string[], obj: object, fallback: any = undefined): any {
     const _paths = Array.isArray(paths) ? paths : [paths];
     let val = obj;
     let idx = 0;

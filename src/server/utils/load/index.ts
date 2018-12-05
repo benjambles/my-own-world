@@ -5,10 +5,10 @@ import * as fs from 'fs';
 import * as Koa from 'koa';
 import * as router from 'koa-joi-router';
 import * as koaJWT from 'koa-jwt';
-import * as path from 'path';
+import { resolve } from 'path';
+import { isNil } from '../compares';
 import { jwtSecret } from '../config';
 import { catchErrors, setAccessRoles } from '../middleware';
-import { isNil } from '../';
 
 const Joi = router.Joi;
 
@@ -32,15 +32,15 @@ export default function load(root: string, prefix: string = ''): iRouter[] {
  * @param name The name of the current directory
  */
 function generateRouter(root: string, name: string, prefix: string = ''): iRouter {
-    const filePath: string = path.resolve(root, name);
+    const filePath: string = resolve(root, name);
     const stats: fs.Stats = fs.lstatSync(filePath);
 
     if (!stats.isDirectory()) {
         return;
     }
 
-    const conf = require(path.resolve(filePath, 'config.json'));
-    const routeHandlers = require(filePath);
+    const conf = require(resolve(filePath, 'config.json'));
+    const { routeHandlers } = require(filePath);
     const mappedRouter = router()
         .route(mapRoutes(conf.paths, routeHandlers))
         .prefix(`/${prefix}`);
@@ -158,7 +158,7 @@ function buildJoiSpec(config) {
  * Converts a swagger parameter definition into a Joi validation schema
  * @param paramConf Swagger parameter definition
  */
-function buildParameter(paramConf: swaggerParam) {
+function buildParameter(paramConf: swaggerParam): Function {
     const hasChildren = paramConf.type === 'array' && Array.isArray(paramConf.values);
     const childValidators = hasChildren
         ? paramConf.values.map(param => buildParameter(param))

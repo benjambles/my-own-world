@@ -75,8 +75,7 @@
                                     "in": "path",
                                     "description": "Unique id representing a user",
                                     "opts": { "required": true },
-                                    "type": "integer",
-                                    "format": "int64"
+                                    "type": "string"
                                 }
                             ],
                             "responses": {},
@@ -95,8 +94,7 @@
                                     "in": "path",
                                     "description": "Unique id representing a user",
                                     "opts": { "required": true },
-                                    "type": "integer",
-                                    "format": "int64"
+                                    "type": "string"
                                 }
                             ],
                             "responses": {},
@@ -119,8 +117,7 @@
                                     "in": "path",
                                     "description": "Unique id representing a user",
                                     "opts": { "required": true },
-                                    "type": "integer",
-                                    "format": "int64"
+                                    "type": "string"
                                 }
                             ],
                             "responses": {},
@@ -143,8 +140,7 @@
                                     "in": "path",
                                     "description": "Unique id representing a user",
                                     "opts": { "required": true },
-                                    "type": "integer",
-                                    "format": "int64"
+                                    "type": "string"
                                 }
                             ],
                             "responses": {},
@@ -168,8 +164,7 @@
                                             "in": "path",
                                             "description": "Unique id representing a user",
                                             "opts": { "required": true },
-                                            "type": "integer",
-                                            "format": "int64"
+                                            "type": "string"
                                         },
                                         {
                                             "name": "limit",
@@ -208,8 +203,7 @@
                                             "in": "path",
                                             "description": "Unique id representing a user",
                                             "opts": { "required": true },
-                                            "type": "integer",
-                                            "format": "int64"
+                                            "type": "string"
                                         },
                                         {
                                             "name": "identifier",
@@ -246,8 +240,7 @@
                                             "in": "path",
                                             "description": "Unique id representing a user",
                                             "opts": { "required": true },
-                                            "type": "integer",
-                                            "format": "int64"
+                                            "type": "string"
                                         }
                                     ],
                                     "responses": {},
@@ -271,16 +264,14 @@
                                                     "in": "path",
                                                     "description": "Unique id representing a user",
                                                     "opts": { "required": true },
-                                                    "type": "integer",
-                                                    "format": "int64"
+                                                    "type": "string"
                                                 },
                                                 {
                                                     "name": "identifierId",
                                                     "in": "path",
                                                     "description": "Unique id representing a identifier for the user",
                                                     "opts": { "required": true },
-                                                    "type": "integer",
-                                                    "format": "int64"
+                                                    "type": "string"
                                                 }
                                             ],
                                             "responses": {},
@@ -303,16 +294,14 @@
                                                     "in": "path",
                                                     "description": "Unique id representing a user",
                                                     "opts": { "required": true },
-                                                    "type": "integer",
-                                                    "format": "int64"
+                                                    "type": "string"
                                                 },
                                                 {
                                                     "name": "identifierId",
                                                     "in": "path",
                                                     "description": "Unique id representing a identifier for the user",
                                                     "opts": { "required": true },
-                                                    "type": "integer",
-                                                    "format": "int64"
+                                                    "type": "string"
                                                 }
                                             ],
                                             "responses": {},
