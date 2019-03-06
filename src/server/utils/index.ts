@@ -1,7 +1,7 @@
 import * as uuidv5 from 'uuid/v5';
-
 import { uuidv5_NS } from './config';
 import * as Security from './security';
+import { clone, assoc, compose } from 'ramda';
 
 /**
  * Return a namespaced UUID using UUIDv5
@@ -13,38 +13,35 @@ export function getUUID(value: string): string {
 
 /**
  *
- * @param data
  */
-export function cloneData(data) {
-    if (Array.isArray(data)) {
-        return [...data];
-    }
-
-    if (typeof data === 'object') {
-        return { ...data };
-    }
-
-    return data; // Simple types aren't passed by reference, we're good to go.
-}
-
-export function cleanData(formatter) {
-    return async data => await formatter(cloneData(data));
-}
+export const formatter = compose(
+    cleanData,
+    format
+);
 
 /**
  *
- * @param data
+ * @param formatter
  */
-export function format(model = { encrypted: [], hashed: {}, readOnly: ['uuid'] }) {
-    const { encrypted, hashed, readOnly } = model;
+export function cleanData(formatter: (v: any) => {}) {
+    return async data => await formatter(clone(data));
+}
+
+/**
+ * Takes a format configuration that defines how to handle fields within a given model
+ * returns a function that performs the formatting on provided data.
+ * @param model
+ */
+export function format(model: formatOptions) {
+    const { encrypted = [], hashed = {}, readOnly = ['uuid'] } = model;
     const { salted, hmac } = Object.entries(hashed).reduce(
-        (acc, [type, fields]) => {
-            acc[type].concat(fields);
-            return acc;
-        },
+        (acc, [type, fields]) => assoc(type, acc[type].concat(fields), acc),
         { salted: [], hmac: [] }
     );
 
+    /**
+     * @param {object} data - The data to impose the format upon
+     */
     return async function(data: dbData) {
         const formattedData = {};
 

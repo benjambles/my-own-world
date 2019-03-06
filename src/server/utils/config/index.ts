@@ -13,7 +13,7 @@ export const responseStatuses = Object.freeze({
 
 export const EncryptionData = Object.freeze({
     ivLength: 16,
-    password: env.ENC_SECRET, // TODO have this as env var or pulled from amazon keystore
+    password: env.ENC_SECRET,
     type: 'aes-256-cbc'
 });
 

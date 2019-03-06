@@ -1,8 +1,9 @@
-import { cleanData, cloneData, format, getUUID } from '../../../utils';
+import { assoc } from 'ramda';
+import { formatter, getUUID } from '../../../utils';
 import * as Security from '../../../utils/security';
 import * as db from './queries';
 
-const formatters = {
+const format = {
     encrypted: ['identifier'],
     hashed: { hmac: ['hash'] },
     readOnly: ['uuid']
@@ -11,8 +12,7 @@ const formatters = {
 /**
  * Prepares am identifier object for database insertion
  */
-export const formatIdentity = format(formatters);
-export const cleanIdentityData = cleanData(formatIdentity);
+export const cleanIdentityData = formatter(format);
 
 /**
  * Fetches an identifier object record when given a plain text identifier
@@ -44,7 +44,7 @@ export async function getByUserId(
  * @param data
  */
 export async function create(userId: string, data: any): Promise<User.Identitfier> {
-    const cleanData = await cleanIdentityData(data);
+    const cleanData = (await cleanIdentityData(data)) as User.Identitfier;
     cleanData.uuid = getUUID(cleanData.identifier);
     cleanData.userId = userId;
     const identifierData = await db.create(cleanData);
@@ -61,9 +61,7 @@ export const removeAll = db.removeAllByUserId;
  *
  * @param data
  */
-export function respond(data) {
-    const clonedData = cloneData(data);
-    clonedData.identifier = Security.decryptValue(clonedData.identifier);
-
-    return clonedData;
+export function respond(data: User.Identitfier) {
+    const decryptedIdent = Security.decryptValue(data.identifier);
+    return assoc('identifier', decryptedIdent, data);
 }

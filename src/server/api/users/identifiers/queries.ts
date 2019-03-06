@@ -1,7 +1,4 @@
-import { _raw } from 'pg-extra';
-
-import { pool, knex } from '../../../db';
-import { result } from '../../../utils/db';
+import { knex, result, getManyRaw, getOneRaw } from '../../../db';
 
 /**
  *
@@ -19,7 +16,7 @@ export async function getByUserId(
         .limit(limit)
         .offset(offset)
         .toString();
-    const query = await pool.many(_raw`${queryString}`);
+    const query = await getManyRaw(queryString);
 
     return result('There was an error whilst fetching the identities for the user', query);
 }
@@ -28,12 +25,12 @@ export async function getByUserId(
  *
  * @param identifier
  */
-export async function getOne(hash): Promise<User.Identitfier> {
+export async function getOne(hash: string): Promise<User.Identitfier> {
     const queryString = knex('Identities')
         .select('*')
         .where({ hash })
         .toString();
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst fetching the identitiy', query);
 }
 
@@ -46,7 +43,7 @@ export async function create(data): Promise<User.Identitfier> {
         .returning('*')
         .insert(data)
         .toString();
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst creating the identitiy', query);
 }
 
@@ -60,7 +57,7 @@ export async function remove(uuid: string): Promise<boolean> {
         .where({ uuid })
         .del()
         .toString();
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result(`There was an error whilst deleting the identitiy with uuid ${uuid}`, !!query);
 }
 
@@ -74,6 +71,6 @@ export async function removeAllByUserId(userId: string): Promise<boolean> {
         .where({ userId })
         .del()
         .toString();
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result(`There was an error whilst deleteing indentities for userId ${userId}`, !!query);
 }

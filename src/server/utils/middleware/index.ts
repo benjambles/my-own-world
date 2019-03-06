@@ -7,19 +7,16 @@ import * as Koa from 'koa';
  */
 export async function catchErrors(ctx: Koa.Context, next: () => Promise<any>): Promise<any> {
     if (ctx.invalid) {
-        let message = {};
+        const message = Object.entries(ctx.invalid).reduce((acc, [k, v]) => {
+            acc[k] = !v.details
+                ? v.msg
+                : v.details.map(({ message, path }) => ({
+                      error: message,
+                      field: path
+                  }));
 
-        Object.entries(ctx.invalid).forEach(([k, v]) => {
-            if (!v.details) {
-                message[k] = v.msg;
-                return;
-            }
-
-            message[k] = v.details.map(err => ({
-                error: err.message,
-                field: err.path
-            }));
-        });
+            return acc;
+        }, {});
 
         ctx.throw(JSON.stringify(message), 400);
     }
@@ -32,10 +29,8 @@ export async function catchErrors(ctx: Koa.Context, next: () => Promise<any>): P
  * @param roles
  */
 export function setAccessRoles(roles: string[]): Koa.Middleware {
-    const accessRoles = roles;
-
     return async function set(ctx: Koa.Context, next: () => Promise<any>): Promise<any> {
-        ctx.state.accessRoles = accessRoles;
+        ctx.state.accessRoles = roles;
         await next();
     };
 }

@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 import * as projects from './projects';
-import { generateRoute } from '../../utils/routes';
+import { generateRoute, partsResponse } from '../../utils/routes';
 
 /**
  * Get projects, optionally filtered by parameters
@@ -15,7 +15,7 @@ export const getProjects: Koa.Middleware = generateRoute(
         const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
         const projectsData: Project.ProjectData[] = await projects.get(limit, offset);
 
-        return { parts: [projectsData] };
+        return partsResponse(projectsData);
     }
 );
 
@@ -32,7 +32,7 @@ export const createProject: Koa.Middleware = generateRoute(
         const project = ctx.request.body as Project.Request;
         const projectData: Project.ProjectData = await projects.create(project);
 
-        return { parts: [projectData] };
+        return partsResponse(projectData);
     }
 );
 
@@ -48,7 +48,7 @@ export const getProjectById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectData = await projects.getOne(ctx.request.params.projectId);
 
-        return { parts: [projectData] };
+        return partsResponse(projectData);
     }
 );
 
@@ -66,7 +66,7 @@ export const updateProjectById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectUpdated = await projects.update(ctx.request.params.projectId, ctx.request
             .body as Project.ProjectData);
-        return { parts: [projectUpdated] };
+        return partsResponse(projectUpdated);
     }
 );
 
@@ -81,6 +81,6 @@ export const deleteProjectById: Koa.Middleware = generateRoute(
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectDeleted = await projects.remove(ctx.request.params.projectId);
-        return { parts: [projectDeleted] };
+        return partsResponse(projectDeleted);
     }
 );

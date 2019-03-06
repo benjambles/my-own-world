@@ -1,17 +1,14 @@
-import { _raw } from 'pg-extra';
-
-import { pool, knex } from '../../db';
-import { result } from '../../utils/db';
+import { result, knex, getOneRaw } from '../../db';
 
 /**
  *
  */
-export async function getVersion(): Promise<any> {
+export async function getSystemKey(key: string): Promise<any> {
     const queryString = knex('System')
         .select('*')
         .where({
-            key: 'api_version'
+            key
         });
-    const query = await pool.one(_raw`${queryString}`);
-    return result('There was an error whilst fetching the api version', query);
+    const query = await getOneRaw(queryString);
+    return result('There was an error whilst fetching the requested key', query);
 }

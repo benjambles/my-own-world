@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 
-import { getVersionData } from './service';
-import { generateRoute } from '../../utils/routes';
+import { getSystemKey } from './service';
+import { generateRoute, partsResponse, dataResponse } from '../../utils/routes';
 
 /**
  * Gets the API health
@@ -13,7 +13,7 @@ export const getHealth: Koa.Middleware = generateRoute(
         status: 503
     },
     async (): Promise<ApiResponse> => {
-        return { data: undefined };
+        return dataResponse(undefined);
     }
 );
 
@@ -27,12 +27,10 @@ export const getVersion: Koa.Middleware = generateRoute(
         status: 503
     },
     async (): Promise<ApiResponse> => {
-        const { key, value } = await getVersionData();
-        return {
-            data: {
-                [key]: value
-            }
-        };
+        const { key, value } = await getSystemKey('api_version');
+        return dataResponse({
+            [key]: value
+        });
     }
 );
 
@@ -46,7 +44,7 @@ export const getStatus: Koa.Middleware = generateRoute(
         status: 503
     },
     async (): Promise<ApiResponse> => {
-        return { parts: [] };
+        return partsResponse();
     }
 );
 
@@ -60,7 +58,7 @@ export const getMetrics: Koa.Middleware = generateRoute(
         status: 503
     },
     async (): Promise<ApiResponse> => {
-        return { parts: [] };
+        return partsResponse();
     }
 );
 
@@ -74,6 +72,6 @@ export const getDebugData: Koa.Middleware = generateRoute(
         status: 503
     },
     async (): Promise<ApiResponse> => {
-        return { parts: [] };
+        return partsResponse();
     }
 );

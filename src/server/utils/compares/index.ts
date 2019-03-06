@@ -1,3 +1,5 @@
+import { pathEq } from 'ramda';
+
 /**
  * Check to see if the provided value is a valid uuid string
  * @param uuid a string to test for validity
@@ -21,8 +23,7 @@ export function isTrue(value: any): boolean {
  * @param token
  */
 export function isAdmin(token): boolean {
-    const userData = token.user;
-    return userData.admin && userData.admin === true;
+    return pathEq(['user', 'userData'], true, token);
 }
 
 /**
@@ -34,17 +35,9 @@ export function isUser(token): boolean {
 }
 
 /**
- *
+ * Checks if the supplied value is recognised as a function
  * @param value
  */
-export function isDefined(value: any): boolean {
-    return typeof value !== undefined;
-}
-
-/**
- *
- * @param value
- */
-export function isNil(value) {
-    return value === null;
+export function isFunction(value: any): boolean {
+    return typeof value === 'function';
 }

@@ -2,7 +2,7 @@ import * as Koa from 'koa';
 import * as Security from '../../utils/security';
 import * as identifiers from './identifiers/identifiers';
 import * as users from './users';
-import { generateRoute } from '../../utils/routes';
+import { generateRoute, partsResponse } from '../../utils/routes';
 
 /**
  * Get users, optionally filtered by parameters
@@ -17,7 +17,7 @@ export const getUsers: Koa.Middleware = generateRoute(
         const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
         const usersData: User.UserData[] = await users.get(limit, offset);
 
-        return { parts: [usersData] };
+        return partsResponse(usersData);
     }
 );
 
@@ -35,7 +35,7 @@ export const createUser: Koa.Middleware = generateRoute(
         const userData: User.UserData = await users.create(user);
         await identifiers.create(userData.uuid, identifier);
 
-        return { parts: [userData] };
+        return partsResponse(userData);
     }
 );
 
@@ -51,7 +51,7 @@ export const getUserById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userData = await users.getOne(ctx.request.params.userId);
 
-        return { parts: [userData] };
+        return partsResponse(userData);
     }
 );
 
@@ -67,7 +67,7 @@ export const updateUserById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userUpdated = await users.update(ctx.request.params.userId, ctx.request
             .body as User.UserData);
-        return { parts: [userUpdated] };
+        return partsResponse(userUpdated);
     }
 );
 
@@ -82,7 +82,7 @@ export const deleteUserById: Koa.Middleware = generateRoute(
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userDeleted = await users.remove(ctx.request.params.userId);
-        return { parts: [userDeleted] };
+        return partsResponse(userDeleted);
     }
 );
 
@@ -101,7 +101,7 @@ export const authenticateUser: Koa.Middleware = generateRoute(
         const userData = await users.authenticate(identifier, password);
         const token = await Security.getToken(userData);
 
-        return { parts: [{ token, user: userData }] };
+        return partsResponse({ token, user: userData });
     }
 );
 
@@ -118,8 +118,8 @@ export const getAccessLink: Koa.Middleware = generateRoute(
         const { email } = ctx.request.body as any;
         await users.sendMagicLink(email);
 
-        return {
-            parts: [{ message: 'Magic link sent! Please check the email address provided.' }]
-        };
+        return partsResponse({
+            message: 'Magic link sent! Please check the email address provided.'
+        });
     }
 );

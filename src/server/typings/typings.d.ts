@@ -12,7 +12,10 @@ type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyo
     { [K in Keys]-?: Required<Pick<T, K>> }[Keys];
 
 interface ResponseData {
-    parts?: any[];
+    parts?: {
+        body: any;
+        meta: any;
+    };
     data?: any;
     status?: number;
 }
@@ -80,4 +83,13 @@ interface swaggerParamOpts {
     email: boolean;
     max: number;
     min: number;
+}
+
+interface formatOptions {
+    encrypted?: string[];
+    hashed?: {
+        salted?: string[];
+        hmac?: string[];
+    };
+    readOnly?: string[];
 }

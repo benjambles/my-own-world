@@ -1,9 +1,10 @@
-import { cleanData, cloneData, format, getUUID } from '../../utils';
+import { dissoc, partial } from 'ramda';
+import { formatter, getUUID } from '../../utils';
 import { compareBHash } from '../../utils/security';
-import * as db from './queries';
 import * as Identities from './identifiers/identifiers';
+import * as db from './queries';
 
-const formatters = {
+const format = {
     encrypted: ['email'],
     hashed: { salted: ['password'] },
     readOnly: ['uuid']
@@ -12,20 +13,19 @@ const formatters = {
 /**
  * Prepares a user object for database insertion
  */
-export const formatUser = format(formatters);
-export const cleanUserData = cleanData(formatUser);
+export const cleanUserData = formatter(format);
 
 /**
  * Returns a sanitised object representing a user, removing private properties
  * @param data - A database record representing a user
  */
-export const sanitizedResponse = respond(true);
+export const sanitizedResponse = partial(respond, [true]);
 
 /**
  * Returns a clone of an object representing a user
  * @param data - A database record representing a user
  */
-export const unsanitizedResponse = respond(false);
+export const unsanitizedResponse = partial(respond, [false]);
 
 /**
  * Get a list of active users
@@ -61,7 +61,7 @@ export async function getByEmail(identifier: string): Promise<User.UserData> {
  * @param data - The fields required to create a new user record
  */
 export async function create(data: User.UserData): Promise<User.UserData> {
-    const cleanData = await cleanUserData(data);
+    const cleanData = (await cleanUserData(data)) as User.UserData;
     cleanData.uuid = getUUID(JSON.stringify(data));
     const user = await db.createUser(cleanData);
     return sanitizedResponse(user);
@@ -73,7 +73,7 @@ export async function create(data: User.UserData): Promise<User.UserData> {
  * @param data - An object representing a portion of a user object
  */
 export async function update(uuid: string, data: User.UserData): Promise<User.UserData> {
-    const cleanData = await cleanUserData(data);
+    const cleanData = (await cleanUserData(data)) as User.UserData;
     const user = await db.updateUser(uuid, cleanData);
     return sanitizedResponse(user);
 }
@@ -108,15 +108,8 @@ export async function sendMagicLink(email: string): Promise<boolean> {
 /**
  * Returns a function that clones of the data retrieved from the database and sanitizes it if necessary
  * @param secure - True if sanitization is required
+ * @param data - Object representing a user model
  */
-export function respond(secure: boolean) {
-    return (data: User.UserData): User.UserData => {
-        let safeData = cloneData(data);
-
-        if (secure) {
-            delete safeData.password;
-        }
-
-        return safeData;
-    };
+export function respond(secure: boolean, data: User.UserData): User.UserData {
+    return secure ? dissoc('password', data) : data;
 }

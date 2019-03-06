@@ -4,14 +4,14 @@ declare namespace User {
         screenName: string;
         firstName: string;
         lastName: string;
-        password: string;
+        password?: string;
     }
 
     interface Identitfier {
         uuid: string;
         type: string;
-        identity: string;
         userId: string;
+        identifier: string;
     }
 
     interface Request {

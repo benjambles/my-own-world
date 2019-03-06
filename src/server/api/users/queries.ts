@@ -1,7 +1,4 @@
-import { _raw } from 'pg-extra';
-
-import { pool, knex } from '../../db';
-import { result } from '../../utils/db';
+import { result, knex, getOneRaw, getManyRaw } from '../../db';
 
 /**
  * Retrieve a user with a matching uuid from the database
@@ -14,7 +11,7 @@ export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> 
             uuid,
             isDeleted: false
         });
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst fetching the user', query);
 }
 
@@ -34,7 +31,7 @@ export async function getActiveUsers(
         })
         .limit(limit)
         .offset(offset);
-    const query = await pool.many(_raw`${queryString}`);
+    const query = await getManyRaw(queryString);
     return result('There was an error whilst fetching users', query);
 }
 
@@ -46,7 +43,7 @@ export async function createUser(data: User.UserData): Promise<User.UserData> {
     const queryString = knex('Users')
         .returning('*')
         .insert(data);
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst creating the user', query);
 }
 
@@ -59,7 +56,7 @@ export async function deleteUser(uuid: string): Promise<boolean> {
         .returning('isDeleted')
         .where({ uuid })
         .update({ isDeleted: true });
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst updating the user', query);
 }
 
@@ -73,6 +70,6 @@ export async function updateUser(uuid: string, data: User.UserData): Promise<Use
         .returning('*')
         .where({ uuid })
         .update(data);
-    const query = await pool.one(_raw`${queryString}`);
+    const query = await getOneRaw(queryString);
     return result('There was an error whilst updating the user', query);
 }

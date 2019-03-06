@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 
-import { generateRoute } from '../../../utils/routes';
+import { generateRoute, partsResponse } from '../../../utils/routes';
 import * as identifiers from './identifiers';
 
 /**
@@ -20,7 +20,7 @@ export const getUserIdentifiers: Koa.Middleware = generateRoute(
             offset
         );
 
-        return { parts: [identityData] };
+        return partsResponse(identityData);
     }
 );
 
@@ -38,7 +38,7 @@ export const createUserIdentifier: Koa.Middleware = generateRoute(
             ctx.request.params.userId,
             ctx.request.body
         );
-        return { parts: [identifierData] };
+        return partsResponse(identifierData);
     }
 );
 
@@ -53,6 +53,6 @@ export const deleteUserIdentifier: Koa.Middleware = generateRoute(
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const isDeleted = await identifiers.remove(ctx.request.params.identifierId);
-        return { parts: [isDeleted] };
+        return partsResponse(isDeleted);
     }
 );

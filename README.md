@@ -1,15 +1,18 @@
-my-own-world
-============
+# my-own-world
 
-World creation tools using:
+Interactive story creation platform build for exploration of tool and technologies.
+
+Built using:
 
 Backend
 
-Node
-Koa
-Typescript
-Babel
+-   Node
+-   Typescript
+-   Koa
+-   Swagger
+-   JOI
+-   Ramda
 
-Frontend:
+Frontend
 
-TBD
+-   TBD

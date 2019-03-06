@@ -179,7 +179,7 @@
                             "responses": {},
                             "security": [
                                 {
-                                    "jwt": ["role:admin", "role:owner"]
+                                    "jwt": ["role:admin", "role:user"]
                                 }
                             ]
                         },
@@ -204,7 +204,7 @@
                             "responses": {},
                             "security": [
                                 {
-                                    "jwt": ["role:admin", "role:owner"]
+                                    "jwt": ["role:admin", "role:user"]
                                 }
                             ]
                         },
@@ -225,7 +225,7 @@
                             "route": "/projects/:projectId/tales",
                             "verbs": {
                                 "get": {
-                                    "tags": ["project", "tales"],
+                                    "tags": ["project", "tale"],
                                     "summary": "Returns the tales that belong to a project",
                                     "description": "",
                                     "operationId": "getTalesByProjectId",
@@ -246,8 +246,8 @@
                                     "security": []
                                 },
                                 "options": {
-                                    "tags": ["project", "tale", "options"],
-                                    "summary": "Check which endpoints are available for interacting with tales on projects",
+                                    "tags": ["project", "user", "options"],
+                                    "summary": "Check which endpoints are available for interacting with users of a project",
                                     "description": "",
                                     "operationId": "sendOptions",
                                     "consumes": [],
@@ -262,10 +262,10 @@
                             "route": "/projects/:projectId/users",
                             "verbs": {
                                 "get": {
-                                    "tags": ["project", "users"],
+                                    "tags": ["project", "user"],
                                     "summary": "Returns the users who have access to a project",
                                     "description": "",
-                                    "operationId": "getUsersByProjectId",
+                                    "operationId": "getProjectUserById",
                                     "consumes": [],
                                     "produces": ["application/json"],
                                     "parameters": [
@@ -282,6 +282,49 @@
                                     "responses": {},
                                     "security": []
                                 },
+                                "post": {
+                                    "tags": ["project", "user", "role"],
+                                    "summary": "Returns the users who have access to a project",
+                                    "description": "",
+                                    "operationId": "createProjectUser",
+                                    "consumes": ["application/json"],
+                                    "produces": ["application/json"],
+                                    "parameters": [
+                                        {
+                                            "name": "projectId",
+                                            "in": "path",
+                                            "description": "The UUID of the project to fetch the user list for",
+                                            "opts": {
+                                                "required": true
+                                            },
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "userId",
+                                            "in": "body",
+                                            "description": "A valid UUID for the user gaining access",
+                                            "opts": {
+                                                "required": true
+                                            },
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "roleId",
+                                            "in": "body",
+                                            "description": "The ID of the role to grant to the user",
+                                            "opts": {
+                                                "required": true
+                                            },
+                                            "type": "string"
+                                        }
+                                    ],
+                                    "responses": {},
+                                    "security": [
+                                        {
+                                            "jwt": ["role:admin", "role:user"]
+                                        }
+                                    ]
+                                },
                                 "options": {
                                     "tags": ["project", "user", "options"],
                                     "summary": "Check which endpoints are available for interacting with users of a projects",
@@ -293,13 +336,33 @@
                                     "responses": {},
                                     "security": []
                                 }
-                            }
+                            },
+                            "paths": [
+                                {
+                                    "route": "/projects/:projectId/users/:userId",
+                                    "verbs": {
+                                        "put": {},
+                                        "delete": {},
+                                        "options": {
+                                            "tags": ["project", "user", "options"],
+                                            "summary": "Check which endpoints are available for interacting with a project user",
+                                            "description": "",
+                                            "operationId": "sendOptions",
+                                            "consumes": [],
+                                            "produces": ["application/json"],
+                                            "parameters": [],
+                                            "responses": {},
+                                            "security": []
+                                        }
+                                    }
+                                }
+                            ]
                         },
                         {
                             "route": "/projects/:projectId/roles",
                             "verbs": {
                                 "get": {
-                                    "tags": ["project", "roles"],
+                                    "tags": ["project", "role"],
                                     "summary": "Returns the user roles that exist for the selected project",
                                     "description": "",
                                     "operationId": "getRolesByProjectId",
@@ -320,7 +383,7 @@
                                     "security": []
                                 },
                                 "post": {
-                                    "tags": ["project", "roles"],
+                                    "tags": ["project", "role"],
                                     "summary": "Creates a new role on the project",
                                     "description": "",
                                     "operationId": "createProjectRole",
@@ -363,10 +426,10 @@
                                         }
                                     ],
                                     "responses": {},
-                                    "security": [{ "jwt": ["role:admin", "role:owner"] }]
+                                    "security": [{ "jwt": ["role:admin", "role:user"] }]
                                 },
                                 "options": {
-                                    "tags": ["project", "roles", "options"],
+                                    "tags": ["project", "role", "options"],
                                     "summary": "Check which endpoints are available for interacting with roles for a project",
                                     "description": "",
                                     "operationId": "sendOptions",
@@ -382,7 +445,7 @@
                                     "route": "/projects/:projectId/roles/:roleId",
                                     "verbs": {
                                         "delete": {
-                                            "tags": ["project", "roles"],
+                                            "tags": ["project", "role"],
                                             "summary": "Returns the details of a project",
                                             "description": "",
                                             "operationId": "deleteProjectRoleById",
@@ -411,12 +474,12 @@
                                             "responses": {},
                                             "security": [
                                                 {
-                                                    "jwt": ["role:admin", "role:owner"]
+                                                    "jwt": ["role:admin", "role:user"]
                                                 }
                                             ]
                                         },
                                         "options": {
-                                            "tags": ["project", "roles", "options"],
+                                            "tags": ["project", "role", "options"],
                                             "summary": "Check which endpoints are available for interacting with a role for a project",
                                             "description": "",
                                             "operationId": "sendOptions",

@@ -10,8 +10,8 @@ import * as path from 'path';
 import * as koa404Handler from 'koa-404-handler';
 
 import load from './utils/load';
+import errorHandler = require('koa-better-error-handler');
 
-const errorHandler = require('koa-better-error-handler');
 const env: string = process.env.NODE_ENV || 'development';
 const accessLogStream: fs.WriteStream = fs.createWriteStream(
     path.resolve(__dirname, 'access.log'),
@@ -37,25 +37,14 @@ export default function api(): Koa {
     // logging
     if ('test' != env) app.use(morgan('combined', { stream: accessLogStream }));
 
-    app.use(responseTime());
+    app.use(responseTime()); // Set response time header
     app.use(conditionalGet());
-    app.use(etag());
-    app.use(compress()); //ctx.compress = false to disable compression
-    app.use(helmet());
+    app.use(etag()); // Adds eTag headers to the response
+    app.use(compress()); // ctx.compress = false to disable compression
+    app.use(helmet()); // Security layer
     app.use(koa404Handler);
     // routing
     routers.forEach(route => app.use(route.middleware()));
-
-    // custom 404 handler since it's not already built in
-    app.use(async (ctx, next) => {
-        try {
-            await next();
-            if (ctx.status === 404) ctx.throw(404);
-        } catch (err) {
-            ctx.throw(err);
-            ctx.app.emit('error', err, ctx);
-        }
-    });
 
     return app;
 }
