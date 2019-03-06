@@ -65,8 +65,8 @@ export function bindOptions(config): Koa.Middleware {
             const pathParts = getRoute(ctx.state)
                 .path.split('/')
                 .filter(isTrue);
-            const response = R.dissocPath(['verbs', 'options'], findRouteConfig(config, pathParts));
-            const verbs = Object.keys(response.verbs);
+            const response = findRouteConfig(config, pathParts);
+            const verbs = Object.keys(response.verbs).filter(key => key !== 'options');
 
             if (verbs.includes('get')) {
                 verbs.push('head');
@@ -149,9 +149,10 @@ function findRouteConfig(config: any, pathParts: string[]) {
         R.equals(`/${R.propOr('', 0, pathParts)}`),
         getRoute
     );
+
     if (
         !pathParts.length ||
-        !R.isNil(config.paths) ||
+        R.isNil(config.paths) ||
         (pathParts.length === 1 && isBasePath(config))
     ) {
         return config;
