@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { routesPath } from '../../config';
+import { routesPath } from '../../../config';
 
 const validAnswers: string[] = ['yes', 'no'];
 

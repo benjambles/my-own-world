@@ -30,6 +30,27 @@
                             "default": 0,
                             "type": "integer",
                             "format": "int64"
+                        },
+                        {
+                            "name": "type",
+                            "in": "query",
+                            "description": "The projects base type, e.g. narative, choose your own, rpg-like",
+                            "default": "",
+                            "type": "string"
+                        },
+                        {
+                            "name": "genre",
+                            "in": "query",
+                            "description": "Tags that you would like to match on, this parameter is an || parameter",
+                            "default": "",
+                            "type": "string"
+                        },
+                        {
+                            "name": "q",
+                            "in": "query",
+                            "description": "A search phrase to fuzzy match on",
+                            "default": "",
+                            "type": "string"
                         }
                     ],
                     "responses": {},

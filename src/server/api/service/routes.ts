@@ -1,7 +1,8 @@
 import * as Koa from 'koa';
 
 import { getSystemKey } from './service';
-import { generateRoute, partsResponse, dataResponse } from '../../utils/routes';
+import { generateRoute } from '../../utils/routes';
+import { partsResponse, dataResponse } from '../../utils/routes/responses';
 
 /**
  * Gets the API health

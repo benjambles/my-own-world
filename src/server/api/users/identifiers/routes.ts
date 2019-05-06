@@ -1,7 +1,8 @@
 import * as Koa from 'koa';
 
-import { generateRoute, partsResponse } from '../../../utils/routes';
+import { generateRoute } from '../../../utils/routes';
 import * as identifiers from './identifiers';
+import { partsResponse } from '../../../utils/routes/responses';
 
 /**
  * Returns all of the identifiers for the requested user

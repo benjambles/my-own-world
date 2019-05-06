@@ -1,0 +1,240 @@
+{
+    "info": {
+        "name": "Translations",
+        "description": "Routes relating to the creation and management of translations for the platform."
+    },
+    "paths": [
+        {
+            "route": "/translations",
+            "verbs": {
+                "get": {
+                    "tags": ["translation"],
+                    "summary": "Returns an array of translations between optional given parameters",
+                    "description": "",
+                    "operationId": "getTranslations",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "description": "How many records to fetch",
+                            "default": 10,
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        {
+                            "name": "offset",
+                            "in": "query",
+                            "description": "How many records to skip",
+                            "default": 0,
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        {
+                            "name": "locale",
+                            "in": "query",
+                            "description": "locale to return translations for",
+                            "default": "en-GB",
+                            "type": "string"
+                        },
+                        {
+                            "name": "q",
+                            "in": "query",
+                            "description": "A word to filter keys by",
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {},
+                    "security": []
+                },
+                "post": {
+                    "tags": ["translation"],
+                    "summary": "Sets a translation key and value",
+                    "description": "",
+                    "operationId": "createTranslation",
+                    "consumes": ["application/json"],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "ownerId",
+                            "in": "body",
+                            "description": "The UUID of the person who created or owns the translation",
+                            "opts": {
+                                "required": true
+                            },
+                            "type": "string"
+                        },
+                        {
+                            "name": "title",
+                            "in": "body",
+                            "description": "A name for the translation - Tales have their own names",
+                            "opts": {
+                                "required": true
+                            },
+                            "type": "string"
+                        },
+                        {
+                            "name": "summary",
+                            "in": "body",
+                            "description": "A sort form description of the translation used for translation listings and overviews",
+                            "opts": {
+                                "required": true
+                            },
+                            "type": "string"
+                        },
+                        {
+                            "name": "description",
+                            "in": "body",
+                            "description": "A longer description on the translation used for the translation page",
+                            "opts": {
+                                "required": true
+                            },
+                            "type": "string"
+                        },
+                        {
+                            "name": "baseLanguage",
+                            "in": "body",
+                            "description": "Which language is this translation created in",
+                            "default": "en-GB",
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {},
+                    "security": [
+                        {
+                            "jwt": ["role:admin", "role:user"]
+                        }
+                    ]
+                },
+                "options": {
+                    "tags": ["translation", "options"],
+                    "summary": "Check which endpoints are available for interacting with translations",
+                    "description": "",
+                    "operationId": "sendOptions",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                }
+            },
+            "paths": [
+                {
+                    "route": "/translations/:translationId",
+                    "verbs": {
+                        "get": {
+                            "tags": ["translation"],
+                            "summary": "Returns the details of a translation",
+                            "description": "",
+                            "operationId": "getTranslationById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "translationId",
+                                    "in": "path",
+                                    "description": "The UUID of the translation to fetch",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": []
+                        },
+                        "put": {
+                            "tags": ["translation"],
+                            "summary": "Replaces the details of a translation",
+                            "description": "",
+                            "operationId": "updateTranslationById",
+                            "consumes": ["application/json"],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "translationId",
+                                    "in": "path",
+                                    "description": "The UUID of the translation to replace",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "title",
+                                    "in": "body",
+                                    "description": "A name for the translation - Tales have their own names",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "summary",
+                                    "in": "body",
+                                    "description": "A sort form description of the translation used for translation listings and overviews",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "description",
+                                    "in": "body",
+                                    "description": "A longer description on the translation used for the translation page",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:user"]
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "tags": ["translation"],
+                            "summary": "Mark a translation as deleted",
+                            "description": "",
+                            "operationId": "deleteTranslationById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "translationId",
+                                    "in": "path",
+                                    "description": "The UUID of the translation to delete",
+                                    "opts": {
+                                        "required": true
+                                    },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:user"]
+                                }
+                            ]
+                        },
+                        "options": {
+                            "tags": ["translation", "options"],
+                            "summary": "Check which endpoints are available for interacting with a translation",
+                            "description": "",
+                            "operationId": "sendOptions",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [],
+                            "responses": {},
+                            "security": []
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

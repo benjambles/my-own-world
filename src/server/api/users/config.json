@@ -79,7 +79,7 @@
                                 }
                             ],
                             "responses": {},
-                            "security": []
+                            "security": [{ "jwt": ["role:user"] }]
                         },
                         "put": {
                             "tags": ["user"],

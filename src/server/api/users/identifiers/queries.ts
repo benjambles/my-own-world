@@ -5,11 +5,11 @@ import { knex, result, getManyRaw, getOneRaw } from '../../../db';
  * @param userId
  * @param props
  */
-export async function getByUserId(
+export const getByUserId = async (
     userId: string,
     limit: number = 10,
     offset: number = 0
-): Promise<User.Identitfier[]> {
+): Promise<User.Identitfier[]> => {
     const queryString = knex('Identities')
         .select('*')
         .where({ userId })
@@ -19,39 +19,39 @@ export async function getByUserId(
     const query = await getManyRaw(queryString);
 
     return result('There was an error whilst fetching the identities for the user', query);
-}
+};
 
 /**
  *
  * @param identifier
  */
-export async function getOne(hash: string): Promise<User.Identitfier> {
+export const getOne = async (hash: string): Promise<User.Identitfier> => {
     const queryString = knex('Identities')
         .select('*')
         .where({ hash })
         .toString();
     const query = await getOneRaw(queryString);
     return result('There was an error whilst fetching the identitiy', query);
-}
+};
 
 /**
  *
  * @param data
  */
-export async function create(data): Promise<User.Identitfier> {
+export const create = async (data): Promise<User.Identitfier> => {
     const queryString = knex('Identities')
         .returning('*')
         .insert(data)
         .toString();
     const query = await getOneRaw(queryString);
     return result('There was an error whilst creating the identitiy', query);
-}
+};
 
 /**
  *
  * @param uuid
  */
-export async function remove(uuid: string): Promise<boolean> {
+export const remove = async (uuid: string): Promise<boolean> => {
     const queryString = knex('Identities')
         .returning('true')
         .where({ uuid })
@@ -59,13 +59,13 @@ export async function remove(uuid: string): Promise<boolean> {
         .toString();
     const query = await getOneRaw(queryString);
     return result(`There was an error whilst deleting the identitiy with uuid ${uuid}`, !!query);
-}
+};
 
 /**
  *
  * @param userId
  */
-export async function removeAllByUserId(userId: string): Promise<boolean> {
+export const removeAllByUserId = async (userId: string): Promise<boolean> => {
     const queryString = knex('Identities')
         .returning('true')
         .where({ userId })
@@ -73,4 +73,4 @@ export async function removeAllByUserId(userId: string): Promise<boolean> {
         .toString();
     const query = await getOneRaw(queryString);
     return result(`There was an error whilst deleteing indentities for userId ${userId}`, !!query);
-}
+};

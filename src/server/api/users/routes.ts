@@ -1,8 +1,9 @@
 import * as Koa from 'koa';
-import * as Security from '../../utils/security';
+import { generateRoute } from '../../utils/routes';
+import { partsResponse } from '../../utils/routes/responses';
+import { getToken } from '../../utils/security/jwt';
 import * as identifiers from './identifiers/identifiers';
 import * as users from './users';
-import { generateRoute, partsResponse } from '../../utils/routes';
 
 /**
  * Get users, optionally filtered by parameters
@@ -99,7 +100,7 @@ export const authenticateUser: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { identifier = null, password = null } = ctx.request.body as any;
         const userData = await users.authenticate(identifier, password);
-        const token = await Security.getToken(userData);
+        const token = await getToken(userData);
 
         return partsResponse({ token, user: userData });
     }

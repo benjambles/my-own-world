@@ -1,4 +1,4 @@
-import { baseAccessMap, bindCheckAccess, bindOptions } from '../../utils/routes';
+import { getAccessMap, bindCheckAccess, bindOptions } from '../../utils/routes';
 import * as serviceRoutes from './routes';
 
 const config = require('./config.json');
@@ -9,5 +9,5 @@ const config = require('./config.json');
 export const routeHandlers = {
     ...serviceRoutes,
     sendOptions: bindOptions(config),
-    checkAccess: bindCheckAccess(baseAccessMap)
+    checkAccess: bindCheckAccess(getAccessMap())
 };

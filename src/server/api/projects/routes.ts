@@ -1,6 +1,7 @@
 import * as Koa from 'koa';
 import * as projects from './projects';
-import { generateRoute, partsResponse } from '../../utils/routes';
+import { generateRoute } from '../../utils/routes';
+import { partsResponse } from '../../utils/routes/responses';
 
 /**
  * Get projects, optionally filtered by parameters

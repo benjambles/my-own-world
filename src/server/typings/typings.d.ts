@@ -74,22 +74,22 @@ interface swaggerParam {
     required: boolean;
     type: string;
     format: string;
-    opts: swaggerParamOpts;
+    opts?: swaggerParamOpts;
     values: swaggerParam[];
 }
 
 interface swaggerParamOpts {
-    lowercase: boolean;
-    email: boolean;
-    max: number;
-    min: number;
+    lowercase?: boolean;
+    email?: boolean;
+    max?: number;
+    min?: number;
 }
+
+type swaggerTypeConfig = [string, any] | null;
 
 interface formatOptions {
     encrypted?: string[];
-    hashed?: {
-        salted?: string[];
-        hmac?: string[];
-    };
+    salted?: string[];
+    hmac?: string[];
     readOnly?: string[];
 }

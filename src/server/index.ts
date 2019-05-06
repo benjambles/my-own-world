@@ -8,8 +8,9 @@ import * as morgan from 'koa-morgan';
 import * as responseTime from 'koa-response-time';
 import * as path from 'path';
 import * as koa404Handler from 'koa-404-handler';
-
-import load from './utils/load';
+import * as koaJWT from 'koa-jwt';
+import { jwtSecret } from './config';
+import loadRoutes from './routing/load-routes';
 import errorHandler = require('koa-better-error-handler');
 
 const env: string = process.env.NODE_ENV || 'development';
@@ -19,13 +20,13 @@ const accessLogStream: fs.WriteStream = fs.createWriteStream(
 );
 
 // Load routes into the router
-let routers: iRouter[] = load(path.resolve(__dirname, 'api'), 'api');
+let routers: iRouter[] = loadRoutes(path.resolve(__dirname, 'api'), 'api');
 
 /**
  * Initialize an app
  * @api public
  */
-export default function api(): Koa {
+export default (): Koa => {
     const app: Koa = new Koa();
 
     // override koa's undocumented error handler
@@ -43,8 +44,9 @@ export default function api(): Koa {
     app.use(compress()); // ctx.compress = false to disable compression
     app.use(helmet()); // Security layer
     app.use(koa404Handler);
+    app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
     // routing
     routers.forEach(route => app.use(route.middleware()));
 
     return app;
-}
+};

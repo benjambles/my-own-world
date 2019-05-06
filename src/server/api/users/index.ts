@@ -1,7 +1,11 @@
 import * as Koa from 'koa';
-import { cond, equals, F, path, T } from 'ramda';
-import { isAdmin } from '../../utils/compares';
-import { bindCheckAccess, bindOptions, getAuthenticatedUserId } from '../../utils/routes';
+import { equals, path } from 'ramda';
+import {
+    bindCheckAccess,
+    bindOptions,
+    getAccessMap,
+    getAuthenticatedUserId
+} from '../../utils/routes';
 import * as identifierRoutes from './identifiers/routes';
 import * as userRoutes from './routes';
 
@@ -23,11 +27,7 @@ export const routeHandlers = {
  * @param ctx Koa context object
  */
 export function accessMap(ctx: Koa.Context): Function {
-    return cond([
-        [equals('role:admin'), () => isAdmin(ctx.state)],
-        [equals('role:owner'), () => isCurrentUser(ctx.state)],
-        [T, F]
-    ]);
+    return getAccessMap([[equals('role:owner'), () => isCurrentUser(ctx)]])(ctx);
 }
 
 /**
@@ -45,6 +45,6 @@ export function isCurrentUser(ctx: Koa.Context): boolean {
  * Grab the user UUID from the URL
  * @param ctx
  */
-export function getRequestedUser(ctx: Koa.Context): any {
+export function getRequestedUser(ctx: Koa.Context): string {
     return path(['request', 'params', 'userId'], ctx);
 }
