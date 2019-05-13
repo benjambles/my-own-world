@@ -93,3 +93,6 @@ interface formatOptions {
     hmac?: string[];
     readOnly?: string[];
 }
+interface fnMap {
+    [name: string]: Function;
+}

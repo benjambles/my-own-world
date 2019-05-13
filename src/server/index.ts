@@ -1,32 +1,24 @@
 import * as fs from 'fs';
 import * as Koa from 'koa';
+import * as koa404Handler from 'koa-404-handler';
 import * as compress from 'koa-compress';
 import * as conditionalGet from 'koa-conditional-get';
 import * as etag from 'koa-etag';
 import * as helmet from 'koa-helmet';
+import * as koaJWT from 'koa-jwt';
 import * as morgan from 'koa-morgan';
 import * as responseTime from 'koa-response-time';
 import * as path from 'path';
-import * as koa404Handler from 'koa-404-handler';
-import * as koaJWT from 'koa-jwt';
+import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
 import loadRoutes from './routing/load-routes';
 import errorHandler = require('koa-better-error-handler');
-
-const env: string = process.env.NODE_ENV || 'development';
-const accessLogStream: fs.WriteStream = fs.createWriteStream(
-    path.resolve(__dirname, 'access.log'),
-    { flags: 'a' }
-);
-
-// Load routes into the router
-let routers: iRouter[] = loadRoutes(path.resolve(__dirname, 'api'), 'api');
 
 /**
  * Initialize an app
  * @api public
  */
-export default (): Koa => {
+export default (env): Koa => {
     const app: Koa = new Koa();
 
     // override koa's undocumented error handler
@@ -36,7 +28,13 @@ export default (): Koa => {
     app.context.api = true;
 
     // logging
-    if ('test' != env) app.use(morgan('combined', { stream: accessLogStream }));
+    unless(equals('test'), () => {
+        app.use(
+            morgan('combined', {
+                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' })
+            })
+        );
+    })(env);
 
     app.use(responseTime()); // Set response time header
     app.use(conditionalGet());
@@ -45,8 +43,9 @@ export default (): Koa => {
     app.use(helmet()); // Security layer
     app.use(koa404Handler);
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
+
     // routing
-    routers.forEach(route => app.use(route.middleware()));
+    loadRoutes(path.resolve(__dirname, 'api'), 'api').forEach(route => app.use(route.middleware()));
 
     return app;
 };

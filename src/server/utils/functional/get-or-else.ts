@@ -3,5 +3,5 @@
  * @param orElse - The result to return when the monad contains Nothing
  * @param m - A Folktale monadic structure
  */
-const getOrElse = (orElse: any) => m => m.getOrElse(orElse);
+const getOrElse = <T>(orElse: T) => (m): any | T => m.getOrElse(orElse);
 export default getOrElse;

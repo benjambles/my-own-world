@@ -1,4 +1,4 @@
-import * as Result from 'folktale/result';
+import { IOEither, tryCatch2v } from 'fp-ts/lib/IOEither';
 import { resolve } from 'path';
 
 /**
@@ -6,12 +6,7 @@ import { resolve } from 'path';
  * @param basePath - The path to begin resolving from
  * @param parts - Additional steps to resolve to the correct path
  */
-const requireFilePath = (basePath: string, ...parts: string[]) => {
-    try {
-        return Result.Ok(require(resolve(basePath, ...parts)));
-    } catch (e) {
-        return Result.Error(e);
-    }
-};
+const requireFilePath = (...parts: string[]) => (basePath: string): IOEither<Error, any> =>
+    tryCatch2v(() => require(resolve(basePath, ...parts)), reason => new Error(String(reason)));
 
 export default requireFilePath;

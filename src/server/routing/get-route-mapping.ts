@@ -1,12 +1,17 @@
-import * as Maybe from 'folktale/maybe';
+import { sequenceT } from 'fp-ts/lib/Apply';
+import { getArrayMonoid } from 'fp-ts/lib/Monoid';
+import { getApplyMonoid, Option, option, some } from 'fp-ts/lib/Option';
 import { Joi } from 'koa-joi-router';
-import { always, concat, pick } from 'ramda';
+import { concat, pick } from 'ramda';
 import getFilledArray from '../utils/array/get-filled-array';
 import reduceEntries from '../utils/array/reduce-entries';
-import maybeProp from '../utils/functional/maybe-prop';
+import foldConcat from '../utils/functional/fold-concat';
+import maybeProp, { maybePropOr } from '../utils/functional/maybe-prop';
 import buildJoiSpec from '../utils/joi-utils/build-joi-spec';
 import parseRouteSpec from './spec-parsing/parse-route-spec';
 import parseSecuritySpec from './spec-parsing/parse-security-spec';
+
+const M = getApplyMonoid(getArrayMonoid());
 
 /**
  * Map routes onto the router through configuration
@@ -14,13 +19,13 @@ import parseSecuritySpec from './spec-parsing/parse-security-spec';
  * @param acc The combined routes so far
  * @param stack A configuration object for a route loaded from a json file
  */
-const getRouteMapping = (acc, handlers, stack) =>
+const getRouteMapping = (acc: Option<any>, handlers: fnMap, stack: Option<any>) =>
     stack
         .map(([head, ...tail]) =>
             getRouteMapping(
-                concat(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
+                M.concat(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
                 handlers,
-                getFilledArray(Maybe.of(tail).concat(maybeProp('paths', head)))
+                getFilledArray(M.concat(some(tail), maybePropOr([], 'paths', head)))
             )
         )
         .getOrElse(acc);
@@ -33,23 +38,24 @@ export default getRouteMapping;
  * @param verbs An object containing http verbs and the swagger/joi docs describing them
  * @param routeHandlers An object containing the handlers to map to the routes
  */
-const mapMethods = (path: string, verbs, routeHandlers) =>
+const mapMethods = (path: string, verbs, routeHandlers: fnMap): Option<any> =>
     verbs.map(
         reduceEntries(
             (acc, [method, spec]) =>
-                Maybe.of(concat)
-                    .ap(parseSecuritySpec(spec))
-                    .ap(parseRouteSpec(spec, routeHandlers))
-                    .map(handler => [
-                        {
-                            method,
-                            path,
-                            handler,
-                            validate: buildJoiSpec(Joi, spec),
-                            meta: pick(['summary', 'description'], spec)
-                        }
-                    ])
-                    .fold(always(acc), concat(acc)),
+                foldConcat(
+                    acc,
+                    sequenceT(option)(parseSecuritySpec(spec), parseRouteSpec(spec, routeHandlers))
+                        .map(args => concat(...args))
+                        .map(handler => [
+                            {
+                                method,
+                                path,
+                                handler,
+                                validate: buildJoiSpec(Joi, spec),
+                                meta: pick(['summary', 'description'], spec)
+                            }
+                        ])
+                ),
             []
         )
     );

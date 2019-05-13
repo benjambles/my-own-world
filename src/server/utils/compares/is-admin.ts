@@ -1,8 +1,9 @@
 import { pathEq } from 'ramda';
+import { Context } from 'koa';
 
 /**
  *
  * @param token
  */
-const isAdmin = (ctx): boolean => pathEq(['state', 'user', 'userData'], true, ctx);
+const isAdmin = (ctx: Context): boolean => pathEq(['state', 'user', 'userData'], true, ctx);
 export default isAdmin;

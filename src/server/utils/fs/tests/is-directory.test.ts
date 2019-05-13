@@ -1,4 +1,4 @@
-import isDirectory from '../is-directory';
+import { isDirectory, maybeIsDirectory } from '../is-directory';
 import { resolve } from 'path';
 
 test('isDirectory', () => {
@@ -11,3 +11,5 @@ test('isDirectory', () => {
         expect(isDirectory(filePath as string)).toEqual(result);
     });
 });
+
+test.todo('maybeIsDirectory');

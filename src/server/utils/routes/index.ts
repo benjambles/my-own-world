@@ -158,7 +158,7 @@ export const send = async (ctx: Koa.Context, error: iError, data: Function): Pro
         const status = R.propOr(200, 'status', response);
 
         ctx.status = status;
-        ctx.body = maybeProp('parts', response).fold(
+        ctx.body = maybeProp('parts', response).foldL(
             () => R.propOr('', 'data', response),
             ({ meta = {}, body = {} }) => ({
                 meta: {
