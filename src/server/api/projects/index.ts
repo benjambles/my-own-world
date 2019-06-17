@@ -1,4 +1,6 @@
-import { getAccessMap, bindCheckAccess, bindOptions } from '../../utils/routes';
+import { getAccessChecker } from '../../utils/middleware/get-access-checker';
+import { bindOptions } from '../../utils/routes';
+import getAccessMap from '../../utils/security/get-access-map';
 import * as projectRoutes from './routes';
 
 const config = require('./config.json');
@@ -8,6 +10,6 @@ const config = require('./config.json');
  */
 export const routeHandlers = {
     ...projectRoutes,
-    checkAccess: bindCheckAccess(getAccessMap()),
+    checkAccess: getAccessChecker(getAccessMap()),
     sendOptions: bindOptions(config)
 };

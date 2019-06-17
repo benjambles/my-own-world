@@ -1,11 +1,9 @@
 import * as Koa from 'koa';
 import { equals, path } from 'ramda';
-import {
-    bindCheckAccess,
-    bindOptions,
-    getAccessMap,
-    getAuthenticatedUserId
-} from '../../utils/routes';
+import { getAccessChecker } from '../../utils/middleware/get-access-checker';
+import { bindOptions } from '../../utils/routes';
+import getAccessMap from '../../utils/security/get-access-map';
+import getAuthenticatedUserId from '../../utils/security/get-authenticated-user-id';
 import * as identifierRoutes from './identifiers/routes';
 import * as userRoutes from './routes';
 
@@ -19,7 +17,7 @@ export const routeHandlers = {
     ...userRoutes,
     ...identifierRoutes,
     sendOptions: bindOptions(config),
-    checkAccess: bindCheckAccess(accessMap)
+    checkAccess: getAccessChecker(accessMap)
 };
 
 /**

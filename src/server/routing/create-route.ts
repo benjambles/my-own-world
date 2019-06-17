@@ -1,6 +1,8 @@
 import * as router from 'koa-joi-router';
 
-export default (prefix: string) => routeMap =>
-    router()
-        .route(routeMap)
-        .prefix(`/${prefix}`);
+export default function createRoute(prefix: string) {
+    return routeMap =>
+        router()
+            .route(routeMap)
+            .prefix(`/${prefix}`);
+}

@@ -8,9 +8,8 @@ import catchJoiErrors from '../../utils/middleware/catch-joi-errors';
  * @param spec
  * @param routeHandlers
  */
-const getRouteMiddleware = (spec, routeHandlers: fnMap): Option<Koa.Middleware[]> =>
-    maybeProp('operationId', spec)
+export default function getRouteMiddleware(spec, routeHandlers: fnMap): Option<Koa.Middleware[]> {
+    return maybeProp('operationId', spec)
         .chain(maybePropIsFn(routeHandlers))
         .map(routeHandler => [catchJoiErrors, routeHandler, routeHandlers.checkAccess]);
-
-export default getRouteMiddleware;
+}

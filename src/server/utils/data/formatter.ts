@@ -6,7 +6,7 @@ import getFormattedData from '../security/get-formatted-data';
  * returns a function that performs the formatting on provided data.
  * @param model
  */
-const formatter = (model: formatOptions) => {
+export default function formatter(model: formatOptions) {
     const formatData = getFormattedData(model);
 
     const setKeyValues = async (acc, entries) => {
@@ -20,6 +20,4 @@ const formatter = (model: formatOptions) => {
     };
 
     return async <T>(data: T): Promise<T> => await setKeyValues({}, Object.entries(data));
-};
-
-export default formatter;
+}

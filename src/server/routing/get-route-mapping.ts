@@ -19,8 +19,8 @@ const M = getApplyMonoid(getArrayMonoid());
  * @param acc The combined routes so far
  * @param stack A configuration object for a route loaded from a json file
  */
-const getRouteMapping = (acc: Option<any>, handlers: fnMap, stack: Option<any>) =>
-    stack
+export default function getRouteMapping(acc: Option<any>, handlers: fnMap, stack: Option<any>) {
+    return stack
         .map(([head, ...tail]) =>
             getRouteMapping(
                 M.concat(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
@@ -29,8 +29,7 @@ const getRouteMapping = (acc: Option<any>, handlers: fnMap, stack: Option<any>) 
             )
         )
         .getOrElse(acc);
-
-export default getRouteMapping;
+}
 
 /**
  * Maps an object containing swagger and joi docs into a JOI route object
@@ -38,8 +37,8 @@ export default getRouteMapping;
  * @param verbs An object containing http verbs and the swagger/joi docs describing them
  * @param routeHandlers An object containing the handlers to map to the routes
  */
-const mapMethods = (path: string, verbs, routeHandlers: fnMap): Option<any> =>
-    verbs.map(
+function mapMethods(path: string, verbs, routeHandlers: fnMap): Option<any> {
+    return verbs.map(
         reduceEntries(
             (acc, [method, spec]) =>
                 foldConcat(
@@ -62,3 +61,4 @@ const mapMethods = (path: string, verbs, routeHandlers: fnMap): Option<any> =>
             []
         )
     );
+}

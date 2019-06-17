@@ -17,8 +17,8 @@ const getWrappedMiddleware = compose(
  * the Koa middleware for running security checks on the route
  * @param spec
  */
-const getSecurityMiddleware = (spec): Option<Koa.Middleware[]> =>
-    maybeProp('security', spec)
+export default function getSecurityMiddleware(spec): Option<Koa.Middleware[]> {
+    return maybeProp('security', spec)
         .map(
             reduce(
                 (acc, item) => foldConcat(acc, maybeProp('jwt', item).map(getWrappedMiddleware)),
@@ -26,5 +26,4 @@ const getSecurityMiddleware = (spec): Option<Koa.Middleware[]> =>
             )
         )
         .alt(some([]));
-
-export default getSecurityMiddleware;
+}

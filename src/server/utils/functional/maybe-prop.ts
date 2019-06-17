@@ -3,23 +3,30 @@ import { prop } from 'ramda';
 import maybeFunction from './maybe-function';
 
 /**
- * Takes a property name, and an object and returns a Maybe of the result
+ * Takes a property name, and an object and returns an Option of the result
  * @param propName
  * @param obj
  */
-export const maybeProp = (propName: string, obj) => fromNullable(prop(propName, obj));
+export function maybeProp(propName: string, obj) {
+    return fromNullable(prop(propName, obj));
+}
 
 /**
- *
+ * Takes a property name, and an object, and a fallback value and returns a some of the result
  * @param or
  * @param propName
  * @param obj
  */
-export const maybePropOr = (or, propName: string, obj) => maybeProp(propName, obj).alt(some(or));
+export function maybePropOr(or, propName: string, obj) {
+    return maybeProp(propName, obj).alt(some(or));
+}
 
 /**
- *
+ * Takes an object and returns a function that takes a property name as a string
+ * If the property is found on the object, and is a function a some<function> is returned.
+ * Otherwise a none.
  * @param obj
  */
-export const maybePropIsFn = (obj: fnMap) => (propName: string) =>
-    maybeProp(propName, obj).chain(maybeFunction);
+export function maybePropIsFn(obj: fnMap) {
+    return (propName: string) => maybeProp(propName, obj).chain(maybeFunction);
+}

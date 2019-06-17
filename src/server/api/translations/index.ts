@@ -1,5 +1,5 @@
-import { bindCheckAccess, bindOptions } from '../../utils/routes';
-import * as translationRoutes from './routes';
+import { getAccessChecker } from '../../utils/middleware/get-access-checker';
+import { bindOptions } from '../../utils/routes';
 
 const config = require('./config.json');
 
@@ -9,5 +9,5 @@ const config = require('./config.json');
  */
 export const routeHandlers = {
     sendOptions: bindOptions(config),
-    checkAccess: bindCheckAccess()
+    checkAccess: getAccessChecker()
 };

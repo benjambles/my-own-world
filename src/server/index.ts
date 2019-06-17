@@ -18,7 +18,7 @@ import errorHandler = require('koa-better-error-handler');
  * Initialize an app
  * @api public
  */
-export default (env): Koa => {
+export default function run(env): Koa {
     const app: Koa = new Koa();
 
     // override koa's undocumented error handler
@@ -48,4 +48,4 @@ export default (env): Koa => {
     loadRoutes(path.resolve(__dirname, 'api'), 'api').forEach(route => app.use(route.middleware()));
 
     return app;
-};
+}

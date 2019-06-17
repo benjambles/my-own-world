@@ -1,6 +1,5 @@
 import * as R from 'ramda';
 import swaggerToJoiType from './swagger-to-joi-type';
-import { AnySchema } from 'joi';
 /**
  * Creates the validate spec object required by JOI routers
  * Converts:
@@ -22,7 +21,7 @@ import { AnySchema } from 'joi';
  *
  * @param config
  */
-const buildJoiSpec = (joi: AnySchema, { parameters = [], consumes = [] }) => {
+export default function buildJoiSpec(joi, { parameters = [], consumes = [] }) {
     const spec = parameters.reduce(
         (acc, paramConf: swaggerParam) =>
             R.assocPath(R.props(['in', 'name'], paramConf), buildParameter(joi, paramConf), acc),
@@ -34,18 +33,13 @@ const buildJoiSpec = (joi: AnySchema, { parameters = [], consumes = [] }) => {
     }
 
     return spec;
-};
-
-export default buildJoiSpec;
+}
 
 /**
  * Converts a swagger parameter definition into a Joi validation schema
  * @param paramConf Swagger parameter definition
  */
-const buildParameter = (
-    joi: AnySchema,
-    { type, values, format, opts = {} }: swaggerParam
-): Function => {
+function buildParameter(joi, { type, values, format, opts = {} }: swaggerParam): Function {
     const getFormatType = format => (format ? [swaggerToJoiType(format), true] : null);
     const getChildValidators = (type, values) =>
         R.equals(type, 'array') && Array.isArray(values) && values.length
@@ -63,4 +57,4 @@ const buildParameter = (
         const [name, value] = validator;
         return value === true ? acc[name]() : acc[name](value);
     }, joi);
-};
+}

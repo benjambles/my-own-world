@@ -18,14 +18,13 @@ import getRouteMapping from './get-route-mapping';
  * @param root The path within which to search for route configs
  * @api private
  */
-const loadRoutes = (root: string, prefix: string = ''): iRouter[] =>
-    compose(
+export default function loadRoutes(root: string, prefix: string = ''): iRouter[] {
+    return compose(
         catOptions,
         map(getRouter(root, createRoute(prefix))),
         fs.readdirSync
     )(root);
-
-export default loadRoutes;
+}
 
 /**
  * Searches a directory for files that can be used to generate routes on our API
@@ -33,26 +32,37 @@ export default loadRoutes;
  * @param rootPath
  * @param getPrefixedRoute
  */
-const getRouter = (rootPath, getPrefixedRoute) => (name: string): Option<iRouter> =>
-    maybeIsDirectory(resolve(rootPath, name))
-        .map(requireFilesOrNone)
-        .chain(([moduleContents, config]) =>
-            getRouteMapping(
-                some([]),
-                prop('routeHandlers', moduleContents),
-                maybeProp('paths', config)
+function getRouter(rootPath, getPrefixedRoute) {
+    return (name: string): Option<iRouter> =>
+        maybeIsDirectory(resolve(rootPath, name))
+            .map(requireFilesOrNone)
+            .chain(([moduleContents, config]) =>
+                getRouteMapping(
+                    some([]),
+                    prop('routeHandlers', moduleContents),
+                    maybeProp('paths', config)
+                )
             )
-        )
-        .map(getPrefixedRoute);
+            .map(getPrefixedRoute);
+}
 
-const requireIndex = requireFilePath('index.js');
+/**
+ *
+ * @param index
+ * @param config
+ */
+function requireFiles(index: string, config: string) {
+    return (filePath: string) =>
+        sequenceT(ioEither)(
+            requireFilePath(index)(filePath),
+            requireFilePath(config)(filePath)
+        ).run();
+}
 
-const requireConfig = requireFilePath('config.json');
-
-const requireFiles = filePath =>
-    sequenceT(ioEither)(requireIndex(filePath), requireConfig(filePath)).run();
-
+/**
+ *
+ */
 const requireFilesOrNone = compose(
     getOrElse(none),
-    requireFiles
+    requireFiles('index.js', 'config.json')
 );

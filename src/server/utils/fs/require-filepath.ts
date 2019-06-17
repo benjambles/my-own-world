@@ -6,7 +6,11 @@ import { resolve } from 'path';
  * @param basePath - The path to begin resolving from
  * @param parts - Additional steps to resolve to the correct path
  */
-const requireFilePath = (...parts: string[]) => (basePath: string): IOEither<Error, any> =>
-    tryCatch2v(() => require(resolve(basePath, ...parts)), reason => new Error(String(reason)));
-
-export default requireFilePath;
+export default function requireFilePath(...parts: string[]) {
+    return (basePath: string): IOEither<Error, any> => {
+        return tryCatch2v(
+            () => require(resolve(basePath, ...parts)),
+            reason => new Error(String(reason))
+        );
+    };
+}

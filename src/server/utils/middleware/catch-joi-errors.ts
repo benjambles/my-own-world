@@ -9,7 +9,10 @@ import getErrorMessage from '../joi-utils/get-error-message';
  * @param ctx Koa context
  * @param next Next middleware to call if validation passes
  */
-const catchJoiErrors = async (ctx: Koa.Context, next: () => Promise<any>): Promise<any> => {
+export default async function catchJoiErrors(
+    ctx: Koa.Context,
+    next: () => Promise<any>
+): Promise<void> {
     maybeProp('invalid', ctx)
         .map(reduceEntries((acc, [key, error]) => assoc(key, getErrorMessage(error), acc), {}))
         .map(message => {
@@ -17,6 +20,4 @@ const catchJoiErrors = async (ctx: Koa.Context, next: () => Promise<any>): Promi
         });
 
     await next();
-};
-
-export default catchJoiErrors;
+}

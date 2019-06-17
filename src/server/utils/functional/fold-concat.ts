@@ -1,4 +1,5 @@
 import { concat } from 'ramda';
 
-const foldConcat = (acc, foldable) => foldable.fold(acc, concat(acc));
-export default foldConcat;
+export default function foldConcat(acc, foldable) {
+    return foldable.fold(acc, concat(acc));
+}

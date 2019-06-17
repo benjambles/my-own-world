@@ -5,5 +5,6 @@ import { Context } from 'koa';
  *
  * @param token
  */
-const isAdmin = (ctx: Context): boolean => pathEq(['state', 'user', 'userData'], true, ctx);
-export default isAdmin;
+export default function isAdmin(ctx: Context): boolean {
+    return pathEq(['state', 'user', 'userData'], true, ctx);
+}

@@ -5,5 +5,6 @@ import { Context } from 'koa';
  *
  * @param token
  */
-const isUser = (ctx: Context): boolean => !!path(['state', 'user'], ctx);
-export default isUser;
+export default function isUser(ctx: Context): boolean {
+    return !!path(['state', 'user'], ctx);
+}
