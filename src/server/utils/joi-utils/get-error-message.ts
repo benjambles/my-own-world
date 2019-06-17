@@ -1,5 +1,5 @@
 import { map } from 'ramda';
-import maybeProp from '../functional/maybe-prop';
+import { maybeProp } from '../functional/maybe-prop';
 
 const getErrorMessage = error =>
     maybeProp('details', error)

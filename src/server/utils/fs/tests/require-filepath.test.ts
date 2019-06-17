@@ -5,9 +5,9 @@ test('requireFilePath', () => {
 
     tests.forEach(([result, basePath, filePath]) => {
         expect(
-            requireFilePath(basePath, filePath)
-                .map(resp => resp.test)
-                .getOrElse('error')
+            requireFilePath(filePath)(basePath)
+                .run()
+                .fold(() => 'error', resp => resp.test)
         ).toEqual(result);
     });
 });

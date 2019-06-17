@@ -7,5 +7,5 @@ import * as fs from 'fs';
 export const isDirectory = (filePath: string): boolean => fs.lstatSync(filePath).isDirectory();
 
 export const maybeIsDirectory = (filePath: string): Option<string> => {
-    return fs.lstatSync(filePath).isDirectory() ? some(filePath) : none;
+    return isDirectory(filePath) ? some(filePath) : none;
 };

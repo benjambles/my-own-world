@@ -7,11 +7,19 @@ import maybeFunction from './maybe-function';
  * @param propName
  * @param obj
  */
-const maybeProp = (propName: string, obj) => fromNullable(prop(propName, obj));
+export const maybeProp = (propName: string, obj) => fromNullable(prop(propName, obj));
 
-export default maybeProp;
-
+/**
+ *
+ * @param or
+ * @param propName
+ * @param obj
+ */
 export const maybePropOr = (or, propName: string, obj) => maybeProp(propName, obj).alt(some(or));
 
+/**
+ *
+ * @param obj
+ */
 export const maybePropIsFn = (obj: fnMap) => (propName: string) =>
     maybeProp(propName, obj).chain(maybeFunction);

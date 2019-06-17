@@ -6,7 +6,7 @@ import getStringParts from '../array/get-string-parts';
 import wrap from '../array/wrap';
 import isAdmin from '../compares/is-admin';
 import isUser from '../compares/is-user';
-import maybeProp from '../functional/maybe-prop';
+import { maybeProp } from '../functional/maybe-prop';
 import { dataResponse } from './responses';
 
 const getRoute = R.prop('route');

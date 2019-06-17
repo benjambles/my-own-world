@@ -8,9 +8,10 @@ import { compose, map, prop } from 'ramda';
 import { maybeIsDirectory } from '../utils/fs/is-directory';
 import requireFilePath from '../utils/fs/require-filepath';
 import getOrElse from '../utils/functional/get-or-else';
-import maybeProp from '../utils/functional/maybe-prop';
+import { maybeProp } from '../utils/functional/maybe-prop';
 import createRoute from './create-route';
 import getRouteMapping from './get-route-mapping';
+
 /**
  * Load resources in `root` directory.
  *

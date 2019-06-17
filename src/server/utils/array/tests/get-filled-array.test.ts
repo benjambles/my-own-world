@@ -1,10 +1,10 @@
-import { some } from 'fp-ts/lib/Option';
+import { some, Option } from 'fp-ts/lib/Option';
 import getFilledArray from '../get-filled-array';
 
-test('getFilledArray', () => {
-    const tests = [[some([]), false], [some([1]), [1]]];
+type testParams = [Option<any[]>, any];
 
-    tests.forEach(([mArr, result]) =>
-        expect(getFilledArray(mArr).getOrElse(false)).toEqual(result)
-    );
+test('getFilledArray', () => {
+    const tests: testParams[] = [[some([]), false], [some([1]), true]];
+
+    tests.forEach(([mArr, result]) => expect(getFilledArray(mArr).isSome()).toEqual(result));
 });

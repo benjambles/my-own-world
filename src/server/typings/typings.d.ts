@@ -51,6 +51,7 @@ interface dbData {
 interface iRouter {
     route(routes: joiRoute[]);
     middleware();
+    routes();
 }
 
 interface migration {

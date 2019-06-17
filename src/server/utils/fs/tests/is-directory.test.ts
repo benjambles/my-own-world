@@ -12,4 +12,14 @@ test('isDirectory', () => {
     });
 });
 
-test.todo('maybeIsDirectory');
+test('maybeIsDirectory', () => {
+    const fail = maybeIsDirectory(resolve(__dirname, 'mocks/mock-module.js'));
+    expect(fail.isNone());
+
+    const passPath = resolve(__dirname, 'mocks');
+    const pass = maybeIsDirectory(passPath);
+    expect(pass.isSome());
+    pass.map(val => {
+        expect(val).toEqual(passPath);
+    });
+});

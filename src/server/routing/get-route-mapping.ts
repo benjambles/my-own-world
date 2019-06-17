@@ -6,10 +6,10 @@ import { concat, pick } from 'ramda';
 import getFilledArray from '../utils/array/get-filled-array';
 import reduceEntries from '../utils/array/reduce-entries';
 import foldConcat from '../utils/functional/fold-concat';
-import maybeProp, { maybePropOr } from '../utils/functional/maybe-prop';
+import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop';
 import buildJoiSpec from '../utils/joi-utils/build-joi-spec';
-import parseRouteSpec from './spec-parsing/parse-route-spec';
-import parseSecuritySpec from './spec-parsing/parse-security-spec';
+import getRouteMiddleware from './spec-parsing/get-route-middleware';
+import getSecurityMiddleware from './spec-parsing/get-security-middleware';
 
 const M = getApplyMonoid(getArrayMonoid());
 
@@ -44,7 +44,10 @@ const mapMethods = (path: string, verbs, routeHandlers: fnMap): Option<any> =>
             (acc, [method, spec]) =>
                 foldConcat(
                     acc,
-                    sequenceT(option)(parseSecuritySpec(spec), parseRouteSpec(spec, routeHandlers))
+                    sequenceT(option)(
+                        getSecurityMiddleware(spec),
+                        getRouteMiddleware(spec, routeHandlers)
+                    )
                         .map(args => concat(...args))
                         .map(handler => [
                             {

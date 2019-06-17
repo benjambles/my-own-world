@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 import { assoc } from 'ramda';
 import reduceEntries from '../array/reduce-entries';
-import maybeProp from '../functional/maybe-prop';
+import { maybeProp } from '../functional/maybe-prop';
 import getErrorMessage from '../joi-utils/get-error-message';
 
 /**
