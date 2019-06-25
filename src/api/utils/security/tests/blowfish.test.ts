@@ -6,11 +6,12 @@ test('bHash', async () => {
 });
 
 test('compareBHash', async () => {
-    const result = await compareBHash(
-        'this is my value',
-        '$2b$10$NByGLHmirFZGuUgMfO0QWu2.p7EV2KWBoQ68I.KVTi2l/v95FLkFS'
-    );
-    expect(result).toBeTruthy();
+    await expect(
+        compareBHash(
+            'this is my value',
+            '$2b$10$NByGLHmirFZGuUgMfO0QWu2.p7EV2KWBoQ68I.KVTi2l/v95FLkFS'
+        )
+    ).resolves.toBeTruthy();
 
     await expect(
         compareBHash(

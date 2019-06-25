@@ -1,6 +1,7 @@
 import * as Koa from 'koa';
-import { when, all, pathOr } from 'ramda';
+import { all, pathOr, when } from 'ramda';
 import { isTruthy } from 'ramda-adjunct';
+import { throwNoAccessError } from '../errors/errors';
 
 /**
  * Returns a middleware that prevents users from accessing areas of the API based on their roles
@@ -18,13 +19,9 @@ export function getAccessChecker(accessMap?: any): Koa.Middleware {
             const roles = pathOr([], ['state', 'accessRoles'], ctx) as string[];
             const hasAccess = roles.some(accessMap(ctx));
 
-            when(all(isTruthy), noAccessError(ctx))([roles.length, !hasAccess]);
+            when(all(isTruthy), throwNoAccessError(ctx))([roles.length, !hasAccess]);
         })(accessMap);
 
         await next();
     };
 }
-
-const noAccessError = ctx => () => {
-    ctx.throw(401, 'Unauthorised access to endpoint');
-};

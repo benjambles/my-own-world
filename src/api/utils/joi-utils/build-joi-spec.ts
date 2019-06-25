@@ -28,7 +28,7 @@ export default function buildJoiSpec(joi, { parameters = [], consumes = [] }) {
         { continueOnError: true }
     );
 
-    if (prop('body', spec) && consumes.length > 1) {
+    if (prop('body', spec) && consumes.length) {
         spec.type = head(consumes).split('/')[1];
     }
 
