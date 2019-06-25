@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "../../built/api",
+        "allowJs": true,
+        "checkJs": true,
+        "target": "es2017",
+        "module": "commonjs",
+        "removeComments": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "lib": ["es2017", "esnext.array", "dom"]
+    },
+    "include": ["**/*", "../../jest.config.js"],
+    "exclude": ["../../node_modules", "**/*.test.ts", "./coverage"],
+    "compileOnSave": true
+}
