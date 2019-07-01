@@ -1,5 +1,6 @@
 import { assoc, __ } from 'ramda';
 import getFormattedData from '../security/get-formatted-data';
+import { isNone, isSome } from 'fp-ts/lib/Option';
 
 /**
  * Takes a format configuration that defines how to handle fields within a given model
@@ -10,7 +11,7 @@ export default function formatter(model: formatOptions) {
     const formatData = getFormattedData(model);
 
     const setKeyValues = async (acc, entries) => {
-        if (entries.length) return acc;
+        if (!entries.length) return acc;
 
         const [[key, value], ...tail] = entries;
         const maybeValue = await formatData(key, value);

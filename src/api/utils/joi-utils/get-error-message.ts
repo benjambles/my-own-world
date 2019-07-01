@@ -1,4 +1,4 @@
-import { map } from 'ramda';
+import { pick } from 'ramda';
 import { maybeProp } from '../functional/maybe-prop';
 
 /**
@@ -7,6 +7,6 @@ import { maybeProp } from '../functional/maybe-prop';
  */
 export default function getErrorMessage(error) {
     return maybeProp('details', error)
-        .map(map(({ message, path }) => ({ error: message, field: path })))
+        .map(pick(['message', 'path']))
         .getOrElse(error.msg);
 }

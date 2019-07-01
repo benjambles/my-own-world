@@ -37,6 +37,7 @@ const nodeEnv: string = env.NODE_ENV || 'development';
 export const isProduction = () => {
     return 'production' === nodeEnv;
 };
+
 export const port: number = Number.parseInt(env.PORT, 10) || 3000;
 
 // Set the HOSTNAME in production for basic CSRF prevention

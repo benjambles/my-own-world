@@ -1,11 +1,11 @@
 import * as crypto from 'crypto';
 import { encryptionData, hashType } from '../../config';
+import { propOr } from 'ramda';
 
 const separator = ':';
 const encodingType = 'hex';
 const encryptionKey = encryptionData.password;
 const encryptionType = encryptionData.type;
-const ivLength = encryptionData.ivLength;
 
 /**
  * Decrypt a string encrypted using crypto.createCipher
@@ -13,7 +13,7 @@ const ivLength = encryptionData.ivLength;
  */
 export function decryptValue(value: string): string {
     const [type, iv, ...data] = value.split(separator);
-    const ivBuffer = iv === 'null' ? null : Buffer.from(iv, encodingType);
+    const ivBuffer = Buffer.from(iv, encodingType);
     const encryptedText = Buffer.from(data.join(separator), encodingType);
     const decipher = crypto.createDecipheriv(type, Buffer.from(encryptionKey), ivBuffer);
     const decrypted = decipher.update(encryptedText);
@@ -26,7 +26,7 @@ export function decryptValue(value: string): string {
  * @param value A string to be encrypted
  */
 export function encryptValue(value: string): string {
-    const iv = ivLength ? crypto.randomBytes(ivLength) : null;
+    const iv = crypto.randomBytes(propOr(16, 'ivLength', encryptionData));
     const cipher = crypto.createCipheriv(encryptionType, Buffer.from(encryptionKey), iv);
     const encrypted = cipher.update(value);
 

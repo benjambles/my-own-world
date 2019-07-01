@@ -87,6 +87,31 @@ test('buildJoiSpec', () => {
             data: {
                 ownerId: 'a-totally-valid-uuid'
             }
+        },
+        {
+            passes: true,
+            spec: {
+                consumes: ['application/json'],
+                parameters: [
+                    {
+                        name: 'ids',
+                        in: 'body',
+                        description: 'List of IDs being requested',
+                        opts: {
+                            required: true
+                        },
+                        type: 'array',
+                        values: [
+                            {
+                                type: 'string'
+                            }
+                        ]
+                    }
+                ]
+            },
+            data: {
+                ids: ['a-totally-valid-uuid', 'and-another']
+            }
         }
     ];
 

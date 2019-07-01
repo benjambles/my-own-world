@@ -1,6 +1,6 @@
 import { encryptValue, hmac as getHmac } from './encrpytion';
 import { bHash } from './blowfish';
-import { cond } from 'ramda';
+import { cond, T } from 'ramda';
 import { some, none } from 'fp-ts/lib/Option';
 
 /**
@@ -12,11 +12,14 @@ export default function getFormattedData({
     hmac = [],
     readOnly = ['uuid']
 }: formatOptions) {
+    const includes = arr => key => arr.includes(key);
+
     return async (key: string, value) =>
         await cond([
-            [readOnly.includes, async () => none],
-            [encrypted.includes, async () => some(encryptValue(value))],
-            [salted.includes, async () => some(await bHash(value))],
-            [hmac.includes, async () => some(await getHmac(value))]
+            [includes(readOnly), async () => none],
+            [includes(encrypted), async () => some(encryptValue(value))],
+            [includes(salted), async () => some(await bHash(value))],
+            [includes(hmac), async () => some(await getHmac(value))],
+            [T, async () => some(value)]
         ])(key);
 }

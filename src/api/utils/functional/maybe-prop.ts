@@ -27,6 +27,6 @@ export function maybePropOr(or, propName: string, obj) {
  * Otherwise a none.
  * @param obj
  */
-export function maybePropIsFn(obj: fnMap) {
-    return (propName: string) => maybeProp(propName, obj).chain(maybeFunction);
+export function maybePropIsFn(propName: string, obj: fnMap) {
+    return maybeProp(propName, obj).chain(maybeFunction);
 }
