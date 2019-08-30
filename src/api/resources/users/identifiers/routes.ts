@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 
-import { generateRoute } from '../../../utils/routes';
+import { generateRoute } from '../../../utils/routes/generate-route';
 import * as identifiers from './identifiers';
 import { partsResponse } from '../../../utils/routes/responses';
 
@@ -14,12 +14,7 @@ export const getUserIdentifiers: Koa.Middleware = generateRoute(
         status: 400
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
-        const identityData = await identifiers.getByUserId(
-            ctx.request.params.userId,
-            limit,
-            offset
-        );
+        const identityData = await identifiers.getByUserId(ctx.request.params.userId);
 
         return partsResponse(identityData);
     }
@@ -39,13 +34,14 @@ export const createUserIdentifier: Koa.Middleware = generateRoute(
             ctx.request.params.userId,
             ctx.request.body
         );
+
         return partsResponse(identifierData);
     }
 );
 
 /**
  * Deletes an identifier represented by the uuid given
- * @route [Delete] /users/:userId/identifiers/:identifierId
+ * @route [Delete] /users/:userId/identifiers/:hash
  */
 export const deleteUserIdentifier: Koa.Middleware = generateRoute(
     {
@@ -53,7 +49,11 @@ export const deleteUserIdentifier: Koa.Middleware = generateRoute(
         status: 400
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const isDeleted = await identifiers.remove(ctx.request.params.identifierId);
+        const isDeleted = await identifiers.remove(
+            ctx.request.params.userId,
+            ctx.request.params.hash
+        );
+
         return partsResponse(isDeleted);
     }
 );

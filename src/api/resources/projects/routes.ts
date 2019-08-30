@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 import * as projects from './projects';
-import { generateRoute } from '../../utils/routes';
+import { generateRoute } from '../../utils/routes/generate-route';
 import { partsResponse } from '../../utils/routes/responses';
 
 /**
@@ -56,8 +56,6 @@ export const getProjectById: Koa.Middleware = generateRoute(
 /**
  * Update a project and return the updated data
  * @route [PUT] /projects/:projectId
- * @param {Koa.Context} ctx - A Koa context object
- * @param {Function} next - Following Koa Middleware
  */
 export const updateProjectById: Koa.Middleware = generateRoute(
     {
@@ -67,6 +65,7 @@ export const updateProjectById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectUpdated = await projects.update(ctx.request.params.projectId, ctx.request
             .body as Project.ProjectData);
+
         return partsResponse(projectUpdated);
     }
 );
@@ -82,6 +81,7 @@ export const deleteProjectById: Koa.Middleware = generateRoute(
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectDeleted = await projects.remove(ctx.request.params.projectId);
+
         return partsResponse(projectDeleted);
     }
 );

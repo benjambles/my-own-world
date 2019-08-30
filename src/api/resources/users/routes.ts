@@ -1,5 +1,5 @@
 import * as Koa from 'koa';
-import { generateRoute } from '../../utils/routes';
+import { generateRoute } from '../../utils/routes/generate-route';
 import { partsResponse } from '../../utils/routes/responses';
 import { getToken } from '../../utils/security/jwt';
 import * as identifiers from './identifiers/identifiers';
@@ -68,6 +68,7 @@ export const updateUserById: Koa.Middleware = generateRoute(
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userUpdated = await users.update(ctx.request.params.userId, ctx.request
             .body as User.UserData);
+
         return partsResponse(userUpdated);
     }
 );
@@ -83,6 +84,7 @@ export const deleteUserById: Koa.Middleware = generateRoute(
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const userDeleted = await users.remove(ctx.request.params.userId);
+
         return partsResponse(userDeleted);
     }
 );

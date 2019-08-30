@@ -2,7 +2,7 @@ import { sequenceT } from 'fp-ts/lib/Apply';
 import { getArrayMonoid } from 'fp-ts/lib/Monoid';
 import { getApplyMonoid, Option, option, some } from 'fp-ts/lib/Option';
 import { Joi } from 'koa-joi-router';
-import { concat, pick } from 'ramda';
+import { concat, pick, apply } from 'ramda';
 import getFilledArray from '../utils/array/get-filled-array';
 import reduceEntries from '../utils/array/reduce-entries';
 import foldConcat from '../utils/functional/fold-concat';
@@ -47,7 +47,7 @@ function mapMethods(path: string, verbs, routeHandlers: fnMap): Option<any> {
                         getSecurityMiddleware(spec),
                         getRouteMiddleware(spec, routeHandlers)
                     )
-                        .map(args => concat(...args))
+                        .map(apply(concat))
                         .map(handler => [
                             {
                                 method,

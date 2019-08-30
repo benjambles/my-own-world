@@ -5,7 +5,7 @@ test('requireFilePath', () => {
 
     tests.forEach(([result, basePath, filePath]) => {
         expect(
-            requireFilePath(filePath)(basePath)
+            requireFilePath(basePath, filePath)
                 .run()
                 .fold(() => 'error', resp => resp.test)
         ).toEqual(result);

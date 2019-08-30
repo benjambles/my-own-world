@@ -31,6 +31,13 @@ export const db = Object.freeze({
     idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
 });
 
+export const MONGO_DB = Object.freeze({
+    user: env.MONGO_USER,
+    database: env.MONGO_DB,
+    password: env.MONGO_PASSWORD,
+    url: env.MONGO_URL
+});
+
 // Ensure require('dotenv').config() is run before this module is required
 const nodeEnv: string = env.NODE_ENV || 'development';
 

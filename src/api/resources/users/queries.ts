@@ -1,18 +1,39 @@
-import { result, knex, getOneRaw, getManyRaw } from '../../db';
+import { ObjectId } from 'mongodb';
+import { result, withCollection } from '../../db';
+
+const users = withCollection('Users');
 
 /**
  * Retrieve a user with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> {
-    const queryString = knex('Users')
-        .select('*')
-        .where({
-            uuid,
-            isDeleted: false
-        });
-    const query = await getOneRaw(queryString);
-    return result('There was an error whilst fetching the user', query);
+export async function getActiveUserByUuid(uuid: ObjectId): Promise<User.UserData> {
+    const data = await users.findOne({ _id: uuid, isDeleted: false });
+
+    return result('There was an error whilst fetching the user', data);
+}
+
+/**
+ * Retrieve a user with a matching uuid from the database
+ * @param uuid - A valid uuid
+ */
+export async function getBasicUserDetails(uuid: ObjectId): Promise<User.UserData> {
+    const data = await users.findOne(
+        { _id: uuid, isDeleted: false },
+        { projection: { firstName: 1, lastName: 1, displayName: 1 } }
+    );
+
+    return result('There was an error whilst fetching the user', data);
+}
+
+/**
+ *
+ * @param identifier
+ */
+export async function getActiveUserByIdentifier(identifier: string): Promise<User.UserData> {
+    const data = await users.findOne({ isDeleted: false, 'identities.hash': { $eq: identifier } });
+
+    return result('There was an error whilst fetching the user', data);
 }
 
 /**
@@ -22,42 +43,36 @@ export async function getActiveUserByUuid(uuid: string): Promise<User.UserData> 
  */
 export async function getActiveUsers(
     limit: number = 10,
-    offset: number = 0
+    skip: number = 0
 ): Promise<User.UserData[]> {
-    const queryString = knex('Users')
-        .select('*')
-        .where({
-            isDeleted: false
-        })
-        .limit(limit)
-        .offset(offset);
-    const query = await getManyRaw(queryString);
-    return result('There was an error whilst fetching users', query);
+    const data = await users.find({ isDeleted: false }, { limit, skip }).toArray();
+
+    return result('There was an error whilst fetching users', data);
 }
 
 /**
  * Create a new user from validated data
  * @param data - The formatted data ready for storage
  */
-export async function createUser(data: User.UserData): Promise<User.UserData> {
-    const queryString = knex('Users')
-        .returning('*')
-        .insert(data);
-    const query = await getOneRaw(queryString);
-    return result('There was an error whilst creating the user', query);
+export async function createUser(userData: User.UserData): Promise<User.UserData> {
+    const { insertedId } = await users.insertOne(userData);
+    const data = await getActiveUserByUuid(insertedId);
+
+    return result('There was an error whilst creating the user', data);
 }
 
 /**
  * Delete a user with a given ID
  * @param uuid - A valid uuid
  */
-export async function deleteUser(uuid: string): Promise<boolean> {
-    const queryString = knex('Users')
-        .returning('isDeleted')
-        .where({ uuid })
-        .update({ isDeleted: true });
-    const query = await getOneRaw(queryString);
-    return result('There was an error whilst updating the user', query);
+export async function deleteUser(uuid: ObjectId): Promise<boolean> {
+    const data = await users.findOneAndUpdate(
+        { _id: uuid },
+        { $set: { isDeleted: true } },
+        { projection: { isDeleted: 1 } }
+    );
+
+    return result('There was an error whilst updating the user', data);
 }
 
 /**
@@ -65,11 +80,8 @@ export async function deleteUser(uuid: string): Promise<boolean> {
  * @param uuid - A UUID representing the user profile to be updated
  * @param data - An object representing a patch on a User profile
  */
-export async function updateUser(uuid: string, data: User.UserData): Promise<User.UserData> {
-    const queryString = knex('Users')
-        .returning('*')
-        .where({ uuid })
-        .update(data);
-    const query = await getOneRaw(queryString);
-    return result('There was an error whilst updating the user', query);
+export async function updateUser(uuid: ObjectId, userData: User.UserData): Promise<User.UserData> {
+    const data = await users.findOneAndUpdate({ _id: uuid }, { $set: { userData } });
+
+    return result('There was an error whilst updating the user', data);
 }

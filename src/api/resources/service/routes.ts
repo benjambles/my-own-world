@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 
 import { getSystemKey } from './service';
-import { generateRoute } from '../../utils/routes';
+import { generateRoute } from '../../utils/routes/generate-route';
 import { partsResponse, dataResponse } from '../../utils/routes/responses';
 
 /**
@@ -29,6 +29,7 @@ export const getVersion: Koa.Middleware = generateRoute(
     },
     async (): Promise<ApiResponse> => {
         const { key, value } = await getSystemKey('api_version');
+
         return dataResponse({
             [key]: value
         });

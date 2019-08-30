@@ -1,28 +1,39 @@
-import * as libKnex from 'knex';
-import * as pg from 'pg';
-import { extend, _raw } from 'pg-extra';
+import { Db, MongoClient } from 'mongodb';
 import { isNil } from 'ramda';
-import { db } from '../config';
 
-const postgres = extend(pg);
-
-export const pool = new postgres.extra.Pool(db);
-export const knex = libKnex({ client: 'pg' });
+let db: Db;
+let client: MongoClient;
 
 /**
- * Run a Knex query for a single result through the pool
- * @param {object} query - A Knex query object
+ *
+ * @param config
  */
-export function getOneRaw(query) {
-    return pool.one(_raw`${query}`);
+export async function initConnection(config) {
+    const connectionString = getConnectionString(config);
+    const client = await new MongoClient(connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+
+    await client.connect();
+    db = client.db(config.database);
+
+    return db;
 }
 
 /**
- * Run a Knex query for multiple results through the pool
- * @param {object} query - A Knex query object
+ * Closes the database connection
  */
-export function getManyRaw(query) {
-    return pool.many(_raw`${query}`);
+export function closeConnection() {
+    client && client.close();
+}
+
+/**
+ * Returns a MongoDB collection
+ * @param name
+ */
+export function withCollection(name) {
+    return db.collection(name);
 }
 
 /**
@@ -36,4 +47,16 @@ export function result(error: string, data: any): never | any {
     }
 
     return data;
+}
+
+/**
+ *
+ * @param config
+ */
+function getConnectionString(config) {
+    const { url, user, password } = config;
+
+    const userStr = !user ? '' : password ? `${user}:${password}@` : `${user}@`;
+
+    return `${userStr}${url}`;
 }

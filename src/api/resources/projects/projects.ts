@@ -1,10 +1,8 @@
+import ObjectId from 'mongodb';
 import formatter from '../../utils/data/formatter';
-import getUUID from '../../utils/uuids/get-uuid';
 import * as db from './queries';
 
 const format = {
-    encrypted: ['email'],
-    salted: ['password'],
     readOnly: ['uuid']
 };
 
@@ -19,8 +17,7 @@ const cleanProjectData = formatter(format);
  * @param offset - The number of records to skip
  */
 export async function get(limit: number = 10, offset: number = 0): Promise<Project.ProjectData[]> {
-    const projects = await db.getActiveProjects(limit, offset);
-    return projects;
+    return await db.getActiveProjects(limit, offset);
 }
 
 /**
@@ -28,8 +25,7 @@ export async function get(limit: number = 10, offset: number = 0): Promise<Proje
  * @param uuid - A valid uuid
  */
 export async function getOne(uuid: string): Promise<Project.ProjectData> {
-    const project = await db.getActiveProjectByUuid(uuid);
-    return project;
+    return await db.getActiveProjectByUuid(new ObjectId(uuid));
 }
 
 /**
@@ -38,9 +34,8 @@ export async function getOne(uuid: string): Promise<Project.ProjectData> {
  */
 export async function create(data: Project.Request): Promise<Project.ProjectData> {
     const cleanData = (await cleanProjectData(data)) as Project.ProjectData;
-    cleanData.uuid = getUUID(JSON.stringify(data));
-    const project = await db.createProject(cleanData);
-    return project;
+
+    return await db.createProject(cleanData);
 }
 
 /**
@@ -50,12 +45,14 @@ export async function create(data: Project.Request): Promise<Project.ProjectData
  */
 export async function update(uuid: string, data: Project.Request): Promise<Project.ProjectData> {
     const cleanData = (await cleanProjectData(data)) as Project.ProjectData;
-    const project = await db.updateProject(uuid, cleanData);
-    return project;
+
+    return await db.updateProject(new ObjectId(uuid), cleanData);
 }
 
 /**
  * Mark a project as inactive
  * @param uuid - The UUID of the project
  */
-export const remove = db.deleteProject;
+export async function remove(uuid: string): Promise<boolean> {
+    return await db.deleteProject(new ObjectId(uuid));
+}

@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
-import { all, pathOr, when } from 'ramda';
-import { isTruthy } from 'ramda-adjunct';
+import { compose, none, pathOr, when } from 'ramda';
+import { isTrue, lengthGt } from 'ramda-adjunct';
 import { throwNoAccessError } from '../errors/errors';
 
 /**
@@ -15,12 +15,13 @@ export function getAccessChecker(accessMap?: any): Koa.Middleware {
      * @param next - Following Koa Middleware
      */
     return async (ctx, next) => {
-        when(isTruthy, () => {
-            const roles = pathOr([], ['state', 'accessRoles'], ctx) as string[];
-            const hasAccess = roles.some(accessMap(ctx));
-
-            when(all(isTruthy), throwNoAccessError(ctx))([roles.length, !hasAccess]);
-        })(accessMap);
+        if (accessMap) {
+            compose(
+                when(isTrue, () => throwNoAccessError(ctx)),
+                when(lengthGt(0), none(accessMap(ctx))),
+                pathOr([], ['state', 'accessRoles'])
+            )(ctx);
+        }
 
         await next();
     };

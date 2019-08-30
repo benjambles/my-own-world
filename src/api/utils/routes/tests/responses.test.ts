@@ -13,6 +13,7 @@ test('partsResponse', () => {
     };
     const { body, meta } = expectedResult.parts;
     expect(partsResponse(body, meta)).toEqual(expectedResult);
+    expect(partsResponse()).toEqual({ parts: { body: {}, meta: {} } });
 });
 
 test('dataResponse', () => {

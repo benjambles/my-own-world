@@ -5,6 +5,7 @@ declare namespace User {
         firstName: string;
         lastName: string;
         password?: string;
+        identities: User.Identitfier[];
     }
 
     interface Identitfier {

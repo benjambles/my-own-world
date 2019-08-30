@@ -1,4 +1,5 @@
-import { assocPath, equals, head, isNil, prop, props } from 'ramda';
+import { assoc, assocPath, equals, head, isNil, prop, props } from 'ramda';
+import { isTrue } from 'ramda-adjunct';
 import swaggerToJoiType from './swagger-to-joi-type';
 /**
  * Creates the validate spec object required by JOI routers
@@ -21,18 +22,18 @@ import swaggerToJoiType from './swagger-to-joi-type';
  *
  * @param config
  */
-export default function buildJoiSpec(joi, { parameters = [], consumes = [] }) {
+export default function buildJoiSpec(joi, { parameters, consumes }) {
     const spec = parameters.reduce(
         (acc, paramConf: swaggerParam) =>
             assocPath(props(['in', 'name'], paramConf), buildParameter(joi, paramConf), acc),
-        { continueOnError: true }
+        {}
     );
 
-    if (prop('body', spec) && consumes.length) {
-        spec.type = head(consumes).split('/')[1];
+    if (!prop('body', spec) || !consumes.length) {
+        return spec;
     }
 
-    return spec;
+    return assoc('type', prop(1, head(consumes).split('/')), spec);
 }
 
 /**
@@ -55,6 +56,6 @@ function buildParameter(joi, { type, values, format, opts = {} }: swaggerParam):
         if (isNil(validator)) return acc;
 
         const [name, value] = validator;
-        return value === true ? acc[name]() : acc[name](value);
+        return isTrue(value) ? acc[name]() : acc[name](value);
     }, joi);
 }

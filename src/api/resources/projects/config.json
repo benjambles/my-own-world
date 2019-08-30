@@ -286,7 +286,7 @@
                                     "tags": ["project", "user"],
                                     "summary": "Returns the users who have access to a project",
                                     "description": "",
-                                    "operationId": "getProjectUserById",
+                                    "operationId": "getProjectUsers",
                                     "consumes": [],
                                     "produces": ["application/json"],
                                     "parameters": [
@@ -298,6 +298,22 @@
                                                 "required": true
                                             },
                                             "type": "string"
+                                        },
+                                        {
+                                            "name": "limit",
+                                            "in": "query",
+                                            "description": "How many records to fetch",
+                                            "default": 10,
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        {
+                                            "name": "offset",
+                                            "in": "query",
+                                            "description": "How many records to skip",
+                                            "default": 0,
+                                            "type": "integer",
+                                            "format": "int64"
                                         }
                                     ],
                                     "responses": {},

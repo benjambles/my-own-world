@@ -1,6 +1,5 @@
 import { assoc, __ } from 'ramda';
 import getFormattedData from '../security/get-formatted-data';
-import { isNone, isSome } from 'fp-ts/lib/Option';
 
 /**
  * Takes a format configuration that defines how to handle fields within a given model

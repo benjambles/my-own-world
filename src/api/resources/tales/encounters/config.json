@@ -1,0 +1,52 @@
+{
+    "info": {
+        "name": "Encounters",
+        "description": "Routes relating to the encounters that make up a tale"
+    },
+    "paths": [
+        {
+            "route": "/tales/encounters",
+            "verbs": {
+                "get": {
+                    "tags": ["encounters"],
+                    "summary": "Fetches all the encounters for a tale",
+                    "description": "",
+                    "operationId": "getEncounters",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "description": "How many records to fetch",
+                            "default": 10,
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        {
+                            "name": "offset",
+                            "in": "query",
+                            "description": "How many records to skip",
+                            "default": 0,
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    ],
+                    "responses": {},
+                    "security": []
+                },
+                "options": {
+                    "tags": ["encounters", "options"],
+                    "summary": "Check which endpoints are available for interacting with encounters",
+                    "description": "",
+                    "operationId": "sendOptions",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                }
+            }
+        }
+    ]
+}

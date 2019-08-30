@@ -1,8 +1,8 @@
+import { ObjectId } from 'mongodb';
 import { dissoc, partial } from 'ramda';
 import formatter from '../../utils/data/formatter';
 import { compareBHash } from '../../utils/security/blowfish';
-import getUUID from '../../utils/uuids/get-uuid';
-import * as Identities from './identifiers/identifiers';
+import { hmac } from '../../utils/security/encrpytion';
 import * as db from './queries';
 
 const format = {
@@ -35,6 +35,7 @@ export const unsanitizedResponse = partial(respond, [false]);
  */
 export async function get(limit: number = 10, offset: number = 0): Promise<User.UserData[]> {
     const users = await db.getActiveUsers(limit, offset);
+
     return users.map(sanitizedResponse);
 }
 
@@ -43,7 +44,8 @@ export async function get(limit: number = 10, offset: number = 0): Promise<User.
  * @param uuid - A valid uuid
  */
 export async function getOne(uuid: string): Promise<User.UserData> {
-    const user = await db.getActiveUserByUuid(uuid);
+    const user = await db.getActiveUserByUuid(new ObjectId(uuid));
+
     return sanitizedResponse(user);
 }
 
@@ -52,8 +54,9 @@ export async function getOne(uuid: string): Promise<User.UserData> {
  * @param email - A valid email address
  */
 export async function getByEmail(identifier: string): Promise<User.UserData> {
-    const identity = await Identities.getByIndentifier(identifier);
-    const user = await getOne(identity.userId);
+    const hash = await hmac(identifier);
+    const user = await db.getActiveUserByIdentifier(hash);
+
     return unsanitizedResponse(user);
 }
 
@@ -63,8 +66,8 @@ export async function getByEmail(identifier: string): Promise<User.UserData> {
  */
 export async function create(data: User.UserData): Promise<User.UserData> {
     const cleanData = await cleanUserData(data);
-    cleanData.uuid = getUUID(JSON.stringify(data));
     const user = await db.createUser(cleanData);
+
     return sanitizedResponse(user);
 }
 
@@ -75,7 +78,8 @@ export async function create(data: User.UserData): Promise<User.UserData> {
  */
 export async function update(uuid: string, data: User.UserData): Promise<User.UserData> {
     const cleanData = await cleanUserData(data);
-    const user = await db.updateUser(uuid, cleanData);
+    const user = await db.updateUser(new ObjectId(uuid), cleanData);
+
     return sanitizedResponse(user);
 }
 
@@ -83,7 +87,9 @@ export async function update(uuid: string, data: User.UserData): Promise<User.Us
  * Mark a user as inactive
  * @param uuid - The UUID of the user
  */
-export const remove = db.deleteUser;
+export async function remove(uuid: string): Promise<boolean> {
+    return await db.deleteUser(new ObjectId(uuid));
+}
 
 /**
  * Compares a submitted password for the given itentifier to a password stored on the system
@@ -91,8 +97,8 @@ export const remove = db.deleteUser;
  * @param password - A plain text password
  */
 export async function authenticate(identifier: string, password: string): Promise<User.UserData> {
-    const { userId } = await Identities.getByIndentifier(identifier);
-    const user = await db.getActiveUserByUuid(userId);
+    const hash = await hmac(identifier);
+    const user = await db.getActiveUserByIdentifier(hash);
     await compareBHash(password, user.password);
 
     return sanitizedResponse(user);

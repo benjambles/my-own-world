@@ -1,7 +1,7 @@
+import { ObjectId } from 'mongodb';
 import { assoc } from 'ramda';
 import formatter from '../../../utils/data/formatter';
-import { decryptValue, hmac } from '../../../utils/security/encrpytion';
-import getUUID from '../../../utils/uuids/get-uuid';
+import { decryptValue } from '../../../utils/security/encrpytion';
 import * as db from './queries';
 
 const format = {
@@ -16,27 +16,14 @@ const format = {
 const cleanIdentityData = formatter(format);
 
 /**
- * Fetches an identifier object record when given a plain text identifier
- * @param identifier - An identifier string to be encrypted and fetched
- */
-export async function getByIndentifier(identifier: string): Promise<User.Identitfier> {
-    const identifierHash = await hmac(identifier);
-    const identifierData = await db.getOne(identifierHash);
-    return respond(identifierData);
-}
-
-/**
  *
  * @param userId
  * @param props
  */
-export async function getByUserId(
-    userId: string,
-    limit: number = 10,
-    offset: number = 0
-): Promise<User.Identitfier[]> {
-    const identifiers = await db.getByUserId(userId, limit, offset);
-    return identifiers.map(respond);
+export async function getByUserId(userId: string): Promise<User.Identitfier[]> {
+    const { identities } = await db.getByUserId(new ObjectId(userId));
+
+    return identities.map(respond);
 }
 
 /**
@@ -46,17 +33,19 @@ export async function getByUserId(
  */
 export async function create(userId: string, data: any): Promise<User.Identitfier> {
     const cleanData = await cleanIdentityData(data);
-    cleanData.uuid = getUUID(cleanData.identifier);
-    cleanData.userId = userId;
-    const identifierData = await db.create(cleanData);
+    const identifierData = await db.create(new ObjectId(userId), cleanData);
+
     return respond(identifierData);
 }
 
-/** */
-export const remove = db.remove;
-
-/** */
-export const removeAll = db.removeAllByUserId;
+/**
+ *
+ * @param userId
+ * @param hash
+ */
+export async function remove(userId: string, hash: string): Promise<boolean> {
+    return await db.remove(new ObjectId(userId), hash);
+}
 
 /**
  *
@@ -64,5 +53,6 @@ export const removeAll = db.removeAllByUserId;
  */
 function respond(data: User.Identitfier) {
     const decryptedIdent = decryptValue(data.identifier);
+
     return assoc('identifier', decryptedIdent, data);
 }

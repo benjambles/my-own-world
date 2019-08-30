@@ -6,8 +6,7 @@ import * as createError from 'http-errors';
  * @param value A string to be hashed
  */
 export async function bHash(value: string): Promise<string> {
-    const SALT_ROUNDS = 10;
-    return await bcrypt.hash(value, SALT_ROUNDS);
+    return await bcrypt.hash(value, 10);
 }
 
 /**
@@ -22,5 +21,5 @@ export async function compareBHash(value: string, hash: string): Promise<true> {
         throw createError(401, 'No match found');
     }
 
-    return isValid;
+    return true;
 }

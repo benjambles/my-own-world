@@ -249,7 +249,7 @@
                             },
                             "paths": [
                                 {
-                                    "route": "/users/:userId/identifiers/:identifierId",
+                                    "route": "/users/:userId/identifiers/:hash",
                                     "verbs": {
                                         "delete": {
                                             "tags": ["user", "identifier", "options"],
@@ -267,9 +267,9 @@
                                                     "type": "string"
                                                 },
                                                 {
-                                                    "name": "identifierId",
+                                                    "name": "hash",
                                                     "in": "path",
-                                                    "description": "Unique id representing a identifier for the user",
+                                                    "description": "Unique hash of a users identifier",
                                                     "opts": { "required": true },
                                                     "type": "string"
                                                 }
@@ -297,9 +297,9 @@
                                                     "type": "string"
                                                 },
                                                 {
-                                                    "name": "identifierId",
+                                                    "name": "hash",
                                                     "in": "path",
-                                                    "description": "Unique id representing a identifier for the user",
+                                                    "description": "Unique hash of a users identifier",
                                                     "opts": { "required": true },
                                                     "type": "string"
                                                 }

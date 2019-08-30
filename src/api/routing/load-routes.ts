@@ -54,8 +54,8 @@ function getRouter(rootPath, getPrefixedRoute) {
 function requireFiles(index: string, config: string) {
     return (filePath: string) =>
         sequenceT(ioEither)(
-            requireFilePath(index)(filePath),
-            requireFilePath(config)(filePath)
+            requireFilePath(filePath, index),
+            requireFilePath(filePath, config)
         ).run();
 }
 

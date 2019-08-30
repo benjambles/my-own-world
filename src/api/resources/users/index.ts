@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 import { equals, path } from 'ramda';
 import { getAccessChecker } from '../../utils/middleware/get-access-checker';
-import { bindOptions } from '../../utils/routes';
+import { bindOptions } from '../../utils/routes/bind-options';
 import getAccessMap from '../../utils/security/get-access-map';
 import getAuthenticatedUserId from '../../utils/security/get-authenticated-user-id';
 import * as identifierRoutes from './identifiers/routes';
@@ -37,6 +37,7 @@ export function isCurrentUser(ctx: Koa.Context): boolean {
     if (!requestUuid) return true; // No user was needed
 
     const uuid = getAuthenticatedUserId(ctx);
+
     return uuid ? uuid === requestUuid : false; // No logged in user
 }
 
