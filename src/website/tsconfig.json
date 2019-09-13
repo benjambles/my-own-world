@@ -1,16 +1,16 @@
 {
     "compilerOptions": {
-        "outDir": "../../built/api",
+        "outDir": "../../built/website",
         "allowJs": true,
         "checkJs": true,
-        "target": "es2017",
+        "target": "es6",
         "module": "commonjs",
         "removeComments": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "lib": ["es2019", "esnext.array", "dom"]
+        "lib": ["esnext.array", "dom"]
     },
-    "include": ["**/*", "./jest.config.js"],
+    "include": ["../node_modules", "**/*", "./jest.config.js"],
     "exclude": ["**/*.test.ts", "./coverage"],
     "compileOnSave": true
 }

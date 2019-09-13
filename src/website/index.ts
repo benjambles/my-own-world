@@ -11,7 +11,7 @@ import * as responseTime from 'koa-response-time';
 import * as path from 'path';
 import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
-import loadRoutes from './routing/load-routes';
+import routes from './routes';
 import * as errorHandler from 'koa-better-error-handler';
 
 /**
@@ -25,7 +25,7 @@ export default function run(env): Koa {
     app.context.onerror = errorHandler;
 
     // specify that this is our api
-    app.context.api = true;
+    app.context.api = false;
 
     // logging
     unless(equals('test'), () => {
@@ -45,9 +45,7 @@ export default function run(env): Koa {
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
 
     // routing
-    loadRoutes(path.resolve(__dirname, 'resources'), 'api').forEach(route =>
-        app.use(route.middleware())
-    );
+    routes.forEach(route => app.use(route.middleware()));
 
     return app;
 }
