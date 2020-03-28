@@ -1,0 +1,9 @@
+.vscode
+.package-lock.json
+.prettierignore
+.prettierrc
+.gitignore
+**/*.md
+buildcache
+built
+node_modules
