@@ -3,11 +3,11 @@ import { withCollection, result } from '../../../db';
 
 const projects = withCollection('projects');
 
-export async function getActiveProjectUsers(
-    uuid: ObjectId,
-    limit: number,
-    skip: number
-): Promise<any> {
+/**
+ *
+ * @param uuid
+ */
+export async function getActiveProjectUsers(uuid: ObjectId): Promise<any> {
     const data = await projects.findOne(
         {
             uuid,
@@ -20,6 +20,12 @@ export async function getActiveProjectUsers(
     return result('There was an error whilst fetching the projects users', data);
 }
 
+/**
+ *
+ * @param projectId
+ * @param userId
+ * @param roles
+ */
 export async function setUserRoles(
     projectId: ObjectId,
     userId: ObjectId,
@@ -38,6 +44,11 @@ export async function setUserRoles(
     return result('There was an error updating the user roles', data);
 }
 
+/**
+ *
+ * @param projectId
+ * @param userId
+ */
 export async function deleteProjectUser(projectId: ObjectId, userId: ObjectId): Promise<boolean> {
     const data = await projects.findAndModify({
         query: {

@@ -14,7 +14,7 @@ export async function get(
     limit: number = 10,
     offset: number = 0
 ): Promise<any[]> {
-    const projectUsers = await getActiveProjectUsers(new ObjectId(projectId), limit, offset);
+    const projectUsers = await getActiveProjectUsers(new ObjectId(projectId));
 
     return Promise.all(
         projectUsers.map(({ id, role }) => {

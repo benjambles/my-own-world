@@ -20,3 +20,17 @@ export const getProjectUsers: Koa.Middleware = generateRoute(
         return partsResponse(projectUsers);
     }
 );
+
+/**
+ * Remove a users permissions from a project
+ * @route [DELETE] /projects/:projectId/users
+ */
+export const deleteProjectUser: Koa.Middleware = generateRoute(
+    {
+        message: 'There was an error whilst removing the user from the project',
+        status: 400
+    },
+    async (ctx: Koa.Context): Promise<ApiResponse> => {
+        return partsResponse({});
+    }
+);

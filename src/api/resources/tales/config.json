@@ -45,7 +45,8 @@
                     "parameters": [],
                     "responses": {},
                     "security": []
-                }
+                },
+                "post": {}
             }
         }
     ]
