@@ -9,7 +9,7 @@ export const routesPath: string = resolve(serverRootPath, 'routes');
 export const jwtSecret: string = env.JWT_SECRET;
 
 export const responseStatuses = Object.freeze({
-    success: 'success'
+    success: 'success',
 });
 
 // Ensure require('dotenv').config() is run before this module is required

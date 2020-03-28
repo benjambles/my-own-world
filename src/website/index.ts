@@ -45,7 +45,7 @@ export default function run(env): Koa {
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
 
     // routing
-    routes.forEach((route) => app.use(route.middleware()));
+    routes.forEach(route => app.use(route.middleware()));
 
     return app;
 }
