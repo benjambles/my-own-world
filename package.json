@@ -4,9 +4,9 @@
     "description": "Tools for world builders",
     "main": "index.js",
     "scripts": {
-        "api": "nodemon ./built/api/bin/api.js",
-        "api:build": "gulp --cwd ./src/api",
-        "api:build:watch": "gulp --cwd ./src/api --watch",
+        "api": "nodemon  --watch built/api ./built/api/bin/api.js",
+        "api:build": "tsc --project ./src/api && gulp --cwd ./src/api",
+        "api:watch:ts": "tsc --project ./src/api --watch",
         "api:test": "jest --projects ./src/api",
         "api:test:update": "jest --projects ./src/api -u",
         "api:test:update:changed": "jest --projects ./src/api -u --changedSince=master",
@@ -14,8 +14,9 @@
         "api:test:coverage:changed": "jest --projects ./src/api --coverage --changedSince=master",
         "api:test:clearCache": "jest --clearCache",
         "api:generator": "node ./built/api/lib/generators/index.js",
-        "website": "nodemon ./built/website/bin/app.js",
-        "website:build": "gulp --cwd ./src/website "
+        "website": "nodemon --watch built/website ./built/website/bin/app.js",
+        "website:build": "tsc --project ./src/website && gulp --cwd ./src/website",
+        "website:watch:ts": "tsc --project ./src/website --watch"
     },
     "author": "Ben Allen",
     "license": "ISC",

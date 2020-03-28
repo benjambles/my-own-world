@@ -31,7 +31,7 @@ export default function run(env): Koa {
     unless(equals('test'), () => {
         app.use(
             morgan('combined', {
-                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' })
+                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
             })
         );
     })(env);
@@ -45,7 +45,7 @@ export default function run(env): Koa {
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
 
     // routing
-    routes.forEach(route => app.use(route.middleware()));
+    routes.forEach((route) => app.use(route.middleware()));
 
     return app;
 }

@@ -8,9 +8,11 @@
         "removeComments": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "lib": ["es2019", "esnext.array", "dom"]
+        "lib": ["es2019", "esnext.array", "dom"],
+        "incremental": true,
+        "tsBuildInfoFile": "../../buildcache/api"
     },
-    "include": ["**/*", "./jest.config.js"],
+    "include": ["**/*.ts"],
     "exclude": ["**/*.test.ts", "./coverage"],
     "compileOnSave": true
 }
