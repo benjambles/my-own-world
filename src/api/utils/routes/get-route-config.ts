@@ -1,4 +1,5 @@
-import { compose, equals, isNil, prop, propOr, concat } from 'ramda';
+import { head } from 'fp-ts/lib/Array';
+import { compose, concat, equals, isNil, prop } from 'ramda';
 import getFirstFiltered from '../array/get-first-filtered';
 import getStringParts from '../array/get-string-parts';
 import wrap from '../array/wrap';
@@ -52,7 +53,7 @@ function findRouteConfig(config) {
 function getBasePathFilter(pathParts: string[]): (data: object[]) => object {
     return getFirstFiltered(
         compose(
-            equals(`/${propOr('', 0, pathParts)}`),
+            equals(`/${head(pathParts).getOrElse('')}`),
             getRoute
         )
     );

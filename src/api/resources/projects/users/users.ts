@@ -17,9 +17,9 @@ export async function get(
     const projectUsers = await getActiveProjectUsers(new ObjectId(projectId));
 
     return Promise.all(
-        projectUsers.map(({ id, role }) => {
-            const user = getBasicUserDetails(new ObjectId(id));
-            return sanitizedResponse({ user, role });
+        projectUsers.map(async ({ id, role }) => {
+            const user = await getBasicUserDetails(new ObjectId(id));
+            return { user: sanitizedResponse(user), role };
         })
     );
 }

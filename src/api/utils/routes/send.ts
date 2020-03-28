@@ -12,7 +12,7 @@ import { getResponseBody } from './responses';
 export default async function send(ctx: Koa.Context, error: iError, data: Function): Promise<void> {
     try {
         const response: ApiResponse = await data(ctx);
-        const status = propOr(200, 'status', response);
+        const status: number = propOr(200, 'status', response);
 
         ctx.status = status;
         ctx.body = getResponseBody(response, status);

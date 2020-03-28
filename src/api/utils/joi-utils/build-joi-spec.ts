@@ -25,7 +25,11 @@ import swaggerToJoiType from './swagger-to-joi-type';
 export default function buildJoiSpec(joi, { parameters, consumes }) {
     const spec = parameters.reduce(
         (acc, paramConf: swaggerParam) =>
-            assocPath(props(['in', 'name'], paramConf), buildParameter(joi, paramConf), acc),
+            assocPath(
+                props(['in', 'name'], paramConf) as string[],
+                buildParameter(joi, paramConf),
+                acc
+            ),
         {}
     );
 

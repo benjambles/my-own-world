@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
-import { compose, none, pathOr, when } from 'ramda';
-import { isTrue, lengthGt } from 'ramda-adjunct';
+import { complement, compose, isEmpty, none, pathOr, when } from 'ramda';
+import { isTrue } from 'ramda-adjunct';
 import { throwNoAccessError } from '../errors/errors';
 
 /**
@@ -18,7 +18,7 @@ export function getAccessChecker(accessMap?: any): Koa.Middleware {
         if (accessMap) {
             compose(
                 when(isTrue, () => throwNoAccessError(ctx)),
-                when(lengthGt(0), none(accessMap(ctx))),
+                when(complement(isEmpty), none(accessMap(ctx))),
                 pathOr([], ['state', 'accessRoles'])
             )(ctx);
         }

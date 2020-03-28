@@ -9,10 +9,12 @@ export default function Layout(context, data) {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
-                <title>${data.title}</title>
+                <title>${data.meta.title}</title>
             </head>
             <body>
-                ${Header(context, data)} YAY WEBSITE ${Footer(context, data)}
+                ${Header(context, data)}
+                <h1>${data.content.title}</h1>
+                ${Footer(context, data)}
             </body>
         </html>
     `;

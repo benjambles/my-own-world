@@ -6,7 +6,19 @@ export default router().route({
     method: 'get',
     path: '/',
     handler: async ctx => {
-        const page = await renderToString(Layout({ html }, { title: 'this is a title' }));
+        const page = await renderToString(
+            Layout(
+                { html },
+                {
+                    meta: {
+                        title: 'Home: My Own World'
+                    },
+                    content: {
+                        title: 'My Own World'
+                    }
+                }
+            )
+        );
         ctx.status = 200;
         ctx.body = page;
     }
