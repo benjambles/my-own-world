@@ -1,13 +1,14 @@
 const { parallel, src, dest } = require('gulp');
+const tsConfig = require('./tsconfig.json');
 
-const serverBuildPath = '../../built/api';
+const buildPath = tsConfig.compilerOptions.outDir;
 
 function copyApiConfig() {
-    return src('**/config.json').pipe(dest(serverBuildPath));
+    return src('**/config.json').pipe(dest(buildPath));
 }
 
 function copyEnv() {
-    return src('**/.env').pipe(dest(serverBuildPath));
+    return src('**/.env').pipe(dest(buildPath));
 }
 
 exports.copyEnv = copyEnv;

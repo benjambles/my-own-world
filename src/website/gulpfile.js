@@ -1,6 +1,7 @@
 const { parallel, src, dest } = require('gulp');
+const tsConfig = require('./tsconfig.json');
 
-const buildPath = '../../built/website';
+const buildPath = tsConfig.compilerOptions.outDir;
 
 function copyEnv() {
     return src('**/.env').pipe(dest(buildPath));
