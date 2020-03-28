@@ -1,19 +1,19 @@
-import { renderToString, html } from '@popeindustries/lit-html-server';
+import { html, renderToString } from '@popeindustries/lit-html-server';
 import Layout from '../../components/pages/layout';
 
 export default {
     method: 'get',
-    path: '/',
+    path: '/register',
     handler: async (ctx) => {
         const page = await renderToString(
             Layout(
                 { html },
                 {
                     meta: {
-                        title: 'Home: My Own World',
+                        title: 'Register: My Own World',
                     },
                     content: {
-                        title: 'My Own World',
+                        title: 'Join us!',
                     },
                 }
             )
