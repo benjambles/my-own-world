@@ -16,21 +16,13 @@ test('getAccessChecker', async () => {
     const checkerWithMap = getAccessChecker(getAccessMap());
 
     // Passed roles and data don't match map
-    await expect(
-        checkerWithMap(
-            { throw: err, state: { accessRoles: ['role:owner'], user: {} } } as Koa.Context,
-            async () => {}
-        )
-    ).rejects.toThrow();
+    const ctxFail: unknown = { throw: err, state: { accessRoles: ['role:owner'], user: {} } };
+    await expect(checkerWithMap(ctxFail as Koa.Context, async () => {})).rejects.toThrow();
 
     // Passed roles and state data matches map
-    await expect(
-        checkerWithMap(
-            {
-                throw: err,
-                state: { accessRoles: ['role:user', 'role:owner'], user: {} },
-            } as Koa.Context,
-            async () => {}
-        )
-    ).resolves.not.toThrow();
+    const ctxPass: unknown = {
+        throw: err,
+        state: { accessRoles: ['role:user', 'role:owner'], user: {} },
+    };
+    await expect(checkerWithMap(ctxPass as Koa.Context, async () => {})).resolves.not.toThrow();
 });

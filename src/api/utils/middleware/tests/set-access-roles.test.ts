@@ -9,7 +9,7 @@ test('setAccessRoles', () => {
         },
     };
 
-    setAccessRoles(roles)(ctx as Koa.Context, async () => {});
+    setAccessRoles(roles)((ctx as unknown) as Koa.Context, async () => {});
 
     expect(ctx.state.accessRoles).toEqual(roles);
 });

@@ -7,7 +7,7 @@ test('getAccessMap', () => {
         [true, 'role:user'],
         [false, ''],
     ];
-    const ctx = { state: { user: { userData: true }, userData: true } };
+    const ctx: unknown = { state: { user: { userData: true }, userData: true } };
     const accessMap = getAccessMap()(ctx as Koa.Context);
 
     tests.forEach(([expectedResult, role]) => {

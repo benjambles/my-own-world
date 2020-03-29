@@ -8,6 +8,6 @@ test('isAdmin', () => {
     ];
 
     tests.forEach(([result, data]) => {
-        expect(isAdmin(data as Koa.Context)).toBe(result);
+        expect(isAdmin((data as unknown) as Koa.Context)).toBe(result);
     });
 });

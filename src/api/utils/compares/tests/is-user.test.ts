@@ -7,7 +7,7 @@ test('isUser', () => {
         [false, {}],
     ];
 
-    tests.forEach(([result, data]) => {
+    tests.forEach(([result, data]: [boolean, unknown]) => {
         expect(isUser(data as Koa.Context)).toBe(result);
     });
 });
