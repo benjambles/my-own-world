@@ -10,7 +10,7 @@ const tales = withCollection('Tales');
 export async function getActiveTaleByUuid(uuid: string): Promise<Tale.TaleData> {
     const data = await tales.findOne({
         uuid,
-        isDeleted: false
+        isDeleted: false,
     });
     return result('There was an error whilst fetching the tale', data);
 }

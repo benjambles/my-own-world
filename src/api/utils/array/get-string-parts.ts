@@ -6,8 +6,5 @@ import { compose, split } from 'ramda';
  * Note:: You can not rely on the index of individual parts.
  */
 export default function getStringParts(delimiter: string) {
-    return compose(
-        compact,
-        split(delimiter)
-    );
+    return compose(compact, split(delimiter));
 }

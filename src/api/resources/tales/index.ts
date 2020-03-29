@@ -17,5 +17,5 @@ export const routeHandlers = {
     // ...encounterRoutes,
     // ...sceneRoutes,
     checkAccess: getAccessChecker(getAccessMap()),
-    sendOptions: bindOptions(config)
+    sendOptions: bindOptions(config),
 };

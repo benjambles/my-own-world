@@ -11,8 +11,8 @@ export function partsResponse(body = {}, meta = {}): ApiResponse {
     return {
         parts: {
             body,
-            meta
-        }
+            meta,
+        },
     };
 }
 
@@ -22,7 +22,7 @@ export function partsResponse(body = {}, meta = {}): ApiResponse {
  */
 export function dataResponse(data): ApiResponse {
     return {
-        data
+        data,
     };
 }
 
@@ -37,9 +37,9 @@ export function getResponseBody(response, status) {
             meta: {
                 ...meta,
                 status,
-                message: responseStatuses.success
+                message: responseStatuses.success,
             },
-            body
+            body,
         })
     );
 }

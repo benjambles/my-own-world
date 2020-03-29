@@ -54,8 +54,8 @@ function mapMethods(path: string, verbs, routeHandlers: fnMap): Option<any> {
                                 path,
                                 handler,
                                 validate: buildJoiSpec(Joi, spec),
-                                meta: pick(['summary', 'description'], spec)
-                            }
+                                meta: pick(['summary', 'description'], spec),
+                            },
                         ])
                 ),
             []

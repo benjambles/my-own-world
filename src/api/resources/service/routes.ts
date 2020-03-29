@@ -11,7 +11,7 @@ import { partsResponse, dataResponse } from '../../utils/routes/responses';
 export const getHealth: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
-        status: 503
+        status: 503,
     },
     async (): Promise<ApiResponse> => {
         return dataResponse(undefined);
@@ -25,13 +25,13 @@ export const getHealth: Koa.Middleware = generateRoute(
 export const getVersion: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
-        status: 503
+        status: 503,
     },
     async (): Promise<ApiResponse> => {
         const { key, value } = await getSystemKey('api_version');
 
         return dataResponse({
-            [key]: value
+            [key]: value,
         });
     }
 );
@@ -43,7 +43,7 @@ export const getVersion: Koa.Middleware = generateRoute(
 export const getStatus: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
-        status: 503
+        status: 503,
     },
     async (): Promise<ApiResponse> => {
         return partsResponse();
@@ -57,7 +57,7 @@ export const getStatus: Koa.Middleware = generateRoute(
 export const getMetrics: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
-        status: 503
+        status: 503,
     },
     async (): Promise<ApiResponse> => {
         return partsResponse();
@@ -71,7 +71,7 @@ export const getMetrics: Koa.Middleware = generateRoute(
 export const getDebugData: Koa.Middleware = generateRoute(
     {
         message: 'Service unavailable',
-        status: 503
+        status: 503,
     },
     async (): Promise<ApiResponse> => {
         return partsResponse();

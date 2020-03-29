@@ -6,7 +6,7 @@ test('getErrorMessage', () => {
     const details = {
         message: 'Complex error',
         path: ['query, prop1'],
-        other: 'props'
+        other: 'props',
     };
 
     expect(getErrorMessage({ details })).toEqual({ message: details.message, path: details.path });

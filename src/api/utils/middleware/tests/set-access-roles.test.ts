@@ -5,8 +5,8 @@ test('setAccessRoles', () => {
     const roles = ['role:user', 'role:owner'];
     const ctx = {
         state: {
-            accessRoles: ''
-        }
+            accessRoles: '',
+        },
     };
 
     setAccessRoles(roles)(ctx as Koa.Context, async () => {});

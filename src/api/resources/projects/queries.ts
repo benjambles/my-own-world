@@ -10,7 +10,7 @@ const projects = withCollection('Projects');
 export async function getActiveProjectByUuid(uuid: ObjectId): Promise<Project.ProjectData> {
     const data = await projects.findOne({
         uuid,
-        isDeleted: false
+        isDeleted: false,
     });
 
     return result('There was an error whilst fetching the project', data);
@@ -28,7 +28,7 @@ export async function getActiveProjects(
     const data = await projects
         .find(
             {
-                isDeleted: false
+                isDeleted: false,
             },
             { limit, skip }
         )

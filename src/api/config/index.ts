@@ -8,13 +8,13 @@ export const schemaPath: string = resolve(serverRootPath, 'db/sql');
 export const routesPath: string = resolve(serverRootPath, 'routes');
 
 export const responseStatuses = Object.freeze({
-    success: 'success'
+    success: 'success',
 });
 
 export const encryptionData = Object.freeze({
     ivLength: 16,
     password: env.ENC_SECRET,
-    type: 'aes-256-cbc'
+    type: 'aes-256-cbc',
 });
 
 export const hashType: string = 'sha256';
@@ -25,7 +25,7 @@ export const MONGO_DB = Object.freeze({
     user: env.MONGO_USER,
     database: env.MONGO_DB,
     password: env.MONGO_PASSWORD,
-    url: env.MONGO_URL
+    url: env.MONGO_URL,
 });
 
 // Ensure require('dotenv').config() is run before this module is required

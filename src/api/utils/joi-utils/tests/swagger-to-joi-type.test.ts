@@ -7,7 +7,7 @@ test('swaggerToJoiType', () => {
         ['integer', 'int64'],
         ['string', 'string'],
         ['number', 'number'],
-        ['boolean', 'boolean']
+        ['boolean', 'boolean'],
     ];
 
     tests.forEach(([result, value]) => {

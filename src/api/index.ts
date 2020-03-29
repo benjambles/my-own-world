@@ -31,7 +31,7 @@ export default function run(env): Koa {
     unless(equals('test'), () => {
         app.use(
             morgan('combined', {
-                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' })
+                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
             })
         );
     })(env);

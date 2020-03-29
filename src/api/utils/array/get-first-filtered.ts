@@ -6,8 +6,5 @@ type predicateFn = (value: any) => boolean;
  * @param predicate
  */
 export default function getFirstFiltered(predicate: predicateFn) {
-    return compose(
-        head,
-        filter(predicate)
-    );
+    return compose(head, filter(predicate));
 }

@@ -11,11 +11,7 @@ import wrap from '../array/wrap';
 const getRoute = prop('route');
 
 export default function getRouteConfig(routeConfig) {
-    return compose(
-        findRouteConfig(wrap(routeConfig)),
-        getStringParts('/'),
-        getRoute
-    );
+    return compose(findRouteConfig(wrap(routeConfig)), getStringParts('/'), getRoute);
 }
 
 /**
@@ -35,10 +31,7 @@ function findRouteConfig(config) {
             return config;
         }
 
-        const findRouteFromBasePath = compose(
-            findRouteConfig,
-            getBasePath
-        );
+        const findRouteFromBasePath = compose(findRouteConfig, getBasePath);
         const [root, path, ...rest] = pathParts;
         const newPathParts = concat([[root, path].join('/')], rest);
 
@@ -51,10 +44,5 @@ function findRouteConfig(config) {
  * @param pathParts
  */
 function getBasePathFilter(pathParts: string[]): (data: object[]) => object {
-    return getFirstFiltered(
-        compose(
-            equals(`/${head(pathParts).getOrElse('')}`),
-            getRoute
-        )
-    );
+    return getFirstFiltered(compose(equals(`/${head(pathParts).getOrElse('')}`), getRoute));
 }

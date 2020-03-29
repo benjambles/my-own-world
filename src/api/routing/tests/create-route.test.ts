@@ -10,8 +10,8 @@ test('createRoute', () => {
         validate: router.Joi,
         meta: {
             summary: 'A test endpoint',
-            description: 'A wordy description of the endpoint'
-        }
+            description: 'A wordy description of the endpoint',
+        },
     };
 
     const result = createRoute('test_api')(testRouteMap);

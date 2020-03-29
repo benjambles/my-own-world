@@ -10,7 +10,7 @@ import { partsResponse } from '../../utils/routes/responses';
 export const getProjects: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching projects.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
@@ -27,7 +27,7 @@ export const getProjects: Koa.Middleware = generateRoute(
 export const createProject: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst saving the project',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const project = ctx.request.body as Project.Request;
@@ -44,7 +44,7 @@ export const createProject: Koa.Middleware = generateRoute(
 export const getProjectById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching the project.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectData = await projects.getOne(ctx.request.params.projectId);
@@ -60,11 +60,13 @@ export const getProjectById: Koa.Middleware = generateRoute(
 export const updateProjectById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst updating the project.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const projectUpdated = await projects.update(ctx.request.params.projectId, ctx.request
-            .body as Project.ProjectData);
+        const projectUpdated = await projects.update(
+            ctx.request.params.projectId,
+            ctx.request.body as Project.ProjectData
+        );
 
         return partsResponse(projectUpdated);
     }
@@ -77,7 +79,7 @@ export const updateProjectById: Koa.Middleware = generateRoute(
 export const deleteProjectById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst deleting the project.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const projectDeleted = await projects.remove(ctx.request.params.projectId);

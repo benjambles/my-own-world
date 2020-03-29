@@ -23,13 +23,13 @@ export async function getByUserId(userId: ObjectId): Promise<User.UserData> {
  */
 export async function create(userId, identityData): Promise<User.Identitfier> {
     const {
-        identities: [identitiy]
+        identities: [identitiy],
     } = await users.findOneAndUpdate(
         { _id: userId },
         {
             $push: {
-                identities: identityData
-            }
+                identities: identityData,
+            },
         },
         { projection: { identities: { $slice: -1 } }, returnNewDocument: true }
     );

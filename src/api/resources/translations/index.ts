@@ -9,5 +9,5 @@ const config = require('./config.json');
  */
 export const routeHandlers = {
     sendOptions: bindOptions(config),
-    checkAccess: getAccessChecker()
+    checkAccess: getAccessChecker(),
 };

@@ -17,7 +17,7 @@ export const routeHandlers = {
     ...userRoutes,
     ...identifierRoutes,
     sendOptions: bindOptions(config),
-    checkAccess: getAccessChecker(accessMap)
+    checkAccess: getAccessChecker(accessMap),
 };
 
 /**

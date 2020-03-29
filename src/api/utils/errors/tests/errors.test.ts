@@ -5,7 +5,7 @@ import { badResponseError, throwNoAccessError } from '../errors';
 const ctx: unknown = {
     throw: (statusCode, msg) => {
         throw createError(statusCode, msg);
-    }
+    },
 };
 
 test('throwNoAccessError', () => {

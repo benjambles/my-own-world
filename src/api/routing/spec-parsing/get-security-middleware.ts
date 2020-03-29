@@ -7,10 +7,7 @@ import foldConcat from '../../utils/functional/fold-concat';
 import { maybeProp } from '../../utils/functional/maybe-prop';
 import setAccessRoles from '../../utils/middleware/set-access-roles';
 
-const getWrappedMiddleware = compose(
-    wrap,
-    setAccessRoles
-);
+const getWrappedMiddleware = compose(wrap, setAccessRoles);
 
 /**
  * Takes an object representing a routes security configuration and returns an array containing

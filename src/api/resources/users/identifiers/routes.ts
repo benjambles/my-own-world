@@ -11,7 +11,7 @@ import { partsResponse } from '../../../utils/routes/responses';
 export const getUserIdentifiers: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching identities for the user.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const identityData = await identifiers.getByUserId(ctx.request.params.userId);
@@ -27,7 +27,7 @@ export const getUserIdentifiers: Koa.Middleware = generateRoute(
 export const createUserIdentifier: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst adding the identifier to the user.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const identifierData = await identifiers.create(
@@ -46,7 +46,7 @@ export const createUserIdentifier: Koa.Middleware = generateRoute(
 export const deleteUserIdentifier: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst deleting the users identity.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const isDeleted = await identifiers.remove(

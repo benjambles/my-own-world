@@ -9,6 +9,6 @@ export default function swaggerToJoiType(type: string): string {
         [equals('token'), always('string')],
         [equals('integer'), always('number')],
         [equals('int64'), always('integer')],
-        [T, identity]
+        [T, identity],
     ])(type);
 }

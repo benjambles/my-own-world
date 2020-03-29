@@ -10,7 +10,7 @@ import { partsResponse } from '../../utils/routes/responses';
 export const getTales: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching tales.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
@@ -27,7 +27,7 @@ export const getTales: Koa.Middleware = generateRoute(
 export const createTale: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst saving the tale',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const tale = ctx.request.body as Tale.Request;
@@ -44,7 +44,7 @@ export const createTale: Koa.Middleware = generateRoute(
 export const getTaleById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst fetching the tale.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const taleData = await tales.getOne(ctx.request.params.taleId);
@@ -60,11 +60,13 @@ export const getTaleById: Koa.Middleware = generateRoute(
 export const updateTaleById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst updating the tale.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const taleUpdated = await tales.update(ctx.request.params.taleId, ctx.request
-            .body as Tale.TaleData);
+        const taleUpdated = await tales.update(
+            ctx.request.params.taleId,
+            ctx.request.body as Tale.TaleData
+        );
 
         return partsResponse(taleUpdated);
     }
@@ -77,7 +79,7 @@ export const updateTaleById: Koa.Middleware = generateRoute(
 export const deleteTaleById: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst deleting the tale.',
-        status: 400
+        status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
         const taleDeleted = await tales.remove(ctx.request.params.taleId);

@@ -13,54 +13,24 @@ test('buildJoiSpec', () => {
                         in: 'body',
                         description: 'The UUID of the person who created or owns the project',
                         opts: {
-                            required: true
+                            required: true,
                         },
-                        type: 'string'
+                        type: 'string',
                     },
                     {
                         name: 'title',
                         in: 'body',
                         description: 'A name for the project - Tales have their own names',
                         opts: {
-                            required: true
+                            required: true,
                         },
-                        type: 'string'
-                    }
-                ]
-            },
-            data: {
-                title: 'This is my project'
-            }
-        },
-        {
-            passes: true,
-            spec: {
-                consumes: ['application/json'],
-                parameters: [
-                    {
-                        name: 'ownerId',
-                        in: 'body',
-                        description: 'The UUID of the person who created or owns the project',
-                        opts: {
-                            required: true
-                        },
-                        type: 'string'
+                        type: 'string',
                     },
-                    {
-                        name: 'title',
-                        in: 'body',
-                        description: 'A name for the project - Tales have their own names',
-                        opts: {
-                            required: true
-                        },
-                        type: 'string'
-                    }
-                ]
+                ],
             },
             data: {
                 title: 'This is my project',
-                ownerId: 'a-totally-valid-uuid'
-            }
+            },
         },
         {
             passes: true,
@@ -72,21 +42,51 @@ test('buildJoiSpec', () => {
                         in: 'body',
                         description: 'The UUID of the person who created or owns the project',
                         opts: {
-                            required: true
+                            required: true,
                         },
-                        type: 'string'
+                        type: 'string',
                     },
                     {
                         name: 'title',
                         in: 'body',
                         description: 'A name for the project - Tales have their own names',
-                        type: 'string'
-                    }
-                ]
+                        opts: {
+                            required: true,
+                        },
+                        type: 'string',
+                    },
+                ],
             },
             data: {
-                ownerId: 'a-totally-valid-uuid'
-            }
+                title: 'This is my project',
+                ownerId: 'a-totally-valid-uuid',
+            },
+        },
+        {
+            passes: true,
+            spec: {
+                consumes: ['application/json'],
+                parameters: [
+                    {
+                        name: 'ownerId',
+                        in: 'body',
+                        description: 'The UUID of the person who created or owns the project',
+                        opts: {
+                            required: true,
+                        },
+                        type: 'string',
+                    },
+                    {
+                        name: 'title',
+                        in: 'body',
+                        description: 'A name for the project - Tales have their own names',
+                        type: 'string',
+                    },
+                ],
+            },
+            data: {
+                ownerId: 'a-totally-valid-uuid',
+            },
         },
         {
             passes: true,
@@ -98,21 +98,21 @@ test('buildJoiSpec', () => {
                         in: 'body',
                         description: 'List of IDs being requested',
                         opts: {
-                            required: true
+                            required: true,
                         },
                         type: 'array',
                         values: [
                             {
-                                type: 'string'
-                            }
-                        ]
-                    }
-                ]
+                                type: 'string',
+                            },
+                        ],
+                    },
+                ],
             },
             data: {
-                ids: ['a-totally-valid-uuid', 'and-another']
-            }
-        }
+                ids: ['a-totally-valid-uuid', 'and-another'],
+            },
+        },
     ];
 
     tests.forEach(({ passes, spec, data }) => {

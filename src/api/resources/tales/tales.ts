@@ -3,7 +3,7 @@ import formatter from '../../utils/data/formatter';
 import * as db from './queries';
 
 const format = {
-    readOnly: ['uuid']
+    readOnly: ['uuid'],
 };
 
 /**

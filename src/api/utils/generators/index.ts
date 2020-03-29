@@ -6,10 +6,10 @@ const validTypes: string[] = ['route'];
 
 const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
 });
 
-rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, function(
+rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, function (
     type: string
 ): void {
     type = type.toLowerCase();

@@ -4,12 +4,12 @@ test('partsResponse', () => {
     const expectedResult = {
         parts: {
             body: {
-                data: 1
+                data: 1,
             },
             meta: {
-                data: 2
-            }
-        }
+                data: 2,
+            },
+        },
     };
     const { body, meta } = expectedResult.parts;
     expect(partsResponse(body, meta)).toEqual(expectedResult);
@@ -18,7 +18,7 @@ test('partsResponse', () => {
 
 test('dataResponse', () => {
     const expectedResult = {
-        data: [1, 2, 3, 4, 5]
+        data: [1, 2, 3, 4, 5],
     };
     expect(dataResponse(expectedResult.data)).toEqual(expectedResult);
 });

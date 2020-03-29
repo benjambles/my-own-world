@@ -12,7 +12,7 @@ export async function initConnection(config) {
     const connectionString = getConnectionString(config);
     const client = await new MongoClient(connectionString, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     });
 
     await client.connect();

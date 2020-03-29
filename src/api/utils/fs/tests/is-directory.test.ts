@@ -4,7 +4,7 @@ import { resolve } from 'path';
 test('isDirectory', () => {
     const tests = [
         [false, resolve(__dirname, 'mocks/mock-module.js')],
-        [true, resolve(__dirname, 'mocks')]
+        [true, resolve(__dirname, 'mocks')],
     ];
 
     tests.forEach(([result, filePath]) => {

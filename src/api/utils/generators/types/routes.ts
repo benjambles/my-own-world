@@ -6,7 +6,7 @@ import { routesPath } from '../../../config';
 const validAnswers: string[] = ['yes', 'no'];
 
 export function createRoute(rl) {
-    rl.question('Do you wish to generate a route from existing config? [yes/no]', function(
+    rl.question('Do you wish to generate a route from existing config? [yes/no]', function (
         answer: string
     ): void {
         answer = answer.toLowerCase();
@@ -27,21 +27,20 @@ export function createRoute(rl) {
 
 function createRouteFromConfig(rl): void {
     // ask for the name of the route folder
-    rl.question('What is the folder containing the config called?', function(answer) {
+    rl.question('What is the folder containing the config called?', function (answer) {
         const routeDir = path.resolve(routesPath, answer.toLowerCase);
         const configPath = path.resolve(routeDir, 'config.json');
 
-        // if (!fs.exists(routeDir) || !fs.exists(configPath)) {
-        //     rl.question('That folder does not exist, create it? [yes/no]', function(confirm) {
-        //         switch (confirm) {
-        //             case 'yes':
-        //                 return;
-        //             case 'no':
-        //                 return createRouteWithConfig(rl);
-        //         }
-        //     });
-        // } else {
-        // }
+        if (!fs.existsSync(routeDir) || !fs.existsSync(configPath)) {
+            rl.question('That folder does not exist, create it? [yes/no]', function (confirm) {
+                switch (confirm) {
+                    case 'yes':
+                        return;
+                    case 'no':
+                        return createRouteWithConfig(rl);
+                }
+            });
+        }
     });
     // load the folder and check that config exists
     // if it does
@@ -50,4 +49,6 @@ function createRouteFromConfig(rl): void {
     // -- generate
 }
 
-function createRouteWithConfig(rl): void {}
+function createRouteWithConfig(rl): void {
+    console.log(rl);
+}

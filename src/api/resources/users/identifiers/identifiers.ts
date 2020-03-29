@@ -7,7 +7,7 @@ import * as db from './queries';
 const format = {
     encrypted: ['identifier'],
     hmac: ['hash'],
-    readOnly: ['uuid']
+    readOnly: ['uuid'],
 };
 
 /**

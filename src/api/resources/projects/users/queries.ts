@@ -12,7 +12,7 @@ export async function getActiveProjectUsers(uuid: ObjectId): Promise<any> {
         {
             uuid,
             isDeleted: false,
-            'users.roles': { $ne: null }
+            'users.roles': { $ne: null },
         },
         { projection: { users: 1 } }
     );
@@ -34,11 +34,11 @@ export async function setUserRoles(
     const data = await projects.findAndModify({
         query: {
             projectId,
-            isDeleted: false
+            isDeleted: false,
         },
         update: { $set: { 'users.$[elem]': { uuid: userId, roles } } },
         arrayFilters: [{ 'elem.uuid': { $eq: userId } }],
-        new: true
+        new: true,
     });
 
     return result('There was an error updating the user roles', data);
@@ -54,11 +54,11 @@ export async function deleteProjectUser(projectId: ObjectId, userId: ObjectId): 
         query: {
             projectId,
             isDeleted: false,
-            'users.uuid': userId
+            'users.uuid': userId,
         },
         update: { $set: { 'users.$[elem].roles': null } },
         arrayFilters: [{ 'elem.uuid': { $eq: userId } }],
-        new: true
+        new: true,
     });
 
     return result('There was an error whilst removing the user roles', data);

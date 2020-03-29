@@ -11,5 +11,5 @@ const config = require('./config.json');
 export const routeHandlers = {
     ...serviceRoutes,
     sendOptions: bindOptions(config),
-    checkAccess: getAccessChecker(getAccessMap())
+    checkAccess: getAccessChecker(getAccessMap()),
 };

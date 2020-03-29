@@ -13,14 +13,14 @@ test('catchJoiErrors', async () => {
                 details: [
                     {
                         message: 'Complex error',
-                        path: ['query,prop1']
-                    }
-                ]
-            }
+                        path: ['query,prop1'],
+                    },
+                ],
+            },
         },
         throw: (error, message) => {
             throw new Error(message);
-        }
+        },
     };
 
     await expect(

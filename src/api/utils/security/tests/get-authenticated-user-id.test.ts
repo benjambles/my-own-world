@@ -6,9 +6,9 @@ test('getAuthenticatedUserId', () => {
     const data = {
         state: {
             user: {
-                uuid
-            }
-        }
+                uuid,
+            },
+        },
     };
     expect(getAuthenticatedUserId(data as Koa.Context)).toEqual(uuid);
 });

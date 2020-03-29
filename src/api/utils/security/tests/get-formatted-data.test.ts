@@ -14,7 +14,7 @@ test('getFormattedData', async () => {
         encrypted: ['email'],
         salted: ['password'],
         readOnly: ['uuid'],
-        hmac: ['identity']
+        hmac: ['identity'],
     };
 
     const format = getFormattedData(model);
@@ -28,7 +28,7 @@ test('getFormattedData', async () => {
     expect(hasModelEncrypt.getOrElse(null)).toMatch(/aes-256-cbc:[a-f0-9]{32}:[a-f0-9]{32}/);
 
     const hasModelSalt = await format('password', 'a-fake-password');
-    expect(hasModelSalt.getOrElse(null)).toMatch(/\$2[aby]?\$\d{1,2}\$[.\/A-Za-z0-9]{53}/);
+    expect(hasModelSalt.getOrElse(null)).toMatch(/\$2[aby]?\$\d{1,2}\$[./A-Za-z0-9]{53}/);
 
     const hasModelReadOnly = await format('uuid', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
     expect(hasModelReadOnly.getOrElse(null)).toBeNull();

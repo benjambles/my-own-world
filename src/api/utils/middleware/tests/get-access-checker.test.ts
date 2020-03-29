@@ -28,7 +28,7 @@ test('getAccessChecker', async () => {
         checkerWithMap(
             {
                 throw: err,
-                state: { accessRoles: ['role:user', 'role:owner'], user: {} }
+                state: { accessRoles: ['role:user', 'role:owner'], user: {} },
             } as Koa.Context,
             async () => {}
         )

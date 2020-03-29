@@ -5,8 +5,5 @@ import * as router from 'koa-joi-router';
  * @param prefix - First part of the given route.
  */
 export default function createRoute(prefix: string) {
-    return routeMap =>
-        router()
-            .route(routeMap)
-            .prefix(`/${prefix}`);
+    return routeMap => router().route(routeMap).prefix(`/${prefix}`);
 }

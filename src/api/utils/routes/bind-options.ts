@@ -41,6 +41,6 @@ function getHTTPMethods(acc: string[], key: string): string[] {
     return R.cond([
         [R.equals('options'), R.always(acc)],
         [R.equals('get'), key => R.concat(acc, [key, 'head'])],
-        [R.T, R.concat(acc)]
+        [R.T, R.concat(acc)],
     ])(key);
 }

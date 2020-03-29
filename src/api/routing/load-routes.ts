@@ -19,11 +19,7 @@ import getRouteMapping from './get-route-mapping';
  * @api private
  */
 export default function loadRoutes(root: string, prefix: string = ''): iRouter[] {
-    return compose(
-        catOptions,
-        map(getRouter(root, createRoute(prefix))),
-        fs.readdirSync
-    )(root);
+    return compose(catOptions, map(getRouter(root, createRoute(prefix))), fs.readdirSync)(root);
 }
 
 /**
@@ -62,7 +58,4 @@ function requireFiles(index: string, config: string) {
 /**
  *
  */
-const requireFilesOrNone = compose(
-    getOrElse(none),
-    requireFiles('index.js', 'config.json')
-);
+const requireFilesOrNone = compose(getOrElse(none), requireFiles('index.js', 'config.json'));

@@ -8,7 +8,7 @@ import * as db from './queries';
 const format = {
     encrypted: ['email'],
     salted: ['password'],
-    readOnly: ['uuid']
+    readOnly: ['uuid'],
 };
 
 /**
@@ -108,7 +108,7 @@ export async function authenticate(identifier: string, password: string): Promis
  * Sends an email with a magic activation link.
  * @param email - An identifier ID that represents to aclimit to generate the magic link for
  */
-export async function sendMagicLink(email: string): Promise<boolean> {
+export async function sendMagicLink(): Promise<boolean> {
     return true;
 }
 

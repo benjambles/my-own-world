@@ -13,6 +13,6 @@ export default function getAccessMap(additionalChecks = []) {
             [equals('role:admin'), () => isAdmin(ctx)],
             [equals('role:user'), () => isUser(ctx)],
             ...additionalChecks,
-            [T, F]
+            [T, F],
         ]);
 }

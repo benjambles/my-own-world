@@ -33,7 +33,7 @@ export function encryptValue(value: string): string {
     return [
         encryptionType,
         iv.toString(encodingType),
-        Buffer.concat([encrypted, cipher.final()]).toString(encodingType)
+        Buffer.concat([encrypted, cipher.final()]).toString(encodingType),
     ].join(separator);
 }
 

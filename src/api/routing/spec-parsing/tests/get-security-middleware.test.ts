@@ -5,7 +5,7 @@ jest.mock('../../../utils/middleware/set-access-roles', () => {
     return {
         default: jest.fn().mockImplementation(() => {
             return async () => {};
-        })
+        }),
     };
 });
 
@@ -29,9 +29,9 @@ test('getSecurityMiddleware', () => {
     const hasJWTItems = getSecurityMiddleware({
         security: [
             {
-                jwt: ['role:admin', 'role:owner']
-            }
-        ]
+                jwt: ['role:admin', 'role:owner'],
+            },
+        ],
     });
     expect(hasJWTItems.isSome()).toEqual(true);
 

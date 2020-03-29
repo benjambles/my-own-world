@@ -4,7 +4,7 @@ import Layout from '../../components/pages/layout';
 export default {
     method: 'get',
     path: '/',
-    handler: async (ctx) => {
+    handler: async ctx => {
         const page = await renderToString(
             Layout(
                 { html },

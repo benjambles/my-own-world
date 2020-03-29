@@ -55,7 +55,7 @@ function buildParameter(joi, { type, values, format, opts = {} }: swaggerParam):
         [swaggerToJoiType(type), true],
         getFormatType(format),
         ...Object.entries(opts),
-        getChildValidators(type, values)
+        getChildValidators(type, values),
     ].reduce((acc, validator: swaggerTypeConfig) => {
         if (isNil(validator)) return acc;
 

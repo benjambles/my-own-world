@@ -10,7 +10,7 @@ export default function getFormattedData({
     encrypted = [],
     salted = [],
     hmac = [],
-    readOnly = ['uuid']
+    readOnly = ['uuid'],
 }: formatOptions) {
     const includes = arr => key => arr.includes(key);
 
@@ -20,6 +20,6 @@ export default function getFormattedData({
             [includes(encrypted), async () => some(encryptValue(value))],
             [includes(salted), async () => some(await bHash(value))],
             [includes(hmac), async () => some(await getHmac(value))],
-            [T, async () => some(value)]
+            [T, async () => some(value)],
         ])(key);
 }
