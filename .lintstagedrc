@@ -3,6 +3,9 @@
         "prettier --write .",
         "eslint --fix"
     ],
+    "src/**/*.{css}": [
+        "prettier --write ."
+    ],
     "src/**/*.json": [
         "prettier --write ."
     ]
