@@ -1,5 +1,5 @@
-import Header from '../core/header';
-import Footer from '../core/footer';
+import Header from '../core/header/header';
+import Footer from '../core/footer/footer';
 
 export default function Layout(context, data) {
     const { html } = context;
@@ -10,17 +10,13 @@ export default function Layout(context, data) {
             <head>
                 <meta charset="UTF-8" />
                 <title>${data.meta.title}</title>
-                <style>
-                    html,
-                    body {
-                        background-color: #1a1a1a;
-                        color: #fafafa;
-                    }
-                </style>
+                <link rel="stylesheet" href="/styles/base.css" />
             </head>
             <body>
                 ${Header(context, data)}
-                <h1>${data.content.title}</h1>
+                <div class="container">
+                    <h1>${data.content.title}</h1>
+                </div>
                 ${Footer(context, data)}
             </body>
         </html>

@@ -3,7 +3,7 @@ import Layout from '../../components/pages/layout';
 
 export default {
     method: 'get',
-    path: '/register',
+    path: '/join',
     handler: async ctx => {
         const page = await renderToString(
             Layout(

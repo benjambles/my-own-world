@@ -9,6 +9,7 @@ import * as koaJWT from 'koa-jwt';
 import * as morgan from 'koa-morgan';
 import * as responseTime from 'koa-response-time';
 import * as path from 'path';
+import * as serve from 'koa-static';
 import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
 import routes from './routes';
@@ -43,6 +44,7 @@ export default function run(env): Koa {
     app.use(helmet()); // Security layer
     app.use(koa404Handler);
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
+    app.use(serve(path.resolve(__dirname, 'static')));
 
     // routing
     routes.forEach(route => app.use(route.middleware()));
