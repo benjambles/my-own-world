@@ -16,7 +16,8 @@
         "api:generator": "node ./built/api/lib/generators/index.js",
         "website": "nodemon --watch built/website ./built/website/bin/app.js",
         "website:build": "tsc --project ./src/website && gulp --cwd ./src/website",
-        "website:watch:ts": "tsc --project ./src/website --watch"
+        "website:watch:ts": "tsc --project ./src/website --watch",
+        "website:watch:css": "gulp --cwd ./src/website watchCSS"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -41,6 +42,7 @@
         "koa-morgan": "1.0.1",
         "koa-response-time": "2.1.0",
         "koa-router": "8.0.8",
+        "koa-static": "^5.0.0",
         "lit-element": "2.3.1",
         "lit-html": "1.2.1",
         "mongodb": "3.5.5",
@@ -68,11 +70,15 @@
         "@types/uuid": "7.0.2",
         "@typescript-eslint/eslint-plugin": "2.25.0",
         "@typescript-eslint/parser": "2.25.0",
+        "autoprefixer": "^9.7.5",
         "eslint": "6.8.0",
         "gulp": "4.0.2",
+        "gulp-postcss": "^8.0.0",
+        "gulp-sourcemaps": "^2.6.5",
         "husky": "^4.2.3",
         "jest": "25.2.3",
         "lint-staged": "^10.0.9",
+        "precss": "^4.0.0",
         "prettier": "2.0.2",
         "ts-jest": "25.2.1",
         "typescript": "3.8.3"

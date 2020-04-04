@@ -1,0 +1,17 @@
+footer {
+    font-size: 1.3rem;
+    padding: 20px;
+    background: #ddd;
+}
+
+footer .container {
+    display: flex;
+    flex-direction: row;
+}
+
+footer .nav a {
+    color: #ff6600;
+}
+footer .nav a:hover {
+    text-decoration: underline;
+}

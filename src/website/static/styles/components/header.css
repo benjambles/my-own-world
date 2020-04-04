@@ -1,0 +1,36 @@
+header {
+    padding: 20px;
+    background: #1d1d1d;
+}
+
+header .container {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+.nav li {
+    padding: 0 0 0 15px;
+}
+
+.nav a {
+    color: white;
+}
+
+.nav a:hover {
+    color: #f57723;
+}
+
+.primary-nav {
+    flex-grow: 1;
+}
+
+.account-nav ul {
+    flex-direction: row;
+}
