@@ -13,6 +13,6 @@
         "tsBuildInfoFile": "../../buildcache/website"
     },
     "include": ["**/*.ts"],
-    "exclude": ["**/*.test.ts", "./coverage"],
+    "exclude": ["**/*.test.ts", "./coverage", "**/*.stories.ts"],
     "compileOnSave": true
 }

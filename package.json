@@ -17,7 +17,8 @@
         "website": "nodemon --watch built/website ./built/website/bin/app.js",
         "website:build": "tsc --project ./src/website && gulp --cwd ./src/website",
         "website:watch:ts": "tsc --project ./src/website --watch",
-        "website:watch:css": "gulp --cwd ./src/website watchCSS"
+        "website:watch:css": "gulp --cwd ./src/website watchCSS",
+        "storybook": "start-storybook"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -55,6 +56,8 @@
         "uuid": "7.0.2"
     },
     "devDependencies": {
+        "@babel/core": "^7.9.0",
+        "@storybook/html": "^5.3.18",
         "@types/bcrypt": "3.0.0",
         "@types/http-errors": "1.6.3",
         "@types/jest": "25.1.4",
@@ -71,6 +74,7 @@
         "@typescript-eslint/eslint-plugin": "2.25.0",
         "@typescript-eslint/parser": "2.25.0",
         "autoprefixer": "^9.7.5",
+        "babel-loader": "^8.1.0",
         "eslint": "6.8.0",
         "gulp": "4.0.2",
         "gulp-postcss": "^8.0.0",
@@ -81,6 +85,7 @@
         "precss": "^4.0.0",
         "prettier": "2.0.2",
         "ts-jest": "25.2.1",
+        "ts-loader": "^6.2.2",
         "typescript": "3.8.3"
     }
 }
