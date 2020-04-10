@@ -5,6 +5,7 @@ import {
     serverResult,
 } from '../../../typings/templates';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { Link } from '../links/link';
 
 export function HomeIntro(context: clientContext): clientResult;
 export function HomeIntro(context: serverContext): serverResult;
@@ -40,15 +41,23 @@ export function HomeIntro(context) {
                     <input type="password" value="" name="password" id="password" />
                     <small>
                         Passwords should be secure, don't use one from another site.
-                        <a href="/password-security">Learn more</a>.
+                        ${Link(context, {
+                            href: '/password-security',
+                            text: 'Learn more',
+                            classes: { underlined: true },
+                        })}.
                     </small>
 
                     <button type="submit">Get started</button>
 
                     <small>
                         By clicking “Get started”, you agree to our
-                        <a href="/terms">Terms of Service and Privacy Statement</a>. We’ll
-                        occasionally send you account related emails.
+                        ${Link(context, {
+                            href: '/terms',
+                            text: 'Terms of Service and Privacy Statement',
+                            classes: { underlined: true },
+                        })}.
+                        We’ll occasionally send you account related emails.
                     </small>
                 </form>
             </div>

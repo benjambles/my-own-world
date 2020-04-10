@@ -25,6 +25,7 @@
     "dependencies": {
         "@popeindustries/lit-html-server": "3.0.0",
         "bcrypt": "4.0.1",
+        "classnames": "^2.2.6",
         "commander": "5.0.0",
         "dotenv": "8.2.0",
         "fp-ts": "^1.19.3",
@@ -59,6 +60,7 @@
         "@babel/core": "^7.9.0",
         "@storybook/html": "^5.3.18",
         "@types/bcrypt": "3.0.0",
+        "@types/classnames": "^2.2.10",
         "@types/http-errors": "1.6.3",
         "@types/jest": "25.1.4",
         "@types/joi": "14.3.4",

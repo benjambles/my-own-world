@@ -9,9 +9,10 @@ footer .container {
     flex-direction: row;
 }
 
-footer .nav a {
-    color: #1a1a1a;
+footer a {
+    padding: 0 0 0 20px;
 }
-footer .nav a:hover {
+
+footer a:hover {
     text-decoration: underline;
 }

@@ -22,17 +22,6 @@ header .container {
     padding: 0 0 0 15px;
 }
 
-.nav a {
-    color: #ededed;
-}
-
-.nav a:hover,
-.nav a:focus,
-.nav .active {
-    outline: none;
-    color: #f57723;
-}
-
 .primary-nav {
     flex-grow: 1;
 }

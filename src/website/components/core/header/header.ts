@@ -5,12 +5,11 @@ import {
     serverResult,
 } from '../../../typings/templates';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
-import { LinkList } from '../links/link-list';
-import { Link } from '../links/nav-link';
+import { Link, LinkProps } from '../links/link';
 import { MenuProfile, MenuProfileData } from '../user/menu-profile';
 
 export interface HeaderData {
-    navigationLinks: Link[];
+    navigationLinks: LinkProps[];
     user: MenuProfileData;
 }
 
@@ -25,14 +24,30 @@ export function Header(context, { navigationLinks, user }: HeaderData) {
             <div class="container">
                 <a href="/" class="logo">My Own World</a>
 
-                <nav class="nav primary-nav">
-                    ${LinkList(context, navigationLinks)}
-                </nav>
+                <nav class="nav primary-nav">${lightLinkList(context, navigationLinks)}</nav>
 
                 <div class="nav account-nav">
-                    ${user.profile ? MenuProfile(context, user) : LinkList(context, user.links)}
+                    ${user.profile
+                        ? MenuProfile(context, user)
+                        : lightLinkList(context, user.links)}
                 </div>
             </div>
         </header>
     `;
+}
+
+function lightLinkList(context, links) {
+    const { html } = context;
+
+    return html`<ul>
+        ${links.map(
+            link =>
+                html`<li>
+                    ${Link(context, {
+                        ...link,
+                        classes: { 'light-link': true },
+                    })}
+                </li>`
+        )}
+    </ul>`;
 }

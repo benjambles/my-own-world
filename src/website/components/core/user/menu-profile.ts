@@ -5,14 +5,14 @@ import {
     serverResult,
 } from '../../../typings/templates';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
-import { Link, NavLink } from '../links/nav-link';
+import { Link, LinkProps } from '../links/link';
 
 export interface MenuProfileData {
     profile?: {
         image: string;
         name: string;
     };
-    links: Link[];
+    links: LinkProps[];
 }
 
 export function MenuProfile(context: clientContext, data: MenuProfileData): clientResult;
@@ -27,7 +27,7 @@ export function MenuProfile(context, { profile, links }: MenuProfileData) {
                 <img src="${profile.image}" alt="${profile.name}" class="profile-image" />
             </summary>
             <div class="menu-profile__dropdown" role="menu">
-                ${links.map(link => NavLink(context, link))}
+                ${links.map(link => Link(context, link))}
             </div>
         </details>
     `;
