@@ -1,23 +1,28 @@
-import navLink from '../links/nav-link';
+import {
+    clientContext,
+    clientResult,
+    serverContext,
+    serverResult,
+} from '../../../typings/templates';
+import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { LinkList } from '../links/link-list';
+import { Link } from '../links/nav-link';
+export interface FooterData {
+    links: Link[];
+}
 
-export default function Footer(context) {
+export function Footer(context: clientContext, data: FooterData): clientResult;
+export function Footer(context: serverContext, data: FooterData): serverResult;
+export function Footer(context, { links }: FooterData) {
     const { html } = context;
 
-    const footerLinks = [
-        { text: 'Terms', url: '/terms' },
-        { text: 'Privacy', url: '/privacy' },
-        { text: 'Accessibility', url: '/accessibility' },
-    ];
-
     return html`
-        <link rel="stylesheet" href="/styles/components/footer.css" />
+        ${LazyStylesheet(context, '/styles/components/footer.css')}
         <footer>
             <div class="container">
                 <span>&copy; My Own World - 2020</span>
                 <nav class="nav">
-                    <ul>
-                        ${footerLinks.map(linkData => navLink(context, linkData))}
-                    </ul>
+                    ${LinkList(context, links)}
                 </nav>
             <div>
         </footer>
