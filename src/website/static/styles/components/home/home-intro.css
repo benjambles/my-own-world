@@ -1,0 +1,76 @@
+.home-intro {
+    background-color: #24292e;
+    color: #efefef;
+    padding: 60px 0;
+}
+
+@media screen and (min-width: 992px) {
+    .home-intro .container--slim {
+        display: grid;
+        grid-template-columns: repeat(12, [col-start] 1fr);
+        grid-gap: 20px;
+    }
+
+    .home-intro__text {
+        grid-column: col-start 1 / span 5;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .home-intro__text p {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .home-intro form {
+        grid-column: col-start 7 / span 6;
+        background: #efefef;
+        padding: 0 20px 20px;
+        border-radius: 5px;
+        color: #1a1a1a;
+    }
+
+    .home-intro form label {
+        display: block;
+        margin-top: 20px;
+        font-size: 1.4rem;
+    }
+
+    .home-intro form input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+        font-size: 1.6rem;
+    }
+
+    .home-intro form small {
+        display: block;
+        font-size: 1.2rem;
+        margin-top: 5px;
+    }
+
+    .home-intro form a {
+        text-decoration: underline;
+    }
+
+    .home-intro form button {
+        width: 100%;
+        margin: 30px 0 25px;
+        padding: 20px 0;
+        font-size: 1.6rem;
+        background-color: #379937;
+        color: white;
+        border: 0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.5s;
+    }
+
+    .home-intro form button:hover,
+    .home-intro form button:focus {
+        background-color: #297429;
+    }
+}

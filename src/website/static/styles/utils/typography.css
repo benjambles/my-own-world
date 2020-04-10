@@ -1,0 +1,39 @@
+h1,
+h2,
+h3,
+h4 {
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 5.2rem;
+}
+
+h2 {
+    font-size: 3.6rem;
+}
+
+h3 {
+    font-size: 2.4rem;
+}
+
+h4 {
+    font-size: 1.8rem;
+}
+
+a {
+    text-decoration: none;
+    color: #1a1a1a;
+}
+
+a:hover,
+a:active,
+a:focus {
+    outline: none;
+    color: #f57723;
+}
+
+.centre {
+    text-align: center;
+}

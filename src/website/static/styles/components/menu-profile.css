@@ -1,0 +1,46 @@
+.profile-image {
+    border-radius: 5px;
+    border: 2px solid white;
+    height: 20px;
+}
+
+.menu-profile {
+    display: block;
+    position: relative;
+}
+
+.menu-profile > summary {
+    cursor: pointer;
+}
+
+.menu-profile > summary:focus {
+    outline: none;
+}
+
+.menu-profile > summary::-webkit-details-marker {
+    color: white;
+    top: -6px;
+    position: relative;
+    width: 0.5em;
+    height: 0.5em;
+    margin-inline-end: 0.1em;
+}
+
+.menu-profile > summary:focus::-webkit-details-marker {
+    color: #f57723;
+}
+
+.menu-profile__dropdown {
+    background: white;
+    display: block;
+    position: absolute;
+    right: 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.menu-profile__dropdown a {
+    color: #1a1a1a;
+    display: block;
+    padding: 5px 0;
+}
