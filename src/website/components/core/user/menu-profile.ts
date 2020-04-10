@@ -5,20 +5,22 @@ import {
     serverResult,
 } from '../../../typings/templates';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
-import { Link, LinkProps } from '../links/link';
+import { Link } from '../links/link';
 
 export interface MenuProfileData {
     profile?: {
         image: string;
         name: string;
+        username: string;
     };
-    links: LinkProps[];
 }
 
 export function MenuProfile(context: clientContext, data: MenuProfileData): clientResult;
 export function MenuProfile(context: serverContext, data: MenuProfileData): serverResult;
-export function MenuProfile(context, { profile, links }: MenuProfileData) {
+export function MenuProfile(context, { profile }: MenuProfileData) {
     const { html } = context;
+
+    const baseLink = { classes: { 'bar-link': true } };
 
     return html`
         ${LazyStylesheet(context, '/styles/components/menu-profile.css')}
@@ -27,7 +29,24 @@ export function MenuProfile(context, { profile, links }: MenuProfileData) {
                 <img src="${profile.image}" alt="${profile.name}" class="profile-image" />
             </summary>
             <div class="menu-profile__dropdown" role="menu">
-                ${links.map(link => Link(context, link))}
+                <span class="user-label">
+                    Signed in as <br />
+                    ${Link(context, {
+                        classes: { bold: true },
+                        text: profile.name,
+                        href: `/profile/${profile.username}`,
+                    })}
+                </span>
+                <hr class="divider" />
+                ${Link(context, {
+                    ...baseLink,
+                    text: 'Your profile',
+                    href: `/profile/${profile.username}`,
+                })}
+                <hr class="divider" />
+                ${Link(context, { ...baseLink, text: 'Preferences', href: '/preferences' })}
+                ${Link(context, { ...baseLink, text: 'Help', href: '/help' })}
+                ${Link(context, { ...baseLink, text: 'Logout', href: '/logout' })}
             </div>
         </details>
     `;

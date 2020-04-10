@@ -27,3 +27,7 @@ h4 {
 .centre {
     text-align: center;
 }
+
+.bold {
+    font-weight: bold;
+}

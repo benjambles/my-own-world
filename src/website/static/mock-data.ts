@@ -11,12 +11,7 @@ export const mockData = {
             { text: 'Learn', href: '/learn' },
             { text: 'Blog', href: '/blog' },
         ],
-        user: {
-            links: [
-                { text: 'Sign in', href: '/login' },
-                { text: 'Sign up', href: '/join' },
-            ],
-        },
+        user: {},
     },
     footer: {
         links: [

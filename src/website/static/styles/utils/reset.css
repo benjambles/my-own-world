@@ -154,3 +154,9 @@ body {
 body {
     font-size: 1.6rem;
 }
+
+*:hover,
+*:active,
+*:focus {
+    outline: none;
+}

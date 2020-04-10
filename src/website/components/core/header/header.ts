@@ -29,7 +29,10 @@ export function Header(context, { navigationLinks, user }: HeaderData) {
                 <div class="nav account-nav">
                     ${user.profile
                         ? MenuProfile(context, user)
-                        : lightLinkList(context, user.links)}
+                        : lightLinkList(context, [
+                              { text: 'Sign in', href: '/login' },
+                              { text: 'Sign up', href: '/join' },
+                          ])}
                 </div>
             </div>
         </header>

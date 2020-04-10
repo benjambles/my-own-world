@@ -1,6 +1,7 @@
 a {
     text-decoration: none;
     color: #1a1a1a;
+    transition: color 0.1s;
 }
 
 .light-link {
@@ -21,4 +22,17 @@ a.active,
 
 .underlined {
     text-decoration: underline;
+}
+
+.bar-link {
+    display: block;
+    padding: 5px 15px;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.bar-link:hover,
+.bar-link:active,
+.bar-link:focus {
+    background-color: #f57723;
+    color: white;
 }

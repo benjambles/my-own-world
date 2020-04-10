@@ -22,20 +22,9 @@ const navigationLinksActive = [
     { text: 'Get started', href: '/register' },
 ];
 
-const accountNavLinks = [
-    { text: 'Sign in', href: '/login' },
-    { text: 'Sign up', href: '/join' },
-];
-
-const accountNavLinksSignedIn = [
-    { text: 'Benjambles', href: '/my-account' },
-    { text: 'Preferences', href: '/preferences' },
-    { text: 'Logout', href: '/logout' },
-];
-
 export const HeaderLoggedOut = () => {
     const container = document.createElement('div');
-    const tpl = Header(context, { navigationLinks, user: { links: accountNavLinks } });
+    const tpl = Header(context, { navigationLinks, user: {} });
     render(tpl, container);
     return container;
 };
@@ -44,7 +33,7 @@ export const HeaderLoggedActiveLink = () => {
     const container = document.createElement('div');
     const tpl = Header(context, {
         navigationLinks: navigationLinksActive,
-        user: { links: accountNavLinks },
+        user: {},
     });
     render(tpl, container);
     return container;
@@ -58,8 +47,8 @@ export const HeaderLoggedIn = () => {
             profile: {
                 name: 'Ben Allen',
                 image: 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=B',
+                username: 'benjambles',
             },
-            links: accountNavLinksSignedIn,
         },
     });
     render(tpl, container);

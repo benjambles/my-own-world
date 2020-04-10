@@ -35,11 +35,26 @@
     display: block;
     position: absolute;
     right: 0;
-    padding: 10px 15px;
+    padding: 5px 0;
     border-radius: 5px;
+    background-clip: padding-box;
+    border: 1px solid rgba(27, 31, 35, 0.15);
+    box-shadow: 0 1px 15px rgba(27, 31, 35, 0.15);
+    width: 180px;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.menu-profile__dropdown a {
+.user-label {
+    padding: 0 15px;
     display: block;
-    padding: 5px 0;
+}
+
+.divider {
+    margin: 5px 0;
+    height: 1px;
+    border: none;
+    color: #ccc;
+    background-color: #ccc;
 }

@@ -44,6 +44,14 @@
         border: 1px solid #ccc;
         margin-top: 5px;
         font-size: 1.6rem;
+        transition: 0.1s border-color, 0.1s box-shadow;
+    }
+
+    .home-intro form input:hover,
+    .home-intro form input:active,
+    .home-intro form input:focus {
+        border: 1px solid #ffae78;
+        box-shadow: 0 0 5px #f57723;
     }
 
     .home-intro form small {
