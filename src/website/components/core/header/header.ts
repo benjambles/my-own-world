@@ -1,34 +1,36 @@
-import navLink from '../links/nav-link';
+import {
+    clientContext,
+    clientResult,
+    serverContext,
+    serverResult,
+} from '../../../typings/templates';
+import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { LinkList } from '../links/link-list';
+import { Link } from '../links/nav-link';
+import { MenuProfile, MenuProfileData } from '../user/menu-profile';
 
-export default function Header(context) {
+export interface HeaderData {
+    navigationLinks: Link[];
+    user: MenuProfileData;
+}
+
+export function Header(context: clientContext, data: HeaderData): clientResult;
+export function Header(context: serverContext, data: HeaderData): serverResult;
+export function Header(context, { navigationLinks, user }: HeaderData) {
     const { html } = context;
 
-    const navLinks = [
-        { text: 'Explore', url: '/explore' },
-        { text: 'Get started', url: '/register' },
-    ];
-
-    const accountNavLinks = [
-        { text: 'Sign in', url: '/login' },
-        { text: 'Sign up', url: '/join' },
-    ];
-
     return html`
-        <link rel="stylesheet" href="/styles/components/header.css" />
+        ${LazyStylesheet(context, '/styles/components/header.css')}
         <header>
             <div class="container">
                 <a href="/" class="logo">My Own World</a>
 
                 <nav class="nav primary-nav">
-                    <ul>
-                        ${navLinks.map(linkData => navLink(context, linkData))}
-                    </ul>
+                    ${LinkList(context, navigationLinks)}
                 </nav>
 
                 <div class="nav account-nav">
-                    <ul>
-                        ${accountNavLinks.map(linkData => navLink(context, linkData))}
-                    </ul>
+                    ${user.profile ? MenuProfile(context, user) : LinkList(context, user.links)}
                 </div>
             </div>
         </header>

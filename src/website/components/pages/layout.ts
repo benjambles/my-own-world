@@ -1,7 +1,20 @@
-import Header from '../core/header/header';
-import Footer from '../core/footer/footer';
+import { clientContext, clientResult, serverContext, serverResult } from '../../typings/templates';
+import { LazyStylesheet } from '../../utils/lazy-stylesheet';
+import { Footer, FooterData } from '../core/footer/footer';
+import { Header, HeaderData } from '../core/header/header';
 
-export default function Layout(context, data) {
+interface Data {
+    meta: {
+        title: string;
+    };
+    [key: string]: any;
+    header: HeaderData;
+    footer: FooterData;
+}
+
+export function Layout(context: clientContext, data: Data, children?): clientResult;
+export function Layout(context: serverContext, data: Data, children?): serverResult;
+export function Layout(context, data, children?) {
     const { html } = context;
 
     return html`
@@ -9,15 +22,13 @@ export default function Layout(context, data) {
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${data.meta.title}</title>
-                <link rel="stylesheet" href="/styles/base.css" />
+                ${LazyStylesheet(context, '/styles/base.css')}
             </head>
             <body>
-                ${Header(context, data)}
-                <div class="container">
-                    <h1>${data.content.title}</h1>
-                </div>
-                ${Footer(context, data)}
+                ${Header(context, data.header)} ${children ? children : undefined}
+                ${Footer(context, data.footer)}
             </body>
         </html>
     `;

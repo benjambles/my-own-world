@@ -1,11 +1,14 @@
 header {
-    padding: 20px;
-    background: #1d1d1d;
+    padding: 0 20px;
+    background: #1a1e21;
+    height: 52px;
 }
 
 header .container {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    height: 100%;
 }
 
 .nav ul {
@@ -20,10 +23,13 @@ header .container {
 }
 
 .nav a {
-    color: white;
+    color: #ededed;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a:focus,
+.nav .active {
+    outline: none;
     color: #f57723;
 }
 
