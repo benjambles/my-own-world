@@ -20,9 +20,17 @@
     margin: 10px 0 30px;
 }
 
-.view-code summary {
+.view-code > summary {
     margin-left: 5px;
     font-size: 1.2rem;
+}
+
+.view-code > summary:hover,
+.view-code > summary:focus,
+.view-code > summary:hover::-webkit-details-marker,
+.view-code > summary:focus::-webkit-details-marker {
+    cursor: pointer;
+    color: #f57723;
 }
 
 .view-code .box {
@@ -55,7 +63,7 @@ body {
 }
 
 @supports (font-variation-settings: normal) {
-    .markup-box {
+    .box--code {
         font-family: 'Fira Code VF', monospace;
     }
 }

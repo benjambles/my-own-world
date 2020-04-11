@@ -26,8 +26,14 @@
     margin-inline-end: 0.1em;
 }
 
+.menu-profile > summary:hover::-webkit-details-marker,
 .menu-profile > summary:focus::-webkit-details-marker {
     color: #f57723;
+}
+
+.menu-profile > summary:hover .profile-image,
+.menu-profile > summary:focus .profile-image {
+    border-color: #f57723;
 }
 
 .menu-profile__dropdown {

@@ -207,8 +207,13 @@ function storyWrapper(storyFn) {
                 <header>
                     <h1>Links</h1>
                     <p>
+                        The link component is a wrapper around all &lt;a&gt; tags used on the My Own
+                        World platform. This allows us to get consistent behaviour across all
+                        navigation on the site.
+                    </p>
+                    <p>
                         Use the Knobs panel in the playground to play around with the settings for
-                        each link.
+                        the Link component.
                     </p>
                 </header>
                 <section>
