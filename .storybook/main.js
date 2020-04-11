@@ -12,4 +12,9 @@ module.exports = {
         config.resolve.extensions.push('.ts');
         return config;
     },
+    addons: [
+        '@storybook/addon-knobs/register',
+        '@storybook/addon-notes/register-panel',
+        '@storybook/addon-actions/register',
+    ],
 };

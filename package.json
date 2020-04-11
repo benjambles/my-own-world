@@ -58,6 +58,10 @@
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
+        "@storybook/addon-actions": "^5.3.18",
+        "@storybook/addon-knobs": "^5.3.18",
+        "@storybook/addon-notes": "^5.3.18",
+        "@storybook/addons": "^5.3.18",
         "@storybook/html": "^5.3.18",
         "@types/bcrypt": "3.0.0",
         "@types/classnames": "^2.2.10",
