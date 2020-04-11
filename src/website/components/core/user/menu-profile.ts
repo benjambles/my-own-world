@@ -20,7 +20,7 @@ export function MenuProfile(context: serverContext, data: MenuProfileData): serv
 export function MenuProfile(context, { profile }: MenuProfileData) {
     const { html } = context;
 
-    const baseLink = { classes: { 'bar-link': true } };
+    const baseLink = { display: { bar: true } };
 
     return html`
         ${LazyStylesheet(context, '/styles/components/menu-profile.css')}
@@ -32,7 +32,7 @@ export function MenuProfile(context, { profile }: MenuProfileData) {
                 <span class="user-label">
                     Signed in as <br />
                     ${Link(context, {
-                        classes: { bold: true },
+                        display: { bold: true },
                         text: profile.name,
                         href: `/profile/${profile.username}`,
                     })}

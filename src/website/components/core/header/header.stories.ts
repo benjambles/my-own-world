@@ -13,13 +13,15 @@ export default {
 };
 
 const navigationLinks = [
-    { text: 'Explore', href: '/explore' },
-    { text: 'Get started', href: '/register' },
+    { text: 'Explore', href: '/explore', display: { light: true } },
+    { text: 'Learn', href: '/learn', display: { light: true } },
+    { text: 'Blog', href: '/blog', display: { light: true } },
 ];
 
 const navigationLinksActive = [
-    { text: 'Explore', href: '/explore', active: true },
-    { text: 'Get started', href: '/register' },
+    { text: 'Explore', href: '/explore', display: { light: true, active: true } },
+    { text: 'Learn', href: '/learn', display: { light: true } },
+    { text: 'Blog', href: '/blog', display: { light: true } },
 ];
 
 export const HeaderLoggedOut = () => {

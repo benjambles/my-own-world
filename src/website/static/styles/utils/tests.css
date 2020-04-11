@@ -1,8 +1,89 @@
-.dark-box {
+.box {
     padding: 20px;
-    background: #1a1e21;
+    border-radius: 5px;
+    border: 1px dotted #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.light-box {
+.box--light {
+    margin: 20px 0 10px;
+}
+
+.box--dark {
+    background: #24292e;
+    margin: 20px 0 10px;
+}
+
+.view-code {
+    margin: 10px 0 30px;
+}
+
+.view-code summary {
+    margin-left: 5px;
+    font-size: 1.2rem;
+}
+
+.view-code .box {
+    margin: 10px 0 0;
+}
+
+html,
+body {
+    background-color: #efefef;
+}
+
+.story-variant {
+    margin-bottom: 30px;
+}
+
+.test-wrapper {
     padding: 20px;
+    background-color: #efefef;
+}
+
+.box--code {
+    background: #fff;
+    color: #333;
+    font-family: 'Fira Code', monospace;
+}
+
+.box figcaption {
+    color: #aaa;
+    margin-left: 20px;
+}
+
+@supports (font-variation-settings: normal) {
+    .markup-box {
+        font-family: 'Fira Code VF', monospace;
+    }
+}
+
+table.prop-table {
+    border-radius: 5px;
+    width: 100%;
+    border-collapse: collapse;
+    color: #24292e;
+}
+table.prop-table td,
+table.prop-table th {
+    padding: 10px;
+}
+table.prop-table tbody {
+    background: #efefef;
+}
+table.prop-table tbody tr:nth-child(even) {
+    background: #cececd;
+}
+table.prop-table thead {
+    background: #1a1e21;
+}
+table.prop-table thead th {
+    font-weight: bold;
+    color: #efefef;
+    text-align: left;
+}
+table.prop-table tfoot td {
+    font-size: 14px;
 }

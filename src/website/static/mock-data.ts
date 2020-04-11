@@ -7,9 +7,9 @@ export const mockData = {
     },
     header: {
         navigationLinks: [
-            { text: 'Explore', href: '/explore' },
-            { text: 'Learn', href: '/learn' },
-            { text: 'Blog', href: '/blog' },
+            { text: 'Explore', href: '/explore', display: { light: true } },
+            { text: 'Learn', href: '/learn', display: { light: true } },
+            { text: 'Blog', href: '/blog', display: { light: true } },
         ],
         user: {},
     },

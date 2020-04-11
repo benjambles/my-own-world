@@ -1,10 +1,10 @@
-header {
+.header {
     padding: 0 20px;
     background: #1a1e21;
     height: 52px;
 }
 
-header .container {
+.header .container {
     display: flex;
     flex-direction: row;
     align-items: center;

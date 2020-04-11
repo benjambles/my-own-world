@@ -9,18 +9,22 @@ h4 {
 }
 
 h1 {
-    font-size: 5.2rem;
+    font-size: 2.883rem;
 }
 
 h2 {
-    font-size: 3.6rem;
+    font-size: 2.563rem;
 }
 
 h3 {
-    font-size: 2.4rem;
+    font-size: 2.278rem;
 }
 
 h4 {
+    font-size: 2.025rem;
+}
+
+h5 {
     font-size: 1.8rem;
 }
 
@@ -30,4 +34,8 @@ h4 {
 
 .bold {
     font-weight: bold;
+}
+
+p {
+    margin-bottom: 20px;
 }

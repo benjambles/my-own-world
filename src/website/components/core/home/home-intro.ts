@@ -44,7 +44,7 @@ export function HomeIntro(context) {
                         ${Link(context, {
                             href: '/password-security',
                             text: 'Learn more',
-                            classes: { underlined: true },
+                            display: { underlined: true },
                         })}.
                     </small>
 
@@ -55,7 +55,7 @@ export function HomeIntro(context) {
                         ${Link(context, {
                             href: '/terms',
                             text: 'Terms of Service and Privacy Statement',
-                            classes: { underlined: true },
+                            display: { underlined: true },
                         })}.
                         We’ll occasionally send you account related emails.
                     </small>

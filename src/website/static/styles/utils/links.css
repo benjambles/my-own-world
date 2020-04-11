@@ -4,7 +4,7 @@ a {
     transition: color 0.1s;
 }
 
-.light-link {
+.light {
     color: #efefef;
 }
 
@@ -12,10 +12,10 @@ a:hover,
 a:active,
 a:focus,
 a.active,
-.light-link:hover,
-.light-link:active,
-.light-link:focus,
-.light-link.active {
+a.light:hover,
+a.light:active,
+a.light:focus,
+a.light.active {
     outline: none;
     color: #f57723;
 }
@@ -24,15 +24,21 @@ a.active,
     text-decoration: underline;
 }
 
-.bar-link {
+.bar {
     display: block;
     padding: 5px 15px;
     transition: background-color 0.1s, color 0.1s;
+    flex-grow: 1;
 }
 
-.bar-link:hover,
-.bar-link:active,
-.bar-link:focus {
+.bar:hover,
+.bar:active,
+.bar:focus,
+.bar.active,
+.bar.light:hover,
+.bar.light:active,
+.bar.light:focus,
+.bar.light.active {
     background-color: #f57723;
     color: white;
 }
