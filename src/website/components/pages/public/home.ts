@@ -1,12 +1,8 @@
-import {
-    clientContext,
-    clientResult,
-    serverContext,
-    serverResult,
-} from '../../../typings/templates';
+import { clientContext, clientResult } from '../../../utils/client-context';
+import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { serverContext, serverResult } from '../../../utils/server-context';
 import { HomeIntro } from '../../core/home/home-intro';
 import { Layout } from '../layout';
-import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
 
 export function Home(context: clientContext, data): clientResult;
 export function Home(context: serverContext, data): serverResult;

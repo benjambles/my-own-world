@@ -1,6 +1,11 @@
+import { renderToString } from '@popeindustries/lit-html-server';
 import * as router from 'koa-joi-router';
-import Homepage from './homepage';
-import Register from './account/register';
-import Terms from './terms/terms';
+import { SERVER_CONTEXT } from '../utils/server-context';
+import { RegisterRoute } from './account/register-route';
+import { HomeRoute } from './homepage/home-route';
+import { TermsRoute } from './terms/terms-route';
 
-export default [Homepage, Register, Terms].map(routeConfig => router().route(routeConfig));
+export default [HomeRoute, RegisterRoute, TermsRoute].map(routeHandler => {
+    const routeConfig = routeHandler(SERVER_CONTEXT, renderToString);
+    router().route(routeConfig);
+});

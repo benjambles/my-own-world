@@ -1,10 +1,6 @@
-import {
-    clientContext,
-    clientResult,
-    serverContext,
-    serverResult,
-} from '../../../typings/templates';
 import classNames from 'classnames';
+import { clientContext, clientResult } from '../../../utils/client-context';
+import { serverContext, serverResult } from '../../../utils/server-context';
 
 export interface LinkProps {
     href: string;
@@ -22,6 +18,5 @@ export function Link(context: clientContext, data: LinkProps): clientResult;
 export function Link(context: serverContext, data: LinkProps): serverResult;
 export function Link(context, { text, href, display = {} }: LinkProps) {
     const { html } = context;
-    const cssClasses = classNames(display);
-    return html`<a href="${href}" class="${cssClasses}">${text}</a>`;
+    return html`<a href="${href}" class="${classNames(display)}">${text}</a>`;
 }

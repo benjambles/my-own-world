@@ -1,12 +1,8 @@
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { html, render } from 'lit-html';
-import { Link } from './link';
 import '../../../static/styles/utils/tests.css';
-
-import { withKnobs, boolean, text } from '@storybook/addon-knobs';
-
-const context = {
-    html,
-};
+import { CLIENT_CONTEXT } from '../../../utils/client-context';
+import { Link } from './link';
 
 export default {
     title: 'Links',
@@ -17,14 +13,14 @@ export function LightMode() {
     return html`
         <div class="story-variant">
             <h3>Inactive</h3>
-            ${sampleBox(Link(context, { text: 'Go home', href: '/' }), 'sample')}
+            ${sampleBox(Link(CLIENT_CONTEXT, { text: 'Go home', href: '/' }), 'sample')}
             ${codeBox("Link(context, { text: 'Go home', href: '/' })")}
         </div>
 
         <div class="story-variant">
             <h3>Active</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { active: true } }),
+                Link(CLIENT_CONTEXT, { text: 'Go home', href: '/', display: { active: true } }),
                 'sample'
             )}
             ${codeBox("Link(context, { text: 'Go home', href: '/', display: { active: true } })")}
@@ -33,7 +29,7 @@ export function LightMode() {
         <div class="story-variant">
             <h3>Underlined</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { underlined: true } }),
+                Link(CLIENT_CONTEXT, { text: 'Go home', href: '/', display: { underlined: true } }),
                 'sample'
             )}
             ${codeBox(
@@ -44,7 +40,7 @@ export function LightMode() {
         <div class="story-variant">
             <h3>Bold</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { bold: true } }),
+                Link(CLIENT_CONTEXT, { text: 'Go home', href: '/', display: { bold: true } }),
                 'sample'
             )}
             ${codeBox("Link(context, { text: 'Go home', href: '/', display: { bold: true } })")}
@@ -53,7 +49,7 @@ export function LightMode() {
         <div class="story-variant">
             <h3>Bar</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { bar: true } }),
+                Link(CLIENT_CONTEXT, { text: 'Go home', href: '/', display: { bar: true } }),
                 'sample'
             )}
             ${codeBox("Link(context, { text: 'Go home', href: '/', display: { bar: true } })")}
@@ -62,7 +58,11 @@ export function LightMode() {
         <div class="story-variant">
             <h3>Bar active</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { bar: true, active: true } }),
+                Link(CLIENT_CONTEXT, {
+                    text: 'Go home',
+                    href: '/',
+                    display: { bar: true, active: true },
+                }),
                 'sample'
             )}
             ${codeBox(
@@ -77,7 +77,7 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Inactive</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { light: true } }),
+                Link(CLIENT_CONTEXT, { text: 'Go home', href: '/', display: { light: true } }),
                 'sample',
                 'box--dark'
             )}
@@ -87,7 +87,7 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Active</h3>
             ${sampleBox(
-                Link(context, {
+                Link(CLIENT_CONTEXT, {
                     text: 'Go home',
                     href: '/',
                     display: { active: true, light: true },
@@ -103,7 +103,7 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Underlined</h3>
             ${sampleBox(
-                Link(context, {
+                Link(CLIENT_CONTEXT, {
                     text: 'Go home',
                     href: '/',
                     display: { underlined: true, light: true },
@@ -119,7 +119,11 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Bold</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { bold: true, light: true } }),
+                Link(CLIENT_CONTEXT, {
+                    text: 'Go home',
+                    href: '/',
+                    display: { bold: true, light: true },
+                }),
                 'sample',
                 'box--dark'
             )}
@@ -131,7 +135,11 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Bar</h3>
             ${sampleBox(
-                Link(context, { text: 'Go home', href: '/', display: { bar: true, light: true } }),
+                Link(CLIENT_CONTEXT, {
+                    text: 'Go home',
+                    href: '/',
+                    display: { bar: true, light: true },
+                }),
                 'sample',
                 'box--dark'
             )}
@@ -143,7 +151,7 @@ export function DarkMode() {
         <div class="story-variant">
             <h3>Bar active</h3>
             ${sampleBox(
-                Link(context, {
+                Link(CLIENT_CONTEXT, {
                     text: 'Go home',
                     href: '/',
                     display: { bar: true, active: true, light: true },
@@ -163,7 +171,7 @@ export function Playground() {
         <div class="story-variant">
             <h3>Light mode Link</h3>
             ${sampleBox(
-                Link(context, {
+                Link(CLIENT_CONTEXT, {
                     text: text('text', 'Click here', 'Attributes'),
                     href: text('href', '/', 'Attributes'),
                     display: {
@@ -180,7 +188,7 @@ export function Playground() {
         <div class="story-variant">
             <h3>Dark mode link</h3>
             ${sampleBox(
-                Link(context, {
+                Link(CLIENT_CONTEXT, {
                     text: text('text', 'Click here', 'Attributes'),
                     href: text('href', '/', 'Attributes'),
                     display: {

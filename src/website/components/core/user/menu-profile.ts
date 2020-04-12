@@ -1,10 +1,6 @@
-import {
-    clientContext,
-    clientResult,
-    serverContext,
-    serverResult,
-} from '../../../typings/templates';
+import { clientContext, clientResult } from '../../../utils/client-context';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { serverContext, serverResult } from '../../../utils/server-context';
 import { Link } from '../links/link';
 
 export interface MenuProfileData {

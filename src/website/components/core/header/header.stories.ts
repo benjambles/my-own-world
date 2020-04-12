@@ -1,12 +1,9 @@
-import { html, render } from 'lit-html';
+import { render } from 'lit-html';
 import '../../../static/styles/base.css';
 import '../../../static/styles/components/header.css';
 import '../../../static/styles/components/menu-profile.css';
+import { CLIENT_CONTEXT } from '../../../utils/client-context';
 import { Header } from './header';
-
-const context = {
-    html,
-};
 
 export default {
     title: 'Header',
@@ -26,14 +23,14 @@ const navigationLinksActive = [
 
 export const HeaderLoggedOut = () => {
     const container = document.createElement('div');
-    const tpl = Header(context, { navigationLinks, user: {} });
+    const tpl = Header(CLIENT_CONTEXT, { navigationLinks, user: {} });
     render(tpl, container);
     return container;
 };
 
 export const HeaderLoggedActiveLink = () => {
     const container = document.createElement('div');
-    const tpl = Header(context, {
+    const tpl = Header(CLIENT_CONTEXT, {
         navigationLinks: navigationLinksActive,
         user: {},
     });
@@ -43,7 +40,7 @@ export const HeaderLoggedActiveLink = () => {
 
 export const HeaderLoggedIn = () => {
     const container = document.createElement('div');
-    const tpl = Header(context, {
+    const tpl = Header(CLIENT_CONTEXT, {
         navigationLinks,
         user: {
             profile: {

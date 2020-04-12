@@ -1,4 +1,5 @@
-import { clientContext, clientResult, serverContext, serverResult } from '../typings/templates';
+import { clientContext, clientResult } from '../utils/client-context';
+import { serverContext, serverResult } from '../utils/server-context';
 
 /**
  * Returns a lazy loading stylesheet tag

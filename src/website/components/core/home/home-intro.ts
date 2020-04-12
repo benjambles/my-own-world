@@ -1,10 +1,8 @@
-import {
-    clientContext,
-    clientResult,
-    serverContext,
-    serverResult,
-} from '../../../typings/templates';
+import { clientContext, clientResult } from '../../../utils/client-context';
 import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { serverContext, serverResult } from '../../../utils/server-context';
+import { PrimaryButton } from '../buttons/primary-button';
+import { InputBox } from '../form-elements/input-box';
 import { Link } from '../links/link';
 
 export function HomeIntro(context: clientContext): clientResult;
@@ -31,14 +29,9 @@ export function HomeIntro(context) {
                 </div>
 
                 <form action="/signup">
-                    <label for="username">Username</label>
-                    <input type="text" value="" name="username" id="username" />
-
-                    <label for="email">Email</label>
-                    <input type="email" value="" name="email" id="email" />
-
-                    <label for="password">Password</label>
-                    <input type="password" value="" name="password" id="password" />
+                    ${InputBox(context, { label: 'Username', id: 'username' })}
+                    ${InputBox(context, { label: 'Email', id: 'email', type: 'email' })}
+                    ${InputBox(context, { label: 'Password', id: 'password', type: 'password' })}
                     <small>
                         Passwords should be secure, don't use one from another site.
                         ${Link(context, {
@@ -48,7 +41,7 @@ export function HomeIntro(context) {
                         })}.
                     </small>
 
-                    <button type="submit">Get started</button>
+                    ${PrimaryButton(context, { text: 'Get Started', type: 'submit' })}
 
                     <small>
                         By clicking “Get started”, you agree to our

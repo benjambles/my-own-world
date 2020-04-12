@@ -1,11 +1,8 @@
-import { html, render } from 'lit-html';
+import { render } from 'lit-html';
 import '../../../static/styles/base.css';
 import '../../../static/styles/components/footer.css';
+import { CLIENT_CONTEXT } from '../../../utils/client-context';
 import { Footer } from './footer';
-
-const context = {
-    html,
-};
 
 export default {
     title: 'Footer',
@@ -19,7 +16,7 @@ const links = [
 
 export const FooterNormal = () => {
     const container = document.createElement('div');
-    const tpl = Footer(context, { links });
+    const tpl = Footer(CLIENT_CONTEXT, { links });
     render(tpl, container);
     return container;
 };

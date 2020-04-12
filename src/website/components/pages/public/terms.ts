@@ -1,9 +1,5 @@
-import {
-    clientContext,
-    clientResult,
-    serverContext,
-    serverResult,
-} from '../../../typings/templates';
+import { clientContext, clientResult } from '../../../utils/client-context';
+import { serverContext, serverResult } from '../../../utils/server-context';
 import { Layout } from '../layout';
 
 export function Terms(context: clientContext, data): clientResult;
