@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "../../built/api",
+        "outDir": "../../dist/api",
         "allowJs": true,
         "checkJs": true,
         "target": "es2017",

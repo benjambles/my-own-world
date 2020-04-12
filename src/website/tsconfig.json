@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "../../built/website",
+        "outDir": "../../dist/website",
         "allowJs": true,
         "checkJs": true,
         "target": "es6",
