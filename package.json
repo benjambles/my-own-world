@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "Tools for world builders",
     "main": "index.js",
+    "browserslist": [
+        "> 1% and last 2 versions",
+        "not IE 11"
+    ],
     "scripts": {
         "api": "nodemon  --watch dist/api ./dist/api/bin/api.js",
         "api:build": "tsc --project ./src/api && gulp --cwd ./src/api",
