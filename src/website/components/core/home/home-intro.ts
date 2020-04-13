@@ -1,5 +1,5 @@
 import { clientContext, clientResult } from '../../../utils/client-context';
-import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { LazyStylesheet } from '../../utils/lazy-stylesheet';
 import { serverContext, serverResult } from '../../../utils/server-context';
 import { PrimaryButton } from '../buttons/primary-button';
 import { InputBox } from '../form-elements/input-box';
@@ -23,8 +23,8 @@ export function HomeIntro(context) {
                     </p>
 
                     <p>
-                        Best of all, it's open source! Add new features, run your own copy, with a
-                        little coding knowledge there's no limits.
+                        Best of all, it's open source! Add new features, or run your own copy, with
+                        a little coding knowledge there's no limits.
                     </p>
                 </div>
 

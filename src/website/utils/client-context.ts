@@ -1,4 +1,4 @@
-import { html, Part, TemplateResult } from 'lit-html';
+import { html, Part, render, TemplateResult } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
 
@@ -21,3 +21,11 @@ export const CLIENT_CONTEXT: clientContext = {
         ifDefined,
     },
 };
+
+export type clientRender = typeof render;
+
+export interface clientRouteConfig {
+    method: 'get' | 'post' | 'options';
+    path: string;
+    handler: (ctx: any) => Promise<void>;
+}

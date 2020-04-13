@@ -1,10 +1,13 @@
 import { Terms } from '../../components/pages/public/terms';
 import { mockData } from '../../static/mock-data';
-import { clientContext } from '../../utils/client-context';
-import { serverContext, serverRenderer } from '../../utils/server-context';
+import { clientContext, clientRender, clientRouteConfig } from '../../utils/client-context';
+import { serverContext, serverRenderer, serverRouteConfig } from '../../utils/server-context';
 
-export function TermsRoute(litHtmlContext: clientContext, render);
-export function TermsRoute(litHtmlContext: serverContext, render: serverRenderer);
+export function TermsRoute(litHtmlContext: clientContext, render: clientRender): clientRouteConfig;
+export function TermsRoute(
+    litHtmlContext: serverContext,
+    render: serverRenderer
+): serverRouteConfig;
 export function TermsRoute(litHtmlContext, render) {
     return {
         method: 'get',

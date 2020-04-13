@@ -1,5 +1,5 @@
-import { clientContext, clientResult } from '../utils/client-context';
-import { serverContext, serverResult } from '../utils/server-context';
+import { clientContext, clientResult } from '../../utils/client-context';
+import { serverContext, serverResult } from '../../utils/server-context';
 
 /**
  * Returns a lazy loading stylesheet tag

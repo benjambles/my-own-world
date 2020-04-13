@@ -1,5 +1,5 @@
 import { clientContext, clientResult } from '../../../utils/client-context';
-import { LazyStylesheet } from '../../../utils/lazy-stylesheet';
+import { LazyStylesheet } from '../../utils/lazy-stylesheet';
 import { serverContext, serverResult } from '../../../utils/server-context';
 import { Link, LinkProps } from '../links/link';
 export interface FooterData {

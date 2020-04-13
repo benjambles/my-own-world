@@ -14,7 +14,7 @@ export function InputBox(context: clientContext, data: InputData): clientResult;
 export function InputBox(context: serverContext, data: InputData): serverResult;
 export function InputBox(
     context,
-    { id, label, type = 'text', placeholder, defaultText = '' }: InputData
+    { id, label, type = 'text', placeholder, defaultText = '', name }: InputData
 ) {
     const { html } = context;
 
