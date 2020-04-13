@@ -4,11 +4,11 @@ const tsConfig = require('./tsconfig.json');
 const buildPath = tsConfig.compilerOptions.outDir;
 
 function copyApiConfig() {
-    return src('**/config.json').pipe(dest(buildPath));
+    return src('src/**/config.json').pipe(dest(buildPath));
 }
 
 function copyEnv() {
-    return src('**/.env').pipe(dest(buildPath));
+    return src('src/.env').pipe(dest(buildPath));
 }
 
 exports.copyEnv = copyEnv;

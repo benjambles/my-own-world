@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "../../dist/api",
+        "outDir": "dist",
         "allowJs": true,
         "checkJs": true,
         "target": "es2017",
@@ -10,9 +10,9 @@
         "moduleResolution": "node",
         "lib": ["es2019", "esnext.array", "dom"],
         "incremental": true,
-        "tsBuildInfoFile": "../../buildcache/api"
+        "tsBuildInfoFile": "buildcache"
     },
-    "include": ["**/*.ts"],
-    "exclude": ["**/*.test.ts", "./coverage"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.test.ts", "./coverage"],
     "compileOnSave": true
 }

@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "../../dist/website",
+        "outDir": "dist",
         "allowJs": true,
         "checkJs": true,
         "target": "es6",
@@ -10,9 +10,9 @@
         "moduleResolution": "node",
         "lib": ["esnext.array", "dom"],
         "incremental": true,
-        "tsBuildInfoFile": "../../buildcache/website"
+        "tsBuildInfoFile": "buildcache"
     },
-    "include": ["**/*.ts"],
-    "exclude": ["**/*.test.ts", "./coverage", "**/*.stories.ts"],
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.test.ts", "./coverage", "src/**/*.stories.ts"],
     "compileOnSave": true
 }
