@@ -1,6 +1,7 @@
 import { clientContext, clientResult } from '../../../utils/client-context';
-import { LazyStylesheet } from '../../utils/lazy-stylesheet';
 import { serverContext, serverResult } from '../../../utils/server-context';
+import { LazyStylesheet } from '../../utils/lazy-stylesheet';
+import { BarLink } from '../links/bar-link';
 import { Link } from '../links/link';
 
 export interface MenuProfileData {
@@ -16,12 +17,10 @@ export function MenuProfile(context: serverContext, data: MenuProfileData): serv
 export function MenuProfile(context, { profile }: MenuProfileData) {
     const { html } = context;
 
-    const baseLink = { display: { bar: true } };
-
     return html`
         ${LazyStylesheet(context, '/styles/components/menu-profile.css')}
         <details class="menu-profile">
-            <summary aria-haspopup="menu" role="button">
+            <summary aria-haspopup="true" role="button">
                 <img src="${profile.image}" alt="${profile.name}" class="profile-image" />
             </summary>
             <div class="menu-profile__dropdown" role="menu">
@@ -34,15 +33,14 @@ export function MenuProfile(context, { profile }: MenuProfileData) {
                     })}
                 </span>
                 <hr class="divider" />
-                ${Link(context, {
-                    ...baseLink,
+                ${BarLink(context, {
                     text: 'Your profile',
                     href: `/profile/${profile.username}`,
                 })}
                 <hr class="divider" />
-                ${Link(context, { ...baseLink, text: 'Preferences', href: '/preferences' })}
-                ${Link(context, { ...baseLink, text: 'Help', href: '/help' })}
-                ${Link(context, { ...baseLink, text: 'Logout', href: '/logout' })}
+                ${BarLink(context, { text: 'Preferences', href: '/preferences' })}
+                ${BarLink(context, { text: 'Help', href: '/help' })}
+                ${BarLink(context, { text: 'Logout', href: '/logout' })}
             </div>
         </details>
     `;

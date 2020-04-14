@@ -1,5 +1,6 @@
 import { clientContext, clientResult } from '../../../utils/client-context';
 import { serverContext, serverResult } from '../../../utils/server-context';
+
 export interface ButtonData {
     text: string;
     type?: 'button' | 'submit';
@@ -7,9 +8,9 @@ export interface ButtonData {
     size?: 'large' | 'normal' | 'small';
 }
 
-export function PrimaryButton(context: clientContext, data: ButtonData): clientResult;
-export function PrimaryButton(context: serverContext, data: ButtonData): serverResult;
-export function PrimaryButton(
+export function DestructiveButton(context: clientContext, data: ButtonData): clientResult;
+export function DestructiveButton(context: serverContext, data: ButtonData): serverResult;
+export function DestructiveButton(
     context,
     { text, type = 'button', action, size = 'normal' }: ButtonData
 ) {
@@ -20,7 +21,7 @@ export function PrimaryButton(
 
     const cssClasses = classMap({
         button: true,
-        'button--primary': true,
+        'button--destructive': true,
         'button--large': size === 'large',
         'button--small': size === 'small',
     });

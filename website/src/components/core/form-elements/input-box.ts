@@ -7,7 +7,20 @@ export interface InputData {
     defaultText?: string;
     name?: string;
     placeholder?: string;
-    type?: string;
+    type?:
+        | 'text'
+        | 'search'
+        | 'tel'
+        | 'url'
+        | 'email'
+        | 'password'
+        | 'datetime'
+        | 'date'
+        | 'month'
+        | 'week'
+        | 'time'
+        | 'datetime-local'
+        | 'number';
 }
 
 export function InputBox(context: clientContext, data: InputData): clientResult;
@@ -16,14 +29,17 @@ export function InputBox(
     context,
     { id, label, type = 'text', placeholder, defaultText = '', name }: InputData
 ) {
-    const { html } = context;
+    const {
+        html,
+        directives: { ifDefined },
+    } = context;
 
     return html`
         <label for="${id}">${label}</label>
         <input
             type="${type}"
             value="${defaultText}"
-            ?placeholder="${placeholder}"
+            placeholder=" ${ifDefined(placeholder)}"
             name="${name ? name : id}"
             id="${id}"
         />

@@ -1,11 +1,15 @@
-import { render } from 'lit-html';
 import '../../../static/styles/base.css';
 import '../../../static/styles/components/footer.css';
 import { CLIENT_CONTEXT } from '../../../utils/client-context';
+import { storyRenderer } from '../../../utils/story-renderer';
 import { Footer } from './footer';
 
 export default {
-    title: 'Footer',
+    title: 'Furniture/Footer',
+    parameters: {
+        componentSubtitle: 'Displays the footer links and copyright information',
+    },
+    decorators: [storyRenderer],
 };
 
 const links = [
@@ -14,9 +18,6 @@ const links = [
     { text: 'Accessibility', href: '/accessibility' },
 ];
 
-export const FooterNormal = () => {
-    const container = document.createElement('div');
-    const tpl = Footer(CLIENT_CONTEXT, { links });
-    render(tpl, container);
-    return container;
+export const footer = () => {
+    return Footer(CLIENT_CONTEXT, { links });
 };

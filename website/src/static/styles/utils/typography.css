@@ -39,3 +39,7 @@ h5 {
 p {
     margin-bottom: 20px;
 }
+
+.underlined {
+    text-decoration: underline;
+}

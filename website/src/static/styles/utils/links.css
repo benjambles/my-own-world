@@ -4,7 +4,7 @@ a {
     transition: color 0.1s;
 }
 
-.light {
+.link--dark {
     color: #efefef;
 }
 
@@ -12,33 +12,25 @@ a:hover,
 a:active,
 a:focus,
 a.active,
-a.light:hover,
-a.light:active,
-a.light:focus,
-a.light.active {
+a.link--dark:hover,
+a.link--dark:active,
+a.link--dark:focus,
+a.link--dark.active {
     outline: none;
     color: #f57723;
 }
 
-.underlined {
-    text-decoration: underline;
-}
-
-.bar {
+.link--bar {
     display: block;
     padding: 5px 15px;
     transition: background-color 0.1s, color 0.1s;
     flex-grow: 1;
 }
 
-.bar:hover,
-.bar:active,
-.bar:focus,
-.bar.active,
-.bar.light:hover,
-.bar.light:active,
-.bar.light:focus,
-.bar.light.active {
+.link--bar:hover,
+.link--bar:active,
+.link--bar:focus,
+.link--bar.active {
     background-color: #f57723;
     color: white;
 }

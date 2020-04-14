@@ -1,11 +1,11 @@
 import { clientContext, clientResult } from '../../../utils/client-context';
 import { LazyStylesheet } from '../../utils/lazy-stylesheet';
 import { serverContext, serverResult } from '../../../utils/server-context';
-import { Link, LinkProps } from '../links/link';
+import { DarkLink, DarkLinkProps } from '../links/dark-link';
 import { MenuProfile, MenuProfileData } from '../user/menu-profile';
 
 export interface HeaderData {
-    navigationLinks: LinkProps[];
+    navigationLinks: DarkLinkProps[];
     user: MenuProfileData;
 }
 
@@ -26,8 +26,8 @@ export function Header(context, { navigationLinks, user }: HeaderData) {
                     ${user.profile
                         ? MenuProfile(context, user)
                         : LinkList(context, [
-                              { text: 'Sign in', href: '/login', display: { light: true } },
-                              { text: 'Sign up', href: '/join', display: { light: true } },
+                              { text: 'Sign in', href: '/login' },
+                              { text: 'Sign up', href: '/join' },
                           ])}
                 </div>
             </div>
@@ -40,7 +40,7 @@ function LinkList(context, links) {
 
     return html`
         <ul>
-            ${links.map(link => html`<li>${Link(context, link)}</li>`)}
+            ${links.map(link => html`<li>${DarkLink(context, link)}</li>`)}
         </ul>
     `;
 }

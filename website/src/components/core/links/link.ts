@@ -7,10 +7,8 @@ export interface LinkProps {
     text: string;
     display?: {
         active?: boolean;
-        light?: boolean;
         underlined?: boolean;
         bold?: boolean;
-        bar?: boolean;
     };
 }
 

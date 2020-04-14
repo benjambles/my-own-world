@@ -1,13 +1,13 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { CLIENT_CONTEXT } from '../../../utils/client-context';
-import { linkStoryRenderer } from '../../../utils/story-renderer';
-import { Link } from './link';
+import { linkStoryRendererDark } from '../../../utils/story-renderer';
+import { DarkLink } from './dark-link';
 
 export default {
-    title: 'Atoms/Links/Light',
-    decorators: [linkStoryRenderer],
+    title: 'Atoms/Links/Dark',
+    decorators: [withKnobs, linkStoryRendererDark],
     parameters: {
-        componentSubtitle: 'A wrapper around the standard anchor tag for light backgrounds',
+        componentSubtitle: 'A wrapper around the standard anchor tag for dark backgrounds',
         docs: {
             iframeHeight: '100px',
         },
@@ -15,15 +15,15 @@ export default {
 };
 
 export function standard() {
-    return Link(CLIENT_CONTEXT, { text: 'Link', href: '/' });
+    return DarkLink(CLIENT_CONTEXT, { text: 'Link', href: '/' });
 }
 
 export function active() {
-    return Link(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
+    return DarkLink(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
 }
 
 export function underlined() {
-    return Link(CLIENT_CONTEXT, {
+    return DarkLink(CLIENT_CONTEXT, {
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -31,11 +31,11 @@ export function underlined() {
 }
 
 export function bold() {
-    return Link(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
+    return DarkLink(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
 }
 
 export function playground() {
-    return Link(CLIENT_CONTEXT, {
+    return DarkLink(CLIENT_CONTEXT, {
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
         display: {
@@ -45,6 +45,3 @@ export function playground() {
         },
     });
 }
-playground.story = {
-    decorators: [withKnobs],
-};

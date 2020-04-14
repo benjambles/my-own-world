@@ -1,16 +1,14 @@
-import { render } from 'lit-html';
 import '../../../static/styles/base.css';
 import '../../../static/styles/components/home/home-intro.css';
 import { CLIENT_CONTEXT } from '../../../utils/client-context';
+import { storyRenderer } from '../../../utils/story-renderer';
 import { HomeIntro } from './home-intro';
 
 export default {
-    title: 'Home',
+    title: 'Pages/Home',
+    decorators: [storyRenderer],
 };
 
-export const HomeIntroBlock = () => {
-    const container = document.createElement('div');
-    const tpl = HomeIntro(CLIENT_CONTEXT);
-    render(tpl, container);
-    return container;
-};
+export function HomeIntroBlock() {
+    return HomeIntro(CLIENT_CONTEXT);
+}
