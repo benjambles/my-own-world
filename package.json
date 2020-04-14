@@ -62,9 +62,11 @@
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
+        "@storybook/addon-a11y": "^5.3.18",
         "@storybook/addon-actions": "^5.3.18",
+        "@storybook/addon-docs": "^5.3.18",
         "@storybook/addon-knobs": "^5.3.18",
-        "@storybook/addon-notes": "^5.3.18",
+        "@storybook/addon-viewport": "^5.3.18",
         "@storybook/addons": "^5.3.18",
         "@storybook/html": "^5.3.18",
         "@types/bcrypt": "3.0.0",
@@ -95,6 +97,7 @@
         "precss": "^4.0.0",
         "prettier": "2.0.2",
         "ts-jest": "25.2.1",
+        "ts-lit-plugin": "^1.1.10",
         "ts-loader": "^6.2.2",
         "typescript": "3.8.3"
     }

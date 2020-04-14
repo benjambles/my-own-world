@@ -10,7 +10,17 @@
         "moduleResolution": "node",
         "lib": ["esnext.array", "dom"],
         "incremental": true,
-        "tsBuildInfoFile": "buildcache"
+        "tsBuildInfoFile": "buildcache",
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true,
+                "rules": {
+                    "no-unknown-tag-name": "off",
+                    "no-unknown-event": "warn"
+                }
+            }
+        ]
     },
     "include": ["src/**/*.ts"],
     "exclude": ["src/**/*.test.ts", "./coverage", "src/**/*.stories.ts"],

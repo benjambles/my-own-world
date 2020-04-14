@@ -13,8 +13,10 @@ module.exports = {
         return config;
     },
     addons: [
+        '@storybook/addon-a11y',
         '@storybook/addon-knobs/register',
-        '@storybook/addon-notes/register-panel',
         '@storybook/addon-actions/register',
+        '@storybook/addon-viewport/register',
+        '@storybook/addon-docs',
     ],
 };
