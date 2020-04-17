@@ -13,6 +13,6 @@
         "tsBuildInfoFile": "buildcache"
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["src/**/*.test.ts", "./coverage"],
+    "exclude": ["__tests__", "./coverage"],
     "compileOnSave": true
 }
