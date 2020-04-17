@@ -14,14 +14,6 @@ export type clientContext = {
 
 export type clientResult = TemplateResult;
 
-export const CLIENT_CONTEXT: clientContext = {
-    html,
-    directives: {
-        classMap,
-        ifDefined,
-    },
-};
-
 export type clientRender = typeof render;
 
 export interface clientRouteConfig {
@@ -29,3 +21,11 @@ export interface clientRouteConfig {
     path: string;
     handler: (ctx: any) => Promise<void>;
 }
+
+export const CLIENT_CONTEXT: clientContext = {
+    html,
+    directives: {
+        classMap,
+        ifDefined,
+    },
+};

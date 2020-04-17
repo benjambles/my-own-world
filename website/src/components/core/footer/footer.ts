@@ -1,6 +1,6 @@
-import { clientContext, clientResult } from '../../../utils/client-context';
+import { clientContext, clientResult } from '../../../utils/templates/client-context';
 import { LazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/server-context';
+import { serverContext, serverResult } from '../../../utils/templates/server-context';
 import { Link, LinkProps } from '../links/link';
 export interface FooterData {
     links: LinkProps[];

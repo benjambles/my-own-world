@@ -1,6 +1,6 @@
-import { clientContext, clientResult } from '../../../utils/client-context';
+import { clientContext, clientResult } from '../../../utils/templates/client-context';
 import { LazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/server-context';
+import { serverContext, serverResult } from '../../../utils/templates/server-context';
 import { PrimaryButton } from '../buttons/primary-button';
 import { InputBox } from '../form-elements/input-box';
 import { Link } from '../links/link';
@@ -41,7 +41,11 @@ export function HomeIntro(context) {
                         })}.
                     </small>
 
-                    ${PrimaryButton(context, { text: 'Get Started', type: 'submit' })}
+                    ${PrimaryButton(context, {
+                        text: 'Get Started',
+                        type: 'submit',
+                        size: 'large',
+                    })}
 
                     <small>
                         By clicking “Get started”, you agree to our

@@ -1,6 +1,6 @@
-import { clientContext, clientResult } from '../../utils/client-context';
+import { clientContext, clientResult } from '../../utils/templates/client-context';
 import { LazyStylesheet } from '../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../utils/server-context';
+import { serverContext, serverResult } from '../../utils/templates/server-context';
 import { Footer, FooterData } from '../core/footer/footer';
 import { Header, HeaderData } from '../core/header/header';
 

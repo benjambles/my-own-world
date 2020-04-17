@@ -1,6 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { CLIENT_CONTEXT } from '../../../utils/client-context';
-import { linkStoryRendererDark } from '../../../utils/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { linkStoryRendererDark } from '../../../utils/storybook/story-renderer';
 import { DarkLink } from './dark-link';
 
 export default {

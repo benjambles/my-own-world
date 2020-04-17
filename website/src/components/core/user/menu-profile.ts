@@ -1,5 +1,5 @@
-import { clientContext, clientResult } from '../../../utils/client-context';
-import { serverContext, serverResult } from '../../../utils/server-context';
+import { clientContext, clientResult } from '../../../utils/templates/client-context';
+import { serverContext, serverResult } from '../../../utils/templates/server-context';
 import { LazyStylesheet } from '../../utils/lazy-stylesheet';
 import { BarLink } from '../links/bar-link';
 import { Link } from '../links/link';

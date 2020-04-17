@@ -23,6 +23,6 @@
         ]
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["src/**/*.test.ts", "./coverage", "src/**/*.stories.ts"],
+    "exclude": ["__tests__", "./coverage", "src/**/*.stories.ts"],
     "compileOnSave": true
 }

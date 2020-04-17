@@ -15,8 +15,6 @@ export type serverContext = {
 
 export type serverResult = TemplateResult;
 
-export const SERVER_CONTEXT: serverContext = { html, directives: { classMap, ifDefined } };
-
 export type serverRenderer = (result: TemplateResult, options?: RenderOptions) => Promise<string>;
 
 export interface serverRouteConfig {
@@ -24,3 +22,5 @@ export interface serverRouteConfig {
     path: string;
     handler: (ctx: Context) => Promise<void>;
 }
+
+export const SERVER_CONTEXT: serverContext = { html, directives: { classMap, ifDefined } };

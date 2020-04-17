@@ -1,6 +1,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
-import { CLIENT_CONTEXT } from '../../../utils/client-context';
-import { linkStoryRenderer } from '../../../utils/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { BarLink } from './bar-link';
 
 export default {

@@ -1,7 +1,15 @@
 import { Layout } from '../../components/pages/layout';
 import { mockData } from '../../static/mock-data';
-import { clientContext, clientRender, clientRouteConfig } from '../../utils/client-context';
-import { serverContext, serverRenderer, serverRouteConfig } from '../../utils/server-context';
+import {
+    clientContext,
+    clientRender,
+    clientRouteConfig,
+} from '../../utils/templates/client-context';
+import {
+    serverContext,
+    serverRenderer,
+    serverRouteConfig,
+} from '../../utils/templates/server-context';
 
 export function RegisterRoute(
     litHtmlContext: clientContext,

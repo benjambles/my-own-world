@@ -1,8 +1,8 @@
 import '../../../static/styles/base.css';
 import '../../../static/styles/components/header.css';
 import '../../../static/styles/components/menu-profile.css';
-import { CLIENT_CONTEXT } from '../../../utils/client-context';
-import { storyRenderer } from '../../../utils/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { storyRenderer } from '../../../utils/storybook/story-renderer';
 import { Header } from './header';
 
 export default {
