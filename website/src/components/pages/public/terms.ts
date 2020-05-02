@@ -1,10 +1,10 @@
 import { clientContext, clientResult } from '../../../utils/templates/client-context';
 import { serverContext, serverResult } from '../../../utils/templates/server-context';
-import { Layout } from '../layout';
+import { layout } from '../layout';
 
-export function Terms(context: clientContext, data): clientResult;
-export function Terms(context: serverContext, data): serverResult;
-export function Terms(context, data) {
+export function terms(context: clientContext, data): clientResult;
+export function terms(context: serverContext, data): serverResult;
+export function terms(context, data) {
     const { html } = context;
 
     const page = html`
@@ -15,5 +15,5 @@ export function Terms(context, data) {
         </main>
     `;
 
-    return html`${Layout(context, data, page)}`;
+    return html`${layout(context, data, page)}`;
 }

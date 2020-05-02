@@ -1,7 +1,7 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { Link } from './link';
+import { link } from './link';
 
 export default {
     title: 'Atoms/Links/Light',
@@ -15,15 +15,15 @@ export default {
 };
 
 export function standard() {
-    return Link(CLIENT_CONTEXT, { text: 'Link', href: '/' });
+    return link(CLIENT_CONTEXT, { text: 'Link', href: '/' });
 }
 
 export function active() {
-    return Link(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
+    return link(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
 }
 
 export function underlined() {
-    return Link(CLIENT_CONTEXT, {
+    return link(CLIENT_CONTEXT, {
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -31,11 +31,11 @@ export function underlined() {
 }
 
 export function bold() {
-    return Link(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
+    return link(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
 }
 
 export function playground() {
-    return Link(CLIENT_CONTEXT, {
+    return link(CLIENT_CONTEXT, {
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
         display: {

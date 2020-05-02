@@ -1,8 +1,8 @@
 import { clientContext, clientResult } from '../../../utils/templates/client-context';
 import { serverContext, serverResult } from '../../../utils/templates/server-context';
-import { LazyStylesheet } from '../../utils/lazy-stylesheet';
-import { BarLink } from '../links/bar-link';
-import { Link } from '../links/link';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet';
+import { barLink } from '../links/bar-link';
+import { link } from '../links/link';
 
 export interface MenuProfileData {
     profile?: {
@@ -12,13 +12,13 @@ export interface MenuProfileData {
     };
 }
 
-export function MenuProfile(context: clientContext, data: MenuProfileData): clientResult;
-export function MenuProfile(context: serverContext, data: MenuProfileData): serverResult;
-export function MenuProfile(context, { profile }: MenuProfileData) {
+export function menuProfile(context: clientContext, data: MenuProfileData): clientResult;
+export function menuProfile(context: serverContext, data: MenuProfileData): serverResult;
+export function menuProfile(context, { profile }: MenuProfileData) {
     const { html } = context;
 
     return html`
-        ${LazyStylesheet(context, '/styles/components/menu-profile.css')}
+        ${lazyStylesheet(context, '/styles/components/menu-profile.css')}
         <details class="menu-profile">
             <summary aria-haspopup="true" role="button">
                 <img src="${profile.image}" alt="${profile.name}" class="profile-image" />
@@ -26,21 +26,21 @@ export function MenuProfile(context, { profile }: MenuProfileData) {
             <div class="menu-profile__dropdown" role="menu">
                 <span class="user-label">
                     Signed in as <br />
-                    ${Link(context, {
+                    ${link(context, {
                         display: { bold: true },
                         text: profile.name,
                         href: `/profile/${profile.username}`,
                     })}
                 </span>
                 <hr class="divider" />
-                ${BarLink(context, {
+                ${barLink(context, {
                     text: 'Your profile',
                     href: `/profile/${profile.username}`,
                 })}
                 <hr class="divider" />
-                ${BarLink(context, { text: 'Preferences', href: '/preferences' })}
-                ${BarLink(context, { text: 'Help', href: '/help' })}
-                ${BarLink(context, { text: 'Logout', href: '/logout' })}
+                ${barLink(context, { text: 'Preferences', href: '/preferences' })}
+                ${barLink(context, { text: 'Help', href: '/help' })}
+                ${barLink(context, { text: 'Logout', href: '/logout' })}
             </div>
         </details>
     `;

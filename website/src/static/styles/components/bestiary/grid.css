@@ -1,0 +1,158 @@
+.grid {
+    position: relative;
+    top: 400px;
+    left: 400px;
+}
+
+.arm {
+    width: auto;
+    display: inline-block;
+}
+
+.arm-1 {
+    transform: rotate(120deg);
+    position: relative;
+    top: -361px;
+    left: -411px;
+}
+
+.arm-2 {
+    transform: rotate(180deg);
+    position: relative;
+    left: -730px;
+    top: -477px;
+}
+
+.arm-3 {
+    transform: rotate(240deg);
+    position: relative;
+    top: -725px;
+    left: -8px;
+}
+
+.arm-4 {
+    transform: rotate(-60deg);
+    position: relative;
+    top: -493px;
+    left: -530px;
+}
+
+.arm-5 {
+    position: relative;
+    left: -209px;
+    top: -742px;
+}
+
+.arm-6 {
+    transform: rotate(60deg);
+    position: relative;
+    top: -858px;
+    left: -932px;
+}
+
+.rows > li {
+    display: flex;
+    justify-content: center;
+}
+
+.rows > li:nth-child(2) {
+    position: relative;
+    top: -10px;
+}
+
+.rows > li:nth-child(2) .row > li:nth-child(1) {
+    top: -56px;
+    left: 10px;
+    position: relative;
+}
+
+.rows > li:nth-child(2) .row > li:nth-child(3) {
+    top: -56px;
+    right: 10px;
+    position: relative;
+}
+
+.rows > li:nth-child(3) {
+    position: relative;
+    top: -20px;
+}
+
+.rows > li:nth-child(3) .row > li:nth-child(1) {
+    top: -112px;
+    left: 20px;
+    position: relative;
+}
+
+.rows > li:nth-child(3) .row > li:nth-child(2) {
+    top: -56px;
+    left: 10px;
+    position: relative;
+}
+
+.rows > li:nth-child(3) .row > li:nth-child(4) {
+    top: -56px;
+    right: 10px;
+    position: relative;
+}
+
+.rows > li:nth-child(3) .row > li:nth-child(5) {
+    top: -112px;
+    right: 16px;
+    position: relative;
+}
+
+.hex {
+    display: inline-block;
+    width: 100px;
+    padding: 0 0 116px 0;
+    position: relative;
+    transform: rotate(-30deg) skewY(30deg);
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.hex * {
+    visibility: visible;
+}
+
+.hex > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fdbf00;
+    transform: skewY(-30deg) rotate(60deg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arm-1 .label {
+    transform: rotate(-150deg);
+}
+
+.arm-2 .label {
+    transform: rotate(150deg);
+}
+
+.arm-3 .label {
+    transform: rotate(90deg);
+}
+
+.arm-4 .label {
+    transform: rotate(30deg);
+}
+
+.arm-5 .label {
+    transform: rotate(-30deg);
+}
+
+.arm-6 .label {
+    transform: rotate(-90deg);
+}
+
+.hex.centre .label {
+    transform: rotate(-30deg);
+}

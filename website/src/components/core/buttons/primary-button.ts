@@ -7,9 +7,9 @@ export interface ButtonData {
     size?: 'large' | 'normal' | 'small';
 }
 
-export function PrimaryButton(context: clientContext, data: ButtonData): clientResult;
-export function PrimaryButton(context: serverContext, data: ButtonData): serverResult;
-export function PrimaryButton(
+export function primaryButton(context: clientContext, data: ButtonData): clientResult;
+export function primaryButton(context: serverContext, data: ButtonData): serverResult;
+export function primaryButton(
     context,
     { text, type = 'button', action, size = 'normal' }: ButtonData
 ) {

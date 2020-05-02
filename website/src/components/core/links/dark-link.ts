@@ -12,9 +12,9 @@ export interface DarkLinkProps {
     };
 }
 
-export function DarkLink(context: clientContext, data: DarkLinkProps): clientResult;
-export function DarkLink(context: serverContext, data: DarkLinkProps): serverResult;
-export function DarkLink(context, { text, href, display = {} }: DarkLinkProps) {
+export function darkLink(context: clientContext, data: DarkLinkProps): clientResult;
+export function darkLink(context: serverContext, data: DarkLinkProps): serverResult;
+export function darkLink(context, { text, href, display = {} }: DarkLinkProps) {
     const { html } = context;
     return html`<a href="${href}" class="${classNames({ 'link--dark': true, ...display })}"
         >${text}</a

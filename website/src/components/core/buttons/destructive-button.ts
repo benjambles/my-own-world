@@ -8,9 +8,9 @@ export interface ButtonData {
     size?: 'large' | 'normal' | 'small';
 }
 
-export function DestructiveButton(context: clientContext, data: ButtonData): clientResult;
-export function DestructiveButton(context: serverContext, data: ButtonData): serverResult;
-export function DestructiveButton(
+export function destructiveButton(context: clientContext, data: ButtonData): clientResult;
+export function destructiveButton(context: serverContext, data: ButtonData): serverResult;
+export function destructiveButton(
     context,
     { text, type = 'button', action, size = 'normal' }: ButtonData
 ) {

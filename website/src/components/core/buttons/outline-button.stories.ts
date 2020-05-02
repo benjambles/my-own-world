@@ -2,18 +2,19 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import '../../../static/styles/base.css';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { OutlineButton } from './outline-button';
+import { outlineButton } from './outline-button';
 
 export default {
     title: 'Atoms/Buttons/Outline',
     parameters: {
+        component: outlineButton,
         componentSubtitle: 'Outline buttons are used to denote actions the user can take. ',
     },
     decorators: [linkStoryRenderer],
 };
 
 export function playground() {
-    return OutlineButton(CLIENT_CONTEXT, {
+    return outlineButton(CLIENT_CONTEXT, {
         text: text('text', 'Button text', 'Required'),
         type: select('type', ['button', 'submit'], undefined, 'Optional'),
         action: text('action', undefined, 'Optional'),
@@ -26,19 +27,19 @@ playground.story = {
 
 export function buttonSizes() {
     return CLIENT_CONTEXT.html` 
-        ${OutlineButton(CLIENT_CONTEXT, {
+        ${outlineButton(CLIENT_CONTEXT, {
             text: 'Small Button',
             size: 'small',
         })}
-        ${OutlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${OutlineButton(CLIENT_CONTEXT, { text: 'Large Button', size: 'large' })}
+        ${outlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
+        ${outlineButton(CLIENT_CONTEXT, { text: 'Large Button', size: 'large' })}
     `;
 }
 
 export function buttonTypes() {
     return CLIENT_CONTEXT.html`
-        ${OutlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${OutlineButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
-        ${OutlineButton(CLIENT_CONTEXT, { text: 'Action Button', action: 'LOGIN.SUBMIT' })}
+        ${outlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
+        ${outlineButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
+        ${outlineButton(CLIENT_CONTEXT, { text: 'Action Button', action: 'LOGIN.SUBMIT' })}
     `;
 }

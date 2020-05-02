@@ -12,9 +12,9 @@ export interface LinkProps {
     };
 }
 
-export function Link(context: clientContext, data: LinkProps): clientResult;
-export function Link(context: serverContext, data: LinkProps): serverResult;
-export function Link(context, { text, href, display = {} }: LinkProps) {
+export function link(context: clientContext, data: LinkProps): clientResult;
+export function link(context: serverContext, data: LinkProps): serverResult;
+export function link(context, { text, href, display = {} }: LinkProps) {
     const { html } = context;
     return html`<a href="${href}" class="${classNames(display)}">${text}</a>`;
 }

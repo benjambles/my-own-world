@@ -41,3 +41,48 @@ p {
 .underlined {
     text-decoration: underline;
 }
+
+@font-face {
+    font-family: 'Oxanium';
+    src: local('Oxanium Medium'), local('Oxanium-Medium'),
+        url('/fonts/oxanium/Oxanium-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Italic'), local('Montserrat-Italic'),
+        url('/fonts/montserrat/hinted-Montserrat-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Bold'), local('Montserrat-Bold'),
+        url('/fonts/montserrat/hinted-Montserrat-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Regular'), local('Montserrat-Regular'),
+        url('/fonts/montserrat/hinted-Montserrat-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Kungfont';
+    src: local('Kungfont Regular'), local('Kungfont-Regular'),
+        url('/fonts/kungfont/hinted-Kungfont-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

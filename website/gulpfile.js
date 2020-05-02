@@ -8,6 +8,10 @@ function copyEnv() {
     return src('src/.env').pipe(dest(buildPath));
 }
 
+function copyFonts() {
+    return src('src/static/fonts/**/*.woff2').pipe(dest(buildPath + '/static/fonts'));
+}
+
 function postCSS() {
     const cssPath = buildPath + '/static/styles';
     console.log(cssPath);
@@ -26,7 +30,8 @@ function watchCSS() {
     });
 }
 
+exports.copyFonts = copyFonts;
 exports.copyEnv = copyEnv;
 exports.postCSS = postCSS;
 exports.watchCSS = watchCSS;
-exports.default = parallel(copyEnv, postCSS);
+exports.default = parallel(copyEnv, copyFonts, postCSS);

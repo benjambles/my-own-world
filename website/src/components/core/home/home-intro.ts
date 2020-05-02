@@ -1,17 +1,14 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { LazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
-import { PrimaryButton } from '../buttons/primary-button';
-import { InputBox } from '../form-elements/input-box';
-import { Link } from '../links/link';
+import { LitTpl } from '../../../utils/templates/lit-tpl';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet';
+import { primaryButton } from '../buttons/primary-button';
+import { inputBox } from '../form-elements/input-box';
+import { link } from '../links/link';
 
-export function HomeIntro(context: clientContext): clientResult;
-export function HomeIntro(context: serverContext): serverResult;
-export function HomeIntro(context) {
+export const homeIntro: LitTpl<undefined> = context => {
     const { html } = context;
 
     return html`
-        ${LazyStylesheet(context, '/styles/components/home/home-intro.css')}
+        ${lazyStylesheet(context, '/styles/components/home/home-intro.css')}
         <section class="home-intro">
             <div class="container--slim">
                 <div class="home-intro__text">
@@ -29,19 +26,19 @@ export function HomeIntro(context) {
                 </div>
 
                 <form action="/signup">
-                    ${InputBox(context, { label: 'Username', id: 'username' })}
-                    ${InputBox(context, { label: 'Email', id: 'email', type: 'email' })}
-                    ${InputBox(context, { label: 'Password', id: 'password', type: 'password' })}
+                    ${inputBox(context, { label: 'Username', id: 'username' })}
+                    ${inputBox(context, { label: 'Email', id: 'email', type: 'email' })}
+                    ${inputBox(context, { label: 'Password', id: 'password', type: 'password' })}
                     <small>
                         Passwords should be secure, don't use one from another site.
-                        ${Link(context, {
+                        ${link(context, {
                             href: '/password-security',
                             text: 'Learn more',
                             display: { underlined: true },
                         })}.
                     </small>
 
-                    ${PrimaryButton(context, {
+                    ${primaryButton(context, {
                         text: 'Get Started',
                         type: 'submit',
                         size: 'large',
@@ -49,7 +46,7 @@ export function HomeIntro(context) {
 
                     <small>
                         By clicking “Get started”, you agree to our
-                        ${Link(context, {
+                        ${link(context, {
                             href: '/terms',
                             text: 'Terms of Service and Privacy Statement',
                             display: { underlined: true },
@@ -60,4 +57,4 @@ export function HomeIntro(context) {
             </div>
         </section>
     `;
-}
+};

@@ -1,7 +1,7 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRendererDark } from '../../../utils/storybook/story-renderer';
-import { DarkLink } from './dark-link';
+import { darkLink } from './dark-link';
 
 export default {
     title: 'Atoms/Links/Dark',
@@ -15,15 +15,15 @@ export default {
 };
 
 export function standard() {
-    return DarkLink(CLIENT_CONTEXT, { text: 'Link', href: '/' });
+    return darkLink(CLIENT_CONTEXT, { text: 'Link', href: '/' });
 }
 
 export function active() {
-    return DarkLink(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
+    return darkLink(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
 }
 
 export function underlined() {
-    return DarkLink(CLIENT_CONTEXT, {
+    return darkLink(CLIENT_CONTEXT, {
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -31,11 +31,11 @@ export function underlined() {
 }
 
 export function bold() {
-    return DarkLink(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
+    return darkLink(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
 }
 
 export function playground() {
-    return DarkLink(CLIENT_CONTEXT, {
+    return darkLink(CLIENT_CONTEXT, {
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
         display: {

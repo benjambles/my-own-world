@@ -1,4 +1,4 @@
-import { capBetween, cappedAdd, cappedSubtract } from '../../../../utils/numbers/bounded-math';
+import { capBetween, cappedAdd, cappedSubtract } from '../bounded-math';
 
 test('capBetween', () => {
     expect(capBetween(0, 10, 11)).toEqual(10); // Can't go above

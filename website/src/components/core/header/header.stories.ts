@@ -3,7 +3,7 @@ import '../../../static/styles/components/header.css';
 import '../../../static/styles/components/menu-profile.css';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
-import { Header } from './header';
+import { header } from './header';
 
 export default {
     title: 'Furniture/Header',
@@ -22,19 +22,19 @@ const navigationLinksActive = [
     { text: 'Blog', href: '/blog' },
 ];
 
-export function HeaderLoggedOut() {
-    return Header(CLIENT_CONTEXT, { navigationLinks, user: {} });
+export function headerLoggedOut() {
+    return header(CLIENT_CONTEXT, { navigationLinks, user: {} });
 }
 
-export function HeaderLoggedActiveLink() {
-    return Header(CLIENT_CONTEXT, {
+export function headerLoggedActiveLink() {
+    return header(CLIENT_CONTEXT, {
         navigationLinks: navigationLinksActive,
         user: {},
     });
 }
 
-export function HeaderLoggedIn() {
-    return Header(CLIENT_CONTEXT, {
+export function headerLoggedIn() {
+    return header(CLIENT_CONTEXT, {
         navigationLinks,
         user: {
             profile: {

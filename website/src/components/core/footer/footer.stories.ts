@@ -2,7 +2,7 @@ import '../../../static/styles/base.css';
 import '../../../static/styles/components/footer.css';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
-import { Footer } from './footer';
+import { footer } from './footer';
 
 export default {
     title: 'Furniture/Footer',
@@ -18,6 +18,9 @@ const links = [
     { text: 'Accessibility', href: '/accessibility' },
 ];
 
-export const footer = () => {
-    return Footer(CLIENT_CONTEXT, { links });
+export const base = () => {
+    return footer(CLIENT_CONTEXT, { links });
+};
+base.story = {
+    name: 'default',
 };

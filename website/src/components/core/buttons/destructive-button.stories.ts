@@ -2,7 +2,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import '../../../static/styles/base.css';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { DestructiveButton } from './destructive-button';
+import { destructiveButton } from './destructive-button';
 
 export default {
     title: 'Atoms/Buttons/Destructive',
@@ -14,7 +14,7 @@ export default {
 };
 
 export function playground() {
-    return DestructiveButton(CLIENT_CONTEXT, {
+    return destructiveButton(CLIENT_CONTEXT, {
         text: text('text', 'Button text', 'Required'),
         type: select('type', ['button', 'submit'], undefined, 'Optional'),
         action: text('action', undefined, 'Optional'),
@@ -27,19 +27,19 @@ playground.story = {
 
 export function buttonSizes() {
     return CLIENT_CONTEXT.html` 
-    ${DestructiveButton(CLIENT_CONTEXT, {
+    ${destructiveButton(CLIENT_CONTEXT, {
         text: 'Small Button',
         size: 'small',
     })}
-    ${DestructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-    ${DestructiveButton(CLIENT_CONTEXT, { text: 'Large Button', size: 'large' })}
+    ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
+    ${destructiveButton(CLIENT_CONTEXT, { text: 'Large Button', size: 'large' })}
     `;
 }
 
 export function buttonTypes() {
     return CLIENT_CONTEXT.html`
-        ${DestructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${DestructiveButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
-        ${DestructiveButton(CLIENT_CONTEXT, { text: 'Action Button', action: 'LOGIN.SUBMIT' })}
+        ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
+        ${destructiveButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
+        ${destructiveButton(CLIENT_CONTEXT, { text: 'Action Button', action: 'LOGIN.SUBMIT' })}
     `;
 }

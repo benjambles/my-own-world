@@ -23,9 +23,9 @@ export interface InputData {
         | 'number';
 }
 
-export function InputBox(context: clientContext, data: InputData): clientResult;
-export function InputBox(context: serverContext, data: InputData): serverResult;
-export function InputBox(
+export function inputBox(context: clientContext, data: InputData): clientResult;
+export function inputBox(context: serverContext, data: InputData): serverResult;
+export function inputBox(
     context,
     { id, label, type = 'text', placeholder, defaultText = '', name }: InputData
 ) {

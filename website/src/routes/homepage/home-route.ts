@@ -1,4 +1,4 @@
-import { Home } from '../../components/pages/public/home';
+import { home } from '../../components/pages/public/home';
 import { mockData } from '../../static/mock-data';
 import {
     clientContext,
@@ -18,7 +18,7 @@ export function HomeRoute(litHtmlContext, render) {
         method: 'get',
         path: '/',
         handler: async ctx => {
-            const page = await render(Home(litHtmlContext, mockData));
+            const page = await render(home(litHtmlContext, mockData));
             ctx.status = 200;
             ctx.body = page;
         },

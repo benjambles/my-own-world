@@ -1,4 +1,4 @@
-import { Terms } from '../../components/pages/public/terms';
+import { terms } from '../../components/pages/public/terms';
 import { mockData } from '../../static/mock-data';
 import {
     clientContext,
@@ -21,7 +21,7 @@ export function TermsRoute(litHtmlContext, render) {
         method: 'get',
         path: '/terms',
         handler: async ctx => {
-            const page = await render(Terms(litHtmlContext, mockData));
+            const page = await render(terms(litHtmlContext, mockData));
             ctx.status = 200;
             ctx.body = page;
         },

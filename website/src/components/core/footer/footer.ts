@@ -1,7 +1,7 @@
 import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { LazyStylesheet } from '../../utils/lazy-stylesheet';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { serverContext, serverResult } from '../../../utils/templates/server-context';
-import { Link, LinkProps } from '../links/link';
+import { link, LinkProps } from '../links/link';
 export interface FooterData {
     links: LinkProps[];
 }
@@ -14,18 +14,18 @@ export interface FooterData {
  * @param data
  */
 
-export function Footer(context: clientContext, data: FooterData): clientResult;
-export function Footer(context: serverContext, data: FooterData): serverResult;
-export function Footer(context, { links }: FooterData) {
+export function footer(context: clientContext, data: FooterData): clientResult;
+export function footer(context: serverContext, data: FooterData): serverResult;
+export function footer(context, { links }: FooterData) {
     const { html } = context;
 
     return html`
-        ${LazyStylesheet(context, '/styles/components/footer.css')}
+        ${lazyStylesheet(context, '/styles/components/footer.css')}
         <footer>
             <div class="container">
                 <span>&copy; My Own World - 2020</span>
                 <nav class="nav">
-                    ${links.map(link => Link(context, link))}
+                    ${links.map(linkData => link(context, linkData))}
                 </nav>
             </div>
         </footer>

@@ -5,7 +5,7 @@
     border: 0;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     border: 1px solid #f57723;
     background-color: #f57723;
     color: #efefef;

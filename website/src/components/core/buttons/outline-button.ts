@@ -8,9 +8,9 @@ export interface ButtonData {
     size?: 'large' | 'normal' | 'small';
 }
 
-export function OutlineButton(context: clientContext, data: ButtonData): clientResult;
-export function OutlineButton(context: serverContext, data: ButtonData): serverResult;
-export function OutlineButton(
+export function outlineButton(context: clientContext, data: ButtonData): clientResult;
+export function outlineButton(context: serverContext, data: ButtonData): serverResult;
+export function outlineButton(
     context,
     { text, type = 'button', action, size = 'normal' }: ButtonData
 ) {
