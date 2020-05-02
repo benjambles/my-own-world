@@ -2,6 +2,7 @@ import { html, Part, RenderOptions, TemplateResult } from '@popeindustries/lit-h
 import { classMap } from '@popeindustries/lit-html-server/directives/class-map';
 import { ifDefined } from '@popeindustries/lit-html-server/directives/if-defined';
 import { Context } from 'koa';
+import { RouteMethods } from './lit-route';
 
 export type serverContext = {
     html: (strings: TemplateStringsArray, ...values: unknown[]) => TemplateResult;
@@ -18,7 +19,7 @@ export type serverResult = TemplateResult;
 export type serverRenderer = (result: TemplateResult, options?: RenderOptions) => Promise<string>;
 
 export interface serverRouteConfig {
-    method: 'get' | 'post' | 'options';
+    method: RouteMethods;
     path: string;
     handler: (ctx: Context) => Promise<void>;
 }

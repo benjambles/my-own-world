@@ -1,5 +1,4 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 
 export interface ButtonData {
     text: string;
@@ -8,12 +7,10 @@ export interface ButtonData {
     size?: 'large' | 'normal' | 'small';
 }
 
-export function secondaryButton(context: clientContext, data: ButtonData): clientResult;
-export function secondaryButton(context: serverContext, data: ButtonData): serverResult;
-export function secondaryButton(
+export const secondaryButton: LitTpl<ButtonData> = (
     context,
     { text, type = 'button', action, size = 'normal' }: ButtonData
-) {
+) => {
     const {
         html,
         directives: { ifDefined, classMap },
@@ -28,4 +25,4 @@ export function secondaryButton(
     return html`<button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">
         ${text}
     </button>`;
-}
+};

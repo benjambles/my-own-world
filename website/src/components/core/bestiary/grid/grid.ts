@@ -1,10 +1,7 @@
-import { clientContext, clientResult } from '../../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../../utils/templates/server-context';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
 
-export function actionGrid(context: clientContext): clientResult;
-export function actionGrid(context: serverContext): serverResult;
-export function actionGrid(context) {
+export const actionGrid: LitTpl<undefined> = context => {
     const { html } = context;
 
     return html`
@@ -20,11 +17,9 @@ export function actionGrid(context) {
             </li>
         </ol>
     `;
-}
+};
 
-export function arm(context: clientContext, count: number): clientResult;
-export function arm(context: serverContext, count: number): serverResult;
-export function arm(context, count) {
+const arm: LitTpl<number> = (context, count: number) => {
     const { html } = context;
 
     return html`
@@ -72,4 +67,4 @@ export function arm(context, count) {
             </ol>
         </li>
     `;
-}
+};

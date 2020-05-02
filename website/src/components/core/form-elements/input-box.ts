@@ -1,5 +1,4 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 
 export interface InputData {
     id: string;
@@ -23,12 +22,10 @@ export interface InputData {
         | 'number';
 }
 
-export function inputBox(context: clientContext, data: InputData): clientResult;
-export function inputBox(context: serverContext, data: InputData): serverResult;
-export function inputBox(
+export const inputBox: LitTpl<InputData> = (
     context,
     { id, label, type = 'text', placeholder, defaultText = '', name }: InputData
-) {
+) => {
     const {
         html,
         directives: { ifDefined },
@@ -44,4 +41,4 @@ export function inputBox(
             id="${id}"
         />
     `;
-}
+};

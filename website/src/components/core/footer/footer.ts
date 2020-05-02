@@ -1,6 +1,5 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
 import { link, LinkProps } from '../links/link';
 export interface FooterData {
     links: LinkProps[];
@@ -14,9 +13,7 @@ export interface FooterData {
  * @param data
  */
 
-export function footer(context: clientContext, data: FooterData): clientResult;
-export function footer(context: serverContext, data: FooterData): serverResult;
-export function footer(context, { links }: FooterData) {
+export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
     const { html } = context;
 
     return html`
@@ -30,4 +27,4 @@ export function footer(context, { links }: FooterData) {
             </div>
         </footer>
     `;
-}
+};

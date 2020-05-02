@@ -1,10 +1,7 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { layout } from '../layout';
 
-export function terms(context: clientContext, data): clientResult;
-export function terms(context: serverContext, data): serverResult;
-export function terms(context, data) {
+export const terms: LitTpl<any> = (context, data) => {
     const { html } = context;
 
     const page = html`
@@ -16,4 +13,4 @@ export function terms(context, data) {
     `;
 
     return html`${layout(context, data, page)}`;
-}
+};

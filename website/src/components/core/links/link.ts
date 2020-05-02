@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 
 export interface LinkProps {
     href: string;
@@ -12,9 +11,7 @@ export interface LinkProps {
     };
 }
 
-export function link(context: clientContext, data: LinkProps): clientResult;
-export function link(context: serverContext, data: LinkProps): serverResult;
-export function link(context, { text, href, display = {} }: LinkProps) {
+export const link: LitTpl<LinkProps> = (context, { text, href, display = {} }: LinkProps) => {
     const { html } = context;
     return html`<a href="${href}" class="${classNames(display)}">${text}</a>`;
-}
+};

@@ -1,6 +1,7 @@
 import { html, Part, render, TemplateResult } from 'lit-html';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
+import { RouteMethods } from './lit-route';
 
 export type clientContext = {
     html: (strings: TemplateStringsArray, ...values: unknown[]) => TemplateResult;
@@ -17,7 +18,7 @@ export type clientResult = TemplateResult;
 export type clientRender = typeof render;
 
 export interface clientRouteConfig {
-    method: 'get' | 'post' | 'options';
+    method: RouteMethods;
     path: string;
     handler: (ctx: any) => Promise<void>;
 }

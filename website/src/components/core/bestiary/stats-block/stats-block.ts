@@ -1,5 +1,4 @@
-import { clientContext, clientResult } from '../../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../../utils/templates/server-context';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import type { Stats } from '../npc-types';
 
 interface StatsData {
@@ -13,9 +12,7 @@ interface StatsData {
  * @param context
  * @param data
  */
-export function statsBlock(context: clientContext, data: StatsData): clientResult;
-export function statsBlock(context: serverContext, data: StatsData): serverResult;
-export function statsBlock(context, { name, variant, stats }: StatsData) {
+export const statsBlock: LitTpl<StatsData> = (context, { name, variant, stats }: StatsData) => {
     const { html } = context;
 
     return html`
@@ -23,4 +20,4 @@ export function statsBlock(context, { name, variant, stats }: StatsData) {
             ${name} ${variant} ${stats}
         </section>
     `;
-}
+};

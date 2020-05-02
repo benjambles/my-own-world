@@ -1,21 +1,15 @@
-import { clientContext, clientResult } from '../../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../../utils/templates/server-context';
-import type { Characteristics, CharacteristicGroup } from '../npc-types';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl';
+import type { CharacteristicGroup, Characteristics } from '../npc-types';
 
 /**
  *
  * @param context
  * @param characteristics
  */
-export function characteristicsList(
-    context: clientContext,
-    characteristics: Characteristics
-): clientResult;
-export function characteristicsList(
-    context: serverContext,
-    characteristics: Characteristics
-): serverResult;
-export function characteristicsList(context, { base, optional }: Characteristics) {
+export const characteristicsList: LitTpl<Characteristics> = (
+    context,
+    { base, optional }: Characteristics
+) => {
     const { html } = context;
 
     return html`
@@ -24,22 +18,17 @@ export function characteristicsList(context, { base, optional }: Characteristics
             ${optional ? characteristicGroup(context, optional) : null}
         </section>
     `;
-}
+};
 
 /**
  *
  * @param context
  * @param characteristics
  */
-function characteristicGroup(
-    context: clientContext,
-    characteristics: CharacteristicGroup
-): clientResult;
-function characteristicGroup(
-    context: serverContext,
-    characteristics: CharacteristicGroup
-): serverResult;
-function characteristicGroup(context, { title, details }: CharacteristicGroup) {
+const characteristicGroup: LitTpl<CharacteristicGroup> = (
+    context,
+    { title, details }: CharacteristicGroup
+) => {
     const { html } = context;
 
     return html`
@@ -56,4 +45,4 @@ function characteristicGroup(context, { title, details }: CharacteristicGroup) {
             )}
         </dl>
     `;
-}
+};

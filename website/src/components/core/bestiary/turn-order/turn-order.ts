@@ -1,10 +1,7 @@
-import { clientContext, clientResult } from '../../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../../utils/templates/server-context';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import type { TurnOrder } from '../npc-types';
 
-export function turnOrder(context: clientContext, turns: TurnOrder): clientResult;
-export function turnOrder(context: serverContext, turns: TurnOrder): serverResult;
-export function turnOrder(context, turns: TurnOrder) {
+export const turnOrder: LitTpl<TurnOrder> = (context, turns: TurnOrder) => {
     const { html } = context;
 
     return html`<section>
@@ -13,4 +10,4 @@ export function turnOrder(context, turns: TurnOrder) {
             ${turns.map(turn => html`<li>${turn}</li>`)}
         </ul>
     </section>`;
-}
+};

@@ -1,8 +1,7 @@
-import { clientContext, clientResult } from '../../utils/templates/client-context';
-import { lazyStylesheet } from '../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../utils/templates/server-context';
+import type { LitTpl } from '../../utils/templates/lit-tpl';
 import { footer, FooterData } from '../core/footer/footer';
 import { header, HeaderData } from '../core/header/header';
+import { lazyStylesheet } from '../utils/lazy-stylesheet';
 
 interface Data {
     meta: {
@@ -13,9 +12,7 @@ interface Data {
     footer: FooterData;
 }
 
-export function layout(context: clientContext, data: Data, children?): clientResult;
-export function layout(context: serverContext, data: Data, children?): serverResult;
-export function layout(context, data, children?) {
+export const layout: LitTpl<any> = (context, data, children?) => {
     const { html } = context;
 
     return html`
@@ -33,4 +30,4 @@ export function layout(context, data, children?) {
             </body>
         </html>
     `;
-}
+};

@@ -1,26 +1,13 @@
 import { home } from '../../components/pages/public/home';
 import { mockData } from '../../static/mock-data';
-import {
-    clientContext,
-    clientRender,
-    clientRouteConfig,
-} from '../../utils/templates/client-context';
-import {
-    serverContext,
-    serverRenderer,
-    serverRouteConfig,
-} from '../../utils/templates/server-context';
+import { LitRoute, RouteMethods } from '../../utils/templates/lit-route';
 
-export function HomeRoute(litHtmlContext: clientContext, render: clientRender): clientRouteConfig;
-export function HomeRoute(litHtmlContext: serverContext, render: serverRenderer): serverRouteConfig;
-export function HomeRoute(litHtmlContext, render) {
-    return {
-        method: 'get',
-        path: '/',
-        handler: async ctx => {
-            const page = await render(home(litHtmlContext, mockData));
-            ctx.status = 200;
-            ctx.body = page;
-        },
-    };
-}
+export const homeRoute: LitRoute = (litHtmlContext, render) => ({
+    method: RouteMethods.get,
+    path: '/',
+    handler: async ctx => {
+        const page = await render(home(litHtmlContext, mockData));
+        ctx.status = 200;
+        ctx.body = page;
+    },
+});

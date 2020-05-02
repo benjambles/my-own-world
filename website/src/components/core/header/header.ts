@@ -1,6 +1,5 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
 import { darkLink, DarkLinkProps } from '../links/dark-link';
 import { menuProfile, MenuProfileData } from '../user/menu-profile';
 
@@ -9,9 +8,7 @@ export interface HeaderData {
     user: MenuProfileData;
 }
 
-export function header(context: clientContext, data: HeaderData): clientResult;
-export function header(context: serverContext, data: HeaderData): serverResult;
-export function header(context, { navigationLinks, user }: HeaderData) {
+export const header: LitTpl<HeaderData> = (context, { navigationLinks, user }: HeaderData) => {
     const { html } = context;
 
     return html`
@@ -33,9 +30,9 @@ export function header(context, { navigationLinks, user }: HeaderData) {
             </div>
         </header>
     `;
-}
+};
 
-function linkList(context, links) {
+const linkList = (context, links) => {
     const { html } = context;
 
     return html`
@@ -43,4 +40,4 @@ function linkList(context, links) {
             ${links.map(link => html`<li>${darkLink(context, link)}</li>`)}
         </ul>
     `;
-}
+};

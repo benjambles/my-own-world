@@ -1,4 +1,4 @@
-import { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { primaryButton } from '../buttons/primary-button';
 import { inputBox } from '../form-elements/input-box';

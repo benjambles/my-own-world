@@ -1,12 +1,9 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { homeIntro } from '../../core/home/home-intro';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { layout } from '../layout';
 
-export function home(context: clientContext, data): clientResult;
-export function home(context: serverContext, data): serverResult;
-export function home(context, data) {
+export const home: LitTpl<any> = (context, data) => {
     const { html } = context;
 
     const page = html`
@@ -20,4 +17,4 @@ export function home(context, data) {
     `;
 
     return html`${layout(context, data, page)}`;
-}
+};

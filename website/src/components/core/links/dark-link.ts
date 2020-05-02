@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 
 export interface DarkLinkProps {
     href: string;
@@ -12,11 +11,12 @@ export interface DarkLinkProps {
     };
 }
 
-export function darkLink(context: clientContext, data: DarkLinkProps): clientResult;
-export function darkLink(context: serverContext, data: DarkLinkProps): serverResult;
-export function darkLink(context, { text, href, display = {} }: DarkLinkProps) {
+export const darkLink: LitTpl<DarkLinkProps> = (
+    context,
+    { text, href, display = {} }: DarkLinkProps
+) => {
     const { html } = context;
     return html`<a href="${href}" class="${classNames({ 'link--dark': true, ...display })}"
         >${text}</a
     >`;
-}
+};

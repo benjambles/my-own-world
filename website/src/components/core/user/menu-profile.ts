@@ -1,5 +1,4 @@
-import { clientContext, clientResult } from '../../../utils/templates/client-context';
-import { serverContext, serverResult } from '../../../utils/templates/server-context';
+import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { barLink } from '../links/bar-link';
 import { link } from '../links/link';
@@ -12,9 +11,7 @@ export interface MenuProfileData {
     };
 }
 
-export function menuProfile(context: clientContext, data: MenuProfileData): clientResult;
-export function menuProfile(context: serverContext, data: MenuProfileData): serverResult;
-export function menuProfile(context, { profile }: MenuProfileData) {
+export const menuProfile: LitTpl<MenuProfileData> = (context, { profile }: MenuProfileData) => {
     const { html } = context;
 
     return html`
@@ -44,4 +41,4 @@ export function menuProfile(context, { profile }: MenuProfileData) {
             </div>
         </details>
     `;
-}
+};
