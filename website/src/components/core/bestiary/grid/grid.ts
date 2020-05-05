@@ -12,9 +12,9 @@ export const actionGrid: LitTpl<undefined> = context => {
                 <div class="${styles.hex} ${styles.centre}">
                     <span><span class="${styles.label}">Centre</span></span>
                 </div>
-                <!-- <ol>
+                <ol>
                     ${[1, 2, 3, 4, 5, 6].map(count => arm(context, count))}
-                </ol> -->
+                </ol>
             </li>
         </ol>
     `;
@@ -24,43 +24,43 @@ const arm: LitTpl<number> = (context, count: number) => {
     const { html } = context;
 
     return html`
-        <li class="arm arm-${count}">
-            <ol class="rows">
-                <li>
-                    <ol class="row">
-                        <li class="${styles.hex}">
+        <li class="${styles.arm} ${styles[`arm${count}`]}">
+            <ol class="${styles.rows}">
+                <li class="${styles.row}">
+                    <ol>
+                        <li class="${styles.hex} ${styles.basic3}">
                             <span><span class="${styles.label}">Item 1</span></span>
                         </li>
                     </ol>
                 </li>
-                <li>
-                    <ol class="row">
-                        <li class="${styles.hex}">
+                <li class="${styles.row} ${styles.row2}">
+                    <ol>
+                        <li class="${styles.hex} ${styles.special3}">
                             <span><span class="${styles.label}">Item 2</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.basic2}">
                             <span><span class="${styles.label}">Item 3</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.special3}">
                             <span><span class="${styles.label}">Item 4</span></span>
                         </li>
                     </ol>
                 </li>
-                <li>
-                    <ol class="row">
-                        <li class="${styles.hex}">
+                <li class="${styles.row} ${styles.row3}">
+                    <ol>
+                        <li class="${styles.hex} ${styles.special1}">
                             <span><span class="${styles.label}">Item 5</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.special1}">
                             <span><span class="${styles.label}">Item 6</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.basic1}">
                             <span><span class="${styles.label}">Item 7</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.special1}">
                             <span><span class="${styles.label}">Item 8</span></span>
                         </li>
-                        <li class="${styles.hex}">
+                        <li class="${styles.hex} ${styles.special1}">
                             <span><span class="${styles.label}">Item 9</span></span>
                         </li>
                     </ol>
