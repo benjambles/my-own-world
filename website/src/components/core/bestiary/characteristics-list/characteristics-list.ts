@@ -1,6 +1,7 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
+import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
 import type { CharacteristicGroup, Characteristics } from '../npc-types';
-
+import styles from './characteristics-list.css.json';
 /**
  *
  * @param context
@@ -13,7 +14,8 @@ export const characteristicsList: LitTpl<Characteristics> = (
     const { html } = context;
 
     return html`
-        <section class="characteristics">
+        ${lazyStylesheet(context, '/styles/core/bestiary/character-list/character-list.css')}
+        <section class="${styles.characteristics}">
             ${characteristicGroup(context, base)}
             ${optional ? characteristicGroup(context, optional) : null}
         </section>
@@ -33,7 +35,7 @@ const characteristicGroup: LitTpl<CharacteristicGroup> = (
 
     return html`
         <h2>${title}</h2>
-        <dl class="characteristics__group">
+        <dl class="${styles.characteristics__group}">
             ${Object.entries(details).map(
                 ([name, description]) =>
                     html`

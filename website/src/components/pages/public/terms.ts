@@ -1,4 +1,5 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import layoutStyles from '../../global-css/base.css.json';
 import { layout } from '../layout';
 
 export const terms: LitTpl<any> = (context, data) => {
@@ -6,7 +7,7 @@ export const terms: LitTpl<any> = (context, data) => {
 
     const page = html`
         <main class="page--terms">
-            <div class="container">
+            <div class="${layoutStyles.container}">
                 <h1>Terms and Conditions</h1>
             </div>
         </main>

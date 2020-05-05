@@ -1,4 +1,6 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
+
 export interface ButtonData {
     text: string;
     type?: 'button' | 'submit';
@@ -16,10 +18,10 @@ export const primaryButton: LitTpl<ButtonData> = (
     } = context;
 
     const cssClasses = classMap({
-        button: true,
-        'button--primary': true,
-        'button--large': size === 'large',
-        'button--small': size === 'small',
+        [baseStyles.button]: true,
+        [baseStyles.buttonPrimary]: true,
+        [baseStyles.buttonLarge]: size === 'large',
+        [baseStyles.buttonSmall]: size === 'small',
     });
 
     return html`<button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">

@@ -1,8 +1,7 @@
-import '../../../static/styles/base.css';
-import '../../../static/styles/components/footer.css';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { footer } from './footer';
+import './footer.css';
 
 export default {
     title: 'Furniture/Footer',

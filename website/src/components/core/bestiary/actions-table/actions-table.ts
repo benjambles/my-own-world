@@ -1,6 +1,7 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
+import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
 import type { Action, ActionGroup, Actions } from '../npc-types';
-
+import styles from './actions-table.css.json';
 /**
  *
  * @param context
@@ -12,33 +13,36 @@ export const actionsTable: LitTpl<Actions> = (
 ) => {
     const { html } = context;
 
-    return html`<section class="actions">
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Range</th>
-                    <th>Effect</th>
-                </tr>
-            </thead>
-            ${actionGroup(context, { actions: basic, title: 'Basic Actions', limit })}
-            ${special
-                ? actionGroup(context, {
-                      actions: special,
-                      title: 'Special Abilities',
-                      className: 'special-actions',
-                  })
-                : null}
-            ${learnable
-                ? actionGroup(context, {
-                      actions: learnable,
-                      title: 'Learnable Special Abilities',
-                      className: 'learnable-actions',
-                  })
-                : null}
-        </table>
-    </section>`;
+    return html`
+        ${lazyStylesheet(context, '/styles/core/bestiary/actions-table/actions-table.css')}
+        <section class="${styles.actions}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Range</th>
+                        <th>Effect</th>
+                    </tr>
+                </thead>
+                ${actionGroup(context, { actions: basic, title: 'Basic Actions', limit })}
+                ${special
+                    ? actionGroup(context, {
+                          actions: special,
+                          title: 'Special Abilities',
+                          className: styles.specialActions,
+                      })
+                    : null}
+                ${learnable
+                    ? actionGroup(context, {
+                          actions: learnable,
+                          title: 'Learnable Special Abilities',
+                          className: styles.learnableActions,
+                      })
+                    : null}
+            </table>
+        </section>
+    `;
 };
 
 interface ActionGroupData {

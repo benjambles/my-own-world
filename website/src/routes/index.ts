@@ -1,5 +1,5 @@
 import { renderToString } from '@popeindustries/lit-html-server';
-import * as router from 'koa-joi-router';
+import router from 'koa-joi-router';
 import { serverRouteConfig, SERVER_CONTEXT } from '../utils/templates/server-context';
 import { registerRoute } from './account/register-route';
 import { homeRoute } from './homepage/home-route';

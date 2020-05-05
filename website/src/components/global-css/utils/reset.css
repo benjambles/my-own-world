@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+html {
+    font-family: 'Montserrat', 'Segoe UI', 'Roboto', 'San Fransisco', sans-serif;
+    font-size: 62.5%;
+    line-height: 1.5;
+}
+
+html,
+body {
+    background-color: #ddd;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+*:hover,
+*:active,
+*:focus {
+    outline: none;
+}

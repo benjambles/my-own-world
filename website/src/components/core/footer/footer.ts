@@ -1,6 +1,9 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { link, LinkProps } from '../links/link';
+import styles from './footer.css.json';
+
 export interface FooterData {
     links: LinkProps[];
 }
@@ -17,11 +20,11 @@ export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
     const { html } = context;
 
     return html`
-        ${lazyStylesheet(context, '/styles/components/footer.css')}
+        ${lazyStylesheet(context, '/styles/core/footer/footer.css')}
         <footer>
-            <div class="container">
+            <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - 2020</span>
-                <nav class="nav">
+                <nav class="">
                     ${links.map(linkData => link(context, linkData))}
                 </nav>
             </div>

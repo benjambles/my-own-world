@@ -1,9 +1,23 @@
 .grid {
+    flex: 1 1 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
     position: relative;
-    top: 400px;
-    left: 400px;
+    list-style: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
+.grid ul,
+.grid ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/* 
 .arm {
     width: auto;
     display: inline-block;
@@ -99,14 +113,14 @@
     top: -112px;
     right: 16px;
     position: relative;
-}
+} */
 
 .hex {
     display: inline-block;
-    width: 100px;
-    padding: 0 0 116px 0;
+    width: 80px;
+    padding: 0 0 94px 0;
     position: relative;
-    transform: rotate(-30deg) skewY(30deg);
+    transform: rotate(-120deg) skewY(30deg);
     overflow: hidden;
     visibility: hidden;
 }
@@ -128,7 +142,7 @@
     justify-content: center;
     align-items: center;
 }
-
+/* 
 .arm-1 .label {
     transform: rotate(-150deg);
 }
@@ -152,7 +166,13 @@
 .arm-6 .label {
     transform: rotate(-90deg);
 }
+ */
 
 .hex.centre .label {
-    transform: rotate(-30deg);
+    transform: rotate(60deg);
+}
+
+.hex.centre span {
+    background-color: var(--basic-4);
+    color: black;
 }

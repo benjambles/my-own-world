@@ -1,5 +1,5 @@
 import { layout } from '../../components/pages/layout';
-import { mockData } from '../../static/mock-data';
+import { mockData } from '../../utils/mock-data';
 import { LitRoute, RouteMethods } from '../../utils/templates/lit-route';
 
 export const registerRoute: LitRoute = (litHtmlContext, render) => ({

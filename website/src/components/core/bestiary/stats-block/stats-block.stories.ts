@@ -2,7 +2,7 @@ import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import npcData from '../__tests__/npc-card.fixture';
 import { statsBlock } from './stats-block';
-import '../npc-card.css';
+import './stats-block.css';
 
 export default {
     title: 'Bestiary/NPC Card/Stats Block',

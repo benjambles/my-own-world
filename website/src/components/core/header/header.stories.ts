@@ -1,9 +1,7 @@
-import '../../../static/styles/base.css';
-import '../../../static/styles/components/header.css';
-import '../../../static/styles/components/menu-profile.css';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { header } from './header';
+import './header.css';
 
 export default {
     title: 'Furniture/Header',

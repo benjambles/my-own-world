@@ -1,7 +1,6 @@
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import '../../../static/styles/base.css';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { destructiveButton } from './destructive-button';
 
 export default {

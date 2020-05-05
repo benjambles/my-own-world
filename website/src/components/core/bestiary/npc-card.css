@@ -1,105 +1,27 @@
-.characteristics {
-    background: white;
-    padding: 10px;
-    overflow: auto;
-    color: #404041;
-}
-
-.characteristics h2 {
-    font-size: 18px;
-    text-transform: uppercase;
-    margin: 5px;
-    font-family: 'Oxanium', cursive;
-    font-weight: 500;
-}
-
-.characteristics__group {
-    margin: 5px 0 10px;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.characteristics__group div {
-    margin-bottom: 2px;
-    background-color: #e7e7e8;
-    padding: 3px 5px;
-}
-
-.characteristics__group dt {
-    font-weight: bold;
-    text-transform: capitalize;
-}
-
-.characteristics__group dt,
-.characteristics__group dd {
-    display: inline;
-}
-
-.actions {
-    padding: 10px;
+.card {
+    display: grid;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+    grid-gap: 20px;
     background-color: white;
-    color: #404041;
+    padding: 20px;
 }
 
-.actions table {
-    width: 100%;
+.card h1 {
+    font-family: 'Kungfont', serif;
+    font-size: 7.2rem;
 }
 
-.actions thead th {
-    background-color: #636466;
-    color: white;
-    font-weight: bold;
-    padding: 5px;
-    min-width: 90px;
+.card-full {
+    grid-column: col-start 1 / span 12;
+}
+.card-left {
+    grid-column: col-start 1 / span 5;
+}
+.card-right {
+    grid-column: col-start 6 / span 7;
 }
 
-.actions thead th:last-child {
-    text-align: left;
-}
-
-.actions tbody th {
-    text-align: left;
-    padding: 5px;
-}
-
-.actions tbody th:first-child {
-    font-size: 18px;
-    text-transform: uppercase;
-    font-family: 'Oxanium', cursive;
-    font-weight: 500;
-}
-
-.actions td {
-    text-align: center;
-    padding: 5px;
-    background-color: #e7e7e8;
-}
-
-.actions tr {
-    border-bottom: 2px solid white;
-}
-
-.actions td:first-child {
-    font-weight: bold;
-}
-
-.actions td:first-child,
-.actions td:last-child {
-    text-align: left;
-}
-
-.special-actions th:first-child {
-    color: #9f76b4;
-}
-
-.special-actions td {
-    background-color: #e7dded;
-}
-
-.learnable-actions th:first-child {
-    color: #ef5d5c;
-}
-
-.learnable-actions td {
-    background-color: #f6ab9e;
+.flex-col {
+    display: flex;
+    flex-direction: column;
 }

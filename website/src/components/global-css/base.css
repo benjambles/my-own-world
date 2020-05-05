@@ -1,7 +1,8 @@
 @import './utils/reset.css';
+@import './utils/constants.css';
 @import './utils/typography.css';
-@import './utils/links.css';
 @import './utils/buttons.css';
+@import './utils/links.css';
 
 .container {
     max-width: 1200px;

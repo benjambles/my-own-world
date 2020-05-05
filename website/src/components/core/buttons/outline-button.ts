@@ -1,4 +1,5 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
 
 export interface ButtonData {
     text: string;
@@ -17,10 +18,10 @@ export const outlineButton: LitTpl<ButtonData> = (
     } = context;
 
     const cssClasses = classMap({
-        button: true,
-        'button--outline': true,
-        'button--large': size === 'large',
-        'button--small': size === 'small',
+        [baseStyles.button]: true,
+        [baseStyles.buttonOutline]: true,
+        [baseStyles.buttonLarge]: size === 'large',
+        [baseStyles.buttonSmall]: size === 'small',
     });
 
     return html`<button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">

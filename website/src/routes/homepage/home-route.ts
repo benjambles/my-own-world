@@ -1,5 +1,5 @@
 import { home } from '../../components/pages/public/home';
-import { mockData } from '../../static/mock-data';
+import { mockData } from '../../utils/mock-data';
 import { LitRoute, RouteMethods } from '../../utils/templates/lit-route';
 
 export const homeRoute: LitRoute = (litHtmlContext, render) => ({

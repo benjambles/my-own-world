@@ -1,8 +1,8 @@
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
-import { turnOrder } from './turn-order';
 import npcData from '../__tests__/npc-card.fixture';
-import '../npc-card.css';
+import { turnOrder } from './turn-order';
+import './turn-order.css';
 
 export default {
     title: 'Bestiary/NPC Card/Turn Order',

@@ -1,7 +1,9 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { darkLink, DarkLinkProps } from '../links/dark-link';
 import { menuProfile, MenuProfileData } from '../user/menu-profile';
+import styles from './header.css.json';
 
 export interface HeaderData {
     navigationLinks: DarkLinkProps[];
@@ -12,14 +14,16 @@ export const header: LitTpl<HeaderData> = (context, { navigationLinks, user }: H
     const { html } = context;
 
     return html`
-        ${lazyStylesheet(context, '/styles/components/header.css')}
-        <header class="header">
-            <div class="container">
+        ${lazyStylesheet(context, '/styles/core/header/header.css')}
+        <header class="${styles.header}">
+            <div class="${baseStyles.container} ${styles.header__container}">
                 <a href="/" class="logo">My Own World</a>
 
-                <nav class="nav primary-nav">${linkList(context, navigationLinks)}</nav>
+                <nav class="${styles.nav} ${styles.primaryNav}">
+                    ${linkList(context, navigationLinks)}
+                </nav>
 
-                <div class="nav account-nav">
+                <div class="${styles.nav} ${styles.accountNav}">
                     ${user.profile
                         ? menuProfile(context, user)
                         : linkList(context, [

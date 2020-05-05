@@ -1,5 +1,5 @@
-import * as program from 'commander';
-import * as Koa from 'koa';
+import program from 'commander';
+import Koa from 'koa';
 import { pathOr } from 'ramda';
 import website from '../index';
 

@@ -1,6 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { link } from './link';
 
 export default {

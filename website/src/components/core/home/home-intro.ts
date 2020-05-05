@@ -1,17 +1,19 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { primaryButton } from '../buttons/primary-button';
 import { inputBox } from '../form-elements/input-box';
 import { link } from '../links/link';
+import styles from './home-intro.css.json';
 
 export const homeIntro: LitTpl<undefined> = context => {
     const { html } = context;
 
     return html`
-        ${lazyStylesheet(context, '/styles/components/home/home-intro.css')}
-        <section class="home-intro">
-            <div class="container--slim">
-                <div class="home-intro__text">
+        ${lazyStylesheet(context, '/styles/core/home/home-intro.css')}
+        <section class="${styles.homeIntro}">
+            <div class="${baseStyles.containerSlim} ${styles.homeIntroGrid}">
+                <div class="${styles.homeIntro__text}">
                     <h1>Create, Discover, Learn</h1>
 
                     <p>

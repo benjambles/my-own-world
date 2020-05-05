@@ -1,6 +1,23 @@
+const { resolve } = require('path');
+
 module.exports = {
     stories: ['../src/**/*.stories.ts'],
     webpackFinal: async config => {
+        config.module.rules = config.module.rules.map(f => {
+            // Needed to add this to ignore our ../src/ for the default rule, instead of purging it.
+            if (f.test.toString() === '/\\.css$/') {
+                f.exclude = resolve(__dirname, '../src/');
+            }
+
+            return f;
+        });
+
+        config.module.rules.push({
+            test: /\.css$/,
+            include: resolve(__dirname, '../src/'),
+            loaders: ['style-loader', 'css-loader', 'postcss-loader'],
+        });
+
         config.module.rules.push({
             test: /\.ts$/,
             use: [
@@ -9,6 +26,7 @@ module.exports = {
                 },
             ],
         });
+
         config.resolve.extensions.push('.ts');
         return config;
     },

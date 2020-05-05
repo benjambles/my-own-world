@@ -1,7 +1,6 @@
 const { parallel, src, dest, watch } = require('gulp');
 const tsConfig = require('./tsconfig.json');
 const postcss = require('gulp-postcss');
-const sourcemaps = require('gulp-sourcemaps');
 const buildPath = tsConfig.compilerOptions.outDir;
 
 function copyEnv() {
@@ -13,18 +12,14 @@ function copyFonts() {
 }
 
 function postCSS() {
-    const cssPath = buildPath + '/static/styles';
-    console.log(cssPath);
-    return src('src/static/styles/**/*.css')
-        .pipe(sourcemaps.init())
-        .pipe(postcss([require('precss'), require('autoprefixer')]))
-        .pipe(sourcemaps.write('.'))
-        .pipe(dest(cssPath));
+    return src('src/components/**/*.css')
+        .pipe(postcss())
+        .pipe(dest(buildPath + '/static/styles'));
 }
 
 function watchCSS() {
     // The task won't be run until 500ms have elapsed since the first change
-    watch('src/static/styles/**/*.css', { delay: 500 }, function (cb) {
+    watch(['src/**/*.css', 'postcss.config.js'], { delay: 500 }, function (cb) {
         postCSS();
         cb();
     });

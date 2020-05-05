@@ -1,9 +1,8 @@
-import '../../../../static/styles/base.css';
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
-import { actionsTable } from './actions-table';
 import npcCardData from '../__tests__/npc-card.fixture';
-import '../npc-card.css';
+import { actionsTable } from './actions-table';
+import './actions-table.css';
 
 export default {
     title: 'Bestiary/NPC Card/Actions',

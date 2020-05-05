@@ -1,19 +1,19 @@
-import * as fs from 'fs';
-import * as Koa from 'koa';
-import * as koa404Handler from 'koa-404-handler';
-import * as compress from 'koa-compress';
-import * as conditionalGet from 'koa-conditional-get';
-import * as etag from 'koa-etag';
-import * as helmet from 'koa-helmet';
-import * as koaJWT from 'koa-jwt';
-import * as morgan from 'koa-morgan';
-import * as responseTime from 'koa-response-time';
+import { createWriteStream } from 'fs';
+import Koa from 'koa';
+import koa404Handler from 'koa-404-handler';
+import compress from 'koa-compress';
+import conditionalGet from 'koa-conditional-get';
+import etag from 'koa-etag';
+import helmet from 'koa-helmet';
+import koaJWT from 'koa-jwt';
+import morgan from 'koa-morgan';
+import responseTime from 'koa-response-time';
 import * as path from 'path';
-import * as serve from 'koa-static';
+import serve from 'koa-static';
 import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
 import routes from './routes';
-import * as errorHandler from 'koa-better-error-handler';
+import errorHandler from 'koa-better-error-handler';
 
 /**
  * Initialize an app
@@ -32,7 +32,7 @@ export default function run(env): Koa {
     unless(equals('test'), () => {
         app.use(
             morgan('combined', {
-                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
+                stream: createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
             })
         );
     })(env);

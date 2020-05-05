@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import baseStyles from '../../global-css/base.css.json';
 
 export interface BarLinkProps {
     href: string;
@@ -15,7 +16,7 @@ export const barLink: LitTpl<BarLinkProps> = (
     return html`<a
         href="${href}"
         role="menuitem"
-        class="${classNames({ 'link--bar': true, active })}"
+        class="${classNames({ [baseStyles.linkBar]: true, [baseStyles.active]: active })}"
         >${text}</a
     >`;
 };

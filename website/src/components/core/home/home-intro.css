@@ -56,7 +56,7 @@
         padding: 60px 0;
     }
 
-    .home-intro .container--slim {
+    .home-intro--grid {
         display: grid;
         grid-template-columns: repeat(12, [col-start] 1fr);
         grid-gap: 20px;
