@@ -1,21 +1,26 @@
 .button {
     padding: 10px 20px;
     font-size: 1.6rem;
-    color: #1a1a1a;
+    color: var(--shade-4);
     border: 0;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     border: 1px solid #f57723;
     background-color: #f57723;
-    color: #efefef;
+    color: var(--shade-1);
+    text-transform: uppercase;
+    font-family: 'Oxanium', monospace;
+    font-weight: 300;
+    letter-spacing: 0.3ch;
+    line-height: 1;
 }
 
 .button:hover,
 .button:focus {
     background-color: #b95a1a;
     border-color: #b95a1a;
-    color: #efefef;
+    color: var(--shade-1);
 }
 
 .button--large {
@@ -28,7 +33,7 @@
 }
 
 .button--primary {
-    color: #efefef;
+    color: var(--shade-1);
     background-color: #2b792b;
     border-color: #2b792b;
 }
@@ -40,7 +45,7 @@
 }
 
 .button--destructive {
-    color: #efefef;
+    color: var(--shade-1);
     background-color: #ac2222;
     border-color: #ac2222;
 }
@@ -52,20 +57,20 @@
 }
 
 .button--outline {
-    color: #1a1a1a;
+    color: var(--shade-4);
     background-color: transparent;
-    border-color: #1a1a1a;
+    border-color: var(--shade-4);
 }
 
 .button--outline:hover,
 .button--outline:focus {
     background-color: #f57723;
     border-color: #f57723;
-    color: #efefef;
+    color: var(--shade-1);
 }
 
 .button--text {
-    color: #1a1a1a;
+    color: var(--shade-4);
     background-color: transparent;
     border-color: transparent;
 }

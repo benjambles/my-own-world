@@ -9,10 +9,12 @@
     --special-3: #f6ab9e;
     --special-4: #f15d5c;
 
-    --grey-1: #e7e7e8;
-    --grey-2: #636466;
-    --grey-3: #404041;
-    --grey-4: #1a1a1a;
+    --shade-0: #fff;
+    --shade-1: #e7e7e8;
+    --shade-2: #636466;
+    --shade-3: #404041;
+    --shade-4: #1a1a1a;
+    --shade-5: #000;
 
     --resistance: #afd4f1;
 }

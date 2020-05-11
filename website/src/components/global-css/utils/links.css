@@ -1,11 +1,11 @@
 a {
     text-decoration: none;
-    color: #1a1a1a;
+    color: var(--shade-4);
     transition: color 0.1s;
 }
 
 .link--dark {
-    color: #efefef;
+    color: var(--shade-1);
 }
 
 a:hover,
@@ -32,5 +32,5 @@ a.link--dark.active {
 .link--bar:focus,
 .link--bar.active {
     background-color: #f57723;
-    color: white;
+    color: var(--shade-0);
 }

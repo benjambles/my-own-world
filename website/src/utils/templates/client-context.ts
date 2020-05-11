@@ -17,11 +17,11 @@ export type clientResult = TemplateResult;
 
 export type clientRender = typeof render;
 
-export interface clientRouteConfig {
+export type clientRouteConfig = {
     method: RouteMethods;
     path: string;
     handler: (ctx: any) => Promise<void>;
-}
+};
 
 export const CLIENT_CONTEXT: clientContext = {
     html,

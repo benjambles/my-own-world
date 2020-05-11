@@ -1,0 +1,232 @@
+.grid {
+    flex: 1 1 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(
+            30deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 49.95%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0) 50.05%,
+            rgba(0, 0, 0, 0) 100%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 49.9%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0) 50.1%,
+            rgba(0, 0, 0, 0) 100%
+        ),
+        linear-gradient(
+            150deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 49.95%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0) 50.05%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    background-position: 0 -3px;
+}
+
+.grid ul,
+.grid ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.arm {
+    width: auto;
+    display: inline-block;
+}
+
+.arm-1 {
+    transform: rotate(30deg);
+    position: absolute;
+    top: 202px;
+    left: 227px;
+}
+
+.arm-2 {
+    transform: rotate(90deg);
+    position: absolute;
+    left: 350px;
+    top: 219px;
+}
+
+.arm-2 .label {
+    transform: rotate(-60deg);
+}
+
+.arm-3 {
+    transform: rotate(150deg);
+    position: absolute;
+    top: 334px;
+    left: 397px;
+}
+
+.arm-3 .label {
+    transform: rotate(240deg);
+}
+
+.arm-4 {
+    transform: rotate(210deg);
+    position: absolute;
+    top: 432px;
+    left: 321px;
+}
+
+.arm-4 .label {
+    transform: rotate(-180deg);
+}
+
+.arm-5 {
+    position: absolute;
+    left: 198px;
+    top: 415px;
+    transform: rotate(-90deg);
+}
+
+.arm-5 .label {
+    transform: rotate(120deg);
+}
+
+.arm-6 {
+    transform: rotate(-30deg);
+    position: absolute;
+    top: 300px;
+    left: 151px;
+}
+
+.arm-6 .label {
+    transform: rotate(60deg);
+}
+
+.rows {
+    position: relative;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.rows .hex {
+    position: absolute;
+}
+
+.row-2 li:nth-child(1) {
+    top: -74px;
+}
+
+.row-2 li:nth-child(2) {
+    top: -37px;
+    left: -64px;
+}
+
+.row-2 li:nth-child(3) {
+    top: 37px;
+    left: -64px;
+}
+
+.row-3 li:nth-child(1) {
+    top: -148px;
+}
+
+.row-3 li:nth-child(2) {
+    top: -111px;
+    left: -64px;
+}
+
+.row-3 li:nth-child(3) {
+    left: -128px;
+    top: -74px;
+}
+
+.row-3 li:nth-child(4) {
+    left: -128px;
+}
+
+.row-3 li:nth-child(5) {
+    top: 74px;
+    left: -128px;
+}
+
+.hex {
+    display: inline-block;
+    width: 68px;
+    padding: 0 0 calc(1.1547005 * 68px) 0;
+    position: relative;
+    transform: rotate(-90deg) skewY(30deg);
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.hex * {
+    visibility: visible;
+}
+
+.hex > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fdbf00;
+    transform: skewY(-30deg) rotate(60deg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hex .label {
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    color: var(--shade-4);
+}
+
+.hex.centre {
+    transform: rotate(-120deg) skewY(30deg);
+}
+
+.hex.centre .label {
+    transform: rotate(60deg);
+}
+
+.hex.basic-1 > span {
+    background-color: var(--basic-1);
+}
+
+.hex.basic-2 > span {
+    background-color: var(--basic-2);
+}
+
+.hex.basic-3 > span {
+    background-color: var(--basic-3);
+}
+
+.hex.special-1 > span {
+    background-color: var(--special-1);
+}
+
+.hex.special-2 > span {
+    background-color: var(--special-2);
+}
+
+.hex.special-3 > span {
+    background-color: var(--special-3);
+}
+
+.hex.centre > span {
+    background-color: var(--basic-4);
+}

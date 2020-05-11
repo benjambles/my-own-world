@@ -1,12 +1,12 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export interface ButtonData {
+export type ButtonData = {
     text: string;
     type?: 'button' | 'submit';
     action?: string;
     size?: 'large' | 'normal' | 'small';
-}
+};
 
 export const secondaryButton: LitTpl<ButtonData> = (
     context,

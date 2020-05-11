@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export interface DarkLinkProps {
+export type DarkLinkProps = {
     href: string;
     text: string;
     display?: {
@@ -10,7 +10,7 @@ export interface DarkLinkProps {
         underlined?: boolean;
         bold?: boolean;
     };
-}
+};
 
 export const darkLink: LitTpl<DarkLinkProps> = (
     context,

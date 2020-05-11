@@ -28,7 +28,7 @@ export function linkStoryRenderer(story: () => TemplateResult) {
 export function linkStoryRendererDark(story: () => TemplateResult) {
     const container = document.createElement('div');
     container.style.padding = '20px';
-    container.style.background = '#24292e';
+    container.style.background = '#223344';
     render(story(), container);
     return container;
 }

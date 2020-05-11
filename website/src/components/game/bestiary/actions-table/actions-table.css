@@ -1,0 +1,70 @@
+.actions {
+    margin: 10px;
+    background-color: var(--shade-0);
+    color: var(--shade-4);
+}
+
+.actions table {
+    width: 100%;
+    font-size: 1.4rem;
+    line-height: 1.4;
+}
+
+.actions thead th {
+    background-color: var(--shade-2);
+    color: var(--shade-0);
+    font-weight: bold;
+    padding: 5px;
+    min-width: 90px;
+}
+
+.actions thead th:last-child {
+    text-align: left;
+}
+
+.actions tbody th {
+    text-align: left;
+    padding: 5px;
+}
+
+.actions tbody th:first-child {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-family: 'Oxanium', monospace;
+    font-weight: 500;
+}
+
+.actions td {
+    text-align: center;
+    padding: 5px;
+    background-color: var(--shade-1);
+}
+
+.actions tr {
+    border-bottom: 2px solid var(--shade-0);
+}
+
+.actions td:first-child {
+    font-weight: bold;
+}
+
+.actions td:first-child,
+.actions td:last-child {
+    text-align: left;
+}
+
+.special-actions th:first-child {
+    color: var(--basic-4);
+}
+
+.special-actions td {
+    background-color: var(--basic-1);
+}
+
+.learnable-actions th:first-child {
+    color: var(--special-4);
+}
+
+.learnable-actions td {
+    background-color: var(--special-3);
+}

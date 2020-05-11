@@ -1,4 +1,4 @@
-import { home } from '../../components/pages/public/home';
+import { home } from '../../components/pages/public/home/home';
 import { mockData } from '../../utils/mock-data';
 import { LitRoute, RouteMethods } from '../../utils/templates/lit-route';
 

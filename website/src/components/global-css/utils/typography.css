@@ -26,6 +26,14 @@ h5 {
     font-size: 1.8rem;
 }
 
+h1,
+h2,
+h3 {
+    font-family: 'Oxanium', monospace;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
 .centre {
     text-align: center;
 }
@@ -35,7 +43,7 @@ h5 {
 }
 
 p {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .underlined {
@@ -47,6 +55,15 @@ p {
     src: local('Oxanium Medium'), local('Oxanium-Medium'),
         url('/fonts/oxanium/Oxanium-Medium.woff2') format('woff2');
     font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Oxanium';
+    src: local('Oxanium Light'), local('Oxanium-Light'),
+        url('/fonts/oxanium/Oxanium-Light.woff2') format('woff2');
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
 }

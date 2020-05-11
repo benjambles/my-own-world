@@ -4,9 +4,9 @@ import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { link, LinkProps } from '../links/link';
 import styles from './footer.css.json';
 
-export interface FooterData {
+export type FooterData = {
     links: LinkProps[];
-}
+};
 
 /**
  * The footer component always renders the correct copyright date.

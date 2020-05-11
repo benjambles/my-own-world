@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export interface BarLinkProps {
+export type BarLinkProps = {
     href: string;
     text: string;
     active?: boolean;
-}
+};
 
 export const barLink: LitTpl<BarLinkProps> = (
     context,

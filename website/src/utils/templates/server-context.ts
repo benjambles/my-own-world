@@ -18,10 +18,10 @@ export type serverResult = TemplateResult;
 
 export type serverRenderer = (result: TemplateResult, options?: RenderOptions) => Promise<string>;
 
-export interface serverRouteConfig {
+export type serverRouteConfig = {
     method: RouteMethods;
     path: string;
     handler: (ctx: Context) => Promise<void>;
-}
+};
 
 export const SERVER_CONTEXT: serverContext = { html, directives: { classMap, ifDefined } };
