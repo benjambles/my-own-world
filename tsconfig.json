@@ -1,0 +1,17 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./api"
+        },
+        {
+            "path": "./game-lib"
+        },
+        {
+            "path": "./website"
+        },
+        {
+            "path": "./shared-server"
+        }
+    ]
+}

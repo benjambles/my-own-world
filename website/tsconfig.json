@@ -1,17 +1,8 @@
 {
+    "extends": "../tsconfig-base.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "allowJs": true,
-        "checkJs": true,
-        "target": "es6",
-        "module": "commonjs",
-        "removeComments": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "sourceMap": true,
-        "moduleResolution": "node",
-        "lib": ["esnext.array", "dom"],
-        "incremental": true,
+        "outDir": "../dist/website",
+        "rootDir": "./src",
         "tsBuildInfoFile": "buildcache",
         "plugins": [
             {
@@ -24,7 +15,14 @@
             }
         ]
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["__tests__", "./coverage", "src/**/*.stories.ts"],
-    "compileOnSave": true
+    "references": [
+        {
+            "path": "../game-lib"
+        },
+        {
+            "path": "../shared-server"
+        }
+    ],
+    "include": ["**/*.ts"],
+    "exclude": ["__tests__", "./coverage", "**/*.stories.ts"]
 }

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "target": "es2017",
+        "module": "commonjs",
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "incremental": true,
+        "lib": ["es2019", "esnext.array", "dom"]
+    },
+    "compileOnSave": true
+}

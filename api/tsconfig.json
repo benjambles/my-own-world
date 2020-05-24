@@ -1,18 +1,18 @@
 {
+    "extends": "../tsconfig-base.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "allowJs": true,
-        "checkJs": true,
-        "target": "es2017",
-        "module": "commonjs",
-        "removeComments": true,
-        "sourceMap": true,
-        "moduleResolution": "node",
-        "lib": ["es2019", "esnext.array", "dom"],
-        "incremental": true,
-        "tsBuildInfoFile": "buildcache"
+        "outDir": "../dist/api",
+        "tsBuildInfoFile": "buildcache",
+        "rootDir": "./src"
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["__tests__", "./coverage"],
-    "compileOnSave": true
+    "references": [
+        {
+            "path": "../game-lib"
+        },
+        {
+            "path": "../shared-server"
+        }
+    ],
+    "include": ["**/*.ts"],
+    "exclude": ["__tests__", "./coverage"]
 }
