@@ -11,6 +11,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function base() {
-    return actionGrid(CLIENT_CONTEXT);
-}
+export const base = () => {
+    return actionGrid(CLIENT_CONTEXT, undefined);
+};

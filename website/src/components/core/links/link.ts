@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
@@ -13,10 +12,13 @@ export type LinkProps = {
 };
 
 export const link: LitTpl<LinkProps> = (context, { text, href, display = {} }: LinkProps) => {
-    const { html } = context;
+    const {
+        html,
+        directives: { classMap },
+    } = context;
     return html`<a
         href="${href}"
-        class="${classNames({
+        class="${classMap({
             [baseStyles.active]: display.active,
             [baseStyles.underlined]: display.underlined,
             [baseStyles.bold]: display.bold,

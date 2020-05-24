@@ -1,7 +1,7 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export type ButtonData = {
+type ButtonData = {
     text: string;
     type?: 'button' | 'submit';
     action?: string;
@@ -24,7 +24,9 @@ export const textButton: LitTpl<ButtonData> = (
         [baseStyles.buttonSmall]: size === 'small',
     });
 
-    return html`<button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">
-        ${text}
-    </button>`;
+    return html`
+        <button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">
+            ${text}
+        </button>
+    `;
 };

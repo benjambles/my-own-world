@@ -21,7 +21,8 @@ export const statsBlock: LitTpl<StatsData> = (context, { name, variant, stats }:
         ${lazyStylesheet(context, '/styles/core/bestiary/stats-block/stats-block.css')}
         <section class="${styles.stats}">
             <span class="${styles.name}">
-                <b>Name:</b> <span class="${styles.title}">${name}</span> ${variant
+                <b>Name:</b>
+                <span class="${styles.title}">${name}</span> ${variant
                     ? html`<span>[${variant}]</span>`
                     : null}
             </span>

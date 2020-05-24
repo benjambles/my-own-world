@@ -6,11 +6,11 @@ import { inputBox } from '../../../../core/form-elements/input-box';
 import { link } from '../../../../core/links/link';
 import styles from './home-intro.css.json';
 
-export const homeIntro: LitTpl<undefined> = context => {
+export const homeIntro: LitTpl<undefined> = (context) => {
     const { html } = context;
 
     return html`
-        ${lazyStylesheet(context, '/styles/core/home/home-intro.css')}
+        ${lazyStylesheet(context, '/styles/pages/public/home/home-intro/home-intro.css')}
         <section class="${styles.homeIntro}">
             <div class="${baseStyles.containerSlim} ${styles.homeIntroGrid}">
                 <div class="${styles.homeIntro__text}">
@@ -29,8 +29,16 @@ export const homeIntro: LitTpl<undefined> = context => {
 
                 <form action="/signup">
                     ${inputBox(context, { label: 'Username', id: 'username' })}
-                    ${inputBox(context, { label: 'Email', id: 'email', type: 'email' })}
-                    ${inputBox(context, { label: 'Password', id: 'password', type: 'password' })}
+                    ${inputBox(context, {
+                        label: 'Email',
+                        id: 'email',
+                        type: 'email',
+                    })}
+                    ${inputBox(context, {
+                        label: 'Password',
+                        id: 'password',
+                        type: 'password',
+                    })}
                     <small>
                         Passwords should be secure, don't use one from another site.
                         ${link(context, {

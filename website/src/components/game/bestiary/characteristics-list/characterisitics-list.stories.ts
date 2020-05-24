@@ -12,10 +12,12 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function withOptional() {
+export const withOptional = () => {
     return characteristicsList(CLIENT_CONTEXT, npcCardData.characteristics);
-}
+};
 
-export function defaultOnly() {
-    return characteristicsList(CLIENT_CONTEXT, { base: npcCardData.characteristics.base });
-}
+export const defaultOnly = () => {
+    return characteristicsList(CLIENT_CONTEXT, {
+        base: npcCardData.characteristics.base,
+    });
+};

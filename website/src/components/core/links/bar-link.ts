@@ -12,11 +12,17 @@ export const barLink: LitTpl<BarLinkProps> = (
     context,
     { text, href, active = false }: BarLinkProps
 ) => {
-    const { html } = context;
+    const {
+        html,
+        directives: { classMap },
+    } = context;
     return html`<a
         href="${href}"
         role="menuitem"
-        class="${classNames({ [baseStyles.linkBar]: true, [baseStyles.active]: active })}"
+        class="${classMap({
+            [baseStyles.linkBar]: true,
+            [baseStyles.active]: active,
+        })}"
         >${text}</a
     >`;
 };

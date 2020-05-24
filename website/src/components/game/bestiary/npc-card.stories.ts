@@ -13,6 +13,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function veteran() {
+export const veteran = () => {
     return npcCard(CLIENT_CONTEXT, npcData);
-}
+};

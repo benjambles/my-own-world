@@ -14,14 +14,14 @@ export default {
     },
 };
 
-export function linkBar() {
+export const linkBar = () => {
     return barLink(CLIENT_CONTEXT, { text: 'Bar Link', href: '/' });
-}
+};
 
-export function activeLinkBar() {
+export const activeLinkBar = () => {
     return barLink(CLIENT_CONTEXT, {
         text: 'Active Link Bar',
         href: '/',
         active: true,
     });
-}
+};

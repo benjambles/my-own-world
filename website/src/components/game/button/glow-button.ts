@@ -1,6 +1,5 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import styles from './glow-button.css.json';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 
 interface Data {
     text: string;

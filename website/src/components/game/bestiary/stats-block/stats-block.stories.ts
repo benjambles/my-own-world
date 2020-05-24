@@ -13,10 +13,10 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function base() {
+export const base = () => {
     return statsBlock(CLIENT_CONTEXT, {
         name: npcData.name,
         variant: npcData.variant,
         stats: npcData.stats,
     });
-}
+};

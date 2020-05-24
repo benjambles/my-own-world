@@ -23,8 +23,6 @@ export const layout: LitTpl<any> = (context, data, children?) => {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${data.meta.title}</title>
                 ${lazyStylesheet(context, '/styles/global-css/base.css')}
-                ${lazyStylesheet(context, '/styles/core/buttons/buttons.css')}
-                ${lazyStylesheet(context, '/styles/core/links/links.css')}
             </head>
             <body>
                 ${header(context, data.header)} ${children ? children : undefined}

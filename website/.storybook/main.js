@@ -2,8 +2,8 @@ const { resolve } = require('path');
 
 module.exports = {
     stories: ['../src/**/*.stories.ts'],
-    webpackFinal: async config => {
-        config.module.rules = config.module.rules.map(f => {
+    webpackFinal: async (config) => {
+        config.module.rules = config.module.rules.map((f) => {
             // Needed to add this to ignore our ../src/ for the default rule, instead of purging it.
             if (f.test.toString() === '/\\.css$/') {
                 f.exclude = resolve(__dirname, '../src/');

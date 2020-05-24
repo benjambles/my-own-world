@@ -13,6 +13,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function base() {
+export const base = () => {
     return turnOrder(CLIENT_CONTEXT, npcData.turn_order);
-}
+};

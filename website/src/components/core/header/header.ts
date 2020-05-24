@@ -41,7 +41,7 @@ const linkList = (context, links) => {
 
     return html`
         <ul>
-            ${links.map(link => html`<li>${darkLink(context, link)}</li>`)}
+            ${links.map((link) => html`<li>${darkLink(context, link)}</li>`)}
         </ul>
     `;
 };

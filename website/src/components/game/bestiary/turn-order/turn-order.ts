@@ -11,7 +11,7 @@ export const turnOrder: LitTpl<TurnOrder> = (context, turns: TurnOrder) => {
         <section class="${styles.turnOrder}">
             <h2>Turn order</h2>
             <ol>
-                ${turns.map(turn => html`<li>${turn}</li>`)}
+                ${turns.map((turn) => html`<li>${turn}</li>`)}
             </ol>
         </section>
     `;

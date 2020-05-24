@@ -14,27 +14,35 @@ export default {
     },
 };
 
-export function standard() {
+export const standard = () => {
     return darkLink(CLIENT_CONTEXT, { text: 'Link', href: '/' });
-}
+};
 
-export function active() {
-    return darkLink(CLIENT_CONTEXT, { text: 'Active Link', href: '/', display: { active: true } });
-}
+export const active = () => {
+    return darkLink(CLIENT_CONTEXT, {
+        text: 'Active Link',
+        href: '/',
+        display: { active: true },
+    });
+};
 
-export function underlined() {
+export const underlined = () => {
     return darkLink(CLIENT_CONTEXT, {
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
     });
-}
+};
 
-export function bold() {
-    return darkLink(CLIENT_CONTEXT, { text: 'Bold Link', href: '/', display: { bold: true } });
-}
+export const bold = () => {
+    return darkLink(CLIENT_CONTEXT, {
+        text: 'Bold Link',
+        href: '/',
+        display: { bold: true },
+    });
+};
 
-export function playground() {
+export const playground = () => {
     return darkLink(CLIENT_CONTEXT, {
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
@@ -44,4 +52,4 @@ export function playground() {
             underlined: boolean('display.underlined', false, 'Display Props'),
         },
     });
-}
+};

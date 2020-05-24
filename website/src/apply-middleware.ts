@@ -1,6 +1,7 @@
 import { createWriteStream } from 'fs';
 import Koa from 'koa';
 import koa404Handler from 'koa-404-handler';
+import errorHandler from 'koa-better-error-handler';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
@@ -8,20 +9,17 @@ import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import morgan from 'koa-morgan';
 import responseTime from 'koa-response-time';
-import * as path from 'path';
 import serve from 'koa-static';
+import { resolve } from 'path';
 import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
-import routes from './routes';
-import errorHandler from 'koa-better-error-handler';
+import { getRoutes } from './routes/get-routes';
 
 /**
  * Initialize an app
  * @api public
  */
-export default function run(env): Koa {
-    const app: Koa = new Koa();
-
+export const applyMiddleware = (app, env): Koa => {
     // override koa's undocumented error handler
     app.context.onerror = errorHandler;
 
@@ -32,7 +30,9 @@ export default function run(env): Koa {
     unless(equals('test'), () => {
         app.use(
             morgan('combined', {
-                stream: createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
+                stream: createWriteStream(resolve(__dirname, 'access.log'), {
+                    flags: 'a',
+                }),
             })
         );
     })(env);
@@ -44,10 +44,10 @@ export default function run(env): Koa {
     app.use(helmet()); // Security layer
     app.use(koa404Handler);
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
-    app.use(serve(path.resolve(__dirname, 'static')));
+    app.use(serve(resolve(__dirname, 'static')));
 
     // routing
-    routes.forEach(route => app.use(route.middleware()));
+    getRoutes().forEach((route) => app.use(route.middleware()));
 
     return app;
-}
+};

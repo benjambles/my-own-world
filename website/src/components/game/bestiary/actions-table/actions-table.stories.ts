@@ -13,29 +13,29 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function complete() {
+export const complete = () => {
     return actionsTable(CLIENT_CONTEXT, npcCardData.actions);
-}
+};
 
-export function basicOnly() {
+export const basicOnly = () => {
     return actionsTable(CLIENT_CONTEXT, {
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
     });
-}
+};
 
-export function withSpecial() {
+export const withSpecial = () => {
     return actionsTable(CLIENT_CONTEXT, {
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         special: npcCardData.actions.special,
     });
-}
+};
 
-export function withLearnable() {
+export const withLearnable = () => {
     return actionsTable(CLIENT_CONTEXT, {
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         learnable: npcCardData.actions.learnable,
     });
-}
+};

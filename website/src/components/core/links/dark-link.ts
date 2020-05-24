@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
@@ -16,10 +15,13 @@ export const darkLink: LitTpl<DarkLinkProps> = (
     context,
     { text, href, display = {} }: DarkLinkProps
 ) => {
-    const { html } = context;
+    const {
+        html,
+        directives: { classMap },
+    } = context;
     return html`<a
         href="${href}"
-        class="${classNames({
+        class="${classMap({
             [baseStyles.linkDark]: true,
             [baseStyles.active]: display.active,
             [baseStyles.underlined]: display.underlined,

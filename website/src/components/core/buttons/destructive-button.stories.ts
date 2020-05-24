@@ -12,33 +12,37 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-export function playground() {
-    return destructiveButton(CLIENT_CONTEXT, {
+export const playground = () =>
+    destructiveButton(CLIENT_CONTEXT, {
         text: text('text', 'Button text', 'Required'),
         type: select('type', ['button', 'submit'], undefined, 'Optional'),
         action: text('action', undefined, 'Optional'),
         size: select('size', ['normal', 'large', 'small'], undefined, 'Optional'),
     });
-}
+
 playground.story = {
     decorators: [withKnobs],
 };
 
-export function buttonSizes() {
-    return CLIENT_CONTEXT.html` 
-    ${destructiveButton(CLIENT_CONTEXT, {
-        text: 'Small Button',
-        size: 'small',
-    })}
-    ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-    ${destructiveButton(CLIENT_CONTEXT, { text: 'Large Button', size: 'large' })}
+export const buttonSizes = () =>
+    CLIENT_CONTEXT.html` 
+        ${destructiveButton(CLIENT_CONTEXT, {
+            text: 'Small Button',
+            size: 'small',
+        })}
+        ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
+        ${destructiveButton(CLIENT_CONTEXT, {
+            text: 'Large Button',
+            size: 'large',
+        })}
     `;
-}
 
-export function buttonTypes() {
-    return CLIENT_CONTEXT.html`
+export const buttonTypes = () =>
+    CLIENT_CONTEXT.html`
         ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
         ${destructiveButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
-        ${destructiveButton(CLIENT_CONTEXT, { text: 'Action Button', action: 'LOGIN.SUBMIT' })}
+        ${destructiveButton(CLIENT_CONTEXT, {
+            text: 'Action Button',
+            action: 'LOGIN.SUBMIT',
+        })}
     `;
-}

@@ -57,7 +57,9 @@ const mockHero: HeroData = {
                     type: ['foe'],
                 },
                 range: 7,
-                effect: { text: 'AUTO-HIT (Skip CAP). [Tier]d8 Damage vs. Resistance.' },
+                effect: {
+                    text: 'AUTO-HIT (Skip CAP). [Tier]d8 Damage vs. Resistance.',
+                },
                 speed: 'fast',
             },
             {

@@ -13,6 +13,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export function full() {
+export const full = () => {
     return heroCard(CLIENT_CONTEXT, fixture);
-}
+};

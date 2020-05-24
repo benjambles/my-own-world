@@ -36,7 +36,10 @@ export const menuProfile: LitTpl<MenuProfileData> = (context, { profile }: MenuP
                     href: `/profile/${profile.username}`,
                 })}
                 <hr class="${styles.divider}" />
-                ${barLink(context, { text: 'Preferences', href: '/preferences' })}
+                ${barLink(context, {
+                    text: 'Preferences',
+                    href: '/preferences',
+                })}
                 ${barLink(context, { text: 'Help', href: '/help' })}
                 ${barLink(context, { text: 'Logout', href: '/logout' })}
             </div>

@@ -20,18 +20,18 @@ const navigationLinksActive = [
     { text: 'Blog', href: '/blog' },
 ];
 
-export function headerLoggedOut() {
+export const headerLoggedOut = () => {
     return header(CLIENT_CONTEXT, { navigationLinks, user: {} });
-}
+};
 
-export function headerLoggedActiveLink() {
+export const headerLoggedActiveLink = () => {
     return header(CLIENT_CONTEXT, {
         navigationLinks: navigationLinksActive,
         user: {},
     });
-}
+};
 
-export function headerLoggedIn() {
+export const headerLoggedIn = () => {
     return header(CLIENT_CONTEXT, {
         navigationLinks,
         user: {
@@ -42,4 +42,4 @@ export function headerLoggedIn() {
             },
         },
     });
-}
+};

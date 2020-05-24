@@ -25,7 +25,7 @@ export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
             <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - 2020</span>
                 <nav class="">
-                    ${links.map(linkData => link(context, linkData))}
+                    ${links.map((linkData) => link(context, linkData))}
                 </nav>
             </div>
         </footer>

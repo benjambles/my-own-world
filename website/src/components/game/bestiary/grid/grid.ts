@@ -2,7 +2,7 @@ import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
 import styles from './grid.css.json';
 
-export const actionGrid: LitTpl<undefined> = context => {
+export const actionGrid: LitTpl<undefined> = (context) => {
     const { html } = context;
 
     return html`
@@ -13,7 +13,7 @@ export const actionGrid: LitTpl<undefined> = context => {
                     <span><span class="${styles.label}">Basic Attack</span></span>
                 </div>
                 <ol>
-                    ${[1, 2, 3, 4, 5, 6].map(count => arm(context, count))}
+                    ${[1, 2, 3, 4, 5, 6].map((count) => arm(context, count))}
                 </ol>
             </li>
         </ol>

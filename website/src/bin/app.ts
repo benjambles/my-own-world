@@ -1,17 +1,8 @@
-import program from 'commander';
 import Koa from 'koa';
-import { pathOr } from 'ramda';
-import website from '../index';
+import { getEnvParams, listen } from '../../../shared-server/src/koa/app';
+import { applyMiddleware } from '../apply-middleware';
 
-program
-    .option('-H, --host <host>', 'specify the host [0.0.0.0]', '0.0.0.0')
-    .option('-p, --port <port>', 'specify the port [3001]', '3001')
-    .option('-b, --backlog <size>', 'specify the backlog size [511]', '511')
-    .parse(process.argv);
+const { port, host, nodeEnv } = getEnvParams(process);
+const app: Koa = applyMiddleware(new Koa(), nodeEnv);
 
-const env: string = pathOr('development', ['env', 'NODE_ENV'], process);
-
-const app: Koa = website(env);
-
-app.listen(program.port, program.host, ~~program.backlog);
-console.log('Listening on %s:%s', program.host, program.port);
+listen({ port, host, app });

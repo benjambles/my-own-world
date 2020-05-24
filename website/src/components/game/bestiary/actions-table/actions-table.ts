@@ -25,7 +25,11 @@ export const actionsTable: LitTpl<Actions> = (
                         <th>Effect</th>
                     </tr>
                 </thead>
-                ${actionGroup(context, { actions: basic, title: 'Basic Actions', limit })}
+                ${actionGroup(context, {
+                    actions: basic,
+                    title: 'Basic Actions',
+                    limit,
+                })}
                 ${special
                     ? actionGroup(context, {
                           actions: special,
@@ -67,10 +71,12 @@ const actionGroup: LitTpl<ActionGroupData> = (
             <tr>
                 <th colspan="${titleCols}">${title}</th>
                 ${limit
-                    ? html`<th colspan="1">[Storyteller only] Actions per Turn: ${limit}</th>`
+                    ? html`<th colspan="1">
+                          [Storyteller only] Actions per Turn: ${limit}
+                      </th>`
                     : null}
             </tr>
-            ${Object.values(actions).map(action => actionRow(context, action))}
+            ${Object.values(actions).map((action) => actionRow(context, action))}
         </tbody>
     `;
 };

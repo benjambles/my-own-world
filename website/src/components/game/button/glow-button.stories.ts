@@ -12,6 +12,6 @@ export default {
     decorators: [linkStoryRendererDark],
 };
 
-export function base() {
+export const base = () => {
     return glowButton(CLIENT_CONTEXT, { text: 'Test Button' });
-}
+};
