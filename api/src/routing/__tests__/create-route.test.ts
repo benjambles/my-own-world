@@ -1,5 +1,5 @@
-import createRoute from '../create-route';
-import * as router from 'koa-joi-router';
+import router from 'koa-joi-router';
+import { createRoute } from '../create-route';
 
 test('createRoute', () => {
     const handler = jest.fn();

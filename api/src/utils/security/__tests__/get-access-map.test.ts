@@ -1,5 +1,5 @@
-import * as Koa from 'koa';
-import getAccessMap from '../get-access-map';
+import Koa from 'koa';
+import { getAccessMap } from '../get-access-map';
 
 test('getAccessMap', () => {
     const tests = [
@@ -7,7 +7,9 @@ test('getAccessMap', () => {
         [true, 'role:user'],
         [false, ''],
     ];
-    const ctx: unknown = { state: { user: { userData: true }, userData: true } };
+    const ctx: unknown = {
+        state: { user: { userData: true }, userData: true },
+    };
     const accessMap = getAccessMap()(ctx as Koa.Context);
 
     tests.forEach(([expectedResult, role]) => {

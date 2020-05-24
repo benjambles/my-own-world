@@ -1,5 +1,5 @@
 import { some, Option } from 'fp-ts/lib/Option';
-import getFilledArray from '../get-filled-array';
+import { getFilledArray } from '../get-filled-array';
 
 type testParams = [Option<any[]>, any];
 

@@ -1,19 +1,9 @@
-export async function getTranslations() {
-    return false;
-}
+export const getTranslations = async () => false;
 
-export async function createTranslation() {
-    return false;
-}
+export const createTranslation = async () => false;
 
-export async function getTranslationById() {
-    return false;
-}
+export const getTranslationById = async () => false;
 
-export async function updateTranslationById() {
-    return false;
-}
+export const updateTranslationById = async () => false;
 
-export async function deleteTranslationById() {
-    return false;
-}
+export const deleteTranslationById = async () => false;

@@ -1,4 +1,4 @@
-import formatter from '../formatter';
+import { formatter } from '../formatter';
 
 test('formatter', async () => {
     const model = {

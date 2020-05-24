@@ -1,26 +1,24 @@
-import * as fs from 'fs';
-import * as Koa from 'koa';
-import * as koa404Handler from 'koa-404-handler';
-import * as compress from 'koa-compress';
-import * as conditionalGet from 'koa-conditional-get';
-import * as etag from 'koa-etag';
-import * as helmet from 'koa-helmet';
-import * as koaJWT from 'koa-jwt';
-import * as morgan from 'koa-morgan';
-import * as responseTime from 'koa-response-time';
-import * as path from 'path';
+import { createWriteStream } from 'fs';
+import Koa from 'koa';
+import koa404Handler from 'koa-404-handler';
+import errorHandler from 'koa-better-error-handler';
+import compress from 'koa-compress';
+import conditionalGet from 'koa-conditional-get';
+import etag from 'koa-etag';
+import helmet from 'koa-helmet';
+import koaJWT from 'koa-jwt';
+import morgan from 'koa-morgan';
+import responseTime from 'koa-response-time';
+import { resolve } from 'path';
 import { equals, unless } from 'ramda';
 import { jwtSecret } from './config';
-import loadRoutes from './routing/load-routes';
-import * as errorHandler from 'koa-better-error-handler';
+import { loadRoutes } from './routing/load-routes';
 
 /**
  * Initialize an app
  * @api public
  */
-export default function run(env): Koa {
-    const app: Koa = new Koa();
-
+export const api = (app: Koa, env): Koa => {
     // override koa's undocumented error handler
     app.context.onerror = errorHandler;
 
@@ -31,7 +29,9 @@ export default function run(env): Koa {
     unless(equals('test'), () => {
         app.use(
             morgan('combined', {
-                stream: fs.createWriteStream(path.resolve(__dirname, 'access.log'), { flags: 'a' }),
+                stream: createWriteStream(resolve(__dirname, 'access.log'), {
+                    flags: 'a',
+                }),
             })
         );
     })(env);
@@ -45,9 +45,9 @@ export default function run(env): Koa {
     app.use(koaJWT({ secret: jwtSecret, passthrough: true }));
 
     // routing
-    loadRoutes(path.resolve(__dirname, 'resources'), 'api').forEach(route =>
+    loadRoutes(resolve(__dirname, 'resources'), 'api').forEach((route) =>
         app.use(route.middleware())
     );
 
     return app;
-}
+};

@@ -1,7 +1,7 @@
-import * as Koa from 'koa';
-import * as users from './users';
+import Koa from 'koa';
 import { generateRoute } from '../../../utils/routes/generate-route';
 import { partsResponse } from '../../../utils/routes/responses';
+import * as users from './users';
 
 /**
  * Get projects, optionally filtered by parameters
@@ -30,7 +30,5 @@ export const deleteProjectUser: Koa.Middleware = generateRoute(
         message: 'There was an error whilst removing the user from the project',
         status: 400,
     },
-    async (): Promise<ApiResponse> => {
-        return partsResponse({});
-    }
+    async (): Promise<ApiResponse> => partsResponse({})
 );

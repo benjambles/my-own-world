@@ -6,7 +6,9 @@ declare module '*.json' {
 declare function router(): iRouter;
 
 type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
-    { [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, undefined>> }[Keys];
+    {
+        [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, undefined>>;
+    }[Keys];
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
     { [K in Keys]-?: Required<Pick<T, K>> }[Keys];
@@ -93,7 +95,4 @@ interface formatOptions {
     salted?: string[];
     hmac?: string[];
     readOnly?: string[];
-}
-interface fnMap {
-    [name: string]: Function;
 }

@@ -1,10 +1,10 @@
+import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import { pathEq } from 'ramda';
-import { Context } from 'koa';
+
+type IsAdmin = (ctx: ParameterizedContext<DefaultState, DefaultContext>) => boolean;
 
 /**
  *
  * @param token
  */
-export default function isAdmin(ctx: Context): boolean {
-    return pathEq(['state', 'user', 'userData'], true, ctx);
-}
+export const isAdmin: IsAdmin = pathEq(['state', 'user', 'userData'], true);

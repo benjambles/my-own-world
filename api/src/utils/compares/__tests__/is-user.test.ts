@@ -1,5 +1,5 @@
-import isUser from '../is-user';
-import * as Koa from 'koa';
+import { isUser } from '../is-user';
+import Koa from 'koa';
 
 test('isUser', () => {
     const tests = [

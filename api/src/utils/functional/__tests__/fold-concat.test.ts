@@ -1,5 +1,5 @@
-import foldConcat from '../fold-concat';
 import { none, some } from 'fp-ts/lib/Option';
+import { foldConcat } from '../fold-concat';
 
 test('foldConcat', () => {
     const acc = [1, 2, 3];

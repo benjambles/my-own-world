@@ -1,18 +1,18 @@
-import { encryptValue, hmac as getHmac } from './encrpytion';
-import { bHash } from './blowfish';
+import { none, some } from 'fp-ts/lib/Option';
 import { cond, T } from 'ramda';
-import { some, none } from 'fp-ts/lib/Option';
+import { bHash } from './blowfish';
+import { encryptValue, hmac as getHmac } from './encrpytion';
 
 /**
  * Applies security formatters to a property based on the map passed in
  */
-export default function getFormattedData({
+export const getFormattedData = ({
     encrypted = [],
     salted = [],
     hmac = [],
     readOnly = ['uuid'],
-}: formatOptions) {
-    const includes = arr => key => arr.includes(key);
+}: formatOptions) => {
+    const includes = (arr) => (key) => arr.includes(key);
 
     return async (key: string, value) =>
         await cond([
@@ -22,4 +22,4 @@ export default function getFormattedData({
             [includes(hmac), async () => some(await getHmac(value))],
             [T, async () => some(value)],
         ])(key);
-}
+};

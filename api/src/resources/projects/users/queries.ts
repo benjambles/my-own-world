@@ -1,5 +1,5 @@
 import ObjectId from 'mongodb';
-import { withCollection, result } from '../../../db';
+import { result, withCollection } from '../../../db';
 
 const projects = withCollection('projects');
 
@@ -7,7 +7,7 @@ const projects = withCollection('projects');
  *
  * @param uuid
  */
-export async function getActiveProjectUsers(uuid: ObjectId): Promise<any> {
+export const getActiveProjectUsers = async (uuid: ObjectId): Promise<any> => {
     const data = await projects.findOne(
         {
             uuid,
@@ -18,7 +18,7 @@ export async function getActiveProjectUsers(uuid: ObjectId): Promise<any> {
     );
 
     return result('There was an error whilst fetching the projects users', data);
-}
+};
 
 /**
  *
@@ -26,11 +26,11 @@ export async function getActiveProjectUsers(uuid: ObjectId): Promise<any> {
  * @param userId
  * @param roles
  */
-export async function setUserRoles(
+export const setUserRoles = async (
     projectId: ObjectId,
     userId: ObjectId,
     roles: ObjectId[]
-): Promise<boolean> {
+): Promise<boolean> => {
     const data = await projects.findAndModify({
         query: {
             projectId,
@@ -42,14 +42,17 @@ export async function setUserRoles(
     });
 
     return result('There was an error updating the user roles', data);
-}
+};
 
 /**
  *
  * @param projectId
  * @param userId
  */
-export async function deleteProjectUser(projectId: ObjectId, userId: ObjectId): Promise<boolean> {
+export const deleteProjectUser = async (
+    projectId: ObjectId,
+    userId: ObjectId
+): Promise<boolean> => {
     const data = await projects.findAndModify({
         query: {
             projectId,
@@ -62,4 +65,4 @@ export async function deleteProjectUser(projectId: ObjectId, userId: ObjectId): 
     });
 
     return result('There was an error whilst removing the user roles', data);
-}
+};

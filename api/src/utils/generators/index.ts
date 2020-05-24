@@ -1,17 +1,14 @@
-import * as readline from 'readline';
-
+import { createInterface } from 'readline';
 import { createRoute } from './types/routes';
 
 const validTypes: string[] = ['route'];
 
-const rl = readline.createInterface({
+const rl = createInterface({
     input: process.stdin,
     output: process.stdout,
 });
 
-rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, function (
-    type: string
-): void {
+rl.question(`What would you like to generate? [${validTypes.join(', ')}]`, (type: string): void => {
     type = type.toLowerCase();
 
     if (!validTypes.includes(type)) {

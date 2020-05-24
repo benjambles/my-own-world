@@ -1,4 +1,4 @@
-import swaggerToJoiType from '../swagger-to-joi-type';
+import { swaggerToJoiType } from '../swagger-to-joi-type';
 
 test('swaggerToJoiType', () => {
     const tests = [

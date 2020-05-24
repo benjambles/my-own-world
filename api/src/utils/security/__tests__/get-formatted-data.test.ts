@@ -1,4 +1,4 @@
-import getFormattedData from '../get-formatted-data';
+import { getFormattedData } from '../get-formatted-data';
 import { some } from 'fp-ts/lib/Option';
 
 test('getFormattedData', async () => {

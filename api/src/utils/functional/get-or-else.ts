@@ -3,6 +3,4 @@
  * @param orElse - The result to return when the monad contains Nothing
  * @param m - A monadic structure
  */
-export default function getOrElse<T>(orElse: T) {
-    return m => m.getOrElse(orElse);
-}
+export const getOrElse = <T>(orElse: T) => (m) => m.getOrElse(orElse);

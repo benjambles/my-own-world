@@ -1,38 +1,38 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
+import { existsSync } from 'fs';
+import { resolve } from 'path';
 import { routesPath } from '../../../config';
 
 const validAnswers: string[] = ['yes', 'no'];
 
-export function createRoute(rl) {
-    rl.question('Do you wish to generate a route from existing config? [yes/no]', function (
-        answer: string
-    ): void {
-        answer = answer.toLowerCase();
+export const createRoute = (rl) => {
+    rl.question(
+        'Do you wish to generate a route from existing config? [yes/no]',
+        (answer: string): void => {
+            answer = answer.toLowerCase();
 
-        if (!validAnswers.includes(answer)) {
-            console.log('Please choose yes or no');
-            rl.close();
+            if (!validAnswers.includes(answer)) {
+                console.log('Please choose yes or no');
+                rl.close();
+            }
+
+            switch (answer) {
+                case 'yes':
+                    return createRouteFromConfig(rl);
+                case 'no':
+                    return createRouteWithConfig(rl);
+            }
         }
+    );
+};
 
-        switch (answer) {
-            case 'yes':
-                return createRouteFromConfig(rl);
-            case 'no':
-                return createRouteWithConfig(rl);
-        }
-    });
-}
-
-function createRouteFromConfig(rl): void {
+const createRouteFromConfig = (rl): void => {
     // ask for the name of the route folder
-    rl.question('What is the folder containing the config called?', function (answer) {
-        const routeDir = path.resolve(routesPath, answer.toLowerCase);
-        const configPath = path.resolve(routeDir, 'config.json');
+    rl.question('What is the folder containing the config called?', (answer) => {
+        const routeDir = resolve(routesPath, answer.toLowerCase);
+        const configPath = resolve(routeDir, 'config.json');
 
-        if (!fs.existsSync(routeDir) || !fs.existsSync(configPath)) {
-            rl.question('That folder does not exist, create it? [yes/no]', function (confirm) {
+        if (!existsSync(routeDir) || !existsSync(configPath)) {
+            rl.question('That folder does not exist, create it? [yes/no]', (confirm) => {
                 switch (confirm) {
                     case 'yes':
                         return;
@@ -47,8 +47,8 @@ function createRouteFromConfig(rl): void {
     // -- check the config format - joi
     // -- check that the routes/models don't already exist
     // -- generate
-}
+};
 
-function createRouteWithConfig(rl): void {
+const createRouteWithConfig = (rl): void => {
     console.log(rl);
-}
+};

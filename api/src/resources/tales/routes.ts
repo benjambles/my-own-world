@@ -1,7 +1,7 @@
-import * as Koa from 'koa';
-import * as tales from './tales';
+import Koa from 'koa';
 import { generateRoute } from '../../utils/routes/generate-route';
 import { partsResponse } from '../../utils/routes/responses';
+import * as tales from './tales';
 
 /**
  * Get tales, optionally filtered by parameters

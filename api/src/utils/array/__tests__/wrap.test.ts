@@ -1,4 +1,4 @@
-import wrap from '../wrap';
+import { wrap } from '../wrap';
 
 test('wrap', () => {
     const tests = [

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { getBasicUserDetails } from '../../users/queries';
 import { sanitizedResponse } from '../../users/users';
-import { getActiveProjectUsers, setUserRoles, deleteProjectUser } from './queries';
+import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './queries';
 
 /**
  * Get a list of active projects
@@ -9,11 +9,11 @@ import { getActiveProjectUsers, setUserRoles, deleteProjectUser } from './querie
  * @param limit - The number of records to fetch
  * @param offset - The number of records to skip
  */
-export async function get(
+export const get = async (
     projectId: string,
     limit: number = 10,
     offset: number = 0
-): Promise<any[]> {
+): Promise<any[]> => {
     const projectUsers = await getActiveProjectUsers(new ObjectId(projectId));
 
     return Promise.all(
@@ -22,7 +22,7 @@ export async function get(
             return { user: sanitizedResponse(user), role };
         })
     );
-}
+};
 
 /**
  * Creates a new project user and sets their roles
@@ -30,10 +30,10 @@ export async function get(
  * @param userId
  * @param roles
  */
-export async function createUser(projectId, userId, roles): Promise<boolean> {
-    const roleIds = roles.map(id => new ObjectId(id));
+export const createUser = async (projectId, userId, roles): Promise<boolean> => {
+    const roleIds = roles.map((id) => new ObjectId(id));
     return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
-}
+};
 
 /**
  * Updates an existing project user and sets their roles
@@ -41,16 +41,16 @@ export async function createUser(projectId, userId, roles): Promise<boolean> {
  * @param userId
  * @param roles
  */
-export async function updateUserRoles(projectId, userId, roles): Promise<boolean> {
-    const roleIds = roles.map(id => new ObjectId(id));
+export const updateUserRoles = async (projectId, userId, roles): Promise<boolean> => {
+    const roleIds = roles.map((id) => new ObjectId(id));
     return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
-}
+};
 
 /**
  * Removes all access roles from a project user
  * @param projectId
  * @param userId
  */
-export async function deleteUser(projectId, userId): Promise<boolean> {
+export const deleteUser = async (projectId, userId): Promise<boolean> => {
     return await deleteProjectUser(new ObjectId(projectId), new ObjectId(userId));
-}
+};

@@ -1,12 +1,12 @@
 import { assoc, __ } from 'ramda';
-import getFormattedData from '../security/get-formatted-data';
+import { getFormattedData } from '../security/get-formatted-data';
 
 /**
  * Takes a format configuration that defines how to handle fields within a given model
  * returns a function that performs the formatting on provided data.
  * @param model
  */
-export default function formatter(model: formatOptions) {
+export const formatter = (model: formatOptions) => {
     const formatData = getFormattedData(model);
 
     const setKeyValues = async (acc, entries) => {
@@ -20,4 +20,4 @@ export default function formatter(model: formatOptions) {
     };
 
     return async <T>(data: T): Promise<T> => await setKeyValues({}, Object.entries(data));
-}
+};

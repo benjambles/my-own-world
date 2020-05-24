@@ -5,6 +5,4 @@ type predicateFn = (value: any) => boolean;
  *
  * @param predicate
  */
-export default function getFirstFiltered(predicate: predicateFn) {
-    return compose(head, filter(predicate));
-}
+export const getFirstFiltered = (predicate: predicateFn) => compose(head, filter(predicate));

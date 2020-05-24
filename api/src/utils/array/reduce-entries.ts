@@ -6,6 +6,6 @@ import { reduce } from 'ramda';
  * @param fn - A reducing function
  * @param acc - The initial value
  */
-export default function reduceEntries<T>(fn: (acc: T, value: any) => T, acc: T) {
+export const reduceEntries = <T>(fn: (acc: T, value: any) => T, acc: T) => {
     return (obj: Object): T => reduce(fn, acc, Object.entries(obj));
-}
+};

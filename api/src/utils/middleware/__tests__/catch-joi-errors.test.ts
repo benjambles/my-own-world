@@ -1,5 +1,5 @@
-import catchJoiErrors from '../catch-joi-errors';
-import * as Koa from 'koa';
+import Koa from 'koa';
+import { catchJoiErrors } from '../catch-joi-errors';
 
 test('catchJoiErrors', async () => {
     const ctxValid = {};

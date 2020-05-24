@@ -1,5 +1,5 @@
-import { isDirectory, maybeIsDirectory } from '../is-directory';
 import { resolve } from 'path';
+import { isDirectory, maybeIsDirectory } from '../is-directory';
 
 test('isDirectory', () => {
     const tests = [
@@ -19,7 +19,7 @@ test('maybeIsDirectory', () => {
     const passPath = resolve(__dirname, 'mocks');
     const pass = maybeIsDirectory(passPath);
     expect(pass.isSome());
-    pass.map(val => {
+    pass.map((val) => {
         expect(val).toEqual(passPath);
     });
 });

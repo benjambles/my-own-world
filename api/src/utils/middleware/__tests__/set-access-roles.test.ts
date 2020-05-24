@@ -1,5 +1,5 @@
-import setAccessRoles from '../set-access-roles';
-import * as Koa from 'koa';
+import Koa from 'koa';
+import { setAccessRoles } from '../set-access-roles';
 
 test('setAccessRoles', () => {
     const roles = ['role:user', 'role:owner'];

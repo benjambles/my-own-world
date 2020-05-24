@@ -1,3 +1,3 @@
-import getRouteMappings from '../get-route-mapping';
+import { getRouteMapping } from '../get-route-mapping';
 
-test.todo('getRouteMappings');
+test.todo('getRouteMapping');

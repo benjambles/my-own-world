@@ -1,5 +1,5 @@
-import * as createError from 'http-errors';
-import * as Koa from 'koa';
+import createError from 'http-errors';
+import Koa from 'koa';
 import { badResponseError, throwNoAccessError } from '../errors';
 
 const ctx: unknown = {

@@ -1,22 +1,13 @@
 #!/usr/bin/env node
-import * as program from 'commander';
-import * as Koa from 'koa';
-import { pathOr } from 'ramda';
-import api from '../index';
-import { initConnection } from '../db';
+import Koa from 'koa';
+import { getEnvParams, listen } from '../../../shared-server/src/koa/app';
+import { api } from '../api';
 import { MONGO_DB } from '../config';
+import { initConnection } from '../db';
 
-program
-    .option('-H, --host <host>', 'specify the host [0.0.0.0]', '0.0.0.0')
-    .option('-p, --port <port>', 'specify the port [3000]', '3000')
-    .option('-b, --backlog <size>', 'specify the backlog size [511]', '511')
-    .parse(process.argv);
+const { port, host, nodeEnv } = getEnvParams(process);
 
-const env: string = pathOr('development', ['env', 'NODE_ENV'], process);
-
-initConnection(MONGO_DB).then(db => {
-    const app: Koa = api(env);
-
-    app.listen(program.port, program.host, ~~program.backlog);
-    console.log('Listening on %s:%s', program.host, program.port);
+initConnection(MONGO_DB).then(() => {
+    const app: Koa = api(new Koa(), nodeEnv);
+    listen({ port, host, app });
 });

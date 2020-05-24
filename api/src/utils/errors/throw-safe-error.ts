@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import { props } from 'ramda';
 import { isProduction } from '../../config';
 
@@ -8,15 +8,15 @@ import { isProduction } from '../../config';
  * @param error - A JS, or http-errors error object
  * @param safe - Default error parameters for when an error isn't sent, or to hide dev errors
  */
-export default function throwSafeError(
-    ctx: Koa.Context,
+export const throwSafeError = (
+    ctx: ParameterizedContext<DefaultState, DefaultContext>,
     error,
     safe = { message: '', status: 400 }
-): void {
+): void => {
     if (isProduction()) {
         ctx.throw(props(['status', 'message'], safe));
     }
 
     const { status = safe.status, message = safe.message } = error;
     ctx.throw(status, message);
-}
+};

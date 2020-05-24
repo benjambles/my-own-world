@@ -5,8 +5,8 @@ import { maybeProp } from '../functional/maybe-prop';
  *
  * @param error
  */
-export default function getErrorMessage(error) {
+export const getErrorMessage = (error) => {
     return maybeProp('details', error)
         .map(pick(['message', 'path']))
         .getOrElse(error.msg);
-}
+};

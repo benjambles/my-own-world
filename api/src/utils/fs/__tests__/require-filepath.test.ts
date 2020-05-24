@@ -1,4 +1,4 @@
-import requireFilePath from '../require-filepath';
+import { requireFilePath } from '../require-filepath';
 
 test('requireFilePath', () => {
     const tests = [
@@ -12,7 +12,7 @@ test('requireFilePath', () => {
                 .run()
                 .fold(
                     () => 'error',
-                    resp => resp.test
+                    (resp) => resp.test
                 )
         ).toEqual(result);
     });

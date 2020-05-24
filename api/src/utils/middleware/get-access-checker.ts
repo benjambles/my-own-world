@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import { Middleware } from 'koa';
 import { complement, compose, isEmpty, none, pathOr, when } from 'ramda';
 import { isTrue } from 'ramda-adjunct';
 import { throwNoAccessError } from '../errors/errors';
@@ -8,7 +8,7 @@ import { throwNoAccessError } from '../errors/errors';
  * and the security map for the route
  * @param accessMap
  */
-export function getAccessChecker(accessMap?: any): Koa.Middleware {
+export const getAccessChecker = (accessMap?: any): Middleware => {
     /**
      * Throwns an error if the users system roles and access rights don't match requirements
      * @param ctx - A Koa context object
@@ -25,4 +25,4 @@ export function getAccessChecker(accessMap?: any): Koa.Middleware {
 
         await next();
     };
-}
+};

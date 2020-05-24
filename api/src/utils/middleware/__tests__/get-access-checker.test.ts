@@ -1,6 +1,6 @@
-import getAccessMap from '../../security/get-access-map';
+import Koa from 'koa';
+import { getAccessMap } from '../../security/get-access-map';
 import { getAccessChecker } from '../get-access-checker';
-import * as Koa from 'koa';
 
 test('getAccessChecker', async () => {
     const checkerNoMap = getAccessChecker();
@@ -16,7 +16,10 @@ test('getAccessChecker', async () => {
     const checkerWithMap = getAccessChecker(getAccessMap());
 
     // Passed roles and data don't match map
-    const ctxFail: unknown = { throw: err, state: { accessRoles: ['role:owner'], user: {} } };
+    const ctxFail: unknown = {
+        throw: err,
+        state: { accessRoles: ['role:owner'], user: {} },
+    };
     await expect(checkerWithMap(ctxFail as Koa.Context, async () => {})).rejects.toThrow();
 
     // Passed roles and state data matches map

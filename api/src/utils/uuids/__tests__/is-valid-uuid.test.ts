@@ -1,4 +1,4 @@
-import isValidUUID from '../is-valid-uuid';
+import { isValidUUID } from '../is-valid-uuid';
 
 test('isValidUUID', () => {
     const tests = [

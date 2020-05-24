@@ -1,5 +1,5 @@
-import getOrElse from '../get-or-else';
-import { some, none } from 'fp-ts/lib/Option';
+import { none, some } from 'fp-ts/lib/Option';
+import { getOrElse } from '../get-or-else';
 
 test('getOrElse', () => {
     const tests = [

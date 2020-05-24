@@ -1,4 +1,4 @@
-import getUUID from '../get-uuid';
+import { getUUID } from '../get-uuid';
 
 test('getUUID', () => {
     const result = getUUID('test value');

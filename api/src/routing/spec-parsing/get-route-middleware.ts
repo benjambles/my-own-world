@@ -1,15 +1,16 @@
 import { Option } from 'fp-ts/lib/Option';
-import * as Koa from 'koa';
-import { maybeProp, maybePropIsFn } from '../../utils/functional/maybe-prop';
-import catchJoiErrors from '../../utils/middleware/catch-joi-errors';
+import { Middleware } from 'koa';
+import { maybeProp, maybePropIsMiddleware } from '../../utils/functional/maybe-prop';
+import { catchJoiErrors } from '../../utils/middleware/catch-joi-errors';
+import { FnMap } from '../../utils/functional/maybe-prop';
 
 /**
  *
  * @param spec
  * @param routeHandlers
  */
-export default function getRouteMiddleware(spec, routeHandlers: fnMap): Option<Koa.Middleware[]> {
+export const getRouteMiddleware = (spec, routeHandlers: FnMap): Option<Middleware[]> => {
     return maybeProp('operationId', spec)
-        .chain(prop => maybePropIsFn(prop, routeHandlers))
-        .map(routeHandler => [catchJoiErrors, routeHandler, routeHandlers.checkAccess]);
-}
+        .chain((prop) => maybePropIsMiddleware(prop, routeHandlers))
+        .map((routeHandler) => [catchJoiErrors, routeHandler, routeHandlers.checkAccess]);
+};

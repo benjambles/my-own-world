@@ -1,10 +1,10 @@
-import { path } from 'ramda';
-import { Context } from 'koa';
+import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
+import { hasPath } from 'ramda';
+
+type IsUser = (ctx: ParameterizedContext<DefaultState, DefaultContext>) => boolean;
 
 /**
  *
  * @param token
  */
-export default function isUser(ctx: Context): boolean {
-    return !!path(['state', 'user'], ctx);
-}
+export const isUser: IsUser = hasPath(['state', 'user']);

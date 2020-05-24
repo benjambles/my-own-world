@@ -1,6 +1,6 @@
 import { getAccessChecker } from '../../utils/middleware/get-access-checker';
 import { bindOptions } from '../../utils/routes/bind-options';
-import getAccessMap from '../../utils/security/get-access-map';
+import { getAccessMap } from '../../utils/security/get-access-map';
 import * as taleRoutes from './routes';
 // import * as actorRoutes from './actors/routes';
 // import * as encounterRoutes from './encounters/routes';

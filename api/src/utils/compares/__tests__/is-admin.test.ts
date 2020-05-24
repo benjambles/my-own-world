@@ -1,5 +1,5 @@
-import isAdmin from '../is-admin';
-import * as Koa from 'koa';
+import Koa from 'koa';
+import { isAdmin } from '../is-admin';
 
 test('isAdmin', () => {
     const tests = [
