@@ -1,0 +1,5 @@
+{
+    "verbose": false,
+    "watch": ["dist/api", "dist/shared-server"],
+    "delay": "1000"
+}

@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig-base.json",
+    "compilerOptions": {
+        "tsBuildInfoFile": "buildcache",
+        "composite": true
+    },
+    "include": ["**/*.ts"],
+    "exclude": ["__tests__", "./coverage"]
+}

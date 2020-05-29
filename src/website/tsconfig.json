@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig-base.json",
+    "compilerOptions": {
+        "tsBuildInfoFile": "buildcache"
+    },
+    "references": [
+        {
+            "path": "../game-lib"
+        },
+        {
+            "path": "../shared-server"
+        },
+        {
+            "path": "../ui"
+        }
+    ],
+    "include": ["**/*.ts"],
+    "exclude": ["__tests__", "./coverage"]
+}

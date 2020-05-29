@@ -1,5 +1,9 @@
 {
     "compilerOptions": {
+        "outDir": "./dist",
+        "pretty": true,
+        "declaration": true,
+        "declarationMap": true,
         "allowJs": true,
         "checkJs": true,
         "target": "es2017",
@@ -8,6 +12,7 @@
         "removeComments": true,
         "sourceMap": true,
         "resolveJsonModule": true,
+        "rootDir": "./src",
         "esModuleInterop": true,
         "moduleResolution": "node",
         "incremental": true,

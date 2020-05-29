@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig-base.json",
+    "compilerOptions": {
+        "tsBuildInfoFile": "buildcache",
+        "composite": true,
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true,
+                "rules": {
+                    "no-unknown-tag-name": "off",
+                    "no-unknown-event": "warn"
+                }
+            }
+        ]
+    },
+    "include": ["**/*.ts", "**/*.css.json"],
+    "exclude": ["__tests__", "./coverage", "**/*.stories.ts"]
+}

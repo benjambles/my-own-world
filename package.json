@@ -8,15 +8,15 @@
         "not IE 11"
     ],
     "scripts": {
-        "build": "tsc -b -v && gulp --cwd api && gulp --cwd website",
-        "test": "jest --projects api game-lib website shared-server",
+        "build": "tsc -b -v && gulp --cwd src/api && gulp --cwd src/website && gulp --cwd src/ui",
+        "test": "jest",
         "clean:ts": "tsc -b --clean",
         "watch:ts": "tsc -b -v -w",
-        "watch:css": "gulp --cwd website watchCSS",
-        "api": "nodemon --watch dist/api dist/api/bin/api.js",
-        "website": "nodemon --watch dist/website dist/website/bin/app.js",
-        "storybook": "start-storybook -c website/.storybook -s dist/website/static",
-        "api:generator": "node dist/api/lib/generators/index.js"
+        "watch:css": "gulp --cwd src/ui watchCSS",
+        "api": "nodemon --config src/api/nodemon.json dist/api/bin/app.js",
+        "website": "nodemon --config src/website/nodemon.json dist/website/bin/app.js",
+        "storybook": "start-storybook -c src/ui/.storybook -s dist/ui/static",
+        "api:generator": "node src/api/lib/generators/index.js"
     },
     "author": "Ben Allen",
     "license": "ISC",

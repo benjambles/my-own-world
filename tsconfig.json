@@ -2,16 +2,19 @@
     "files": [],
     "references": [
         {
-            "path": "./api"
+            "path": "./src/api"
         },
         {
-            "path": "./game-lib"
+            "path": "./src/game-lib"
         },
         {
-            "path": "./website"
+            "path": "./src/website"
         },
         {
-            "path": "./shared-server"
+            "path": "./src/shared-server"
+        },
+        {
+            "path": "./src/ui"
         }
     ]
 }
