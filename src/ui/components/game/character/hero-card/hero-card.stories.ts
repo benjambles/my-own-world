@@ -1,9 +1,7 @@
-import { storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { heroCard } from './hero-card';
-import fixture from './__tests__/player-character.fixture';
 import './hero-card.css';
-import { partial } from 'ramda';
+import fixture from './__tests__/player-character.fixture';
 
 export default {
     title: 'Game/Hero Card',
@@ -14,6 +12,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(heroCard, [CLIENT_CONTEXT]);
+const render = getClientComponent(heroCard);
 
 export const full = () => render(fixture);

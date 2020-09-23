@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
 import npcData from '../__tests__/npc-card.fixture';
 import { statsBlock } from './stats-block';
 import './stats-block.css';
@@ -14,7 +12,7 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(statsBlock, [CLIENT_CONTEXT]);
+const render = getClientComponent(statsBlock);
 
 export const base = () => {
     return render({

@@ -1,5 +1,5 @@
-import { clientContext, clientRender, clientRouteConfig } from './client-context';
-import { serverContext, serverRenderer, serverRouteConfig } from './server-context';
+import { ClientContext, ClientRender, ClientRouteConfig } from './client-context';
+import { ServerContext, ServerRenderer, ServerRouteConfig } from './server-context';
 
 export enum RouteMethods {
     get = 'get',
@@ -8,6 +8,6 @@ export enum RouteMethods {
 }
 
 export interface LitRoute {
-    (litHtmlContext: clientContext, render: clientRender): clientRouteConfig;
-    (litHtmlContext: serverContext, render: serverRenderer): serverRouteConfig;
+    (litHtmlContext: ClientContext, render: ClientRender): ClientRouteConfig;
+    (litHtmlContext: ServerContext, render: ServerRenderer): ServerRouteConfig;
 }

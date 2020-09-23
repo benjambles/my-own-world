@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
 import npcCardData from '../__tests__/npc-card.fixture';
 import { actionsTable } from './actions-table';
 import './actions-table.css';
@@ -14,7 +12,7 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(actionsTable, [CLIENT_CONTEXT]);
+const render = getClientComponent(actionsTable);
 
 export const complete = () => render(npcCardData.actions);
 

@@ -3,7 +3,7 @@ import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { RouteMethods } from './lit-route';
 
-export type clientContext = {
+export type ClientContext = {
     html: (strings: TemplateStringsArray, ...values: unknown[]) => TemplateResult;
     directives: {
         classMap: (classInfo: {
@@ -13,17 +13,17 @@ export type clientContext = {
     };
 };
 
-export type clientResult = TemplateResult;
+export type ClientResult = TemplateResult;
 
-export type clientRender = typeof render;
+export type ClientRender = typeof render;
 
-export type clientRouteConfig = {
+export type ClientRouteConfig = {
     method: RouteMethods;
     path: string;
     handler: (ctx: any) => Promise<void>;
 };
 
-export const CLIENT_CONTEXT: clientContext = {
+export const CLIENT_CONTEXT: ClientContext = {
     html,
     directives: {
         classMap,

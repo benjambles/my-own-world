@@ -1,8 +1,7 @@
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { secondaryButton } from './secondary-button';
-import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Buttons/Secondary',
@@ -12,7 +11,7 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = partial(secondaryButton, [CLIENT_CONTEXT]);
+const render = getClientComponent(secondaryButton);
 
 export const playground = () =>
     render({

@@ -1,8 +1,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { barLink } from './bar-link';
-import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Links/Bar',
@@ -15,7 +13,7 @@ export default {
     },
 };
 
-const render = partial(barLink, [CLIENT_CONTEXT]);
+const render = getClientComponent(barLink);
 
 export const linkBar = () => render({ text: 'Bar Link', href: '/' });
 

@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { actionGrid } from './grid';
 import './grid.css';
 
@@ -12,7 +10,7 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(actionGrid, [CLIENT_CONTEXT]);
+const render = getClientComponent(actionGrid);
 
 export const base = () => {
     return render(undefined);

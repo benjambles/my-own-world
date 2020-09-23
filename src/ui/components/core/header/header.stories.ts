@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { storyRenderer } from '../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer';
 import { header } from './header';
 import './header.css';
 
@@ -9,7 +7,7 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(header, [CLIENT_CONTEXT]);
+const render = getClientComponent(header);
 
 const navigationLinks = [
     { text: 'Explore', href: '/explore' },

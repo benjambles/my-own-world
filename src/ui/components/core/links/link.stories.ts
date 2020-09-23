@@ -1,7 +1,5 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { partial } from 'ramda';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { link } from './link';
 
 export default {
@@ -15,7 +13,7 @@ export default {
     },
 };
 
-const render = partial(link, [CLIENT_CONTEXT]);
+const render = getClientComponent(link);
 
 export const standard = () => render({ text: 'Link', href: '/' });
 

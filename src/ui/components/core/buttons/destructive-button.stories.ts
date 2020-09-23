@@ -1,8 +1,7 @@
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { destructiveButton } from './destructive-button';
-import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Buttons/Destructive',
@@ -13,7 +12,7 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = partial(destructiveButton, [CLIENT_CONTEXT]);
+const render = getClientComponent(destructiveButton);
 
 export const playground = () => {
     return render({

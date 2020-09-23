@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
 import npcCardData from '../__tests__/npc-card.fixture';
 import { characteristicsList } from './characteristics-list';
 import './characteristics-list.css';
@@ -13,7 +11,7 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = partial(characteristicsList, [CLIENT_CONTEXT]);
+const render = getClientComponent(characteristicsList);
 
 export const withOptional = () => render(npcCardData.characteristics);
 

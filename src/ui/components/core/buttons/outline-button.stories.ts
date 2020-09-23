@@ -1,8 +1,7 @@
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { outlineButton } from './outline-button';
-import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Buttons/Outline',
@@ -13,7 +12,7 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = partial(outlineButton, [CLIENT_CONTEXT]);
+const render = getClientComponent(outlineButton);
 
 export const playground = () => {
     return render({

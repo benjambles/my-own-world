@@ -1,8 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { darkLink } from './dark-link';
-import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Links/Dark',
@@ -16,7 +14,7 @@ export default {
     },
 };
 
-const render = partial(darkLink, [CLIENT_CONTEXT]);
+const render = getClientComponent(darkLink);
 
 export const standard = () => render({ text: 'Link', href: '/' });
 

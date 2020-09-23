@@ -1,4 +1,10 @@
 import { render, TemplateResult } from 'lit-html';
+import { CLIENT_CONTEXT } from '../templates/client-context';
+import { LitTpl } from '../templates/lit-tpl';
+
+export const getClientComponent = <T>(component: LitTpl<T>) => (args: T) => {
+    return component(CLIENT_CONTEXT, args);
+};
 
 /**
  * Renders a Lit-HTML template into a container for storybook

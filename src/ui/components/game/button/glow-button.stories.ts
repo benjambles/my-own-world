@@ -1,6 +1,4 @@
-import { partial } from 'ramda';
-import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { glowButton } from './glow-button';
 import './glow-button.css';
 
@@ -14,6 +12,6 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = partial(glowButton, [CLIENT_CONTEXT]);
+const render = getClientComponent(glowButton);
 
 export const base = () => render({ text: 'Test Button' });
