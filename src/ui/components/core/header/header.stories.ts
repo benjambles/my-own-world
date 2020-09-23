@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { header } from './header';
@@ -7,6 +8,8 @@ export default {
     title: 'Furniture/Header',
     decorators: [storyRenderer],
 };
+
+const render = partial(header, [CLIENT_CONTEXT]);
 
 const navigationLinks = [
     { text: 'Explore', href: '/explore' },
@@ -20,19 +23,16 @@ const navigationLinksActive = [
     { text: 'Blog', href: '/blog' },
 ];
 
-export const headerLoggedOut = () => {
-    return header(CLIENT_CONTEXT, { navigationLinks, user: {} });
-};
+export const headerLoggedOut = () => render({ navigationLinks, user: {} });
 
-export const headerLoggedActiveLink = () => {
-    return header(CLIENT_CONTEXT, {
+export const headerLoggedActiveLink = () =>
+    render({
         navigationLinks: navigationLinksActive,
         user: {},
     });
-};
 
 export const headerLoggedIn = () => {
-    return header(CLIENT_CONTEXT, {
+    return render({
         navigationLinks,
         user: {
             profile: {

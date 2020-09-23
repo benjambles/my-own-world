@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import npcCardData from '../__tests__/npc-card.fixture';
@@ -13,19 +14,19 @@ export default {
     decorators: [storyRenderer],
 };
 
-export const complete = () => {
-    return actionsTable(CLIENT_CONTEXT, npcCardData.actions);
-};
+const render = partial(actionsTable, [CLIENT_CONTEXT]);
+
+export const complete = () => render(npcCardData.actions);
 
 export const basicOnly = () => {
-    return actionsTable(CLIENT_CONTEXT, {
+    return render({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
     });
 };
 
 export const withSpecial = () => {
-    return actionsTable(CLIENT_CONTEXT, {
+    return render({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         special: npcCardData.actions.special,
@@ -33,7 +34,7 @@ export const withSpecial = () => {
 };
 
 export const withLearnable = () => {
-    return actionsTable(CLIENT_CONTEXT, {
+    return render({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         learnable: npcCardData.actions.learnable,

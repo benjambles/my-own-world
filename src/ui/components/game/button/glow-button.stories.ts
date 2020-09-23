@@ -1,4 +1,5 @@
-import { linkStoryRendererDark } from '../../../utils/storybook/story-renderer';
+import { partial } from 'ramda';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { glowButton } from './glow-button';
 import './glow-button.css';
@@ -8,10 +9,11 @@ export default {
     parameters: {
         component: glowButton,
         componentSubtitle: 'Glowy button',
+        backgrounds: { default: 'dark' },
     },
-    decorators: [linkStoryRendererDark],
+    decorators: [linkStoryRenderer],
 };
 
-export const base = () => {
-    return glowButton(CLIENT_CONTEXT, { text: 'Test Button' });
-};
+const render = partial(glowButton, [CLIENT_CONTEXT]);
+
+export const base = () => render({ text: 'Test Button' });

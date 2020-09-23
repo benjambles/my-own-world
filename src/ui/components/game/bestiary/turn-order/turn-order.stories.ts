@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import npcData from '../__tests__/npc-card.fixture';
@@ -13,6 +14,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export const base = () => {
-    return turnOrder(CLIENT_CONTEXT, npcData.turn_order);
-};
+const render = partial(turnOrder, [CLIENT_CONTEXT]);
+
+export const base = () => render(npcData.turn_order);

@@ -2,6 +2,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { outlineButton } from './outline-button';
+import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Buttons/Outline',
@@ -12,26 +13,26 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
+const render = partial(outlineButton, [CLIENT_CONTEXT]);
+
 export const playground = () => {
-    return outlineButton(CLIENT_CONTEXT, {
+    return render({
         text: text('text', 'Button text', 'Required'),
         type: select('type', ['button', 'submit'], undefined, 'Optional'),
         action: text('action', undefined, 'Optional'),
         size: select('size', ['normal', 'large', 'small'], undefined, 'Optional'),
     });
 };
-playground.story = {
-    decorators: [withKnobs],
-};
+playground.decorators = [withKnobs];
 
 export const buttonSizes = () => {
     return CLIENT_CONTEXT.html` 
-        ${outlineButton(CLIENT_CONTEXT, {
+        ${render({
             text: 'Small Button',
             size: 'small',
         })}
-        ${outlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${outlineButton(CLIENT_CONTEXT, {
+        ${render({ text: 'Basic Button' })}
+        ${render({
             text: 'Large Button',
             size: 'large',
         })}
@@ -40,9 +41,9 @@ export const buttonSizes = () => {
 
 export const buttonTypes = () => {
     return CLIENT_CONTEXT.html`
-        ${outlineButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${outlineButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
-        ${outlineButton(CLIENT_CONTEXT, {
+        ${render({ text: 'Basic Button' })}
+        ${render({ text: 'Submit Button' })}
+        ${render({
             text: 'Action Button',
             action: 'LOGIN.SUBMIT',
         })}

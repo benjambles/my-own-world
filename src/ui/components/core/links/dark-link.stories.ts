@@ -1,25 +1,27 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
-import { linkStoryRendererDark } from '../../../utils/storybook/story-renderer';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { darkLink } from './dark-link';
+import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Links/Dark',
-    decorators: [withKnobs, linkStoryRendererDark],
+    decorators: [withKnobs, linkStoryRenderer],
     parameters: {
         componentSubtitle: 'A wrapper around the standard anchor tag for dark backgrounds',
         docs: {
             iframeHeight: '100px',
         },
+        backgrounds: { default: 'dark' },
     },
 };
 
-export const standard = () => {
-    return darkLink(CLIENT_CONTEXT, { text: 'Link', href: '/' });
-};
+const render = partial(darkLink, [CLIENT_CONTEXT]);
+
+export const standard = () => render({ text: 'Link', href: '/' });
 
 export const active = () => {
-    return darkLink(CLIENT_CONTEXT, {
+    return render({
         text: 'Active Link',
         href: '/',
         display: { active: true },
@@ -27,7 +29,7 @@ export const active = () => {
 };
 
 export const underlined = () => {
-    return darkLink(CLIENT_CONTEXT, {
+    return render({
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -35,7 +37,7 @@ export const underlined = () => {
 };
 
 export const bold = () => {
-    return darkLink(CLIENT_CONTEXT, {
+    return render({
         text: 'Bold Link',
         href: '/',
         display: { bold: true },
@@ -43,7 +45,7 @@ export const bold = () => {
 };
 
 export const playground = () => {
-    return darkLink(CLIENT_CONTEXT, {
+    return render({
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
         display: {

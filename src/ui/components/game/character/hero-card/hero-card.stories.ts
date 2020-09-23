@@ -3,6 +3,7 @@ import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import { heroCard } from './hero-card';
 import fixture from './__tests__/player-character.fixture';
 import './hero-card.css';
+import { partial } from 'ramda';
 
 export default {
     title: 'Game/Hero Card',
@@ -13,6 +14,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export const full = () => {
-    return heroCard(CLIENT_CONTEXT, fixture);
-};
+const render = partial(heroCard, [CLIENT_CONTEXT]);
+
+export const full = () => render(fixture);

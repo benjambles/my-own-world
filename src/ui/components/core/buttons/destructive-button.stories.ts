@@ -2,6 +2,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { destructiveButton } from './destructive-button';
+import { partial } from 'ramda';
 
 export default {
     title: 'Atoms/Buttons/Destructive',
@@ -12,37 +13,39 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-export const playground = () =>
-    destructiveButton(CLIENT_CONTEXT, {
+const render = partial(destructiveButton, [CLIENT_CONTEXT]);
+
+export const playground = () => {
+    return render({
         text: text('text', 'Button text', 'Required'),
         type: select('type', ['button', 'submit'], undefined, 'Optional'),
         action: text('action', undefined, 'Optional'),
         size: select('size', ['normal', 'large', 'small'], undefined, 'Optional'),
     });
-
-playground.story = {
-    decorators: [withKnobs],
 };
+playground.decorators = [withKnobs];
 
-export const buttonSizes = () =>
-    CLIENT_CONTEXT.html` 
-        ${destructiveButton(CLIENT_CONTEXT, {
+export const buttonSizes = () => {
+    return CLIENT_CONTEXT.html` 
+        ${render({
             text: 'Small Button',
             size: 'small',
         })}
-        ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${destructiveButton(CLIENT_CONTEXT, {
+        ${render({ text: 'Basic Button' })}
+        ${render({
             text: 'Large Button',
             size: 'large',
         })}
     `;
+};
 
-export const buttonTypes = () =>
-    CLIENT_CONTEXT.html`
-        ${destructiveButton(CLIENT_CONTEXT, { text: 'Basic Button' })}
-        ${destructiveButton(CLIENT_CONTEXT, { text: 'Submit Button' })}
-        ${destructiveButton(CLIENT_CONTEXT, {
+export const buttonTypes = () => {
+    return CLIENT_CONTEXT.html`
+        ${render({ text: 'Basic Button' })}
+        ${render({ text: 'Submit Button' })}
+        ${render({
             text: 'Action Button',
             action: 'LOGIN.SUBMIT',
         })}
     `;
+};

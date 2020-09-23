@@ -20,15 +20,3 @@ export const linkStoryRenderer = (story: () => TemplateResult) => {
     render(story(), container);
     return container;
 };
-
-/**
- * Renders a Lit-HTML template into a container for storybook
- * @param story
- */
-export const linkStoryRendererDark = (story: () => TemplateResult) => {
-    const container = document.createElement('div');
-    container.style.padding = '20px';
-    container.style.background = '#223344';
-    render(story(), container);
-    return container;
-};

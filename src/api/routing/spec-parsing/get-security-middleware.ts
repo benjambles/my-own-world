@@ -1,4 +1,4 @@
-import { compose } from 'fp-ts/lib/function';
+import { flow } from 'fp-ts/lib/function';
 import { Option, some } from 'fp-ts/lib/Option';
 import Koa from 'koa';
 import { reduce } from 'ramda';
@@ -7,7 +7,7 @@ import { foldConcat } from '../../utils/functional/fold-concat';
 import { maybeProp } from '../../utils/functional/maybe-prop';
 import { setAccessRoles } from '../../utils/middleware/set-access-roles';
 
-const getWrappedMiddleware = compose(wrap, setAccessRoles);
+const getWrappedMiddleware = flow(setAccessRoles, wrap);
 
 /**
  * Takes an object representing a routes security configuration and returns an array containing
@@ -19,8 +19,8 @@ export const getSecurityMiddleware = (spec): Option<Koa.Middleware[]> => {
         .map(
             reduce(
                 (acc, item) => foldConcat(acc, maybeProp('jwt', item).map(getWrappedMiddleware)),
-                []
-            )
+                [],
+            ),
         )
         .alt(some([]));
 };

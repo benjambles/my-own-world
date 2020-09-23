@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import npcCardData from '../__tests__/npc-card.fixture';
@@ -12,12 +13,12 @@ export default {
     decorators: [storyRenderer],
 };
 
-export const withOptional = () => {
-    return characteristicsList(CLIENT_CONTEXT, npcCardData.characteristics);
-};
+const render = partial(characteristicsList, [CLIENT_CONTEXT]);
+
+export const withOptional = () => render(npcCardData.characteristics);
 
 export const defaultOnly = () => {
-    return characteristicsList(CLIENT_CONTEXT, {
+    return render({
         base: npcCardData.characteristics.base,
     });
 };

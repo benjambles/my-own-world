@@ -2,6 +2,7 @@ import { storyRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { footer } from './footer';
 import './footer.css';
+import { partial } from 'ramda';
 
 export default {
     title: 'Furniture/Footer',
@@ -17,9 +18,7 @@ const links = [
     { text: 'Accessibility', href: '/accessibility' },
 ];
 
-export const base = () => {
-    return footer(CLIENT_CONTEXT, { links });
-};
-base.story = {
-    name: 'default',
-};
+const render = partial(footer, [CLIENT_CONTEXT]);
+
+export const base = () => render({ links });
+base.storyName = 'default';

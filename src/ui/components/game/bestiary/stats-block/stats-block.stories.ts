@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../../utils/templates/client-context';
 import npcData from '../__tests__/npc-card.fixture';
@@ -13,8 +14,10 @@ export default {
     decorators: [storyRenderer],
 };
 
+const render = partial(statsBlock, [CLIENT_CONTEXT]);
+
 export const base = () => {
-    return statsBlock(CLIENT_CONTEXT, {
+    return render({
         name: npcData.name,
         variant: npcData.variant,
         stats: npcData.stats,

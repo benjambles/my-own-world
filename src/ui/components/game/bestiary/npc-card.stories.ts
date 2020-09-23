@@ -1,3 +1,4 @@
+import { partial } from 'ramda';
 import { storyRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { npcCard } from './npc-card';
@@ -13,6 +14,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-export const veteran = () => {
-    return npcCard(CLIENT_CONTEXT, npcData);
-};
+const render = partial(npcCard, [CLIENT_CONTEXT]);
+
+export const veteran = () => render(npcData);

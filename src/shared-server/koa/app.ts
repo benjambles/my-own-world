@@ -1,6 +1,7 @@
 import Joi from '@hapi/joi';
-import Koa from 'koa';
-import { compose, ifElse, pathOr, prop } from 'ramda';
+import Koa, { Middleware } from 'koa';
+import { ifElse, pathOr, pipe, prop } from 'ramda';
+import { applyMiddleware } from './apply-middleware';
 
 type ListenOptions = {
     port: number;
@@ -10,12 +11,23 @@ type ListenOptions = {
 
 type ProcessEnv = Pick<ListenOptions, 'port' | 'host'> & { nodeEnv: string };
 
+type AppListener = (opts: ListenOptions) => void;
+
+type BootHandlerOpts = {
+    koa: Koa;
+    isApi: boolean;
+    errorHandler: Middleware;
+    getMiddleware: (nodeEnv: string) => Middleware[];
+    listener: AppListener;
+};
+type BootHandler = (opts: BootHandlerOpts) => (env: NodeJS.Process) => void;
+
 /**
  *
  * @param param0
  * @param app
  */
-export const listen = ({ port, host, app }: ListenOptions): void => {
+export const listen: AppListener = ({ port, host, app }) => {
     app.listen(port, host, (): void => {
         console.log('Listening on %s:%s', host, port);
     });
@@ -51,10 +63,14 @@ export const validateEnvParams = (envParams: ProcessEnv) => {
     return schema.validate(envParams);
 };
 
-const getValidatedEnvParams = compose(validateEnvParams, getEnvParams);
-
-export const boot = (middlewareBinder, listener) => {
-    return compose(
+/**
+ *
+ * @param param0
+ */
+export const boot: BootHandler = ({ koa, isApi, errorHandler, getMiddleware, listener }) => {
+    return pipe(
+        getEnvParams,
+        validateEnvParams,
         ifElse(
             prop('error'),
             (joiObj) => {
@@ -62,10 +78,14 @@ export const boot = (middlewareBinder, listener) => {
             },
             ({ value }) => {
                 const { port, host } = value;
-                const app = middlewareBinder(value);
+                const app = applyMiddleware({
+                    errorHandler,
+                    isApi,
+                    app: koa,
+                    middleware: getMiddleware(value.env),
+                });
                 listener({ port, host, app });
-            }
+            },
         ),
-        getValidatedEnvParams
     );
 };

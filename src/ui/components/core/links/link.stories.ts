@@ -1,4 +1,5 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { partial } from 'ramda';
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
 import { link } from './link';
@@ -14,12 +15,12 @@ export default {
     },
 };
 
-export const standard = () => {
-    return link(CLIENT_CONTEXT, { text: 'Link', href: '/' });
-};
+const render = partial(link, [CLIENT_CONTEXT]);
+
+export const standard = () => render({ text: 'Link', href: '/' });
 
 export const active = () => {
-    return link(CLIENT_CONTEXT, {
+    return render({
         text: 'Active Link',
         href: '/',
         display: { active: true },
@@ -27,7 +28,7 @@ export const active = () => {
 };
 
 export const underlined = () => {
-    return link(CLIENT_CONTEXT, {
+    return render({
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -35,7 +36,7 @@ export const underlined = () => {
 };
 
 export const bold = () => {
-    return link(CLIENT_CONTEXT, {
+    return render({
         text: 'Bold Link',
         href: '/',
         display: { bold: true },
@@ -43,7 +44,7 @@ export const bold = () => {
 };
 
 export const playground = () => {
-    return link(CLIENT_CONTEXT, {
+    return render({
         text: text('text', 'Click here', 'Attributes'),
         href: text('href', '/', 'Attributes'),
         display: {
@@ -53,6 +54,4 @@ export const playground = () => {
         },
     });
 };
-playground.story = {
-    decorators: [withKnobs],
-};
+playground.decorators = [withKnobs];
