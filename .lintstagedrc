@@ -1,12 +1,12 @@
 {
-    "{api,website,game-lib,shared-server}/src/**/*.{js,ts}": [
+    "src/**/*.{js,ts}": [
+        "prettier --write",
         "eslint --fix",
-        "prettier --write ."
     ],
-    "{api,website}/src/**/*.{css}": [
-        "prettier --write ."
+    "src/ui/**/*.css": [
+        "prettier --write"
     ],
-    "{api,website,game-lib,shared-server}/src/**/*.json": [
-        "prettier --write ."
+    "src/**/*.json": [
+        "prettier --write"
     ]
 }
