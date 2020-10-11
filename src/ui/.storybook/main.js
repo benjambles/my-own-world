@@ -20,9 +20,5 @@ module.exports = {
 
         return config;
     },
-    addons: [
-        '@storybook/addon-a11y',
-        '@storybook/addon-knobs',
-        '@storybook/addon-essentials'
-    ],
+    addons: ['@storybook/addon-a11y', '@storybook/addon-knobs', '@storybook/addon-essentials'],
 };

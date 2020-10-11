@@ -46,6 +46,8 @@ export const getEnvParams = (env: NodeJS.Process): ProcessEnv => {
 };
 
 /**
+ * Ensures the the required parameters for a basic app to boot exist in
+ * the node environment
  *
  * @param envParams
  */
@@ -64,7 +66,7 @@ export const validateEnvParams = (envParams: ProcessEnv) => {
 };
 
 /**
- *
+ * Standard application runner flow
  * @param param0
  */
 export const boot: BootHandler = ({ koa, isApi, errorHandler, getMiddleware, listener }) => {
