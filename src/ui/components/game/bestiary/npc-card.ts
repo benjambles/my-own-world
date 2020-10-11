@@ -4,13 +4,13 @@ import { actionsTable } from './actions-table/actions-table';
 import { characteristicsList } from './characteristics-list/characteristics-list';
 import { actionGrid } from './grid/grid';
 import cardStyles from './npc-card.css.json';
-import type { NPCCard } from './npc-types';
+import type { NPCCard } from '../../../../types/game/npc';
 import { statsBlock } from './stats-block/stats-block';
 import { turnOrder } from './turn-order/turn-order';
 
 export const npcCard: LitTpl<NPCCard> = (
     context,
-    { name, variant, stats, characteristics, turn_order, actions }: NPCCard
+    { name, variant, stats, characteristics, turn_order, actions }: NPCCard,
 ) => {
     const { html } = context;
 

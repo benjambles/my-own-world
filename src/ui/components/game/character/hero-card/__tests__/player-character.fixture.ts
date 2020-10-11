@@ -1,4 +1,4 @@
-import { HeroData } from '../../../../../types/game/hero';
+import { HeroData } from '../../../../../../types/game/hero';
 
 const mockHero: HeroData = {
     name: 'Eva Lumier',
@@ -157,6 +157,10 @@ const mockHero: HeroData = {
                 },
             },
         },
+    },
+    actionPoints: {
+        current: 4,
+        max: 4,
     },
     stats: {
         base: {

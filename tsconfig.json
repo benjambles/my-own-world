@@ -8,6 +8,9 @@
             "path": "./src/game-lib"
         },
         {
+            "path": "./src/types"
+        },
+        {
             "path": "./src/website"
         },
         {

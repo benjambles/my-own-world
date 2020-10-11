@@ -1,3 +1,6 @@
+import { ActionTypes, ClassAction, Maneuver, TideTurner } from './actions';
+import { Anchor, Armour, Item, Keepsake } from './items';
+
 export type HeroData = {
     name: string;
     tier: 1 | 2 | 3 | 4;
@@ -7,9 +10,11 @@ export type HeroData = {
         base: Stats;
         resolved: Stats;
     };
-
+    actionPoints: {
+        current: number;
+        max: number;
+    };
     skills: SkillOptions;
-
     equipment: {
         melee: {
             name: 'Scepter';
@@ -61,31 +66,6 @@ export type ClassOptions = {
     tide_turners: TideTurner[];
 };
 
-export type CombatAction = {
-    name: string;
-    types: 'passive' | [ClassActionBaseType, ClassActionSecondaryType];
-    action_type: string;
-    target: {
-        number: number;
-        type: TargetConstraints;
-    };
-    range: number;
-    effect: {
-        text: string;
-    };
-    speed: ActionSpeeds;
-};
-
-export type ClassAction = CombatAction & { action_type: 'action' | 'trait' };
-
-export type TideTurner = CombatAction & { action_type: 'tide_turner' };
-
-export type ActionSpeeds = 'fast' | 'slow' | 'free';
-export type ActionTypes = 'amplify' | 'trigger' | 'sustain';
-export type ClassActionBaseType = 'general' | ActionTypes;
-export type ClassActionSecondaryType = 'spell' | 'exploit';
-export type TargetConstraints = [any, any?];
-
 export type ProfessionOptions = {
     name: string;
     id: string;
@@ -93,7 +73,7 @@ export type ProfessionOptions = {
 };
 
 export type AspectTypes = 'offensive' | 'defensive' | 'utility';
-export type ApectTiers = 'tier1' | 'tier2' | 'tier3' | 'tier4';
+export type ApectTiers = keyof ApectTiersSelections;
 export type ApectTiersSelections = {
     tier1: Aspect;
     tier2?: Aspect;
@@ -145,55 +125,4 @@ export type Skill = {
     name: string;
     id: string;
     bonus: number;
-};
-
-export type Maneuver = {
-    name: string;
-    id: string;
-    text: string;
-    speed: ActionSpeeds;
-};
-
-export type UseTypes = 'combat' | 'crossroad' | 'custom' | 'role-playing' | 'encounter';
-export type UseLimits = 'combat' | 'campaign' | 'milestone' | 'times';
-
-export type Item = {
-    name: string;
-    useable_in: UseTypes[];
-    type: string;
-    effect: {
-        text: string;
-    };
-    speed: ActionSpeeds;
-    availability: {
-        charges: number;
-        period: UseLimits;
-        used: number;
-    };
-};
-
-export type Keepsake = Item & {
-    type: 'keepsake';
-};
-
-export type Anchor = {
-    type: 'person' | 'topic of interest';
-    id: string;
-    name: string;
-};
-
-type EqupimentBase = {
-    name: string;
-    id: string;
-};
-
-type AttackTypes = 'resistance' | 'toughness';
-type DefenseTypes = AttackTypes | 'dodge';
-
-export type Armour = EqupimentBase & {
-    offsets: Partial<
-        {
-            [key in DefenseTypes]: number;
-        }
-    >;
 };

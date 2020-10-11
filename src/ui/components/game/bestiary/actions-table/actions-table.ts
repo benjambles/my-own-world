@@ -1,6 +1,6 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { Action, ActionGroup, Actions } from '../npc-types';
+import type { Action, ActionGroup, Actions } from '../../../../../types/game/npc';
 import styles from './actions-table.css.json';
 
 /**
@@ -10,7 +10,7 @@ import styles from './actions-table.css.json';
  */
 export const actionsTable: LitTpl<Actions> = (
     context,
-    { limit, basic, special, learnable }: Actions
+    { limit, basic, special, learnable }: Actions,
 ) => {
     const { html } = context;
 
@@ -59,7 +59,7 @@ type ActionGroupData = {
 
 const actionGroup: LitTpl<ActionGroupData> = (
     context,
-    { actions, title, limit, className }: ActionGroupData
+    { actions, title, limit, className }: ActionGroupData,
 ) => {
     const {
         html,
@@ -72,9 +72,7 @@ const actionGroup: LitTpl<ActionGroupData> = (
             <tr>
                 <th colspan="${titleCols}">${title}</th>
                 ${limit
-                    ? html`<th colspan="1">
-                          [Storyteller only] Actions per Turn: ${limit}
-                      </th>`
+                    ? html`<th colspan="1">[Storyteller only] Actions per Turn: ${limit}</th>`
                     : null}
             </tr>
             ${Object.values(actions).map((action) => actionRow(context, action))}

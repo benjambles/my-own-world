@@ -1,4 +1,4 @@
-import type { NPCCard } from '../npc-types';
+import { NPCCard } from '../../../../../types/game/npc';
 
 const cardData: NPCCard = {
     name: 'Chaser DoorCrasher',

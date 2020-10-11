@@ -14,11 +14,5 @@
             }
         ]
     },
-    "references": [
-        {
-            "path": "../types"
-        }
-    ],
-    "include": ["**/*.ts", "**/*.css.json"],
-    "exclude": ["__tests__", "./coverage", "**/*.stories.ts"]
+    "include": ["**/*.ts"]
 }

@@ -1,6 +1,6 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { CharacteristicGroup, Characteristics } from '../npc-types';
+import type { CharacteristicGroup, Characteristics } from '../../../../../types/game/npc';
 import styles from './characteristics-list.css.json';
 /**
  *
@@ -9,7 +9,7 @@ import styles from './characteristics-list.css.json';
  */
 export const characteristicsList: LitTpl<Characteristics> = (
     context,
-    { base, optional }: Characteristics
+    { base, optional }: Characteristics,
 ) => {
     const { html } = context;
 
@@ -29,7 +29,7 @@ export const characteristicsList: LitTpl<Characteristics> = (
  */
 const characteristicGroup: LitTpl<CharacteristicGroup> = (
     context,
-    { title, details }: CharacteristicGroup
+    { title, details }: CharacteristicGroup,
 ) => {
     const { html } = context;
 
@@ -43,7 +43,7 @@ const characteristicGroup: LitTpl<CharacteristicGroup> = (
                             <dt>${name}:</dt>
                             <dd>${description}</dd>
                         </div>
-                    `
+                    `,
             )}
         </dl>
     `;

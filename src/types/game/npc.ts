@@ -1,7 +1,7 @@
 export type NPCCard = {
     name: string;
     variant: string;
-    turn_order: string[];
+    turn_order: TurnOrder;
     characteristics: Characteristics;
     actions: Actions;
     stats: Stats;
