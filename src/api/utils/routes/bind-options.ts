@@ -28,7 +28,7 @@ export const bindOptions = (routeConfig): Middleware => {
                 R.toUpper,
                 R.join(', '),
                 R.reduce(getHTTPMethods, []),
-                R.keys
+                R.keys,
             )(response.verbs);
 
             return dataResponse(response);
@@ -44,7 +44,7 @@ export const bindOptions = (routeConfig): Middleware => {
 const getHTTPMethods = (acc: string[], key: string): string[] => {
     return R.cond([
         [R.equals('options'), R.always(acc)],
-        [R.equals('get'), (key) => R.concat(acc, [key, 'head'])],
-        [R.T, R.concat(acc)],
+        [R.equals('get'), () => acc.concat('get', 'head')],
+        [R.T, (key) => acc.concat(key)],
     ])(key);
 };
