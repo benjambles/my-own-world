@@ -1,6 +1,9 @@
 import { propOr } from 'ramda';
-import { responseStatuses } from '../../config';
 import { maybeProp } from '../functional/maybe-prop';
+
+enum RESPONSE_STATUSES {
+    SUCCESS = 'success',
+}
 
 /**
  * Structures an API response
@@ -18,9 +21,9 @@ export const partsResponse = (body = {}, meta = {}): ApiResponse => {
 
 /**
  * Structure for a response that should be just sent as is
- * @param {object} data
+ * @param data
  */
-export const dataResponse = (data): ApiResponse => {
+export const dataResponse = <T>(data: T): ApiResponse => {
     return { data };
 };
 
@@ -35,9 +38,9 @@ export const getResponseBody = (response, status) => {
             meta: {
                 ...meta,
                 status,
-                message: responseStatuses.success,
+                message: RESPONSE_STATUSES.SUCCESS,
             },
             body,
-        })
+        }),
     );
 };

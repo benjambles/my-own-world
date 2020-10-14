@@ -20,6 +20,7 @@ type BootHandlerOpts = {
     getMiddleware: (nodeEnv: string) => Middleware[];
     listener: AppListener;
 };
+
 type BootHandler = (opts: BootHandlerOpts) => (env: NodeJS.Process) => void;
 
 /**

@@ -4,11 +4,18 @@ import { isNil } from 'ramda';
 let db: Db;
 let client: MongoClient;
 
+type MongoConfig = {
+    database: string;
+    url: string;
+    user: string;
+    password: true;
+};
+
 /**
  *
  * @param config
  */
-export const initConnection = async (config) => {
+export const initConnection = async (config: MongoConfig) => {
     const connectionString = getConnectionString(config);
     const client = await new MongoClient(connectionString, {
         useNewUrlParser: true,

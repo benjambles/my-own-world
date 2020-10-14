@@ -38,7 +38,7 @@
         "koa-json-error": "3.1.2",
         "koa-jwt": "4.0.0",
         "koa-morgan": "1.0.1",
-        "koa-pino-logger": "^3.0.0",
+        "koa-pino-logger": "3.0.0",
         "koa-response-time": "2.1.0",
         "koa-router": "9.4.0",
         "koa-static": "5.0.0",

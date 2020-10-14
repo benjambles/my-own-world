@@ -31,7 +31,20 @@ export type Act = {
     };
 };
 
-export type Encounter = {
-    type: 'combat' | 'crossroad';
-    name: string;
+export type Encounter = Combat | Crossroad;
+export type CombatType = 'combat';
+export type CrossroadTypes = 'decision' | 'divergence' | 'discovery' | 'dialogue';
+
+export type Combat = {
+    type: CombatType;
+};
+
+export type Crossroad = {
+    start: string;
+    steps: {
+        [name: string]: {
+            title: string;
+            type: CrossroadTypes;
+        };
+    };
 };

@@ -5,8 +5,9 @@ import { registerRoute } from './account/register-route';
 import { homeRoute } from './home/home-route';
 import { termsRoute } from './terms/terms-route';
 
-export const getRoutes = () =>
-    [homeRoute, registerRoute, termsRoute].map((routeHandler) => {
+export const getRoutes = () => {
+    return [homeRoute, registerRoute, termsRoute].map((routeHandler) => {
         const routeConfig: ServerRouteConfig = routeHandler(SERVER_CONTEXT, renderToString);
         return router().route(routeConfig);
     });
+};

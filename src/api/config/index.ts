@@ -7,10 +7,6 @@ export const serverRootPath: string = resolve(__dirname, '../');
 export const schemaPath: string = resolve(serverRootPath, 'db/sql');
 export const routesPath: string = resolve(serverRootPath, 'routes');
 
-export const responseStatuses = Object.freeze({
-    success: 'success',
-});
-
 export const encryptionData = Object.freeze({
     ivLength: 16,
     password: env.ENC_SECRET,
@@ -43,6 +39,6 @@ export const hostname: string = env.HOSTNAME;
 
 if (!hostname) {
     console.warn(
-        'Warn: CSRF checks are disabled since there is no HOSTNAME environment variable provided'
+        'Warn: CSRF checks are disabled since there is no HOSTNAME environment variable provided',
     );
 }
