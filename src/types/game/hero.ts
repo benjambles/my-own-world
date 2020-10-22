@@ -1,4 +1,4 @@
-import { ActionTypes, ClassAction, Maneuver, TideTurner } from './actions';
+import { ActionTypes, ClassAction, Maneuver, TideTurner, ClassTrait } from './actions';
 import { Anchor, Armour, Item, Keepsake } from './items';
 
 export type HeroData = {
@@ -59,11 +59,20 @@ export type HeroData = {
     anchors: Anchor[];
 };
 
+type ActionOrTrait = ClassAction | ClassTrait;
+
 export type ClassOptions = {
     name: string;
     id: string;
-    actions: ClassAction[];
-    tide_turners: TideTurner[];
+    actions: [
+        ActionOrTrait,
+        ActionOrTrait,
+        ActionOrTrait,
+        ActionOrTrait,
+        ActionOrTrait,
+        ActionOrTrait,
+    ];
+    tide_turners: [TideTurner, TideTurner];
 };
 
 export type ProfessionOptions = {

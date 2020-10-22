@@ -1,0 +1,9 @@
+.class-selector {
+    width: 100%;
+    scroll-behavior: smooth;
+    display: flex;
+}
+
+.class-selector .class-card {
+    margin: 2rem;
+}

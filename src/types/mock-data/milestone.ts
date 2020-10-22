@@ -24,8 +24,10 @@ export const milestoneMock: Milestone = {
             keyItems: {},
             encounters: {
                 'choice-one': {
-                    type: 'crossroad',
+                    type: 'decision',
                     name: 'The first choice',
+                    start: 'some-trigger',
+                    steps: {},
                 },
             },
         },

@@ -8,6 +8,7 @@ const mockHero: HeroData = {
         id: 'ardent',
         actions: [
             {
+                id: 'spark',
                 name: 'Spark',
                 types: ['amplify', 'exploit'],
                 action_type: 'trait',
@@ -22,6 +23,7 @@ const mockHero: HeroData = {
                 speed: 'free',
             },
             {
+                id: 'ground-zero',
                 name: 'Ground Zero',
                 types: ['general', 'exploit'],
                 action_type: 'trait',
@@ -37,6 +39,7 @@ const mockHero: HeroData = {
                 speed: 'fast',
             },
             {
+                id: 'soul-strike',
                 name: 'Soul Strike',
                 types: ['general', 'spell'],
                 action_type: 'action',
@@ -49,6 +52,7 @@ const mockHero: HeroData = {
                 speed: 'slow',
             },
             {
+                id: 'mana-echos',
                 name: 'Mana Echoes',
                 types: ['general', 'spell'],
                 action_type: 'action',
@@ -63,6 +67,7 @@ const mockHero: HeroData = {
                 speed: 'fast',
             },
             {
+                id: 'raging-inferno',
                 name: 'Raging Inferno',
                 types: ['general', 'spell'],
                 action_type: 'action',
@@ -75,6 +80,7 @@ const mockHero: HeroData = {
                 speed: 'slow',
             },
             {
+                id: 'hearts-glow',
                 name: 'Hearth’s Glow',
                 types: ['amplify', 'spell'],
                 action_type: 'action',
@@ -91,6 +97,7 @@ const mockHero: HeroData = {
         ],
         tide_turners: [
             {
+                id: 'composite-magic',
                 name: 'Composite Magic',
                 action_type: 'tide_turner',
                 types: ['general', 'exploit'],
@@ -105,6 +112,7 @@ const mockHero: HeroData = {
                 speed: 'slow',
             },
             {
+                id: 'shatterstorm',
                 name: 'Shatterstorm',
                 action_type: 'tide_turner',
                 types: ['general', 'exploit'],

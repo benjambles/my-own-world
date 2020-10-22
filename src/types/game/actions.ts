@@ -6,6 +6,7 @@ export type TargetConstraints = [any, any?];
 
 export type CombatAction = {
     name: string;
+    id: string;
     types: 'passive' | [ClassActionBaseType, ClassActionSecondaryType];
     action_type: string;
     target: {
@@ -19,7 +20,9 @@ export type CombatAction = {
     speed: ActionSpeeds;
 };
 
-export type ClassAction = CombatAction & { action_type: 'action' | 'trait' };
+export type ClassTrait = CombatAction & { action_type: 'trait' };
+
+export type ClassAction = CombatAction & { action_type: 'action' };
 
 export type TideTurner = CombatAction & { action_type: 'tide_turner' };
 

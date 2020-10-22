@@ -37,13 +37,16 @@ export type CrossroadTypes = 'decision' | 'divergence' | 'discovery' | 'dialogue
 
 export type Combat = {
     type: CombatType;
+    name: string;
 };
 
 export type Crossroad = {
+    name: string;
+    type: CrossroadTypes;
     start: string;
     steps: {
         [name: string]: {
-            title: string;
+            name: string;
             type: CrossroadTypes;
         };
     };
