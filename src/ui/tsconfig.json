@@ -20,5 +20,5 @@
         }
     ],
     "include": ["**/*.ts", "**/*.css.json"],
-    "exclude": ["__tests__", "./coverage", "**/*.stories.ts"]
+    "exclude": ["**/__tests__", "./coverage", "**/*.stories.ts"]
 }

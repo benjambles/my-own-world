@@ -5,5 +5,5 @@
         "composite": true
     },
     "include": ["**/*.ts"],
-    "exclude": ["__tests__", "./coverage"]
+    "exclude": ["**/__tests__", "./coverage"]
 }
