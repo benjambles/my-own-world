@@ -17,7 +17,7 @@ type BootHandlerOpts = {
     koa: Koa;
     isApi: boolean;
     errorHandler: Middleware;
-    getMiddleware: (nodeEnv: string) => Middleware[];
+    getMiddleware: (app: Koa) => Middleware[];
     listener: AppListener;
 };
 
@@ -85,7 +85,7 @@ export const boot: BootHandler = ({ koa, isApi, errorHandler, getMiddleware, lis
                     errorHandler,
                     isApi,
                     app: koa,
-                    middleware: getMiddleware(value.env),
+                    getMiddleware,
                 });
                 listener({ port, host, app });
             },

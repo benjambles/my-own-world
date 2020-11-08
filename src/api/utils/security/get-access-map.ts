@@ -1,5 +1,5 @@
 import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
-import { cond, equals, F, T } from 'ramda';
+import { cond, equals, F, T, unary } from 'ramda';
 import { isAdmin } from '../compares/is-admin';
 import { isUser } from '../compares/is-user';
 
@@ -8,12 +8,14 @@ import { isUser } from '../compares/is-user';
  * TODO:: Add types
  */
 export const getAccessMap = (additionalChecks = []) => (
-    ctx: ParameterizedContext<DefaultState, DefaultContext>
+    ctx: ParameterizedContext<DefaultState, DefaultContext>,
 ): Function => {
-    return cond([
-        [equals('role:admin'), () => isAdmin(ctx)],
-        [equals('role:user'), () => isUser(ctx)],
-        ...additionalChecks,
-        [T, F],
-    ]);
+    return unary(
+        cond([
+            [equals('role:admin'), () => isAdmin(ctx)],
+            [equals('role:user'), () => isUser(ctx)],
+            ...additionalChecks,
+            [T, F],
+        ]),
+    );
 };

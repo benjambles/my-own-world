@@ -1,6 +1,5 @@
 import { Middleware } from 'koa';
-import { complement, compose, isEmpty, none, pathOr, when } from 'ramda';
-import { isTrue } from 'ramda-adjunct';
+import { none } from 'ramda';
 import { throwNoAccessError } from '../errors/errors';
 
 /**
@@ -15,12 +14,10 @@ export const getAccessChecker = (accessMap?: any): Middleware => {
      * @param next - Following Koa Middleware
      */
     return async (ctx, next) => {
-        if (accessMap) {
-            compose(
-                when(isTrue, () => throwNoAccessError(ctx)),
-                when(complement(isEmpty), none(accessMap(ctx))),
-                pathOr([], ['state', 'accessRoles'])
-            )(ctx);
+        const { accessRoles } = ctx?.state ?? {};
+
+        if (accessMap && accessRoles && none(accessMap(ctx), accessRoles)) {
+            throwNoAccessError(ctx)();
         }
 
         await next();

@@ -4,6 +4,11 @@
         "tsBuildInfoFile": "buildcache",
         "composite": true
     },
+    "references": [
+        {
+            "path": "../types"
+        }
+    ],
     "include": ["**/*.ts"],
     "exclude": ["**/__tests__", "./coverage"]
 }

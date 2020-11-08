@@ -1,7 +1,6 @@
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import { Middleware } from 'koa';
-import { prop } from 'ramda';
-import { maybeMiddleware, maybeFunction } from './maybe-function';
+import { maybeFunction, maybeMiddleware } from './maybe-function';
 
 export interface FnMap {
     [name: string]: Middleware;
@@ -12,7 +11,7 @@ export interface FnMap {
  * @param propName
  * @param obj
  */
-export const maybeProp = (propName: string, obj) => fromNullable(prop(propName, obj));
+export const maybeProp = (propName: string, obj) => fromNullable(obj[propName]);
 
 /**
  * Takes a property name, and an object, and a fallback value and returns a some of the result
