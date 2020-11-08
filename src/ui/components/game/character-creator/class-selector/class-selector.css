@@ -1,9 +1,12 @@
 .class-selector {
     width: 100%;
+    overflow-x: scroll;
     scroll-behavior: smooth;
     display: flex;
+    scroll-snap-type: x mandatory;
 }
 
-.class-selector .class-card {
-    margin: 2rem;
+.class-selector class-card {
+    flex: 1 0 33%;
+    scroll-snap-align: start;
 }

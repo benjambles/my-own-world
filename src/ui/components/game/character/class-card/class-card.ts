@@ -2,7 +2,7 @@ import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { ClassFeature } from '../../../../../types/game/player-class';
 import styles from './class-card.css.json';
 
-interface ClassCard {
+export interface ClassDetails {
     name: string;
     description: string;
     quote: string;
@@ -17,45 +17,65 @@ interface ClassCard {
     };
 }
 
+type ClassCardProps = {
+    view: 'small' | 'large';
+    classDetails: ClassDetails;
+};
+
 /**
  * Class card used in the character creation section of a game.
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-export const classCard: LitTpl<ClassCard> = (context, data: ClassCard) => {
-    const { html } = context;
+export const classCard: LitTpl<ClassCardProps> = (context, data: ClassCardProps) => {
+    const {
+        html,
+        directives: { classMap },
+    } = context;
 
-    const { mainColor, textColor } = data.colorTheme;
-    const { thumbPortrait, classLogo } = data.assets;
+    const { classDetails } = data;
+    const { mainColor, textColor } = classDetails.colorTheme;
+    const { thumbPortrait, classLogo } = classDetails.assets;
 
     return html`
-        <section class="${styles.classCard}">
+        <class-card
+            class="${classMap({ [styles.classCard]: true, [styles.large]: data.view === 'large' })}"
+        >
             <figure>
-                <img src="${thumbPortrait}" />
+                <img src="${thumbPortrait}" alt="" />
             </figure>
             <div
                 class="${styles.classCardInfo}"
                 style="background-color:${mainColor}; color:${textColor};"
             >
                 <img class="${styles.logo}" src="${classLogo}" />
-                <h1>${data.name}</h1>
-                <span>"${data.quote}"</span>
-                <p>${data.description}</p>
+                <h1>${classDetails.name}</h1>
+                <span>"${classDetails.quote}"</span>
+                <p>${classDetails.description}</p>
             </div>
             <div
                 class="${styles.classFeatures}"
                 style="background-color:${mainColor}; color:${textColor};"
             >
-                ${data.classFeatures.map((feature) => {
-                    return html`
-                        <div>
-                            <img src="${feature.icon}" />
-                            <h2>${feature.theme}</h2>
-                            <p>${feature.flavour}</p>
-                        </div>
-                    `;
-                })}
+                ${classDetails.classFeatures.map((feature) => classFeature(context, feature))}
             </div>
-        </section>
+        </class-card>
+    `;
+};
+
+/**
+ *
+ * @param context - Lit HTML rendering context
+ * @param data - Display data
+ */
+const classFeature: LitTpl<ClassFeature> = (context, data: ClassFeature) => {
+    const { html } = context;
+
+    return html`
+        <div>
+            <img src="${data.icon}" alt="" />
+            <h2>${data.theme}</h2>
+            <p>${data.flavour}</p>
+        </div>
     `;
 };

@@ -1,8 +1,10 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
+import { classCard, ClassDetails } from '../../character/class-card/class-card';
 import styles from './class-selector.css.json';
 
 interface ClassSelector {
-    characterClasses: any[];
+    title: string;
+    characterClasses: ClassDetails[];
 }
 
 /**
@@ -14,8 +16,11 @@ export const classSelector: LitTpl<ClassSelector> = (context, data: ClassSelecto
     const { html } = context;
 
     return html`
+        <h1>${data.title}</h1>
         <div class=${styles.classSelector}>
-            ${data.characterClasses.map(() => html`<div></div>`)}
+            ${data.characterClasses.map((charClass) =>
+                classCard(context, { view: 'small', classDetails: charClass }),
+            )}
         </div>
     `;
 };

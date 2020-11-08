@@ -3,6 +3,13 @@ export type ActionTypes = 'amplify' | 'trigger' | 'sustain';
 export type ClassActionBaseType = 'general' | ActionTypes;
 export type ClassActionSecondaryType = 'spell' | 'exploit';
 export type TargetConstraints = [any, any?];
+export type AttackType = 'autoHit' | 'autoPierce' | 'autoCrit' | 'basic';
+
+export type CapValues = {
+    critical: number;
+    accuracy: number;
+    penetration: number;
+};
 
 export type CombatAction = {
     name: string;

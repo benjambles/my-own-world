@@ -1,7 +1,15 @@
+import { Milestone } from './milestone';
+
 export type Epic = {
+    id: string;
     title: string;
     description: string;
     synopsis: string;
-    tags: string[];
-    milestones: string[];
+    milestones: Milestone[];
+    languageVariants?: {
+        [name: string]: string;
+    };
+    tags?: {
+        [name: string]: string;
+    };
 };
