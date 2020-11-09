@@ -1,15 +1,13 @@
-import { setAccessRoles } from '../../../utils/middleware/set-access-roles';
+import * as Access from '../../../utils/middleware/set-access-roles';
 import { getSecurityMiddleware } from '../get-security-middleware';
 
-jest.mock('../../../utils/middleware/set-access-roles', () => ({
-    default: jest.fn().mockImplementation(() => async () => {}),
-}));
-
 test('getSecurityMiddleware', () => {
+    jest.spyOn(Access, 'setAccessRoles').mockImplementation(() => async () => {});
+
     expect.assertions(7);
 
     const noSecurityMap = getSecurityMiddleware({});
-    expect(noSecurityMap.isSome()).toEqual(true);
+    expect(noSecurityMap.isDefined).toEqual(true);
 
     noSecurityMap.map((val) => {
         expect(val).toEqual([]);
@@ -18,7 +16,7 @@ test('getSecurityMiddleware', () => {
     const noJWTMapItem = getSecurityMiddleware({
         security: [{ notJWT: ['item'] }],
     });
-    expect(noJWTMapItem.isSome()).toEqual(true);
+    expect(noJWTMapItem.isDefined).toEqual(true);
 
     noJWTMapItem.map((val) => {
         expect(val).toEqual([]);
@@ -31,9 +29,9 @@ test('getSecurityMiddleware', () => {
             },
         ],
     });
-    expect(hasJWTItems.isSome()).toEqual(true);
+    expect(hasJWTItems.isDefined).toEqual(true);
 
-    expect(setAccessRoles).toHaveBeenCalledTimes(1);
+    expect(Access.setAccessRoles).toHaveBeenCalledTimes(1);
     hasJWTItems.map((val) => {
         expect(typeof val[0]).toEqual('function');
     });

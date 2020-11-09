@@ -1,8 +1,6 @@
-import { fromPredicate, Option } from 'fp-ts/lib/Option';
 import { Middleware } from 'koa';
 import { isFunction } from 'ramda-adjunct';
-
-type MaybeFunction = (value: unknown) => Option<Function>;
+import { option, Option } from 'ts-option';
 
 /**
  * Returns an Option which is a some if the value passed is a function
@@ -10,10 +8,10 @@ type MaybeFunction = (value: unknown) => Option<Function>;
  *
  * @param value
  */
-export const maybeFunction: MaybeFunction = fromPredicate(isFunction);
+export const maybeFunction = (fn): Option<Function> => option(fn).filter(isFunction);
+
+export const maybeMiddleware = (fn): Option<Middleware> => option(fn).filter(isMiddleware);
 
 const isMiddleware = (fn): fn is Middleware => {
     return typeof fn === 'function' && fn.constructor.name === 'AsyncFunction' && fn.length === 2;
 };
-
-export const maybeMiddleware = fromPredicate(isMiddleware);

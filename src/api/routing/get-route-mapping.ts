@@ -1,17 +1,11 @@
-import { sequenceT } from 'fp-ts/lib/Apply';
-import { getArrayMonoid } from 'fp-ts/lib/Monoid';
-import { getApplyMonoid, Option, option, some } from 'fp-ts/lib/Option';
 import { Joi } from 'koa-joi-router';
-import { apply, concat, pick } from 'ramda';
-import { getFilledArray } from '../utils/array/get-filled-array';
+import { concat, isEmpty, pick } from 'ramda';
+import { Option, some } from 'ts-option';
 import { reduceEntries } from '../utils/array/reduce-entries';
-import { foldConcat } from '../utils/functional/fold-concat';
 import { FnMap, maybeProp, maybePropOr } from '../utils/functional/maybe-prop';
 import { buildJoiSpec } from '../utils/joi-utils/build-joi-spec';
 import { getRouteMiddleware } from './spec-parsing/get-route-middleware';
 import { getSecurityMiddleware } from './spec-parsing/get-security-middleware';
-
-const M = getApplyMonoid(getArrayMonoid());
 
 /**
  * Map routes onto the router through configuration
@@ -19,16 +13,16 @@ const M = getApplyMonoid(getArrayMonoid());
  * @param acc The combined routes so far
  * @param stack A configuration object for a route loaded from a json file
  */
-export const getRouteMapping = (acc: Option<any>, handlers: FnMap, stack: Option<any>) => {
+export const getRouteMapping = (acc: Option<any[]>, handlers: FnMap, stack: Option<any[]>) => {
     return stack
-        .map(([head, ...tail]) =>
-            getRouteMapping(
-                M.concat(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
+        .map(([head, ...tail]) => {
+            return getRouteMapping(
+                concatOrElse(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
                 handlers,
-                getFilledArray(M.concat(some(tail), maybePropOr([], 'paths', head)))
-            )
-        )
-        .getOrElse(acc);
+                concatOrElse(some(tail), maybePropOr([], 'paths', head)),
+            );
+        })
+        .getOrElseValue(acc);
 };
 
 /**
@@ -38,27 +32,33 @@ export const getRouteMapping = (acc: Option<any>, handlers: FnMap, stack: Option
  * @param routeHandlers An object containing the handlers to map to the routes
  */
 const mapMethods = (path: string, verbs, routeHandlers: FnMap): Option<any> => {
-    return verbs.map(
-        reduceEntries(
-            (acc, [method, spec]) =>
-                foldConcat(
-                    acc,
-                    sequenceT(option)(
-                        getSecurityMiddleware(spec),
-                        getRouteMiddleware(spec, routeHandlers)
-                    )
-                        .map(apply(concat))
-                        .map((handler) => [
-                            {
-                                method,
-                                path,
-                                handler,
-                                validate: buildJoiSpec(Joi, spec),
-                                meta: pick(['summary', 'description'], spec),
-                            },
-                        ])
-                ),
-            []
-        )
+    return verbs.flatMap(
+        reduceEntries((configs, [method, spec]) => {
+            const routeConfig = concatOrElse(
+                getRouteMiddleware(spec, routeHandlers),
+                getSecurityMiddleware(spec),
+            ).map((handler) => {
+                return [
+                    {
+                        method,
+                        path,
+                        handler,
+                        validate: buildJoiSpec(Joi, spec),
+                        meta: pick(['summary', 'description'], spec),
+                    },
+                ];
+            });
+
+            return concatOrElse(configs, routeConfig);
+        }, some([])),
     );
+};
+
+const concatOrElse = (acc: Option<any[]>, opt: Option<any[]>): Option<any[]> => {
+    return opt
+        .match({
+            some: (optVals) => acc.map((curr) => concat(curr, optVals)).orElseValue(opt),
+            none: () => acc,
+        })
+        .filterNot(isEmpty);
 };

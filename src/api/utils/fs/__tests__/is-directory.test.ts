@@ -14,11 +14,11 @@ test('isDirectory', () => {
 
 test('maybeIsDirectory', () => {
     const fail = maybeIsDirectory(resolve(__dirname, 'mocks/mock-module.js'));
-    expect(fail.isNone());
+    expect(fail.isEmpty);
 
     const passPath = resolve(__dirname, 'mocks');
     const pass = maybeIsDirectory(passPath);
-    expect(pass.isSome());
+    expect(pass.isDefined);
     pass.map((val) => {
         expect(val).toEqual(passPath);
     });

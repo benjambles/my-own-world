@@ -9,18 +9,14 @@ import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './querie
  * @param limit - The number of records to fetch
  * @param offset - The number of records to skip
  */
-export const get = async (
-    projectId: string,
-    limit: number = 10,
-    offset: number = 0
-): Promise<any[]> => {
+export const get = async (projectId: string): Promise<any[]> => {
     const projectUsers = await getActiveProjectUsers(new ObjectId(projectId));
 
     return Promise.all(
         projectUsers.map(async ({ id, role }) => {
             const user = await getBasicUserDetails(new ObjectId(id));
             return { user: sanitizedResponse(user), role };
-        })
+        }),
     );
 };
 

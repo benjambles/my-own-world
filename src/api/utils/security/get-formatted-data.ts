@@ -1,5 +1,5 @@
-import { none, some } from 'fp-ts/lib/Option';
-import { cond, T, includes, __ } from 'ramda';
+import { cond, includes, T, __ } from 'ramda';
+import { none, Option, some } from 'ts-option';
 import { bHash } from './blowfish';
 import { encryptValue, hmac as getHmac } from './encrpytion';
 
@@ -12,12 +12,12 @@ export const getFormattedData = ({
     hmac = [],
     readOnly = ['uuid'],
 }: formatOptions) => {
-    return async (key: string, value) =>
+    return async (key: string, value: string): Promise<Option<string>> =>
         await cond([
             [includes(__, readOnly), async () => none],
             [includes(__, encrypted), async () => some(encryptValue(value))],
             [includes(__, salted), async () => some(await bHash(value))],
-            [includes(__, hmac), async () => some(await getHmac(value))],
+            [includes(__, hmac), async () => some(getHmac(value))],
             [T, async () => some(value)],
         ])(key);
 };

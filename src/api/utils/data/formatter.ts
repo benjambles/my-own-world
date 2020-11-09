@@ -14,7 +14,7 @@ export const formatter = (model: formatOptions) => {
 
         const [[key, value], ...tail] = entries;
         const maybeValue = await formatData(key, value);
-        const newAcc = maybeValue.map(assoc(key, __, acc)).getOrElse(acc);
+        const newAcc = maybeValue.map(assoc(key, __, acc)).getOrElseValue(acc);
 
         return await setKeyValues(newAcc, tail);
     };

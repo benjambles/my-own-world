@@ -1,4 +1,4 @@
-import { some, Option } from 'fp-ts/lib/Option';
+import { Option, some } from 'ts-option';
 import { getFilledArray } from '../get-filled-array';
 
 type testParams = [Option<any[]>, any];
@@ -9,5 +9,5 @@ test('getFilledArray', () => {
         [some([1]), true],
     ];
 
-    tests.forEach(([mArr, result]) => expect(getFilledArray(mArr).isSome()).toEqual(result));
+    tests.forEach(([mArr, result]) => expect(getFilledArray(mArr).isDefined).toEqual(result));
 });

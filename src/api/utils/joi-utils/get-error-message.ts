@@ -8,5 +8,5 @@ import { maybeProp } from '../functional/maybe-prop';
 export const getErrorMessage = (error) => {
     return maybeProp('details', error)
         .map(pick(['message', 'path']))
-        .getOrElse(error.msg);
+        .getOrElseValue(error.msg);
 };

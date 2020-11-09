@@ -1,10 +1,10 @@
-import { fromPredicate, Option } from 'fp-ts/lib/Option';
-import { isEmpty, complement } from 'ramda';
+import { complement, isEmpty } from 'ramda';
+import { Option } from 'ts-option';
 
 /**
  * Returns a Some of an array if it is filled, otherwise None
  * @param optionArray - An option of an array
  */
-export const getFilledArray = <A>(optArr: Option<A[]>) => {
-    return optArr.chain(fromPredicate(complement(isEmpty)));
+export const getFilledArray = <A>(optArr: Option<A[]>): Option<A[]> => {
+    return optArr.filter(complement(isEmpty));
 };

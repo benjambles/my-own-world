@@ -1,13 +1,9 @@
-import { flow } from 'fp-ts/lib/function';
-import { Option, some } from 'fp-ts/lib/Option';
 import Koa from 'koa';
-import { reduce } from 'ramda';
+import { compose, concat, reduce } from 'ramda';
+import { Option } from 'ts-option';
 import { wrap } from '../../utils/array/wrap';
-import { foldConcat } from '../../utils/functional/fold-concat';
-import { maybeProp } from '../../utils/functional/maybe-prop';
+import { maybeProp, maybePropOr } from '../../utils/functional/maybe-prop';
 import { setAccessRoles } from '../../utils/middleware/set-access-roles';
-
-const getWrappedMiddleware = flow(setAccessRoles, wrap);
 
 /**
  * Takes an object representing a routes security configuration and returns an array containing
@@ -15,12 +11,12 @@ const getWrappedMiddleware = flow(setAccessRoles, wrap);
  * @param spec
  */
 export const getSecurityMiddleware = (spec): Option<Koa.Middleware[]> => {
-    return maybeProp('security', spec)
-        .map(
-            reduce(
-                (acc, item) => foldConcat(acc, maybeProp('jwt', item).map(getWrappedMiddleware)),
-                [],
-            ),
-        )
-        .alt(some([]));
+    return maybePropOr([], 'security', spec).map(
+        reduce((acc, item) => {
+            return maybeProp('jwt', item).match({
+                some: compose(concat(acc), wrap, setAccessRoles),
+                none: () => acc,
+            });
+        }, []),
+    );
 };

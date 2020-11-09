@@ -378,8 +378,83 @@
                                 {
                                     "route": "/projects/:projectId/users/:userId",
                                     "verbs": {
-                                        "put": {},
-                                        "delete": {},
+                                        "put": {
+                                            "tags": ["project", "user", "role"],
+                                            "summary": "Modifies a users access to a project",
+                                            "description": "",
+                                            "operationId": "updateUserRoles",
+                                            "consumes": ["application/json"],
+                                            "produces": ["application/json"],
+                                            "parameters": [
+                                                {
+                                                    "name": "projectId",
+                                                    "in": "path",
+                                                    "description": "The UUID of the project to update the user in",
+                                                    "opts": {
+                                                        "required": true
+                                                    },
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "userId",
+                                                    "in": "body",
+                                                    "description": "A valid UUID for the user gaining access",
+                                                    "opts": {
+                                                        "required": true
+                                                    },
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "roleId",
+                                                    "in": "body",
+                                                    "description": "The ID of the role to grant to the user",
+                                                    "opts": {
+                                                        "required": true
+                                                    },
+                                                    "type": "string"
+                                                }
+                                            ],
+                                            "responses": {},
+                                            "security": [
+                                                {
+                                                    "jwt": ["role:admin", "role:user"]
+                                                }
+                                            ]
+                                        },
+                                        "delete": {
+                                            "tags": ["project"],
+                                            "summary": "Remove a user from a project",
+                                            "description": "",
+                                            "operationId": "deleteUser",
+                                            "consumes": [],
+                                            "produces": ["application/json"],
+                                            "parameters": [
+                                                {
+                                                    "name": "projectId",
+                                                    "in": "path",
+                                                    "description": "The UUID of the project to delete the user from",
+                                                    "opts": {
+                                                        "required": true
+                                                    },
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "name": "userId",
+                                                    "in": "path",
+                                                    "description": "A valid UUID for the user losing access",
+                                                    "opts": {
+                                                        "required": true
+                                                    },
+                                                    "type": "string"
+                                                }
+                                            ],
+                                            "responses": {},
+                                            "security": [
+                                                {
+                                                    "jwt": ["role:admin", "role:user"]
+                                                }
+                                            ]
+                                        },
                                         "options": {
                                             "tags": ["project", "user", "options"],
                                             "summary": "Check which endpoints are available for interacting with a project user",

@@ -5,11 +5,11 @@ test('maybeProp', () => {
         prop1: 'expected',
     };
 
-    expect(maybeProp('prop1', obj).isSome()).toEqual(true);
-    expect(maybeProp('prop1', obj).toNullable()).toEqual('expected');
+    expect(maybeProp('prop1', obj).isDefined).toEqual(true);
+    expect(maybeProp('prop1', obj).orNull).toEqual('expected');
 
-    expect(maybeProp('prop2', obj).isNone()).toEqual(true);
-    expect(maybeProp('prop2', obj).toNullable()).toEqual(null);
+    expect(maybeProp('prop2', obj).isEmpty).toEqual(true);
+    expect(maybeProp('prop2', obj).orNull).toEqual(null);
 });
 
 test('maybePropOr', () => {
@@ -17,11 +17,11 @@ test('maybePropOr', () => {
         prop1: 'expected',
     };
 
-    expect(maybePropOr('default', 'prop1', obj).isSome()).toEqual(true);
-    expect(maybePropOr('default', 'prop2', obj).isSome()).toEqual(true);
+    expect(maybePropOr('default', 'prop1', obj).isDefined).toEqual(true);
+    expect(maybePropOr('default', 'prop2', obj).isDefined).toEqual(true);
 
-    expect(maybePropOr('default', 'prop1', obj).toNullable()).toEqual('expected');
-    expect(maybePropOr('default', 'prop2', obj).toNullable()).toEqual('default');
+    expect(maybePropOr('default', 'prop1', obj).orNull).toEqual('expected');
+    expect(maybePropOr('default', 'prop2', obj).orNull).toEqual('default');
 });
 
 test('maybePropIsFn', () => {
@@ -29,6 +29,6 @@ test('maybePropIsFn', () => {
         prop2: () => {},
     };
 
-    expect(maybePropIsFn('prop1', obj).isNone()).toEqual(true);
-    expect(maybePropIsFn('prop2', obj).isSome()).toEqual(true);
+    expect(maybePropIsFn('prop1', obj).isEmpty).toEqual(true);
+    expect(maybePropIsFn('prop2', obj).isDefined).toEqual(true);
 });

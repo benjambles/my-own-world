@@ -1,8 +1,7 @@
-import { stringifyJSON, toError } from 'fp-ts/lib/Either';
-import { fromEither } from 'fp-ts/lib/Option';
 import { Middleware } from 'koa';
 import { assoc } from 'ramda';
 import { reduceEntries } from '../array/reduce-entries';
+import { stringifyJSON } from '../data/json';
 import { badResponseError } from '../errors/errors';
 import { maybeProp } from '../functional/maybe-prop';
 import { getErrorMessage } from '../joi-utils/get-error-message';
@@ -15,7 +14,7 @@ import { getErrorMessage } from '../joi-utils/get-error-message';
 export const catchJoiErrors: Middleware = async (ctx, next) => {
     maybeProp('invalid', ctx)
         .map(reduceEntries((acc, [key, error]) => assoc(key, getErrorMessage(error), acc), {}))
-        .chain((data) => fromEither(stringifyJSON(data, toError)))
+        .flatMap(stringifyJSON)
         .map(badResponseError(ctx));
 
     await next();

@@ -1,5 +1,5 @@
-import { fromNullable, some } from 'fp-ts/lib/Option';
 import { Middleware } from 'koa';
+import { option, Option, some } from 'ts-option';
 import { maybeFunction, maybeMiddleware } from './maybe-function';
 
 export interface FnMap {
@@ -11,7 +11,9 @@ export interface FnMap {
  * @param propName
  * @param obj
  */
-export const maybeProp = (propName: string, obj) => fromNullable(obj[propName]);
+export const maybeProp = (propName: string, obj) => {
+    return option(obj[propName]);
+};
 
 /**
  * Takes a property name, and an object, and a fallback value and returns a some of the result
@@ -19,16 +21,8 @@ export const maybeProp = (propName: string, obj) => fromNullable(obj[propName]);
  * @param propName
  * @param obj
  */
-export const maybePropOr = (or, propName: string, obj) => maybeProp(propName, obj).alt(some(or));
-
-/**
- * Takes an object and returns a function that takes a property name as a string
- * If the property is found on the object, and is a function a some<function> is returned.
- * Otherwise a none.
- * @param obj
- */
-export const maybePropIsFn = (propName: string, obj: FnMap) => {
-    return maybeProp(propName, obj).chain(maybeFunction);
+export const maybePropOr = <T>(or: T, propName: string, obj): Option<T> => {
+    return maybeProp(propName, obj).orElseValue(some(or));
 };
 
 /**
@@ -37,6 +31,16 @@ export const maybePropIsFn = (propName: string, obj: FnMap) => {
  * Otherwise a none.
  * @param obj
  */
-export const maybePropIsMiddleware = (propName: string, obj: FnMap) => {
-    return maybeProp(propName, obj).chain(maybeMiddleware);
+export const maybePropIsFn = (propName: string, obj: FnMap): Option<Function> => {
+    return maybeProp(propName, obj).flatMap(maybeFunction);
+};
+
+/**
+ * Takes an object and returns a function that takes a property name as a string
+ * If the property is found on the object, and is a function a some<function> is returned.
+ * Otherwise a none.
+ * @param obj
+ */
+export const maybePropIsMiddleware = (propName: string, obj: FnMap): Option<Middleware> => {
+    return maybeProp(propName, obj).flatMap(maybeMiddleware);
 };

@@ -1,5 +1,5 @@
-import { fromPredicate, Option } from 'fp-ts/lib/Option';
 import { lstatSync } from 'fs';
+import { option, Option } from 'ts-option';
 
 /**
  * Wrapper around the FS api to check if a given path is a directory
@@ -11,4 +11,6 @@ export const isDirectory = (filePath: string): boolean => lstatSync(filePath).is
  *
  * @param filePath
  */
-export const maybeIsDirectory: (filePath: string) => Option<string> = fromPredicate(isDirectory);
+export const maybeIsDirectory = (filePath: string): Option<string> => {
+    return option(filePath).filter(isDirectory);
+};

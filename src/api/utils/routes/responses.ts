@@ -32,9 +32,8 @@ export const dataResponse = <T>(data: T): ApiResponse => {
  * @param response
  */
 export const getResponseBody = (response, status) => {
-    return maybeProp('parts', response).foldL(
-        () => propOr('', 'data', response),
-        ({ meta = {}, body = {} }) => ({
+    return maybeProp('parts', response).match({
+        some: ({ meta = {}, body = {} }) => ({
             meta: {
                 ...meta,
                 status,
@@ -42,5 +41,6 @@ export const getResponseBody = (response, status) => {
             },
             body,
         }),
-    );
+        none: () => propOr('', 'data', response),
+    });
 };

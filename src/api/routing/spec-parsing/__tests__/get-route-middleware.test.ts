@@ -1,20 +1,25 @@
+import { some } from 'ts-option';
 import { catchJoiErrors } from '../../../utils/middleware/catch-joi-errors';
 import { getRouteMiddleware } from '../get-route-middleware';
-import { some } from 'fp-ts/lib/Option';
 
 test('getRouteMiddleware', () => {
-    const next = async () => {};
+    const dummyMiddleware = async (ctx, next) => {
+        await next();
+    };
 
-    const noOperationIdTest = getRouteMiddleware({}, { getUser: async ({}, next) => {} });
-    expect(noOperationIdTest.isNone()).toEqual(true);
+    const noOperationIdTest = getRouteMiddleware({}, { getUser: dummyMiddleware });
+    expect(noOperationIdTest.isEmpty).toEqual(true);
 
     const noHandlerTest = getRouteMiddleware(
         { operationId: 'getUser' },
-        { deleteUser: async ({}, next) => {} }
+        { deleteUser: dummyMiddleware },
     );
-    expect(noHandlerTest.isNone()).toEqual(true);
+    expect(noHandlerTest.isEmpty).toEqual(true);
 
-    const fnMap = { getUser: async ({}, next) => {}, checkAccess: async ({}, next) => {} };
+    const fnMap = {
+        getUser: dummyMiddleware,
+        checkAccess: dummyMiddleware,
+    };
     const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap);
     expect(result).toEqual(some([catchJoiErrors, fnMap.getUser, fnMap.checkAccess]));
 });

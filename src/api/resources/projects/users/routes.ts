@@ -13,12 +13,11 @@ export const getProjectUsers: Koa.Middleware = generateRoute(
         status: 400,
     },
     async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
         const { projectId } = ctx.request.params;
-        const projectUsers = await users.get(projectId, limit, offset);
+        const projectUsers = await users.get(projectId);
 
         return partsResponse(projectUsers);
-    }
+    },
 );
 
 /**
@@ -30,5 +29,5 @@ export const deleteProjectUser: Koa.Middleware = generateRoute(
         message: 'There was an error whilst removing the user from the project',
         status: 400,
     },
-    async (): Promise<ApiResponse> => partsResponse({})
+    async (): Promise<ApiResponse> => partsResponse({}),
 );

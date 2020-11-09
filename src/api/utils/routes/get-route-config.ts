@@ -1,7 +1,7 @@
-import { head } from 'fp-ts/lib/Array';
 import { compose, concat, equals, isNil, prop } from 'ramda';
 import { getFirstFiltered } from '../array/get-first-filtered';
 import { getStringParts } from '../array/get-string-parts';
+import { maybeHead } from '../array/maybe-head';
 import { wrap } from '../array/wrap';
 
 /**
@@ -42,5 +42,7 @@ const findRouteConfig = (config) => (pathParts: string[]) => {
  * @param pathParts
  */
 const getBasePathFilter = (pathParts: string[]) => {
-    return getFirstFiltered(compose(equals(`/${head(pathParts).getOrElse('')}`), getRoute));
+    return getFirstFiltered(
+        compose(equals(`/${maybeHead(pathParts).getOrElseValue('')}`), getRoute),
+    );
 };
