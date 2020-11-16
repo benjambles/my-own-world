@@ -1,6 +1,6 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import styles from './hero-card.css.json';
-import type { HeroData } from '../../../../../types/game/hero';
+import type { HeroData } from '../../../../../game-lib/types/game/hero';
 
 /**
  * Render a character sheet for a player character

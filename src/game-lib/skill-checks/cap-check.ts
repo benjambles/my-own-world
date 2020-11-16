@@ -1,4 +1,4 @@
-import { AttackType, CapValues } from '../../types/game/actions';
+import { AttackType, CapValues } from '../types/game/actions';
 
 type CapResult = {
     isSuccess: boolean;

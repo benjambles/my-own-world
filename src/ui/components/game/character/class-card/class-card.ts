@@ -1,5 +1,5 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
-import { ClassFeature } from '../../../../../types/game/player-class';
+import { ClassFeature } from '../../../../../game-lib/types/game/player-class';
 import styles from './class-card.css.json';
 
 export interface ClassDetails {

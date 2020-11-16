@@ -4,7 +4,7 @@ import { actionsTable } from './actions-table/actions-table';
 import { characteristicsList } from './characteristics-list/characteristics-list';
 import { actionGrid } from './grid/grid';
 import cardStyles from './npc-card.css.json';
-import type { NPCCard } from '../../../../types/game/npc';
+import type { NPCCard } from '../../../../game-lib/types/game/npc';
 import { statsBlock } from './stats-block/stats-block';
 import { turnOrder } from './turn-order/turn-order';
 
