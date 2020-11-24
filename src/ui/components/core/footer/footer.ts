@@ -4,9 +4,9 @@ import { lazyStylesheet } from '../../utils/lazy-stylesheet';
 import { link, LinkProps } from '../links/link';
 import styles from './footer.css.json';
 
-export type FooterData = {
+export interface FooterData {
     links: LinkProps[];
-};
+}
 
 /**
  * The footer component always renders the correct copyright date.
@@ -24,9 +24,7 @@ export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - 2020</span>
-                <nav class="">
-                    ${links.map((linkData) => link(context, linkData))}
-                </nav>
+                <nav class="">${links.map((linkData) => link(context, linkData))}</nav>
             </div>
         </footer>
     `;

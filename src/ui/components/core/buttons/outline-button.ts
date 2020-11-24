@@ -1,16 +1,16 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-type ButtonData = {
+interface ButtonData {
     text: string;
     type?: 'button' | 'submit';
     action?: string;
     size?: 'large' | 'normal' | 'small';
-};
+}
 
 export const outlineButton: LitTpl<ButtonData> = (
     context,
-    { text, type = 'button', action, size = 'normal' }: ButtonData
+    { text, type = 'button', action, size = 'normal' }: ButtonData,
 ) => {
     const {
         html,

@@ -1,13 +1,15 @@
 import { sum } from 'ramda';
 import { capBetween } from '../utils/bounded-math';
 
-type RollResult = {
+interface RollResult {
     rolls: number[];
     total: number;
     modifiedTotal: number;
-};
+}
 
-export type RollFn = (dicePool: string, modifier?: number) => RollResult;
+export interface RollFn {
+    (dicePool: string, modifier?: number): RollResult;
+}
 
 export class Dice {
     static readonly baseDiceTypes: number[] = [4, 6, 8, 10, 12, 20];

@@ -4,7 +4,9 @@ import { ifDefined } from '@popeindustries/lit-html-server/directives/if-defined
 import { Middleware } from 'koa';
 import { RouteMethods } from './lit-route';
 
-export type ServerContext = {
+export { TemplateResult as ServerResult } from '@popeindustries/lit-html-server';
+
+export interface ServerContext {
     html: (strings: TemplateStringsArray, ...values: unknown[]) => TemplateResult;
     directives: {
         classMap: (classInfo: {
@@ -12,17 +14,17 @@ export type ServerContext = {
         }) => (part: Part) => void;
         ifDefined: (value: unknown) => (part: Part) => void;
     };
-};
+}
 
-export type ServerResult = TemplateResult;
+export interface ServerRenderer {
+    (result: TemplateResult, options?: RenderOptions): Promise<string>;
+}
 
-export type ServerRenderer = (result: TemplateResult, options?: RenderOptions) => Promise<string>;
-
-export type ServerRouteConfig = {
+export interface ServerRouteConfig {
     method: RouteMethods;
-    path: string;
+    path: string | RegExp;
     handler: Middleware;
-};
+}
 
 export const SERVER_CONTEXT: ServerContext = {
     html,

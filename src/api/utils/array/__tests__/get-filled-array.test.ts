@@ -1,10 +1,12 @@
 import { Option, some } from 'ts-option';
 import { getFilledArray } from '../get-filled-array';
 
-type testParams = [Option<any[]>, any];
+interface testParams extends Array<any> {
+    [index: number]: [Option<any[]>, any];
+}
 
 test('getFilledArray', () => {
-    const tests: testParams[] = [
+    const tests: testParams = [
         [some([]), false],
         [some([1]), true],
     ];

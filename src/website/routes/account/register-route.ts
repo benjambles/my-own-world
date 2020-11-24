@@ -1,9 +1,9 @@
 import { layout } from '../../../ui/components/pages/layout';
 import { mockData } from '../../../ui/utils/mock-data';
-import { LitRoute, RouteMethods } from '../../../ui/utils/templates/lit-route';
+import { LitRoute } from '../../../ui/utils/templates/lit-route';
 
 export const registerRoute: LitRoute = (litHtmlContext, render) => ({
-    method: RouteMethods.get,
+    method: 'get' as const,
     path: '/join',
     handler: async (ctx) => {
         const page = await render(layout(litHtmlContext, mockData));

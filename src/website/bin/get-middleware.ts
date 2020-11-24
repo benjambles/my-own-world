@@ -23,7 +23,15 @@ export const getMiddleware = (app: Koa): Koa.Middleware[] => {
         conditionalGet(),
         etag(), // Adds eTag headers to the response
         compress(), // ctx.compress = false to disable compression
-        helmet(), // Security layer
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    'default-src': ['*'],
+                    'script-src-attr': ["'unsafe-inline'"],
+                    'upgrade-insecure-requests': [],
+                },
+            },
+        }), // Security layer
         errorHandler(app),
         koaJWT({ secret: jwtSecret, passthrough: true }),
         serve(resolve(__dirname, '../../ui/static')),

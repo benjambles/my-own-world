@@ -117,14 +117,15 @@ test('buildJoiSpec', () => {
 
     tests.forEach(({ passes, spec, data }) => {
         const validator = buildJoiSpec(Joi, spec);
-        const { error, value } = Joi.validate(data, validator.body);
+        const schema = Joi.compile(validator.body);
 
-        if (passes) {
-            expect(error).toBeNull();
-        } else {
+        try {
+            const value = Joi.attempt(data, schema);
+            expect(value).toEqual(data);
+            expect(passes).toEqual(true);
+        } catch (error) {
             expect(error).toBeInstanceOf(Error);
+            expect(passes).toEqual(false);
         }
-
-        expect(value).toEqual(data);
     });
 });

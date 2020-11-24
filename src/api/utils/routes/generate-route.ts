@@ -1,5 +1,6 @@
 import { Middleware } from 'koa';
 import { isFunction } from 'ramda-adjunct';
+import { KoaContext } from '../../../shared-server/koa/app';
 import { send } from './send';
 
 /**
@@ -9,16 +10,16 @@ import { send } from './send';
  * @param setup - Async function taking a koa context as an argument that can be used to add pre-response checks
  */
 export const generateRoute = (
-    defaultError: any,
-    response: Function,
-    setup: Function | null = null
+    defaultError: { message: string; status: number },
+    response: (ctx: KoaContext) => Promise<any>,
+    setup?: (ctx: KoaContext) => Promise<void>,
 ): Middleware => {
     /**
      * A Koa middleware that handles setup and teardown of a route
      * @param ctx - A Koa context object
      * @param next - Following Koa Middleware
      */
-    return async (ctx, next) => {
+    return async (ctx: KoaContext, next) => {
         if (isFunction(setup)) await setup(ctx);
         await next();
         await send(ctx, defaultError, response);

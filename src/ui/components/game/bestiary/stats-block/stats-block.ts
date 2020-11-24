@@ -1,13 +1,13 @@
+import type { Stats } from '../../../../../game-lib/types/game/npc';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { Stats } from '../../../../../game-lib/types/game/npc';
 import styles from './stats-block.css.json';
 
-type StatsData = {
+interface StatsData {
     name: string;
     variant: string;
     stats: Stats;
-};
+}
 
 /**
  *

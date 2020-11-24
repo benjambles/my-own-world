@@ -1,7 +1,9 @@
-import { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import { path } from 'ramda';
+import { KoaContext } from '../../../shared-server/koa/app';
 
-type valFromCtx = (ctx: ParameterizedContext<DefaultState, DefaultContext>) => string;
+interface valFromCtx {
+    (ctx: KoaContext): string;
+}
 
 /**
  * Return the user that has been granted privaledges on the API

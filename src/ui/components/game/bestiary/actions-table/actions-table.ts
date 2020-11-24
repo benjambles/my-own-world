@@ -1,6 +1,6 @@
+import type { Action, ActionGroup, Actions } from '../../../../../game-lib/types/game/npc';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { Action, ActionGroup, Actions } from '../../../../../game-lib/types/game/npc';
 import styles from './actions-table.css.json';
 
 /**
@@ -50,12 +50,12 @@ export const actionsTable: LitTpl<Actions> = (
     `;
 };
 
-type ActionGroupData = {
+interface ActionGroupData {
     actions: ActionGroup;
     title: string;
     limit?: number;
     className?: string;
-};
+}
 
 const actionGroup: LitTpl<ActionGroupData> = (
     context,

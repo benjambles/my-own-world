@@ -1,14 +1,14 @@
-import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
+import { KoaContext } from '../../../shared-server/koa/app';
 
-type ErrorHandler = (
-    ctx: ParameterizedContext<DefaultState, DefaultContext>
-) => (msg?: string) => void;
+interface ErrorHandler {
+    (ctx: KoaContext): (msg?: string) => void;
+}
 
 /**
  *
  * @param ctx
  */
-export const throwNoAccessError: ErrorHandler = (ctx) => {
+export const throwNoAccessError: ErrorHandler = (ctx: KoaContext) => {
     return () => {
         ctx.throw(401, 'Unauthorised access to endpoint');
     };
@@ -18,7 +18,7 @@ export const throwNoAccessError: ErrorHandler = (ctx) => {
  *
  * @param ctx
  */
-export const badResponseError: ErrorHandler = (ctx) => {
+export const badResponseError: ErrorHandler = (ctx: KoaContext) => {
     return (msg: string) => {
         ctx.throw(400, msg);
     };

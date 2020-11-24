@@ -1,7 +1,7 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export type DarkLinkProps = {
+export interface DarkLinkProps {
     href: string;
     text: string;
     display?: {
@@ -9,11 +9,11 @@ export type DarkLinkProps = {
         underlined?: boolean;
         bold?: boolean;
     };
-};
+}
 
 export const darkLink: LitTpl<DarkLinkProps> = (
     context,
-    { text, href, display = {} }: DarkLinkProps
+    { text, href, display = {} }: DarkLinkProps,
 ) => {
     const {
         html,

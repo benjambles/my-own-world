@@ -3,6 +3,13 @@ import { none, Option, some } from 'ts-option';
 import { bHash } from './blowfish';
 import { encryptValue, hmac as getHmac } from './encrpytion';
 
+interface FormatOptions {
+    encrypted?: string[];
+    salted?: string[];
+    hmac?: string[];
+    readOnly?: string[];
+}
+
 /**
  * Applies security formatters to a property based on the map passed in
  */
@@ -11,7 +18,7 @@ export const getFormattedData = ({
     salted = [],
     hmac = [],
     readOnly = ['uuid'],
-}: formatOptions) => {
+}: FormatOptions) => {
     return async (key: string, value: string): Promise<Option<string>> =>
         await cond([
             [includes(__, readOnly), async () => none],

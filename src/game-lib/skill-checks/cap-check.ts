@@ -1,12 +1,14 @@
 import { AttackType, CapValues } from '../types/game/actions';
 
-type CapResult = {
+interface CapResult {
     isSuccess: boolean;
     isCritical: boolean;
     passesBarrier: boolean;
-};
+}
 
-type RollResult = { total: number };
+interface RollResult {
+    total: number;
+}
 
 export const capCheck = (
     capValues: CapValues,

@@ -1,7 +1,7 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 import baseStyles from '../../global-css/base.css.json';
 
-export type LinkProps = {
+export interface LinkProps {
     href: string;
     text: string;
     display?: {
@@ -9,7 +9,7 @@ export type LinkProps = {
         underlined?: boolean;
         bold?: boolean;
     };
-};
+}
 
 export const link: LitTpl<LinkProps> = (context, { text, href, display = {} }: LinkProps) => {
     const {

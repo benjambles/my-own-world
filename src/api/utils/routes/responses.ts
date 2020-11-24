@@ -1,8 +1,18 @@
-import { propOr } from 'ramda';
-import { maybeProp } from '../functional/maybe-prop';
+interface APIMeta {
+    message?: string;
+    lastModified?: string;
+    [name: string]: any;
+}
 
-enum RESPONSE_STATUSES {
-    SUCCESS = 'success',
+export interface PartsResponse {
+    parts: {
+        body: any;
+        meta: APIMeta;
+    };
+}
+
+export interface DataResponse {
+    data: any;
 }
 
 /**
@@ -10,7 +20,7 @@ enum RESPONSE_STATUSES {
  * @param {object} body - The content of the response
  * @param {object} meta - Useful information pertaining to the response
  */
-export const partsResponse = (body = {}, meta = {}): ApiResponse => {
+export const partsResponse = (body = {}, meta: APIMeta = {}): PartsResponse => {
     return {
         parts: {
             body,
@@ -23,7 +33,7 @@ export const partsResponse = (body = {}, meta = {}): ApiResponse => {
  * Structure for a response that should be just sent as is
  * @param data
  */
-export const dataResponse = <T>(data: T): ApiResponse => {
+export const dataResponse = <T>(data: T): DataResponse => {
     return { data };
 };
 
@@ -31,16 +41,14 @@ export const dataResponse = <T>(data: T): ApiResponse => {
  *
  * @param response
  */
-export const getResponseBody = (response, status) => {
-    return maybeProp('parts', response).match({
-        some: ({ meta = {}, body = {} }) => ({
-            meta: {
-                ...meta,
-                status,
-                message: RESPONSE_STATUSES.SUCCESS,
-            },
-            body,
-        }),
-        none: () => propOr('', 'data', response),
-    });
+export const getResponseBody = (response, status): PartsResponse | DataResponse => {
+    if (response.parts) {
+        return partsResponse(response.parts.body, {
+            ...response.parts.meta,
+            status,
+            message: 'success',
+        });
+    }
+
+    return dataResponse(response.data);
 };

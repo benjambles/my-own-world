@@ -1,6 +1,6 @@
 import type { LitTpl } from '../../../utils/templates/lit-tpl';
 
-export type InputData = {
+export interface InputData {
     id: string;
     label: string;
     defaultText?: string;
@@ -20,11 +20,11 @@ export type InputData = {
         | 'time'
         | 'datetime-local'
         | 'number';
-};
+}
 
 export const inputBox: LitTpl<InputData> = (
     context,
-    { id, label, type = 'text', placeholder, defaultText = '', name }: InputData
+    { id, label, type = 'text', placeholder, defaultText = '', name }: InputData,
 ) => {
     const {
         html,

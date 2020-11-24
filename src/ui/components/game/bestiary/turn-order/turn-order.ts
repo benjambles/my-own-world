@@ -1,7 +1,8 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { TurnOrder } from '../../../../../game-lib/types/game/npc';
 import styles from './turn-order.css.json';
+
+type TurnOrder = string[];
 
 export const turnOrder: LitTpl<TurnOrder> = (context, turns: TurnOrder) => {
     const { html } = context;

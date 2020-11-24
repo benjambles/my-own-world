@@ -1,7 +1,9 @@
-import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import { hasPath } from 'ramda';
+import { KoaContext } from '../../../shared-server/koa/app';
 
-type IsUser = (ctx: ParameterizedContext<DefaultState, DefaultContext>) => boolean;
+interface IsUser {
+    (ctx: KoaContext): boolean;
+}
 
 /**
  *

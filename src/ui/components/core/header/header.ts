@@ -5,10 +5,10 @@ import { darkLink, DarkLinkProps } from '../links/dark-link';
 import { menuProfile, MenuProfileData } from '../user/menu-profile';
 import styles from './header.css.json';
 
-export type HeaderData = {
+export interface HeaderData {
     navigationLinks: DarkLinkProps[];
     user: MenuProfileData;
-};
+}
 
 export const header: LitTpl<HeaderData> = (context, { navigationLinks, user }: HeaderData) => {
     const { html } = context;

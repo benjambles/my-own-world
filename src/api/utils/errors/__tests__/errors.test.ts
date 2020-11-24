@@ -1,17 +1,19 @@
-import createError from 'http-errors';
-import Koa from 'koa';
+import { createMockContext } from '@shopify/jest-koa-mocks';
 import { badResponseError, throwNoAccessError } from '../errors';
 
-const ctx: unknown = {
-    throw: (statusCode, msg) => {
-        throw createError(statusCode, msg);
-    },
-};
+const ctx = createMockContext();
+const throwSpy = jest.spyOn(ctx, 'throw');
+
+beforeEach(() => {
+    throwSpy.mockReset();
+});
 
 test('throwNoAccessError', () => {
-    expect(() => throwNoAccessError(ctx as Koa.Context)()).toThrow();
+    throwNoAccessError(ctx)();
+    expect(throwSpy).toHaveBeenCalledWith(401, 'Unauthorised access to endpoint');
 });
 
 test('badResponseError', () => {
-    expect(() => badResponseError(ctx as Koa.Context)('could not load page')).toThrow();
+    badResponseError(ctx)('could not load page');
+    expect(throwSpy).toHaveBeenCalledWith(400, 'could not load page');
 });

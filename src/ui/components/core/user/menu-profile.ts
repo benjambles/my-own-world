@@ -4,13 +4,13 @@ import { barLink } from '../links/bar-link';
 import { link } from '../links/link';
 import styles from './menu-profile.css.json';
 
-export type MenuProfileData = {
+export interface MenuProfileData {
     profile?: {
         image: string;
         name: string;
         username: string;
     };
-};
+}
 
 export const menuProfile: LitTpl<MenuProfileData> = (context, { profile }: MenuProfileData) => {
     const { html } = context;

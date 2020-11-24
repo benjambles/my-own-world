@@ -1,6 +1,7 @@
 import Koa from 'koa';
+import { KoaContext } from '../../../shared-server/koa/app';
 import { generateRoute } from '../../utils/routes/generate-route';
-import { partsResponse } from '../../utils/routes/responses';
+import { PartsResponse, partsResponse } from '../../utils/routes/responses';
 import * as tales from './tales';
 
 /**
@@ -12,12 +13,12 @@ export const getTales: Koa.Middleware = generateRoute(
         message: 'There was an error whilst fetching tales.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
+    async (ctx: KoaContext): Promise<PartsResponse> => {
+        const { limit = 10, offset = 0 }: DbGet = ctx.request.query;
         const talesData: Tale.TaleData[] = await tales.get(limit, offset);
 
         return partsResponse(talesData);
-    }
+    },
 );
 
 /**
@@ -29,12 +30,12 @@ export const createTale: Koa.Middleware = generateRoute(
         message: 'There was an error whilst saving the tale',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const tale = ctx.request.body as Tale.Request;
         const taleData: Tale.TaleData = await tales.create(tale);
 
         return partsResponse(taleData);
-    }
+    },
 );
 
 /**
@@ -46,11 +47,11 @@ export const getTaleById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst fetching the tale.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const taleData = await tales.getOne(ctx.request.params.taleId);
 
         return partsResponse(taleData);
-    }
+    },
 );
 
 /**
@@ -62,14 +63,14 @@ export const updateTaleById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst updating the tale.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const taleUpdated = await tales.update(
             ctx.request.params.taleId,
-            ctx.request.body as Tale.TaleData
+            ctx.request.body as Tale.TaleData,
         );
 
         return partsResponse(taleUpdated);
-    }
+    },
 );
 
 /**
@@ -81,9 +82,9 @@ export const deleteTaleById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst deleting the tale.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const taleDeleted = await tales.remove(ctx.request.params.taleId);
 
         return partsResponse(taleDeleted);
-    }
+    },
 );

@@ -15,7 +15,7 @@ import { getRouteMapping } from './get-route-mapping';
  * @param root The path within which to search for route configs
  * @api private
  */
-export const loadRoutes = (root: string, prefix: string = ''): iRouter[] => {
+export const loadRoutes = (root: string, prefix: string = ''): Router[] => {
     const getRouters = map(getRouter(root, createRoute(prefix)));
     return compose(getValues, getRouters, readdirSync)(root);
 };
@@ -26,7 +26,7 @@ export const loadRoutes = (root: string, prefix: string = ''): iRouter[] => {
  * @param rootPath
  * @param getPrefixedRoute
  */
-const getRouter = (rootPath: string, getPrefixedRoute) => (name: string): Option<iRouter> => {
+const getRouter = (rootPath: string, getPrefixedRoute) => (name: string): Option<Router> => {
     return maybeIsDirectory(resolve(rootPath, name))
         .map(requireRouteFiles)
         .flatMap(([moduleContents, config]) =>

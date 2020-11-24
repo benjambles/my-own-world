@@ -1,8 +1,6 @@
 import { ClassAction, ClassTrait, TideTurner } from './actions';
 
-export type PlayerClasses = PlayerClass[];
-
-export type PlayerClass = {
+export interface PlayerClass {
     name: string;
     description: string;
     quote: string;
@@ -18,15 +16,15 @@ export type PlayerClass = {
         textColor: string;
     };
     tiers: [TierAbilities, TierAbilities, TierAbilities, TierAbilities];
-};
+}
 
-export type ClassFeature = {
+export interface ClassFeature {
     icon: string;
     theme: string;
     flavour: string;
-};
+}
 
-type TierAbilities = {
+interface TierAbilities {
     traits: {
         [name: string]: ClassTrait;
     };
@@ -36,4 +34,4 @@ type TierAbilities = {
     tideTurners: {
         [name: string]: TideTurner;
     };
-};
+}

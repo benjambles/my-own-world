@@ -1,6 +1,6 @@
 import { Item } from './items';
 
-export type Milestone = {
+export interface Milestone {
     title: string;
     description: string;
     synopsis: string;
@@ -19,9 +19,9 @@ export type Milestone = {
     createdOn: Date;
     updatedAt: Date;
     acts: Act[];
-};
+}
 
-export type Act = {
+export interface Act {
     title: string;
     keyItems: {
         [name: string]: Item;
@@ -29,18 +29,18 @@ export type Act = {
     encounters: {
         [name: string]: Encounter;
     };
-};
+}
 
 export type Encounter = Combat | Crossroad;
-export type CombatType = 'combat';
-export type CrossroadTypes = 'decision' | 'divergence' | 'discovery' | 'dialogue';
 
-export type Combat = {
+export type CombatType = 'combat';
+export interface Combat {
     type: CombatType;
     name: string;
-};
+}
 
-export type Crossroad = {
+export type CrossroadTypes = 'decision' | 'divergence' | 'discovery' | 'dialogue';
+export interface Crossroad {
     name: string;
     type: CrossroadTypes;
     start: string;
@@ -50,4 +50,4 @@ export type Crossroad = {
             type: CrossroadTypes;
         };
     };
-};
+}

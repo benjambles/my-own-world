@@ -1,6 +1,7 @@
 import Koa from 'koa';
+import { KoaContext } from '../../../shared-server/koa/app';
 import { generateRoute } from '../../utils/routes/generate-route';
-import { partsResponse } from '../../utils/routes/responses';
+import { PartsResponse, partsResponse } from '../../utils/routes/responses';
 import { getToken } from '../../utils/security/jwt';
 import * as identifiers from './identifiers/identifiers';
 import * as users from './users';
@@ -14,12 +15,12 @@ export const getUsers: Koa.Middleware = generateRoute(
         message: 'There was an error whilst fetching users.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
-        const { limit = 10, offset = 0 }: dbGet = ctx.request.query;
+    async (ctx: KoaContext): Promise<PartsResponse> => {
+        const { limit = 10, offset = 0 }: DbGet = ctx.request.query;
         const usersData: User.UserData[] = await users.get(limit, offset);
 
         return partsResponse(usersData);
-    }
+    },
 );
 
 /**
@@ -31,13 +32,13 @@ export const createUser: Koa.Middleware = generateRoute(
         message: 'There was an error whilst saving the user',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const { user, identifier } = ctx.request.body as User.Request;
         const userData: User.UserData = await users.create(user);
         await identifiers.create(userData.uuid, identifier);
 
         return partsResponse(userData);
-    }
+    },
 );
 
 /**
@@ -49,11 +50,11 @@ export const getUserById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst fetching the user.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const userData = await users.getOne(ctx.request.params.userId);
 
         return partsResponse(userData);
-    }
+    },
 );
 
 /**
@@ -65,14 +66,14 @@ export const updateUserById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst updating the user.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const userUpdated = await users.update(
             ctx.request.params.userId,
-            ctx.request.body as User.UserData
+            ctx.request.body as User.UserData,
         );
 
         return partsResponse(userUpdated);
-    }
+    },
 );
 
 /**
@@ -84,11 +85,11 @@ export const deleteUserById: Koa.Middleware = generateRoute(
         message: 'There was an error whilst deleting the user.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const userDeleted = await users.remove(ctx.request.params.userId);
 
         return partsResponse(userDeleted);
-    }
+    },
 );
 
 /**
@@ -101,13 +102,13 @@ export const authenticateUser: Koa.Middleware = generateRoute(
         message: 'There was an error whilst authenticating the user.',
         status: 400,
     },
-    async (ctx: Koa.Context): Promise<ApiResponse> => {
+    async (ctx: KoaContext): Promise<PartsResponse> => {
         const { identifier = null, password = null } = ctx.request.body as any;
         const userData = await users.authenticate(identifier, password);
         const token = await getToken(userData);
 
         return partsResponse({ token, user: userData });
-    }
+    },
 );
 
 /**
@@ -119,12 +120,12 @@ export const getAccessLink: Koa.Middleware = generateRoute(
         message: 'There was an error whilst requesting the access link',
         status: 400,
     },
-    async (): Promise<ApiResponse> => {
+    async (): Promise<PartsResponse> => {
         //const { email } = ctx.request.body as any;
         await users.sendMagicLink();
 
         return partsResponse({
             message: 'Magic link sent! Please check the email address provided.',
         });
-    }
+    },
 );

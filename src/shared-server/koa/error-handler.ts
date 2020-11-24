@@ -1,11 +1,12 @@
 import Koa from 'koa';
+import { KoaContext } from './app';
 
 /**
  * Centralised error handling logging. Additional middleware should not
  * try/catch on its own, everything is caught by this middleware.
  */
 export const errorHandler = (app: Koa): Koa.Middleware => {
-    app.on('error', (err: Error, ctx: Koa.Context) => {
+    app.on('error', (err: Error, ctx: KoaContext) => {
         /* centralized error handling:
          *   console.log error
          *   write error to log file

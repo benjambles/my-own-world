@@ -1,5 +1,4 @@
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
-import { ClassFeature } from '../../../../../game-lib/types/game/player-class';
 import styles from './class-card.css.json';
 
 export interface ClassDetails {
@@ -17,10 +16,16 @@ export interface ClassDetails {
     };
 }
 
-type ClassCardProps = {
+interface ClassFeature {
+    icon: string;
+    theme: string;
+    flavour: string;
+}
+
+interface ClassCardProps {
     view: 'small' | 'large';
     classDetails: ClassDetails;
-};
+}
 
 /**
  * Class card used in the character creation section of a game.
@@ -68,14 +73,14 @@ export const classCard: LitTpl<ClassCardProps> = (context, data: ClassCardProps)
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-const classFeature: LitTpl<ClassFeature> = (context, data: ClassFeature) => {
+const classFeature: LitTpl<ClassFeature> = (context, { icon, theme, flavour }: ClassFeature) => {
     const { html } = context;
 
     return html`
         <div>
-            <img src="${data.icon}" alt="" />
-            <h2>${data.theme}</h2>
-            <p>${data.flavour}</p>
+            <img src="${icon}" alt="" />
+            <h2>${theme}</h2>
+            <p>${flavour}</p>
         </div>
     `;
 };

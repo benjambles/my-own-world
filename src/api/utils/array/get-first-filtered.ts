@@ -1,6 +1,9 @@
 import { compose, filter, head } from 'ramda';
 
-type predicateFn = (value: any) => boolean;
+interface predicateFn {
+    (value: any): boolean;
+}
+
 /**
  *
  * @param predicate

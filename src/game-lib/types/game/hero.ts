@@ -1,7 +1,7 @@
-import { ActionTypes, ClassAction, Maneuver, TideTurner, ClassTrait } from './actions';
+import { ActionTypes, ClassAction, ClassTrait, Maneuver, TideTurner } from './actions';
 import { Anchor, Armour, Item, Keepsake } from './items';
 
-export type HeroData = {
+export interface HeroData {
     name: string;
     tier: 1 | 2 | 3 | 4;
     class: ClassOptions;
@@ -57,11 +57,11 @@ export type HeroData = {
         items: Item[];
     };
     anchors: Anchor[];
-};
+}
 
 type ActionOrTrait = ClassAction | ClassTrait;
 
-export type ClassOptions = {
+export interface ClassOptions {
     name: string;
     id: string;
     actions: [
@@ -73,23 +73,23 @@ export type ClassOptions = {
         ActionOrTrait,
     ];
     tide_turners: [TideTurner, TideTurner];
-};
+}
 
-export type ProfessionOptions = {
+export interface ProfessionOptions {
     name: string;
     id: string;
     aspects: Record<AspectTypes, ApectTiersSelections>;
-};
+}
 
 export type AspectTypes = 'offensive' | 'defensive' | 'utility';
 export type ApectTiers = keyof ApectTiersSelections;
-export type ApectTiersSelections = {
+export interface ApectTiersSelections {
     tier1: Aspect;
     tier2?: Aspect;
     tier3?: Aspect;
     tier4?: Aspect;
-};
-export type Aspect = {
+}
+export interface Aspect {
     name: string;
     id: string;
     offsets: {
@@ -98,9 +98,9 @@ export type Aspect = {
         };
         [name: string]: any;
     };
-};
+}
 
-export type Stats = {
+export interface Stats {
     hp: number;
     defense: number;
     barrier: number;
@@ -122,16 +122,16 @@ export type Stats = {
     resistance: number;
     willpower: number;
     dodge: number;
-};
+}
 
-export type SkillOptions = {
+export interface SkillOptions {
     major: Skill;
     minor: [Skill, Skill, Skill];
     maneuver: Maneuver;
-};
+}
 
-export type Skill = {
+export interface Skill {
     name: string;
     id: string;
     bonus: number;
-};
+}

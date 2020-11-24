@@ -1,3 +1,7 @@
-export type strToStr = (value: string) => string;
+export interface strToStr {
+    (value: string): string;
+}
 
-export type asyncStrToStr = (value: string) => Promise<string>;
+export interface asyncStrToStr {
+    (value: string): Promise<string>;
+}

@@ -3,7 +3,7 @@ import { ActionSpeeds } from './actions';
 export type UseTypes = 'combat' | 'crossroad' | 'custom' | 'role-playing' | 'encounter';
 export type UseLimits = 'combat' | 'campaign' | 'milestone' | 'times';
 
-export type Item = {
+export interface Item {
     name: string;
     useable_in: UseTypes[];
     type: string;
@@ -16,30 +16,30 @@ export type Item = {
         period: UseLimits;
         used: number;
     };
-};
+}
 
-export type Keepsake = Item & {
+export interface Keepsake extends Item {
     type: 'keepsake';
-};
+}
 
-export type Anchor = {
+export interface Anchor {
     type: 'person' | 'topic of interest';
     id: string;
     name: string;
-};
+}
 
-type EqupimentBase = {
+interface EqupimentBase {
     name: string;
     id: string;
-};
+}
 
 type AttackTypes = 'resistance' | 'toughness';
 type DefenseTypes = AttackTypes | 'dodge';
 
-export type Armour = EqupimentBase & {
+export interface Armour extends EqupimentBase {
     offsets: Partial<
         {
             [key in DefenseTypes]: number;
         }
     >;
-};
+}

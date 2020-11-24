@@ -4,12 +4,12 @@ import { isNil } from 'ramda';
 let db: Db;
 let client: MongoClient;
 
-type MongoConfig = {
+interface MongoConfig {
     database: string;
     url: string;
     user: string;
     password: true;
-};
+}
 
 /**
  *

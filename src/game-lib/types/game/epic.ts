@@ -1,6 +1,6 @@
 import { Milestone } from './milestone';
 
-export type Epic = {
+export interface Epic {
     id: string;
     title: string;
     description: string;
@@ -12,4 +12,4 @@ export type Epic = {
     tags?: {
         [name: string]: string;
     };
-};
+}

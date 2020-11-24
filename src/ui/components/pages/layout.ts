@@ -3,16 +3,16 @@ import { footer, FooterData } from '../core/footer/footer';
 import { header, HeaderData } from '../core/header/header';
 import { lazyStylesheet } from '../utils/lazy-stylesheet';
 
-type Data = {
+interface Data {
     meta: {
         title: string;
     };
-    [key: string]: any;
     header: HeaderData;
     footer: FooterData;
-};
+    [key: string]: any;
+}
 
-export const layout: LitTpl<any> = (context, data, children?) => {
+export const layout: LitTpl<any> = (context, data: Data, children?) => {
     const { html } = context;
 
     return html`

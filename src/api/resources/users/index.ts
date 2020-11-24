@@ -1,5 +1,5 @@
-import Koa from 'koa';
 import { equals, path } from 'ramda';
+import { KoaContext } from '../../../shared-server/koa/app';
 import { getAccessChecker } from '../../utils/middleware/get-access-checker';
 import { bindOptions } from '../../utils/routes/bind-options';
 import { getAccessMap } from '../../utils/security/get-access-map';
@@ -13,7 +13,7 @@ const config = require('./config.json');
  * Map of functions to test against roles for granting access to endpoints
  * @param ctx Koa context object
  */
-export const accessMap = (ctx: Koa.Context): Function => {
+export const accessMap = (ctx: KoaContext): Function => {
     return getAccessMap([[equals('role:owner'), () => isCurrentUser(ctx)]])(ctx);
 };
 
@@ -32,7 +32,7 @@ export const routeHandlers = {
  * Checks to see if the user making the request is the target of the request
  * @param ctx - A Koa context object
  */
-export const isCurrentUser = (ctx: Koa.Context): boolean => {
+export const isCurrentUser = (ctx: KoaContext): boolean => {
     const requestUuid = getRequestedUser(ctx);
     if (!requestUuid) return true; // No user was needed
 
@@ -45,6 +45,6 @@ export const isCurrentUser = (ctx: Koa.Context): boolean => {
  * Grab the user UUID from the URL
  * @param ctx
  */
-export const getRequestedUser = (ctx: Koa.Context): string => {
+export const getRequestedUser = (ctx: KoaContext): string => {
     return path(['request', 'params', 'userId'], ctx);
 };

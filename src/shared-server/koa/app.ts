@@ -1,27 +1,37 @@
 import Joi from '@hapi/joi';
-import Koa, { Middleware } from 'koa';
+import Koa, { DefaultContext, DefaultState, Middleware, ParameterizedContext } from 'koa';
 import { ifElse, pathOr, pipe, prop } from 'ramda';
 import { applyMiddleware } from './apply-middleware';
 
-type ListenOptions = {
+export type KoaContext = ParameterizedContext<DefaultState, DefaultContext>;
+
+interface ListenOptions {
     port: number;
     host: string;
     app: Koa;
-};
+}
 
-type ProcessEnv = Pick<ListenOptions, 'port' | 'host'> & { nodeEnv: string };
+interface ProcessEnv {
+    port: number;
+    host: string;
+    nodeEnv: string;
+}
 
-type AppListener = (opts: ListenOptions) => void;
+interface AppListener {
+    (opts: ListenOptions): void;
+}
 
-type BootHandlerOpts = {
+interface BootHandlerOpts {
     koa: Koa;
     isApi: boolean;
     errorHandler: Middleware;
     getMiddleware: (app: Koa) => Middleware[];
     listener: AppListener;
-};
+}
 
-type BootHandler = (opts: BootHandlerOpts) => (env: NodeJS.Process) => void;
+interface BootHandler {
+    (opts: BootHandlerOpts): (env: NodeJS.Process) => void;
+}
 
 /**
  *
