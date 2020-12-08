@@ -8,7 +8,7 @@
         "not IE 11"
     ],
     "scripts": {
-        "build": "tsc -b -v && gulp --cwd src/api && gulp --cwd src/website && gulp --cwd src/ui",
+        "build": "tsc -b -v && gulp",
         "test": "jest",
         "clean:ts": "tsc -b --clean",
         "watch:ts": "tsc -b -v -w",
