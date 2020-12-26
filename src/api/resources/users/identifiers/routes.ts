@@ -1,7 +1,9 @@
 import Koa from 'koa';
 import { KoaContext } from '../../../../shared-server/koa/app';
+import { formatData } from '../../../utils/data/formatData';
 import { generateRoute } from '../../../utils/routes/generate-route';
 import { PartsResponse, partsResponse } from '../../../utils/routes/responses';
+import { getDataFormatter } from '../../../utils/security/get-data-formatter';
 import * as identifiers from './identifiers';
 
 /**
@@ -14,7 +16,10 @@ export const getUserIdentifiers: Koa.Middleware = generateRoute(
         status: 400,
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
-        const identityData = await identifiers.getByUserId(ctx.request.params.userId);
+        const identityData = await identifiers.getByUserId(
+            ctx.env.ENC_SECRET,
+            ctx.request.params.userId,
+        );
 
         return partsResponse(identityData);
     },
@@ -31,6 +36,8 @@ export const createUserIdentifier: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const identifierData = await identifiers.create(
+            formatData(getDataFormatter(ctx.env.ENC_SECRET, identifiers.model)),
+            ctx.env.ENC_SECRET,
             ctx.request.params.userId,
             ctx.request.body,
         );

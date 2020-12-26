@@ -1,8 +1,8 @@
 import { reduce } from 'ramda';
 
 /**
- * Takes a reducing function and an initial value, and returns a function that reduces the entries of the
- * object provided.
+ * Takes a reducing function and an initial value, and returns a function that
+ * reduces the entries of the object provided.
  * @param fn - A reducing function
  * @param acc - The initial value
  */

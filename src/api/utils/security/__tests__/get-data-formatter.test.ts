@@ -1,8 +1,8 @@
 import { some } from 'ts-option';
-import { getFormattedData } from '../get-formatted-data';
+import { getDataFormatter } from '../get-data-formatter';
 
-test('getFormattedData', async () => {
-    const formatNoModel = getFormattedData({});
+test('getDataFormatter', async () => {
+    const formatNoModel = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG', {});
 
     const noModelUUID = await formatNoModel('uuid', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
     expect(noModelUUID.isEmpty).toEqual(true);
@@ -17,7 +17,7 @@ test('getFormattedData', async () => {
         hmac: ['identity'],
     };
 
-    const format = getFormattedData(model);
+    const format = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG', model);
 
     const hasModelHmac = await format('identity', 'some-token-value-that-maps');
     expect(hasModelHmac).toEqual(

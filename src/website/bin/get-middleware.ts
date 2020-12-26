@@ -4,19 +4,18 @@ import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
+import logger from 'koa-pino-logger';
 import responseTime from 'koa-response-time';
 import serve from 'koa-static';
 import { resolve } from 'path';
-import logger from 'koa-pino-logger';
 import { errorHandler } from '../../shared-server/koa/error-handler';
-import { jwtSecret } from '../config';
 import { getRoutes } from '../routes/get-routes';
 
 /**
  * Initialize an app
  * @api public
  */
-export const getMiddleware = (app: Koa): Koa.Middleware[] => {
+export const getMiddleware = (env, app: Koa): Koa.Middleware[] => {
     return [
         logger(),
         responseTime(), // Set response time header
@@ -33,7 +32,7 @@ export const getMiddleware = (app: Koa): Koa.Middleware[] => {
             },
         }), // Security layer
         errorHandler(app),
-        koaJWT({ secret: jwtSecret, passthrough: true }),
+        koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
         serve(resolve(__dirname, '../../ui/static')),
         ...getRoutes().map((route) => route.middleware()),
     ];

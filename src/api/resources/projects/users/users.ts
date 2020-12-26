@@ -27,7 +27,7 @@ export const get = async (projectId: string): Promise<any[]> => {
  * @param roles
  */
 export const createUser = async (projectId, userId, roles): Promise<boolean> => {
-    const roleIds = roles.map((id) => new ObjectId(id));
+    const roleIds = roles.map((id: string) => new ObjectId(id));
     return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
 };
 
@@ -38,7 +38,7 @@ export const createUser = async (projectId, userId, roles): Promise<boolean> => 
  * @param roles
  */
 export const updateUserRoles = async (projectId, userId, roles): Promise<boolean> => {
-    const roleIds = roles.map((id) => new ObjectId(id));
+    const roleIds = roles.map((id: string) => new ObjectId(id));
     return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
 };
 

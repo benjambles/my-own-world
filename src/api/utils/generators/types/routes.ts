@@ -1,6 +1,5 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import { routesPath } from '../../../config';
 
 const validAnswers: string[] = ['yes', 'no'];
 
@@ -21,14 +20,14 @@ export const createRoute = (rl) => {
                 case 'no':
                     return createRouteWithConfig(rl);
             }
-        }
+        },
     );
 };
 
 const createRouteFromConfig = (rl): void => {
     // ask for the name of the route folder
     rl.question('What is the folder containing the config called?', (answer) => {
-        const routeDir = resolve(routesPath, answer.toLowerCase);
+        const routeDir = resolve('../../resources', answer.toLowerCase);
         const configPath = resolve(routeDir, 'config.json');
 
         if (!existsSync(routeDir) || !existsSync(configPath)) {

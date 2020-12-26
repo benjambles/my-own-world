@@ -1,17 +1,29 @@
 #!/usr/bin/env node
+import { config } from 'dotenv';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
-import { boot, listen } from '../../shared-server/koa/app';
-import { MONGO_DB } from '../config';
+import { resolve } from 'path';
+import { boot } from '../../shared-server/koa/app';
 import { initConnection } from '../db';
 import { getMiddleware } from './get-middleware';
 
-initConnection(MONGO_DB).then(() => {
+const env = config({ path: resolve(__dirname, '../.env') }).parsed;
+
+const db = Object.freeze({
+    user: env.MONGO_USER,
+    database: env.MONGO_DB,
+    password: env.MONGO_PASSWORD,
+    url: env.MONGO_URL,
+});
+
+initConnection(db).then(() => {
+    const app = new Koa();
+
     boot({
-        koa: new Koa(),
+        app,
         errorHandler,
         isApi: false,
-        getMiddleware,
-        listener: listen,
-    })(process);
+        middleware: getMiddleware(env, app),
+        env,
+    });
 });

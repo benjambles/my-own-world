@@ -1,7 +1,9 @@
 import Koa from 'koa';
 import { KoaContext } from '../../../shared-server/koa/app';
+import { formatData } from '../../utils/data/formatData';
 import { generateRoute } from '../../utils/routes/generate-route';
 import { PartsResponse, partsResponse } from '../../utils/routes/responses';
+import { getDataFormatter } from '../../utils/security/get-data-formatter';
 import * as tales from './tales';
 
 /**
@@ -32,7 +34,10 @@ export const createTale: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const tale = ctx.request.body as Tale.Request;
-        const taleData: Tale.TaleData = await tales.create(tale);
+        const taleData: Tale.TaleData = await tales.create(
+            formatData(getDataFormatter(ctx.env.ENC_SECRET, tales.model)),
+            tale,
+        );
 
         return partsResponse(taleData);
     },
@@ -65,6 +70,7 @@ export const updateTaleById: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const taleUpdated = await tales.update(
+            formatData(getDataFormatter(ctx.env.ENC_SECRET, tales.model)),
             ctx.request.params.taleId,
             ctx.request.body as Tale.TaleData,
         );

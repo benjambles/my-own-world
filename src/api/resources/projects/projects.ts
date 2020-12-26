@@ -1,15 +1,9 @@
 import ObjectId from 'mongodb';
-import { formatter } from '../../utils/data/formatter';
 import * as db from './queries';
 
-const format = {
+export const model = {
     readOnly: ['uuid'],
 };
-
-/**
- * Prepares a project object for database insertion
- */
-const cleanProjectData = formatter(format);
 
 /**
  * Get a list of active projects
@@ -18,7 +12,7 @@ const cleanProjectData = formatter(format);
  */
 export const get = async (
     limit: number = 10,
-    offset: number = 0
+    offset: number = 0,
 ): Promise<Project.ProjectData[]> => {
     return await db.getActiveProjects(limit, offset);
 };
@@ -35,8 +29,8 @@ export const getOne = async (uuid: string): Promise<Project.ProjectData> => {
  * Creates a new project record in the database
  * @param data - The fields required to create a new project record
  */
-export const create = async (data: Project.Request): Promise<Project.ProjectData> => {
-    const cleanData = (await cleanProjectData(data)) as Project.ProjectData;
+export const create = async (formatter, data: Project.Request): Promise<Project.ProjectData> => {
+    const cleanData = await (<Project.ProjectData>formatter(data));
 
     return await db.createProject(cleanData);
 };
@@ -46,8 +40,12 @@ export const create = async (data: Project.Request): Promise<Project.ProjectData
  * @param uuid - The UUID for the project to be updated
  * @param data - An object representing a portion of a project object
  */
-export const update = async (uuid: string, data: Project.Request): Promise<Project.ProjectData> => {
-    const cleanData = (await cleanProjectData(data)) as Project.ProjectData;
+export const update = async (
+    formatter,
+    uuid: string,
+    data: Project.Request,
+): Promise<Project.ProjectData> => {
+    const cleanData = await (<Project.ProjectData>formatter(data));
 
     return await db.updateProject(new ObjectId(uuid), cleanData);
 };

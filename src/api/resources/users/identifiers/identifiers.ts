@@ -1,29 +1,26 @@
 import { ObjectId } from 'mongodb';
 import { assoc } from 'ramda';
-import { formatter } from '../../../utils/data/formatter';
-import { decryptValue } from '../../../utils/security/encrpytion';
+import { decryptValue } from '../../../utils/security/encryption';
 import * as db from './queries';
 
-const format = {
+export const model = {
     encrypted: ['identifier'],
     hmac: ['hash'],
     readOnly: ['uuid'],
 };
 
 /**
- * Prepares am identifier object for database insertion
- */
-const cleanIdentityData = formatter(format);
-
-/**
  *
  * @param userId
  * @param props
  */
-export const getByUserId = async (userId: string): Promise<User.Identitfier[]> => {
+export const getByUserId = async (
+    password: string,
+    userId: string,
+): Promise<User.Identitfier[]> => {
     const { identities } = await db.getByUserId(new ObjectId(userId));
 
-    return identities.map(respond);
+    return identities.map((identity) => respond(password, identity));
 };
 
 /**
@@ -31,11 +28,16 @@ export const getByUserId = async (userId: string): Promise<User.Identitfier[]> =
  * @param userId
  * @param data
  */
-export const create = async (userId: string, data: any): Promise<User.Identitfier> => {
-    const cleanData = await cleanIdentityData(data);
+export const create = async (
+    formatter,
+    password: string,
+    userId: string,
+    data: any,
+): Promise<User.Identitfier> => {
+    const cleanData = await formatter(data);
     const identifierData = await db.create(new ObjectId(userId), cleanData);
 
-    return respond(identifierData);
+    return respond(password, identifierData);
 };
 
 /**
@@ -51,8 +53,8 @@ export const remove = async (userId: string, hash: string): Promise<boolean> => 
  *
  * @param data
  */
-const respond = (data: User.Identitfier) => {
-    const decryptedIdent = decryptValue(data.identifier);
+const respond = (password: string, data: User.Identitfier) => {
+    const decryptedIdent = decryptValue(password, data.identifier);
 
     return assoc('identifier', decryptedIdent, data);
 };

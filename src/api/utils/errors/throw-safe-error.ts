@@ -1,6 +1,5 @@
 import { props } from 'ramda';
 import { KoaContext } from '../../../shared-server/koa/app';
-import { isProduction } from '../../config';
 
 /**
  * Throw an error that is safe in each environment context to the errorHandler
@@ -13,10 +12,14 @@ export const throwSafeError = (
     error,
     safe = { message: '', status: 400 },
 ): void => {
-    if (isProduction()) {
+    if (isProduction(ctx.env.nodeEnv)) {
         ctx.throw(props(['status', 'message'], safe));
     }
 
     const { status = safe.status, message = safe.message } = error;
     ctx.throw(status, message);
+};
+
+const isProduction = (nodeEnv) => {
+    return 'production' === nodeEnv;
 };

@@ -8,7 +8,7 @@ interface MongoConfig {
     database: string;
     url: string;
     user: string;
-    password: true;
+    password: string;
 }
 
 /**

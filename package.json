@@ -13,8 +13,8 @@
         "clean:ts": "tsc -b --clean",
         "watch:ts": "tsc -b -v -w",
         "watch:css": "gulp --cwd src/ui watchCSS",
-        "api": "nodemon --config src/api/nodemon.json dist/api/bin/app.js",
-        "website": "nodemon --config src/website/nodemon.json dist/website/bin/app.js",
+        "api": "nodemon --config src/api/nodemon.json --inspect=:9230 dist/api/bin/app.js",
+        "website": "nodemon --config src/website/nodemon.json --inspect=:9229 dist/website/bin/app.js",
         "storybook": "start-storybook -c src/ui/.storybook -s dist/ui/static",
         "api:generator": "node src/api/lib/generators/index.js"
     },

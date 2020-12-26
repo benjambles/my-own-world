@@ -1,13 +1,18 @@
 #!/usr/bin/env node
+import { config } from 'dotenv';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
-import { boot, listen } from '../../shared-server/koa/app';
+import { resolve } from 'path';
+import { boot } from '../../shared-server/koa/app';
 import { getMiddleware } from './get-middleware';
 
+const app = new Koa();
+const env = config({ path: resolve(__dirname, '../.env') }).parsed;
+
 boot({
-    koa: new Koa(),
+    app,
     errorHandler,
     isApi: false,
-    getMiddleware,
-    listener: listen,
-})(process);
+    middleware: getMiddleware(env, app),
+    env,
+});

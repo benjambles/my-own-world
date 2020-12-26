@@ -1,15 +1,9 @@
 import ObjectId from 'mongodb';
-import { formatter } from '../../utils/data/formatter';
 import * as db from './queries';
 
-const format = {
+export const model = {
     readOnly: ['uuid'],
 };
-
-/**
- * Prepares a tale object for database insertion
- */
-const cleanTaleData = formatter(format);
 
 /**
  * Get a list of active tales
@@ -32,8 +26,8 @@ export const getOne = async (uuid: string): Promise<Tale.TaleData> => {
  * Creates a new tale record in the database
  * @param data - The fields required to create a new tale record
  */
-export const create = async (data: Tale.Request): Promise<Tale.TaleData> => {
-    const cleanData = (await cleanTaleData(data)) as Tale.TaleData;
+export const create = async (formatter, data: Tale.Request): Promise<Tale.TaleData> => {
+    const cleanData = await (<Tale.TaleData>formatter(data));
 
     return await db.createTale(cleanData);
 };
@@ -43,8 +37,12 @@ export const create = async (data: Tale.Request): Promise<Tale.TaleData> => {
  * @param uuid - The UUID for the tale to be updated
  * @param data - An object representing a portion of a tale object
  */
-export const update = async (uuid: string, data: Tale.Request): Promise<Tale.TaleData> => {
-    const cleanData = (await cleanTaleData(data)) as Tale.TaleData;
+export const update = async (
+    formatter,
+    uuid: string,
+    data: Tale.Request,
+): Promise<Tale.TaleData> => {
+    const cleanData = await (<Tale.TaleData>formatter(data));
 
     return await db.updateTale(new ObjectId(uuid), cleanData);
 };

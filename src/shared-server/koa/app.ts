@@ -1,15 +1,9 @@
 import Joi from '@hapi/joi';
+import { DotenvParseOutput } from 'dotenv/types';
 import Koa, { DefaultContext, DefaultState, Middleware, ParameterizedContext } from 'koa';
-import { ifElse, pathOr, pipe, prop } from 'ramda';
-import { applyMiddleware } from './apply-middleware';
+import { propOr } from 'ramda';
 
 export type KoaContext = ParameterizedContext<DefaultState, DefaultContext>;
-
-interface ListenOptions {
-    port: number;
-    host: string;
-    app: Koa;
-}
 
 interface ProcessEnv {
     port: number;
@@ -17,28 +11,38 @@ interface ProcessEnv {
     nodeEnv: string;
 }
 
-interface AppListener {
-    (opts: ListenOptions): void;
-}
-
 interface BootHandlerOpts {
-    koa: Koa;
+    app: Koa;
     isApi: boolean;
-    errorHandler: Middleware;
-    getMiddleware: (app: Koa) => Middleware[];
-    listener: AppListener;
-}
-
-interface BootHandler {
-    (opts: BootHandlerOpts): (env: NodeJS.Process) => void;
+    errorHandler: (error: Error) => void;
+    middleware: Middleware[];
+    env: DotenvParseOutput;
 }
 
 /**
- *
+ * Standard application runner flow
  * @param param0
- * @param app
  */
-export const listen: AppListener = ({ port, host, app }) => {
+export const boot = ({ app, isApi, errorHandler, middleware, env }: BootHandlerOpts) => {
+    const envParams = getEnvParams(env);
+    const { error, value } = validateEnvParams(envParams);
+
+    if (error) {
+        throw new Error(error);
+    }
+
+    const { port, host } = value;
+
+    // override koa's undocumented error handler
+    app.context.onerror = errorHandler;
+
+    // specify that this is our api
+    app.context.api = isApi;
+
+    app.context.env = env;
+
+    middleware.forEach((fn) => app.use(fn));
+
     app.listen(port, host, (): void => {
         console.log('Listening on %s:%s', host, port);
     });
@@ -48,11 +52,11 @@ export const listen: AppListener = ({ port, host, app }) => {
  *
  * @param process
  */
-export const getEnvParams = (env: NodeJS.Process): ProcessEnv => {
+const getEnvParams = (env: DotenvParseOutput): ProcessEnv => {
     return {
-        nodeEnv: pathOr('development', ['env', 'NODE_ENV'], env),
-        host: pathOr('0.0.0.0', ['env', 'HOST'], env),
-        port: pathOr(NaN, ['env', 'PORT'], env),
+        nodeEnv: propOr('development', 'NODE_ENV', env),
+        host: propOr('0.0.0.0', 'HOST', env),
+        port: propOr(NaN, 'PORT', env),
     };
 };
 
@@ -62,7 +66,7 @@ export const getEnvParams = (env: NodeJS.Process): ProcessEnv => {
  *
  * @param envParams
  */
-export const validateEnvParams = (envParams: ProcessEnv) => {
+const validateEnvParams = (envParams: ProcessEnv) => {
     const schema = Joi.object({
         nodeEnv: Joi.string()
             .pattern(/^development|staging|production|testing&/)
@@ -74,31 +78,4 @@ export const validateEnvParams = (envParams: ProcessEnv) => {
     });
 
     return schema.validate(envParams);
-};
-
-/**
- * Standard application runner flow
- * @param param0
- */
-export const boot: BootHandler = ({ koa, isApi, errorHandler, getMiddleware, listener }) => {
-    return pipe(
-        getEnvParams,
-        validateEnvParams,
-        ifElse(
-            prop('error'),
-            (joiObj) => {
-                throw new Error(joiObj.error);
-            },
-            ({ value }) => {
-                const { port, host } = value;
-                const app = applyMiddleware({
-                    errorHandler,
-                    isApi,
-                    app: koa,
-                    getMiddleware,
-                });
-                listener({ port, host, app });
-            },
-        ),
-    );
 };

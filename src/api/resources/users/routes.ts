@@ -1,7 +1,10 @@
 import Koa from 'koa';
 import { KoaContext } from '../../../shared-server/koa/app';
+import { formatData } from '../../utils/data/formatData';
 import { generateRoute } from '../../utils/routes/generate-route';
 import { PartsResponse, partsResponse } from '../../utils/routes/responses';
+import { hmac } from '../../utils/security/encryption';
+import { getDataFormatter } from '../../utils/security/get-data-formatter';
 import { getToken } from '../../utils/security/jwt';
 import * as identifiers from './identifiers/identifiers';
 import * as users from './users';
@@ -34,8 +37,16 @@ export const createUser: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const { user, identifier } = ctx.request.body as User.Request;
-        const userData: User.UserData = await users.create(user);
-        await identifiers.create(userData.uuid, identifier);
+        const userData: User.UserData = await users.create(
+            formatData(getDataFormatter(ctx.env.ENC_TYPE, users.model)),
+            user,
+        );
+        await identifiers.create(
+            formatData(getDataFormatter(ctx.env.ENC_TYPE, identifiers.model)),
+            ctx.env.ENC_TYPE,
+            userData.uuid,
+            identifier,
+        );
 
         return partsResponse(userData);
     },
@@ -68,6 +79,7 @@ export const updateUserById: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const userUpdated = await users.update(
+            formatData(getDataFormatter(ctx.env.ENC_TYPE, users.model)),
             ctx.request.params.userId,
             ctx.request.body as User.UserData,
         );
@@ -96,7 +108,6 @@ export const deleteUserById: Koa.Middleware = generateRoute(
  * fetch related user and if found test their password
  * @route [POST] /users/authentication
  */
-
 export const authenticateUser: Koa.Middleware = generateRoute(
     {
         message: 'There was an error whilst authenticating the user.',
@@ -104,8 +115,9 @@ export const authenticateUser: Koa.Middleware = generateRoute(
     },
     async (ctx: KoaContext): Promise<PartsResponse> => {
         const { identifier = null, password = null } = ctx.request.body as any;
-        const userData = await users.authenticate(identifier, password);
-        const token = await getToken(userData);
+        const hashedIdentifier = hmac(ctx.env.ENC_SECRET, identifier);
+        const userData = await users.authenticate(hashedIdentifier, password);
+        const token = await getToken(ctx.env.JWT_SECRET, userData);
 
         return partsResponse({ token, user: userData });
     },

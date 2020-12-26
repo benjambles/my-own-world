@@ -1,7 +1,7 @@
 import { cond, includes, T, __ } from 'ramda';
 import { none, Option, some } from 'ts-option';
 import { bHash } from './blowfish';
-import { encryptValue, hmac as getHmac } from './encrpytion';
+import { encryptValue, hmac as getHmac } from './encryption';
 
 interface FormatOptions {
     encrypted?: string[];
@@ -13,18 +13,16 @@ interface FormatOptions {
 /**
  * Applies security formatters to a property based on the map passed in
  */
-export const getFormattedData = ({
-    encrypted = [],
-    salted = [],
-    hmac = [],
-    readOnly = ['uuid'],
-}: FormatOptions) => {
+export const getDataFormatter = (
+    password: string,
+    { encrypted = [], salted = [], hmac = [], readOnly = ['uuid'] }: FormatOptions,
+) => {
     return async (key: string, value: string): Promise<Option<string>> =>
         await cond([
             [includes(__, readOnly), async () => none],
-            [includes(__, encrypted), async () => some(encryptValue(value))],
+            [includes(__, encrypted), async () => some(encryptValue(password, value))],
             [includes(__, salted), async () => some(await bHash(value))],
-            [includes(__, hmac), async () => some(getHmac(value))],
+            [includes(__, hmac), async () => some(getHmac(password, value))],
             [T, async () => some(value)],
         ])(key);
 };

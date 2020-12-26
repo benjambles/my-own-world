@@ -16,8 +16,8 @@ import { getRouteMapping } from './get-route-mapping';
  * @api private
  */
 export const loadRoutes = (root: string, prefix: string = ''): Router[] => {
-    const getRouters = map(getRouter(root, createRoute(prefix)));
-    return compose(getValues, getRouters, readdirSync)(root);
+    const getPrefixedRouter = getRouter(root, createRoute(prefix));
+    return compose(getValues, map(getPrefixedRouter), readdirSync)(root);
 };
 
 /**
