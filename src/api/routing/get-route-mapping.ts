@@ -4,6 +4,7 @@ import { Option, some } from 'ts-option';
 import { reduceEntries } from '../utils/array/reduce-entries';
 import { FnMap, maybeProp, maybePropOr } from '../utils/functional/maybe-prop';
 import { buildJoiSpec } from '../utils/joi-utils/build-joi-spec';
+import { send } from '../utils/routes/send';
 import { getRouteMiddleware } from './spec-parsing/get-route-middleware';
 import { getSecurityMiddleware } from './spec-parsing/get-security-middleware';
 
@@ -35,7 +36,7 @@ const mapMethods = (path: string, verbs, routeHandlers: FnMap): Option<any> => {
     return verbs.flatMap(
         reduceEntries((configs, [method, spec]) => {
             const routeConfig = concatOrElse(
-                getRouteMiddleware(spec, routeHandlers),
+                getRouteMiddleware(spec, routeHandlers, send),
                 getSecurityMiddleware(spec),
             ).map((handler) => {
                 return [

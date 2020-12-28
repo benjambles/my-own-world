@@ -5,7 +5,8 @@ import errorHandler from 'koa-better-error-handler';
 import { resolve } from 'path';
 import { boot } from '../../shared-server/koa/app';
 import { initConnection } from '../db';
-import { getMiddleware } from './get-middleware';
+import { getMiddleware } from '../middleware/get-middleware';
+import { loadRoutes } from '../routing/load-routes';
 
 const env = config({ path: resolve(__dirname, '../.env') }).parsed;
 
@@ -18,12 +19,13 @@ const db = Object.freeze({
 
 initConnection(db).then(() => {
     const app = new Koa();
+    const routeHandlers = loadRoutes(resolve(__dirname, '../resources'), 'api');
 
     boot({
         app,
         errorHandler,
         isApi: false,
-        middleware: getMiddleware(env, app),
+        middleware: getMiddleware(env, app, routeHandlers),
         env,
     });
 });

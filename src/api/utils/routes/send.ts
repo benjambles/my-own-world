@@ -8,17 +8,17 @@ interface ErrorValues {
     message: string;
 }
 
+export interface Send {
+    (ctx: KoaContext, error: ErrorValues, data: (ctx: KoaContext) => Promise<any>): Promise<void>;
+}
+
 /**
  * Sends an api response where possible, and handles sending clean errors when thrown.
  * @param ctx - A Koa context
  * @param error - Default error parameters for when an error isn't sent, or to hide dev errors
  * @param data - A function that generates the response data
  */
-export const send = async (
-    ctx: KoaContext,
-    error: ErrorValues,
-    data: (ctx: KoaContext) => Promise<any>,
-): Promise<void> => {
+export const send: Send = async (ctx, error, data) => {
     try {
         const response = await data(ctx);
         const status: number = propOr(200, 'status', response);

@@ -6,15 +6,14 @@ import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import responseTime from 'koa-response-time';
-import { resolve } from 'path';
 import { errorHandler } from '../../shared-server/koa/error-handler';
-import { loadRoutes } from '../routing/load-routes';
+import { getRouteMiddleware } from './routing/get-route-middleware';
 
 /**
  * Initialize an app
  * @api public
  */
-export const getMiddleware = (env, app: Koa): Koa.Middleware[] => {
+export const getMiddleware = (env, app: Koa, routeHandlers): Koa.Middleware[] => {
     return [
         logger(),
         responseTime(), // Set response time header
@@ -24,6 +23,6 @@ export const getMiddleware = (env, app: Koa): Koa.Middleware[] => {
         helmet(), // Security layer
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
-        ...loadRoutes(resolve(__dirname, '../resources'), 'api').map((route) => route.middleware()),
+        ...getRouteMiddleware(routeHandlers),
     ];
 };

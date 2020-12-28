@@ -1,17 +1,16 @@
-import { compose, concat, equals, isNil, prop } from 'ramda';
-import { getFirstFiltered } from '../array/get-first-filtered';
+import { compose, concat, isNil, pathOr, propEq } from 'ramda';
 import { getStringParts } from '../array/get-string-parts';
-import { maybeHead } from '../array/maybe-head';
-import { wrap } from '../array/wrap';
 
 /**
  * Returns the route propterty of a given object
  * @param config
  */
-const getRoute = prop('route');
 
-export const getRouteConfig = (routeConfig) => {
-    return compose(findRouteConfig(wrap(routeConfig)), getStringParts('/'), getRoute);
+const getRoutePath = pathOr('', ['route', 'path']);
+
+export const getRouteConfig = (routeConfig, state) => {
+    const pathParts = getStringParts('/')(getRoutePath(state));
+    return findRouteConfig(routeConfig)(pathParts);
 };
 
 /**
@@ -22,12 +21,12 @@ export const getRouteConfig = (routeConfig) => {
 const findRouteConfig = (config) => (pathParts: string[]) => {
     const getBasePath = getBasePathFilter(pathParts);
 
-    if (
-        !pathParts.length ||
-        isNil(config.paths) ||
-        (pathParts.length === 1 && getBasePath(config))
-    ) {
-        return config;
+    if (!pathParts.length || isNil(config.paths)) {
+        return { ...config, paths: [], verbs: {} };
+    }
+
+    if (pathParts.length === 1) {
+        return getBasePath(config.paths);
     }
 
     const findRouteFromBasePath = compose(findRouteConfig, getBasePath);
@@ -41,8 +40,6 @@ const findRouteConfig = (config) => (pathParts: string[]) => {
  * Checks to see if the given route parts are the current root of the API
  * @param pathParts
  */
-const getBasePathFilter = (pathParts: string[]) => {
-    return getFirstFiltered(
-        compose(equals(`/${maybeHead(pathParts).getOrElseValue('')}`), getRoute),
-    );
+const getBasePathFilter = ([rootPath = '']: string[]) => {
+    return (paths) => paths.find(propEq('route', `/${rootPath}`));
 };

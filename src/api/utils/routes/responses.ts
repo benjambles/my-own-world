@@ -33,7 +33,7 @@ export const partsResponse = (body = {}, meta: APIMeta = {}): PartsResponse => {
  * Structure for a response that should be just sent as is
  * @param data
  */
-export const dataResponse = <T>(data: T): DataResponse => {
+export const dataResponse = <T>(data?: T): DataResponse => {
     return { data };
 };
 

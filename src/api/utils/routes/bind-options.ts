@@ -1,38 +1,35 @@
-import { Middleware } from 'koa';
 import * as R from 'ramda';
+import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
 import { getRouteConfig } from './get-route-config';
 import { dataResponse } from './responses';
-import { send } from './send';
 
 /**
  * Returns a middleware for generating OPTIONS and returning
  * the swagger conf for the given route to the browser
  */
-export const bindOptions = (routeConfig): Middleware => {
+export const bindOptions = (routeConfig): RouteHandler => {
+    const defaultError = {
+        message: 'There was an error whilst generating options',
+        status: 400,
+    };
+
     /**
      * Return the options and config for the route
      * @route [OPTIONS]
      */
-    return async (ctx, next) => {
-        const error = {
-            message: 'There was an error whilst generating options',
-            status: 400,
+    return (send) => {
+        return async (ctx) => {
+            await send(ctx, defaultError, async (ctx) => {
+                const response = getRouteConfig(routeConfig, ctx.state);
+
+                ctx.set(
+                    'Allow',
+                    R.toUpper(Object.keys(response.verbs).reduce(getHTTPMethods, []).join(', ')),
+                );
+
+                return dataResponse(response);
+            });
         };
-        await next();
-
-        await send(ctx, error, async () => {
-            const response = getRouteConfig(routeConfig)(ctx.state);
-
-            R.compose(
-                R.partial(ctx.set, ['Allow']),
-                R.toUpper,
-                R.join(', '),
-                R.reduce(getHTTPMethods, []),
-                R.keys,
-            )(response.verbs);
-
-            return dataResponse(response);
-        });
     };
 };
 

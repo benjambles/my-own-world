@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import { option, Option, some } from 'ts-option';
-import { maybeFunction, maybeMiddleware } from './maybe-function';
+import { maybeFunction } from './maybe-function';
 
 export interface FnMap {
     [name: string]: Middleware;
@@ -33,14 +33,4 @@ export const maybePropOr = <T>(or: T, propName: string, obj): Option<T> => {
  */
 export const maybePropIsFn = (propName: string, obj: FnMap): Option<Function> => {
     return maybeProp(propName, obj).flatMap(maybeFunction);
-};
-
-/**
- * Takes an object and returns a function that takes a property name as a string
- * If the property is found on the object, and is a function a some<function> is returned.
- * Otherwise a none.
- * @param obj
- */
-export const maybePropIsMiddleware = (propName: string, obj: FnMap): Option<Middleware> => {
-    return maybeProp(propName, obj).flatMap(maybeMiddleware);
 };

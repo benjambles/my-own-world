@@ -7,12 +7,13 @@ test('getRouteMiddleware', () => {
         await next();
     };
 
-    const noOperationIdTest = getRouteMiddleware({}, { getUser: dummyMiddleware });
+    const noOperationIdTest = getRouteMiddleware({}, { getUser: dummyMiddleware }, async () => {});
     expect(noOperationIdTest.isEmpty).toEqual(true);
 
     const noHandlerTest = getRouteMiddleware(
         { operationId: 'getUser' },
         { deleteUser: dummyMiddleware },
+        async () => {},
     );
     expect(noHandlerTest.isEmpty).toEqual(true);
 
@@ -20,6 +21,6 @@ test('getRouteMiddleware', () => {
         getUser: dummyMiddleware,
         checkAccess: dummyMiddleware,
     };
-    const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap);
+    const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap, async () => {});
     expect(result).toEqual(some([catchJoiErrors, fnMap.getUser, fnMap.checkAccess]));
 });
