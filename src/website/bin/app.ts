@@ -4,7 +4,8 @@ import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import { resolve } from 'path';
 import { boot } from '../../shared-server/koa/app';
-import { getMiddleware } from './get-middleware';
+import { getMiddleware } from '../middleware/get-middleware';
+import { routes } from '../routes/routes';
 
 const app = new Koa();
 const env = config({ path: resolve(__dirname, '../.env') }).parsed;
@@ -13,6 +14,6 @@ boot({
     app,
     errorHandler,
     isApi: false,
-    middleware: getMiddleware(env, app),
+    middleware: getMiddleware(env, app, routes),
     env,
 });

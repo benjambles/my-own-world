@@ -1,21 +1,25 @@
+import { renderToString } from '@popeindustries/lit-html-server';
+import { DotenvParseOutput } from 'dotenv/types';
 import Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
+import router from 'koa-joi-router';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import responseTime from 'koa-response-time';
 import serve from 'koa-static';
 import { resolve } from 'path';
 import { errorHandler } from '../../shared-server/koa/error-handler';
-import { getRoutes } from '../routes/get-routes';
+import { SERVER_CONTEXT } from '../../ui/utils/templates/server-context';
+import { getRouteMiddleware } from './routing/get-route-middleware';
 
 /**
  * Initialize an app
  * @api public
  */
-export const getMiddleware = (env, app: Koa): Koa.Middleware[] => {
+export const getMiddleware = (env: DotenvParseOutput, app: Koa, routes): Koa.Middleware[] => {
     return [
         logger(),
         responseTime(), // Set response time header
@@ -34,6 +38,11 @@ export const getMiddleware = (env, app: Koa): Koa.Middleware[] => {
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
         serve(resolve(__dirname, '../../ui/static')),
-        ...getRoutes().map((route) => route.middleware()),
+        ...getRouteMiddleware({
+            router: router(),
+            routes,
+            renderContext: SERVER_CONTEXT,
+            renderToString,
+        }),
     ];
 };

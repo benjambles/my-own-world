@@ -1,5 +1,5 @@
 /**
- * Curried function that given a max, min and initial value will
+ * Function that given a max, min and initial value will
  * return a value that doesn't break out of those bounds
  * @param min - The lowest possible value
  * @param max - The highest possible value
@@ -9,7 +9,7 @@ export const capBetween = (min: number, max: number, value: number) =>
     value < min ? min : Math.min(value, max);
 
 /**
- * Curried function that given a max, change value and initial value will
+ * Function that given a max, change value and initial value will
  * return a value that doesn't go above the max value.
  * Negative increment values have no effect.
  * @param max - The highest possible value
@@ -20,7 +20,7 @@ export const cappedAdd = (max: number, offset: number, initialValue: number): nu
     Math.min(initialValue + Math.max(offset, 0), max);
 
 /**
- * Curried function that given a min, change value and initial value will
+ * Function that given a min, change value and initial value will
  * return a value that doesn't go below the min value.
  * Negative decremement values have no effect.
  * @param min - The lowest possible value
