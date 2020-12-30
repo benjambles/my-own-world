@@ -1,5 +1,5 @@
 import { path } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 
 interface valFromCtx {
     (ctx: KoaContext): string;

@@ -1,5 +1,5 @@
 import { equals, path } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 import { getAccessChecker } from '../../utils/middleware/get-access-checker';
 import { bindOptions } from '../../utils/routes/bind-options';
 import { getAccessMap } from '../../utils/security/get-access-map';

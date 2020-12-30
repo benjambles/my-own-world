@@ -1,5 +1,5 @@
 import { props } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 
 /**
  * Throw an error that is safe in each environment context to the errorHandler

@@ -1,5 +1,5 @@
 import { hasPath } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 
 interface IsUser {
     (ctx: KoaContext): boolean;

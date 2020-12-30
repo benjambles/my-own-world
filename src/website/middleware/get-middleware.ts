@@ -11,8 +11,8 @@ import logger from 'koa-pino-logger';
 import responseTime from 'koa-response-time';
 import serve from 'koa-static';
 import { resolve } from 'path';
-import { errorHandler } from '../../shared-server/koa/error-handler';
-import { SERVER_CONTEXT } from '../../ui/utils/templates/server-context';
+import { errorHandler } from '@sharedServer/koa/error-handler';
+import { SERVER_CONTEXT } from '@ui/utils/templates/server-context';
 import { getRouteMiddleware } from './routing/get-route-middleware';
 
 /**

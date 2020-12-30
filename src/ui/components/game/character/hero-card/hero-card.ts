@@ -1,4 +1,4 @@
-import type { HeroData } from '../../../../../game-lib/types/game/hero';
+import type { HeroData } from '@gameLib/types/game/hero';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import styles from './hero-card.css.json';
 

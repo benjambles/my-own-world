@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import { resolve } from 'path';
-import { boot } from '../../shared-server/koa/app';
+import { boot } from '@sharedServer/koa/app';
 import { initConnection } from '../db';
 import { getMiddleware } from '../middleware/get-middleware';
 import { loadRoutes } from '../routing/load-routes';

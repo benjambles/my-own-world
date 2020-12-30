@@ -1,5 +1,5 @@
 import { cond, equals, F, T, unary } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 import { isAdmin } from '../compares/is-admin';
 import { isUser } from '../compares/is-user';
 

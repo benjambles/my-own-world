@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import createRouter, { Router } from 'koa-joi-router';
-import { ServerContext, ServerRenderer } from '../../../ui/utils/templates/server-context';
+import { ServerContext, ServerRenderer } from '@ui/utils/templates/server-context';
 
 interface GetRouteMiddleware {
     router: Router;

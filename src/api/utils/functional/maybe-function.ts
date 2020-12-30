@@ -1,5 +1,4 @@
 import { Middleware } from 'koa';
-import { isFunction } from 'ramda-adjunct';
 import { option, Option } from 'ts-option';
 
 /**
@@ -14,4 +13,8 @@ export const maybeMiddleware = (fn): Option<Middleware> => option(fn).filter(isM
 
 const isMiddleware = (fn): fn is Middleware => {
     return typeof fn === 'function' && fn.constructor.name === 'AsyncFunction' && fn.length === 2;
+};
+
+const isFunction = (fn: unknown): fn is Function => {
+    return typeof fn === 'function';
 };

@@ -17,7 +17,14 @@
         "esModuleInterop": true,
         "moduleResolution": "node",
         "incremental": true,
-        "lib": ["es2019", "esnext.array", "dom"]
+        "lib": ["es2019", "esnext.array", "dom"],
+        "paths": {
+            "@api/*": ["./src/api/*"],
+            "@gameLib/*": ["./src/game-lib/*"],
+            "@sharedServer/*": ["./src/shared-server/*"],
+            "@ui/*": ["./src/ui/*"],
+            "@website/*": ["./src/website/*"]
+        },
     },
     "compileOnSave": true
 }

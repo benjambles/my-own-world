@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import { Joi } from 'koa-joi-router';
 import { DotenvParseOutput } from 'dotenv/types';
 import Koa, { DefaultContext, DefaultState, Middleware, ParameterizedContext } from 'koa';
 import { propOr } from 'ramda';
@@ -28,7 +28,7 @@ export const boot = ({ app, isApi, errorHandler, middleware, env }: BootHandlerO
     const { error, value } = validateEnvParams(envParams);
 
     if (error) {
-        throw new Error(error);
+        throw error;
     }
 
     const { port, host } = value;

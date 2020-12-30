@@ -3,24 +3,31 @@ import { catchJoiErrors } from '../../../utils/middleware/catch-joi-errors';
 import { getRouteMiddleware } from '../get-route-middleware';
 
 test('getRouteMiddleware', () => {
-    const dummyMiddleware = async (ctx, next) => {
-        await next();
-    };
+    async function _getUser() {}
+    async function _deleteUser() {}
 
-    const noOperationIdTest = getRouteMiddleware({}, { getUser: dummyMiddleware }, async () => {});
+    const noOperationIdTest = getRouteMiddleware(
+        {},
+        {
+            getUser: () => _getUser,
+        },
+        async () => {},
+    );
     expect(noOperationIdTest.isEmpty).toEqual(true);
 
     const noHandlerTest = getRouteMiddleware(
         { operationId: 'getUser' },
-        { deleteUser: dummyMiddleware },
+        {
+            deleteUser: () => _deleteUser,
+        },
         async () => {},
     );
     expect(noHandlerTest.isEmpty).toEqual(true);
 
     const fnMap = {
-        getUser: dummyMiddleware,
-        checkAccess: dummyMiddleware,
+        getUser: () => _getUser,
+        checkAccess: async () => {},
     };
     const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap, async () => {});
-    expect(result).toEqual(some([catchJoiErrors, fnMap.getUser, fnMap.checkAccess]));
+    expect(result).toEqual(some([catchJoiErrors, _getUser, fnMap.checkAccess]));
 });

@@ -1,4 +1,4 @@
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
 import { formatData } from '../../utils/data/formatData';
 import { partsResponse } from '../../utils/routes/responses';

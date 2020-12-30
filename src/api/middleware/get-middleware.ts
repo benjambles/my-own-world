@@ -6,7 +6,7 @@ import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import responseTime from 'koa-response-time';
-import { errorHandler } from '../../shared-server/koa/error-handler';
+import { errorHandler } from '@sharedServer/koa/error-handler';
 import { getRouteMiddleware } from './routing/get-route-middleware';
 
 /**

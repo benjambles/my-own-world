@@ -1,5 +1,4 @@
 import { assoc, assocPath, equals, head, isNil, prop, props } from 'ramda';
-import { isTrue } from 'ramda-adjunct';
 import { wrap } from '../array/wrap';
 import { swaggerToJoiType } from './swagger-to-joi-type';
 
@@ -82,6 +81,6 @@ const buildParameter = (joi, { type, values, format, opts = {} }: SwaggerParam):
         if (isNil(validator)) return acc;
 
         const [name, value] = validator;
-        return isTrue(value) ? acc[name]() : acc[name](...wrap(value));
+        return value === true ? acc[name]() : acc[name](...wrap(value));
     }, joi);
 };

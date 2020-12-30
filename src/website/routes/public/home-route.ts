@@ -1,6 +1,6 @@
-import { home } from '../../../ui/components/pages/public/home/home';
-import { mockData } from '../../../ui/utils/mock-data';
-import { LitRoute } from '../../../ui/utils/templates/lit-route';
+import { home } from '@ui/components/pages/public/home/home';
+import { mockData } from '@ui/utils/mock-data';
+import { LitRoute } from '@ui/utils/templates/lit-route';
 
 export const homeRoute: LitRoute = (litHtmlContext, render) => ({
     method: 'get' as const,

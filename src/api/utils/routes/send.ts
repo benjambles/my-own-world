@@ -1,5 +1,5 @@
 import { propOr } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 import { throwSafeError } from '../errors/throw-safe-error';
 import { getResponseBody } from './responses';
 

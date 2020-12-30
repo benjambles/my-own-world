@@ -1,4 +1,4 @@
-import type { Action, ActionGroup, Actions } from '../../../../../game-lib/types/game/npc';
+import type { Action, ActionGroup, Actions } from '@gameLib/types/game/npc';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
 import styles from './actions-table.css.json';

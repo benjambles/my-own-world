@@ -1,5 +1,5 @@
 import { pathEq } from 'ramda';
-import { KoaContext } from '../../../shared-server/koa/app';
+import { KoaContext } from '@sharedServer/koa/app';
 
 interface IsAdmin {
     (ctx: KoaContext): boolean;
