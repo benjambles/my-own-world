@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { assoc } from 'ramda';
 import { decryptValue } from '../../../utils/security/encryption';
 import * as db from './queries';
 
@@ -35,9 +34,9 @@ export const create = async (
     data: any,
 ): Promise<User.Identitfier> => {
     const cleanData = await formatter(data);
-    const identifierData = await db.create(new ObjectId(userId), cleanData);
+    const identity = await db.create(new ObjectId(userId), cleanData);
 
-    return respond(password, identifierData);
+    return respond(password, identity);
 };
 
 /**
@@ -53,8 +52,8 @@ export const remove = async (userId: string, hash: string): Promise<boolean> => 
  *
  * @param data
  */
-const respond = (password: string, data: User.Identitfier) => {
-    const decryptedIdent = decryptValue(password, data.identifier);
+const respond = (password: string, identity: User.Identitfier) => {
+    const decryptedIdent = decryptValue(password, identity.identifier);
 
-    return assoc('identifier', decryptedIdent, data);
+    return { ...identity, identifier: decryptedIdent };
 };

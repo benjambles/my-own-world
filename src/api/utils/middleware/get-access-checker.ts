@@ -1,5 +1,4 @@
 import { Middleware } from 'koa';
-import { none } from 'ramda';
 import { throwNoAccessError } from '../errors/errors';
 
 /**
@@ -14,9 +13,9 @@ export const getAccessChecker = (accessMap?: any): Middleware => {
      * @param next - Following Koa Middleware
      */
     return async (ctx, next) => {
-        const { accessRoles } = ctx?.state ?? {};
+        const accessRoles: string[] = ctx.state?.accessRoles ?? [];
 
-        if (accessMap && accessRoles && none(accessMap(ctx), accessRoles)) {
+        if (accessMap && accessRoles.length && !accessRoles.some(accessMap(ctx))) {
             throwNoAccessError(ctx)();
         }
 

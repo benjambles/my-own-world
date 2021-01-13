@@ -1,4 +1,3 @@
-import { assocPath } from 'ramda';
 import { HeroData } from '../types/game/hero';
 
 /**
@@ -10,7 +9,7 @@ export const getCurrentActionPoints = (hero: HeroData): number => {
 };
 
 export const setCurrentActionPoints = (hero: HeroData, newTotal: number) => {
-    return assocPath(['actionPoints', 'current'], newTotal, hero);
+    return { ...hero, actionPoints: { ...hero.actionPoints, current: newTotal } };
 };
 
 export const getMaxActionPoints = (hero: HeroData): number => {

@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
 import { getRouteConfig } from './get-route-config';
 import { dataResponse } from './responses';
@@ -24,7 +23,7 @@ export const bindOptions = (routeConfig): RouteHandler => {
 
                 ctx.set(
                     'Allow',
-                    R.toUpper(Object.keys(response.verbs).reduce(getHTTPMethods, []).join(', ')),
+                    Object.keys(response.verbs).reduce(getHTTPMethods, []).join(', ').toUpperCase(),
                 );
 
                 return dataResponse(response);
@@ -39,9 +38,7 @@ export const bindOptions = (routeConfig): RouteHandler => {
  * @param key
  */
 const getHTTPMethods = (acc: string[], key: string): string[] => {
-    return R.cond([
-        [R.equals('options'), R.always(acc)],
-        [R.equals('get'), () => acc.concat('get', 'head')],
-        [R.T, (key) => acc.concat(key)],
-    ])(key);
+    if (key === 'options') return acc;
+    if (key === 'get') return acc.concat('get', 'head');
+    return acc.concat(key);
 };

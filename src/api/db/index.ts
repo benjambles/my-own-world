@@ -1,5 +1,4 @@
 import { Db, MongoClient } from 'mongodb';
-import { isNil } from 'ramda';
 
 let db: Db;
 let client: MongoClient;
@@ -39,15 +38,15 @@ export const closeConnection = () => {
  * Returns a MongoDB collection
  * @param name
  */
-export const withCollection = (name) => db.collection(name);
+export const withCollection = (name: string) => db.collection(name);
 
 /**
  * On a null query response throw an error to the response handler otherwise return
  * @param {string} error - Error message to throw with
  * @param {any} data - Response from query
  */
-export const result = (error: string, data: any): never | any => {
-    if (isNil(data)) {
+export const result = <T>(error: string, data: T): never | T => {
+    if (data === null) {
         throw new Error(error);
     }
 
@@ -59,7 +58,9 @@ export const result = (error: string, data: any): never | any => {
  * @param config
  */
 const getConnectionString = ({ url, user, password }) => {
-    const userStr = !user ? '' : password ? `${user}:${password}@` : `${user}@`;
+    if (!user) return url;
 
-    return `${userStr}${url}`;
+    const userStr = [user, password].filter(Boolean).join(':');
+
+    return `${userStr}@${url}`;
 };

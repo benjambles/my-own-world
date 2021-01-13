@@ -1,4 +1,3 @@
-import { propOr } from 'ramda';
 import { KoaContext } from '@sharedServer/koa/app';
 import { throwSafeError } from '../errors/throw-safe-error';
 import { getResponseBody } from './responses';
@@ -21,7 +20,7 @@ export interface Send {
 export const send: Send = async (ctx, error, data) => {
     try {
         const response = await data(ctx);
-        const status: number = propOr(200, 'status', response);
+        const status: number = response.status || 200;
 
         ctx.status = status;
         ctx.body = getResponseBody(response, status);

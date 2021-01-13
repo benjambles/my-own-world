@@ -1,3 +1,7 @@
+export const sum = (nums: number[]): number => {
+    return nums.reduce((a, b) => a + b, 0);
+};
+
 /**
  * Function that given a max, min and initial value will
  * return a value that doesn't break out of those bounds

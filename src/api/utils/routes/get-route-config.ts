@@ -1,15 +1,7 @@
-import { compose, concat, isNil, pathOr, propEq } from 'ramda';
 import { getStringParts } from '../array/get-string-parts';
 
-/**
- * Returns the route propterty of a given object
- * @param config
- */
-
-const getRoutePath = pathOr('', ['route', 'path']);
-
 export const getRouteConfig = (routeConfig, state) => {
-    const pathParts = getStringParts('/')(getRoutePath(state));
+    const pathParts = getStringParts('/', state.route?.path ?? '');
     return findRouteConfig(routeConfig)(pathParts);
 };
 
@@ -21,7 +13,7 @@ export const getRouteConfig = (routeConfig, state) => {
 const findRouteConfig = (config) => (pathParts: string[]) => {
     const getBasePath = getBasePathFilter(pathParts);
 
-    if (!pathParts.length || isNil(config.paths)) {
+    if (!pathParts.length || !config.paths) {
         return { ...config, paths: [], verbs: {} };
     }
 
@@ -29,11 +21,10 @@ const findRouteConfig = (config) => (pathParts: string[]) => {
         return getBasePath(config.paths);
     }
 
-    const findRouteFromBasePath = compose(findRouteConfig, getBasePath);
     const [root, path, ...rest] = pathParts;
-    const newPathParts = concat([[root, path].join('/')], rest);
+    const newPathParts = [[root, path].join('/')].concat(rest);
 
-    return findRouteFromBasePath(config.paths)(newPathParts);
+    return findRouteConfig(getBasePath(config.paths))(newPathParts);
 };
 
 /**
@@ -41,5 +32,5 @@ const findRouteConfig = (config) => (pathParts: string[]) => {
  * @param pathParts
  */
 const getBasePathFilter = ([rootPath = '']: string[]) => {
-    return (paths) => paths.find(propEq('route', `/${rootPath}`));
+    return (paths) => paths.find((path) => path.route === `/${rootPath}`);
 };

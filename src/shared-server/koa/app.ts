@@ -1,7 +1,6 @@
-import { Joi } from 'koa-joi-router';
 import { DotenvParseOutput } from 'dotenv/types';
 import Koa, { DefaultContext, DefaultState, Middleware, ParameterizedContext } from 'koa';
-import { propOr } from 'ramda';
+import { Joi } from 'koa-joi-router';
 
 export type KoaContext = ParameterizedContext<DefaultState, DefaultContext>;
 
@@ -54,9 +53,9 @@ export const boot = ({ app, isApi, errorHandler, middleware, env }: BootHandlerO
  */
 const getEnvParams = (env: DotenvParseOutput): ProcessEnv => {
     return {
-        nodeEnv: propOr('development', 'NODE_ENV', env),
-        host: propOr('0.0.0.0', 'HOST', env),
-        port: propOr(NaN, 'PORT', env),
+        nodeEnv: env.NODE_ENV ?? 'development',
+        host: env.HOST ?? '0.0.0.0',
+        port: parseInt(env.PORT, 10) ?? NaN,
     };
 };
 

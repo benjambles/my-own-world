@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { getBasicUserDetails } from '../../users/queries';
-import { sanitizedResponse } from '../../users/users';
+import { removePassword } from '../../users/users';
 import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './queries';
 
 /**
@@ -15,7 +15,7 @@ export const get = async (projectId: string): Promise<any[]> => {
     return Promise.all(
         projectUsers.map(async ({ id, role }) => {
             const user = await getBasicUserDetails(new ObjectId(id));
-            return { user: sanitizedResponse(user), role };
+            return { user: removePassword(user), role };
         }),
     );
 };

@@ -1,6 +1,5 @@
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
-import { compose, map, prop } from 'ramda';
 import { Option, some } from 'ts-option';
 import { getValues } from '../utils/array/get-somes';
 import { maybeIsDirectory } from '../utils/fs/is-directory';
@@ -17,7 +16,9 @@ import { getRouteMapping } from './get-route-mapping';
  */
 export const loadRoutes = (root: string, prefix: string = ''): Router[] => {
     const getPrefixedRouter = getRouter(root, createRoute(prefix));
-    return compose(getValues, map(getPrefixedRouter), readdirSync)(root);
+    const mappedRouters = readdirSync(root).map(getPrefixedRouter);
+
+    return getValues(mappedRouters);
 };
 
 /**
@@ -30,11 +31,7 @@ const getRouter = (rootPath: string, getPrefixedRoute) => (name: string): Option
     return maybeIsDirectory(resolve(rootPath, name))
         .map(requireRouteFiles)
         .flatMap(([moduleContents, config]) =>
-            getRouteMapping(
-                some([]),
-                prop('routeHandlers', moduleContents),
-                maybeProp('paths', config),
-            ),
+            getRouteMapping(some([]), moduleContents.routeHandlers, maybeProp('paths', config)),
         )
         .map(getPrefixedRoute);
 };

@@ -1,4 +1,3 @@
-import { assoc, __ } from 'ramda';
 import { Option } from 'ts-option';
 
 /**
@@ -12,7 +11,11 @@ export const formatData = (formatter: (key: string, value: string) => Promise<Op
 
         const [[key, value], ...tail] = entries;
         const maybeValue = await formatter(key, value);
-        const newAcc = maybeValue.map(assoc(key, __, acc)).getOrElseValue(acc);
+        const newAcc = maybeValue
+            .map((val) => {
+                return { ...acc, [key]: val };
+            })
+            .getOrElseValue(acc);
 
         return await setKeyValues(newAcc, tail);
     };

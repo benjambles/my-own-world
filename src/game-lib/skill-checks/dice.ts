@@ -1,5 +1,4 @@
-import { sum } from 'ramda';
-import { capBetween } from '../utils/bounded-math';
+import { capBetween, sum } from '../utils/math';
 
 interface RollResult {
     rolls: number[];

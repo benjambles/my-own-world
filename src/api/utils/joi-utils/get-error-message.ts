@@ -1,4 +1,3 @@
-import { pick } from 'ramda';
 import { maybeProp } from '../functional/maybe-prop';
 
 /**
@@ -7,6 +6,6 @@ import { maybeProp } from '../functional/maybe-prop';
  */
 export const getErrorMessage = (error) => {
     return maybeProp('details', error)
-        .map(pick(['message', 'path']))
+        .map(({ message, path }) => ({ message, path }))
         .getOrElseValue(error.msg);
 };

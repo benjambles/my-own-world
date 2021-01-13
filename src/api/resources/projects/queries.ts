@@ -8,7 +8,7 @@ const projects = withCollection('Projects');
  * @param uuid - A valid uuid
  */
 export const getActiveProjectByUuid = async (uuid: ObjectId): Promise<Project.ProjectData> => {
-    const data = await projects.findOne({
+    const data: Project.ProjectData = await projects.findOne({
         uuid,
         isDeleted: false,
     });
@@ -23,14 +23,14 @@ export const getActiveProjectByUuid = async (uuid: ObjectId): Promise<Project.Pr
  */
 export const getActiveProjects = async (
     limit: number = 10,
-    skip: number = 0
+    skip: number = 0,
 ): Promise<Project.ProjectData[]> => {
-    const data = await projects
+    const data: Project.ProjectData[] = await projects
         .find(
             {
                 isDeleted: false,
             },
-            { limit, skip }
+            { limit, skip },
         )
         .toArray();
 
@@ -42,7 +42,7 @@ export const getActiveProjects = async (
  * @param data - The formatted data ready for storage
  */
 export const createProject = async (
-    projectData: Project.ProjectData
+    projectData: Project.ProjectData,
 ): Promise<Project.ProjectData> => {
     const { insertedId } = await projects.insertOne(projectData);
     const data = await getActiveProjectByUuid(insertedId);
@@ -55,10 +55,10 @@ export const createProject = async (
  * @param uuid - A valid uuid
  */
 export const deleteProject = async (uuid: ObjectId): Promise<boolean> => {
-    const data = await projects.findOneAndUpdate(
+    const data: boolean = await projects.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true } },
-        { projection: { isDeleted: 1 } }
+        { projection: { isDeleted: 1 } },
     );
 
     return result('There was an error whilst updating the project', data);
@@ -71,9 +71,12 @@ export const deleteProject = async (uuid: ObjectId): Promise<boolean> => {
  */
 export const updateProject = async (
     uuid: ObjectId,
-    projectData: Project.ProjectData
+    projectData: Project.ProjectData,
 ): Promise<Project.ProjectData> => {
-    const data = await projects.findOneAndUpdate({ _id: uuid }, { $set: projectData });
+    const data: Project.ProjectData = await projects.findOneAndUpdate(
+        { _id: uuid },
+        { $set: projectData },
+    );
 
     return result('There was an error whilst updating the project', data);
 };

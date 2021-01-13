@@ -1,4 +1,3 @@
-import { props } from 'ramda';
 import { KoaContext } from '@sharedServer/koa/app';
 
 /**
@@ -13,7 +12,7 @@ export const throwSafeError = (
     safe = { message: '', status: 400 },
 ): void => {
     if (isProduction(ctx.env.nodeEnv)) {
-        ctx.throw(props(['status', 'message'], safe));
+        ctx.throw(safe.status, safe.message);
     }
 
     const { status = safe.status, message = safe.message } = error;

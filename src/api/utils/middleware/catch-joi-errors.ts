@@ -1,6 +1,4 @@
 import { Middleware } from 'koa';
-import { assoc } from 'ramda';
-import { reduceEntries } from '../array/reduce-entries';
 import { stringifyJSON } from '../data/json';
 import { badResponseError } from '../errors/errors';
 import { maybeProp } from '../functional/maybe-prop';
@@ -13,7 +11,13 @@ import { getErrorMessage } from '../joi-utils/get-error-message';
  */
 export const catchJoiErrors: Middleware = async (ctx, next) => {
     maybeProp('invalid', ctx)
-        .map(reduceEntries((acc, [key, error]) => assoc(key, getErrorMessage(error), acc), {}))
+        .map((errors) => {
+            return Object.fromEntries(
+                Object.entries(errors).map(([key, error]) => {
+                    return [key, getErrorMessage(error)];
+                }),
+            );
+        })
         .flatMap(stringifyJSON)
         .map(badResponseError(ctx));
 

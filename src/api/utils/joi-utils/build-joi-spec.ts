@@ -1,4 +1,3 @@
-import { assoc, assocPath, equals, head, isNil, prop, props } from 'ramda';
 import { wrap } from '../array/wrap';
 import { swaggerToJoiType } from './swagger-to-joi-type';
 
@@ -44,21 +43,18 @@ type SwaggerTypeConfig = [string, any] | null;
  * @param config
  */
 export const buildJoiSpec = (joi, { parameters, consumes }) => {
-    const spec = parameters.reduce(
-        (acc, paramConf: SwaggerParam) =>
-            assocPath(
-                props(['in', 'name'], paramConf) as string[],
-                buildParameter(joi, paramConf),
-                acc,
-            ),
-        {},
-    );
+    const spec = parameters.reduce((acc, paramConf: SwaggerParam) => {
+        acc[paramConf.in] = acc[paramConf.in] || {};
+        acc[paramConf.in][paramConf.name] = buildParameter(joi, paramConf);
+        return acc;
+    }, {});
 
-    if (!prop('body', spec) || !consumes.length) {
-        return spec;
+    if (spec.body && consumes.length) {
+        const [, consumeFormat] = consumes[0].split('/');
+        spec.type = consumeFormat;
     }
 
-    return assoc('type', prop(1, head(consumes).split('/')), spec);
+    return spec;
 };
 
 /**
@@ -67,10 +63,11 @@ export const buildJoiSpec = (joi, { parameters, consumes }) => {
  */
 const buildParameter = (joi, { type, values, format, opts = {} }: SwaggerParam): Function => {
     const getFormatType = (format) => (format ? [swaggerToJoiType(format), true] : null);
-    const getChildValidators = (type, values) =>
-        equals(type, 'array') && Array.isArray(values) && values.length
+    const getChildValidators = (type, values) => {
+        return type === 'array' && Array.isArray(values) && values.length
             ? ['items', values.map((value) => buildParameter(joi, value))]
             : null;
+    };
 
     return [
         [swaggerToJoiType(type), true],
@@ -78,7 +75,7 @@ const buildParameter = (joi, { type, values, format, opts = {} }: SwaggerParam):
         ...Object.entries(opts),
         getChildValidators(type, values),
     ].reduce((acc, validator: SwaggerTypeConfig) => {
-        if (isNil(validator)) return acc;
+        if (!validator) return acc;
 
         const [name, value] = validator;
         return value === true ? acc[name]() : acc[name](...wrap(value));

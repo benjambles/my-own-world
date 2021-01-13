@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { dissoc, partial } from 'ramda';
 import { compareBHash } from '../../utils/security/blowfish';
 import * as db from './queries';
 
@@ -10,25 +9,13 @@ export const model = {
 };
 
 /**
- * Returns a function that clones of the data retrieved from the database and sanitizes it if necessary
- * @param secure - True if sanitization is required
+ * Removes the password field from the user object
  * @param data - Object representing a user model
  */
-const respond = (secure: boolean, data: User.UserData): User.UserData => {
-    return secure ? dissoc('password', data) : data;
+const removePassword = (user: User.UserData): User.UserData => {
+    delete user.password;
+    return user;
 };
-
-/**
- * Returns a sanitised object representing a user, removing private properties
- * @param data - A database record representing a user
- */
-export const sanitizedResponse = partial(respond, [true]);
-
-/**
- * Returns a clone of an object representing a user
- * @param data - A database record representing a user
- */
-export const unsanitizedResponse = partial(respond, [false]);
 
 /**
  * Get a list of active users
@@ -38,7 +25,7 @@ export const unsanitizedResponse = partial(respond, [false]);
 export const get = async (limit: number = 10, offset: number = 0): Promise<User.UserData[]> => {
     const users = await db.getActiveUsers(limit, offset);
 
-    return users.map(sanitizedResponse);
+    return users.map(removePassword);
 };
 
 /**
@@ -48,7 +35,7 @@ export const get = async (limit: number = 10, offset: number = 0): Promise<User.
 export const getOne = async (uuid: string): Promise<User.UserData> => {
     const user = await db.getActiveUserByUuid(new ObjectId(uuid));
 
-    return sanitizedResponse(user);
+    return removePassword(user);
 };
 
 /**
@@ -58,7 +45,7 @@ export const getOne = async (uuid: string): Promise<User.UserData> => {
 export const getByEmail = async (identifier: string): Promise<User.UserData> => {
     const user = await db.getActiveUserByIdentifier(identifier);
 
-    return unsanitizedResponse(user);
+    return user;
 };
 
 /**
@@ -69,7 +56,7 @@ export const create = async (formatter, data: User.UserData): Promise<User.UserD
     const cleanData = await formatter(data);
     const user = await db.createUser(cleanData);
 
-    return sanitizedResponse(user);
+    return removePassword(user);
 };
 
 /**
@@ -85,7 +72,7 @@ export const update = async (
     const cleanData = await formatter(data);
     const user = await db.updateUser(new ObjectId(uuid), cleanData);
 
-    return sanitizedResponse(user);
+    return removePassword(user);
 };
 
 /**
@@ -108,7 +95,7 @@ export const authenticate = async (
     const user = await db.getActiveUserByIdentifier(identifier);
     await compareBHash(password, user.password);
 
-    return sanitizedResponse(user);
+    return removePassword(user);
 };
 
 /**

@@ -1,6 +1,6 @@
 import { Joi } from 'koa-joi-router';
-import { concat, isEmpty, pick } from 'ramda';
 import { Option, some } from 'ts-option';
+import { getFilledArray } from '../utils/array/get-filled-array';
 import { reduceEntries } from '../utils/array/reduce-entries';
 import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop';
 import { buildJoiSpec } from '../utils/joi-utils/build-joi-spec';
@@ -43,13 +43,14 @@ const mapMethods = (path: string, verbs, routeHandlers: RouteHandlers): Option<a
                 getRouteMiddleware(spec, routeHandlers, send),
                 getSecurityMiddleware(spec),
             ).map((handler) => {
+                const { summary, description } = spec;
                 return [
                     {
                         method,
                         path,
                         handler,
                         validate: buildJoiSpec(Joi, spec),
-                        meta: pick(['summary', 'description'], spec),
+                        meta: { summary, description },
                     },
                 ];
             });
@@ -60,10 +61,10 @@ const mapMethods = (path: string, verbs, routeHandlers: RouteHandlers): Option<a
 };
 
 const concatOrElse = (acc: Option<any[]>, opt: Option<any[]>): Option<any[]> => {
-    return opt
-        .match({
-            some: (optVals) => acc.map((curr) => concat(curr, optVals)).orElseValue(opt),
+    return getFilledArray(
+        opt.match({
+            some: (optVals) => acc.map((curr) => curr.concat(optVals)).orElseValue(opt),
             none: () => acc,
-        })
-        .filterNot(isEmpty);
+        }),
+    );
 };

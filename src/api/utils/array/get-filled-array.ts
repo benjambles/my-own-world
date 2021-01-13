@@ -1,4 +1,3 @@
-import { complement, isEmpty } from 'ramda';
 import { Option } from 'ts-option';
 
 /**
@@ -6,5 +5,5 @@ import { Option } from 'ts-option';
  * @param optionArray - An option of an array
  */
 export const getFilledArray = <A>(optArr: Option<A[]>): Option<A[]> => {
-    return optArr.filter(complement(isEmpty));
+    return optArr.filter((arr) => !!arr.length);
 };
