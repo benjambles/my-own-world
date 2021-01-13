@@ -3,10 +3,9 @@ import { getAccessChecker } from '../../utils/middleware/get-access-checker';
 import { bindOptions } from '../../utils/routes/bind-options';
 import { getAccessMap } from '../../utils/security/get-access-map';
 import { getAuthenticatedUserId } from '../../utils/security/get-authenticated-user-id';
+import * as config from './config.json';
 import * as identifierRoutes from './identifiers/routes';
 import * as userRoutes from './routes';
-
-const config = require('./config.json');
 
 /**
  * Map of functions to test against roles for granting access to endpoints

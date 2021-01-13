@@ -12,7 +12,7 @@ export const model = {
  * Removes the password field from the user object
  * @param data - Object representing a user model
  */
-const removePassword = (user: User.UserData): User.UserData => {
+export const removePassword = (user: User.UserData): User.UserData => {
     delete user.password;
     return user;
 };

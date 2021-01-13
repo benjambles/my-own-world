@@ -1,7 +1,6 @@
 import { getAccessChecker } from '../../utils/middleware/get-access-checker';
 import { bindOptions } from '../../utils/routes/bind-options';
-
-const config = require('./config.json');
+import * as config from './config.json';
 
 /**
  * Routes on /users and /users/*
