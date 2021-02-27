@@ -2,29 +2,29 @@
     display: flex;
     text-align: center;
     flex-direction: column;
+}
 
-    & div {
-        padding: 3rem 2rem;
-    }
+.classCard div {
+    padding: 3rem 2rem;
+}
 
-    & .logo {
-        margin-bottom: 3rem;
-    }
+.classCard .logo {
+    margin-bottom: 3rem;
+}
 
-    & h1 {
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-    }
+.classCard h1 {
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
 
-    & span {
-        font-style: italic;
-        display: block;
-        margin: 0.5rem 0 1.5rem;
-    }
+.classCard span {
+    font-style: italic;
+    display: block;
+    margin: 0.5rem 0 1.5rem;
+}
 
-    & p {
-        text-align: left;
-    }
+.classCard p {
+    text-align: left;
 }
 
 .classCardInfo span {

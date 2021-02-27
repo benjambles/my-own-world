@@ -66,7 +66,7 @@ const getEnvParams = (env: DotenvParseOutput): ProcessEnv => {
  * @param envParams
  */
 const validateEnvParams = (envParams: ProcessEnv) => {
-    const schema = Joi.object({
+    return Joi.object({
         nodeEnv: Joi.string()
             .pattern(/^development|staging|production|testing&/)
             .required(),
@@ -74,7 +74,5 @@ const validateEnvParams = (envParams: ProcessEnv) => {
             .ip({ version: ['ipv4', 'ipv6'] })
             .required(),
         port: Joi.number().port().required(),
-    });
-
-    return schema.validate(envParams);
+    }).validate(envParams);
 };

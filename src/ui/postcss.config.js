@@ -14,7 +14,6 @@ module.exports = (ctx) => {
                 globalModulePaths: [/\/src\/components\/global-css/],
                 localsConvention: 'dashesOnly',
             },
-            'postcss-nesting': {},
             cssnano,
         },
     };

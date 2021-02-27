@@ -1,5 +1,6 @@
 {
     "verbose": false,
     "watch": ["dist/website", "dist/ui", "dist/shared-server", "dist/game-lib"],
-    "delay": "1000"
+    "delay": "1000",
+    "exec": "node dist/website/bin/app.js"
 }

@@ -8,7 +8,6 @@ import helmet from 'koa-helmet';
 import router from 'koa-joi-router';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
-import responseTime from 'koa-response-time';
 import serve from 'koa-static';
 import { resolve } from 'path';
 import { errorHandler } from '@sharedServer/koa/error-handler';
@@ -22,7 +21,6 @@ import { getRouteMiddleware } from './routing/get-route-middleware';
 export const getMiddleware = (env: DotenvParseOutput, app: Koa, routes): Koa.Middleware[] => {
     return [
         logger(),
-        responseTime(), // Set response time header
         conditionalGet(),
         etag(), // Adds eTag headers to the response
         compress(), // ctx.compress = false to disable compression

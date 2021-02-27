@@ -1,11 +1,18 @@
-import { capBetween, cappedAdd, cappedSubtract } from '../math';
+import { clamp, cappedAdd, cappedSubtract, sum } from '../math';
+
+test('sum', () => {
+    expect(sum(0)).toEqual(0);
+    expect(sum(1)).toEqual(1);
+    expect(sum(1, 2)).toEqual(3);
+    expect(sum(1, 2, 3, 4, 5, 6, 7, 8, 9)).toEqual(45);
+});
 
 test('capBetween', () => {
-    expect(capBetween(0, 10, 11)).toEqual(10); // Can't go above
-    expect(capBetween(0, 10, -2)).toEqual(0); // Can't go below
-    expect(capBetween(0, 10, 5)).toEqual(5);
+    expect(clamp(0, 10, 11)).toEqual(10); // Can't go above
+    expect(clamp(0, 10, -2)).toEqual(0); // Can't go below
+    expect(clamp(0, 10, 5)).toEqual(5);
 
-    expect(capBetween(0, 10, Infinity)).toEqual(10); // Infinity doesn't break it
+    expect(clamp(0, 10, Infinity)).toEqual(10); // Infinity doesn't break it
 });
 
 test('cappedAdd', () => {

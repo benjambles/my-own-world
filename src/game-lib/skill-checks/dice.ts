@@ -1,4 +1,4 @@
-import { capBetween, sum } from '../utils/math';
+import { clamp, sum } from '../utils/math';
 
 interface RollResult {
     rolls: number[];
@@ -24,7 +24,7 @@ export class Dice {
         const [count, diceType] = this.getDice(dicePool);
 
         const rolls = Array.from({ length: count }, () => this.getDieValue(diceType));
-        const total = sum(rolls);
+        const total = sum(...rolls);
 
         return {
             rolls,
@@ -44,7 +44,7 @@ export class Dice {
         const [count, diceType] = this.getDice(dicePool);
         return `${count}d${
             this.diceTypes[
-                capBetween(0, this.diceTypes.length - 1, this.diceTypes.indexOf(diceType) + steps)
+                clamp(0, this.diceTypes.length - 1, this.diceTypes.indexOf(diceType) + steps)
             ]
         }`;
     }

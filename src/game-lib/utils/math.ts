@@ -1,4 +1,4 @@
-export const sum = (nums: number[]): number => {
+export const sum = (...nums: number[]): number => {
     return nums.reduce((a, b) => a + b, 0);
 };
 
@@ -9,8 +9,9 @@ export const sum = (nums: number[]): number => {
  * @param max - The highest possible value
  * @param value - The number to be capped
  */
-export const capBetween = (min: number, max: number, value: number) =>
-    value < min ? min : Math.min(value, max);
+export const clamp = (min: number, max: number, value: number) => {
+    return Math.max(min, Math.min(value, max));
+};
 
 /**
  * Function that given a max, change value and initial value will
