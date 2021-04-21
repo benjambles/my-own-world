@@ -18,12 +18,13 @@ export interface FooterData {
 
 export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
     const { html } = context;
+    const currentYear = new Date().getFullYear();
 
     return html`
         ${lazyStylesheet(context, '/styles/core/footer/footer.css')}
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
-                <span>&copy; My Own World - 2020</span>
+                <span>&copy; My Own World - ${currentYear}</span>
                 <nav class="">${links.map((linkData) => link(context, linkData))}</nav>
             </div>
         </footer>

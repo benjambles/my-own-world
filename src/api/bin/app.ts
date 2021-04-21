@@ -25,7 +25,7 @@ initConnection(db).then(() => {
     boot({
         app,
         errorHandler,
-        isApi: false,
+        isApi: true,
         middleware: getMiddleware(env, app, routeHandlers),
         env,
     });
