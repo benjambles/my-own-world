@@ -1,4 +1,4 @@
-import { KoaContext } from '@sharedServer/koa/app';
+import type { KoaContext } from '../../../shared-server/koa/app.js';
 
 interface ErrorHandler {
     (ctx: KoaContext): (msg?: string) => void;

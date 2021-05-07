@@ -1,8 +1,8 @@
 import { html, Part, RenderOptions, TemplateResult } from '@popeindustries/lit-html-server';
-import { classMap } from '@popeindustries/lit-html-server/directives/class-map';
-import { ifDefined } from '@popeindustries/lit-html-server/directives/if-defined';
-import { Middleware } from 'koa';
-import { RouteMethods } from './lit-route';
+import { classMap } from '@popeindustries/lit-html-server/directives/class-map.js';
+import { ifDefined } from '@popeindustries/lit-html-server/directives/if-defined.js';
+import type { Middleware } from 'koa';
+import type { RouteMethods } from './lit-route.js';
 
 export { TemplateResult as ServerResult } from '@popeindustries/lit-html-server';
 

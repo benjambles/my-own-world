@@ -1,5 +1,5 @@
-import { ClientContext, ClientResult } from './client-context';
-import { ServerContext, ServerResult } from './server-context';
+import { ClientContext, ClientResult } from './client-context.js';
+import { ServerContext, ServerResult } from './server-context.js';
 
 export interface LitTpl<P> {
     (context: ClientContext, data: P, children?: ClientResult): ClientResult;

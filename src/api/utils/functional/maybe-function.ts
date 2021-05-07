@@ -1,4 +1,4 @@
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 import { option, Option } from 'ts-option';
 
 /**

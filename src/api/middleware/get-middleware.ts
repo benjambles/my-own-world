@@ -1,12 +1,11 @@
-import Koa from 'koa';
+import type Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
-import { errorHandler } from '@sharedServer/koa/error-handler';
-import { getRouteMiddleware } from './routing/get-route-middleware';
+import { errorHandler } from '../../shared-server/koa/error-handler.js';
 
 /**
  * Initialize an app
@@ -21,6 +20,6 @@ export const getMiddleware = (env, app: Koa, routeHandlers): Koa.Middleware[] =>
         helmet(), // Security layer
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
-        ...getRouteMiddleware(routeHandlers),
+        ...routeHandlers.map((route) => route.middleware()),
     ];
 };

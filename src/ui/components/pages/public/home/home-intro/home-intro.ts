@@ -1,9 +1,9 @@
-import type { LitTpl } from '../../../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../../../utils/templates/lit-tpl.js';
+import { primaryButton } from '../../../../core/buttons/primary-button.js';
+import { inputBox } from '../../../../core/form-elements/input-box.js';
+import { link } from '../../../../core/links/link.js';
 import baseStyles from '../../../../global-css/base.css.json';
-import { lazyStylesheet } from '../../../../utils/lazy-stylesheet';
-import { primaryButton } from '../../../../core/buttons/primary-button';
-import { inputBox } from '../../../../core/form-elements/input-box';
-import { link } from '../../../../core/links/link';
+import { lazyStylesheet } from '../../../../utils/lazy-stylesheet.js';
 import styles from './home-intro.css.json';
 
 export const homeIntro: LitTpl<undefined> = (context) => {

@@ -1,5 +1,5 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { actionGrid } from './grid';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { actionGrid } from './grid.js';
 import './grid.css';
 
 export default {

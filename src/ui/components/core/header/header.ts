@@ -1,8 +1,8 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { darkLink, DarkLinkProps } from '../links/dark-link';
-import { menuProfile, MenuProfileData } from '../user/menu-profile';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { darkLink, DarkLinkProps } from '../links/dark-link.js';
+import { menuProfile, MenuProfileData } from '../user/menu-profile.js';
 import styles from './header.css.json';
 
 export interface HeaderData {

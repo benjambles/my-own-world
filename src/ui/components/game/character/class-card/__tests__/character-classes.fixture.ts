@@ -1,4 +1,4 @@
-import { ClassDetails } from '../class-card';
+import { ClassDetails } from '../class-card.js';
 
 export const ardent: ClassDetails = {
     name: 'Ardent',

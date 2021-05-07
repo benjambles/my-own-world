@@ -1,8 +1,8 @@
-import { getCurrentActionPoints, setCurrentActionPoints } from '../actors/hero';
-import { ActionSpeeds, CombatAction } from '../types/game/actions';
-import { HeroData } from '../types/game/hero';
+import { getCurrentActionPoints, setCurrentActionPoints } from '../actors/hero.js';
+import type { ActionSpeeds, CombatAction } from '../types/game/actions.js';
+import type { HeroData } from '../types/game/hero.js';
 
-export const useAction = (action: CombatAction, hero: HeroData): HeroData => {
+export function useAction(action: CombatAction, hero: HeroData): HeroData {
     const { result, remainingPoints } = canAffordAction(action, hero);
 
     if (result) {
@@ -10,7 +10,7 @@ export const useAction = (action: CombatAction, hero: HeroData): HeroData => {
     }
 
     return setCurrentActionPoints(hero, remainingPoints);
-};
+}
 
 interface ActionPointResult {
     result: boolean;
@@ -18,7 +18,7 @@ interface ActionPointResult {
     remainingPoints: number;
 }
 
-export const canAffordAction = ({ speed }: CombatAction, hero: HeroData): ActionPointResult => {
+export function canAffordAction({ speed }: CombatAction, hero: HeroData): ActionPointResult {
     const points: Record<ActionSpeeds, number> = {
         free: 0,
         fast: 1,
@@ -38,4 +38,4 @@ export const canAffordAction = ({ speed }: CombatAction, hero: HeroData): Action
         usedPoints: points[speed],
         remainingPoints,
     };
-};
+}

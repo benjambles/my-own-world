@@ -1,12 +1,12 @@
-import { Joi } from 'koa-joi-router';
+import koaJoiRouter from 'koa-joi-router';
 import { Option, some } from 'ts-option';
-import { getFilledArray } from '../utils/array/get-filled-array';
-import { reduceEntries } from '../utils/array/reduce-entries';
-import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop';
-import { buildJoiSpec } from '../utils/joi-utils/build-joi-spec';
-import { send } from '../utils/routes/send';
-import { getRouteMiddleware, RouteHandlers } from './spec-parsing/get-route-middleware';
-import { getSecurityMiddleware } from './spec-parsing/get-security-middleware';
+import { getFilledArray } from '../utils/array/get-filled-array.js';
+import { reduceEntries } from '../utils/array/reduce-entries.js';
+import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop.js';
+import { buildJoiSpec } from '../utils/joi-utils/build-joi-spec.js';
+import { send } from '../utils/routes/send.js';
+import { getRouteMiddleware, RouteHandlers } from './spec-parsing/get-route-middleware.js';
+import { getSecurityMiddleware } from './spec-parsing/get-security-middleware.js';
 
 /**
  * Map routes onto the router through configuration
@@ -18,13 +18,18 @@ export const getRouteMapping = (
     acc: Option<any[]>,
     handlers: RouteHandlers,
     stack: Option<any[]>,
+    dbInstance,
 ) => {
     return stack
         .map(([head, ...tail]) => {
             return getRouteMapping(
-                concatOrElse(acc, mapMethods(head.route, maybeProp('verbs', head), handlers)),
+                concatOrElse(
+                    acc,
+                    mapMethods(head.route, maybeProp('verbs', head), handlers, dbInstance),
+                ),
                 handlers,
                 concatOrElse(some(tail), maybePropOr([], 'paths', head)),
+                dbInstance,
             );
         })
         .getOrElseValue(acc);
@@ -36,13 +41,14 @@ export const getRouteMapping = (
  * @param verbs An object containing http verbs and the swagger/joi docs describing them
  * @param routeHandlers An object containing the handlers to map to the routes
  */
-const mapMethods = (path: string, verbs, routeHandlers: RouteHandlers): Option<any> => {
+const mapMethods = (path: string, verbs, routeHandlers: RouteHandlers, dbInstance): Option<any> => {
     return verbs.flatMap(
         reduceEntries((configs, [method, spec]) => {
             const routeConfig = concatOrElse(
-                getRouteMiddleware(spec, routeHandlers, send),
+                getRouteMiddleware(spec, routeHandlers, send, dbInstance),
                 getSecurityMiddleware(spec),
             ).map((handler) => {
+                const { Joi } = koaJoiRouter;
                 const { summary, description } = spec;
                 return [
                     {

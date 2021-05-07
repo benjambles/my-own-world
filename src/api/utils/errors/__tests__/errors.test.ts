@@ -1,5 +1,5 @@
 import { createMockContext } from '@shopify/jest-koa-mocks';
-import { badResponseError, throwNoAccessError } from '../errors';
+import { badResponseError, throwNoAccessError } from '../errors.js';
 
 const ctx = createMockContext();
 const throwSpy = jest.spyOn(ctx, 'throw');

@@ -1,5 +1,5 @@
 import { Option, some } from 'ts-option';
-import { getFilledArray } from '../get-filled-array';
+import { getFilledArray } from '../get-filled-array.js';
 
 interface testParams extends Array<any> {
     [index: number]: [Option<any[]>, any];

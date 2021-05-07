@@ -1,4 +1,4 @@
-import { maybeProp } from '../functional/maybe-prop';
+import { maybeProp } from '../functional/maybe-prop.js';
 
 /**
  *

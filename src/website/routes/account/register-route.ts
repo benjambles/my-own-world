@@ -1,13 +1,15 @@
-import { layout } from '@ui/components/pages/layout';
-import { mockData } from '@ui/utils/mock-data';
-import { LitRoute } from '@ui/utils/templates/lit-route';
+import { layout } from '../../../ui/components/pages/layout.js';
+import { LitRoute, RouteMethods } from '../../../ui/utils/templates/lit-route.js';
 
-export const registerRoute: LitRoute = (litHtmlContext, render) => ({
-    method: 'get' as const,
-    path: '/join',
-    handler: async (ctx) => {
-        const page = await render(layout(litHtmlContext, mockData));
-        ctx.status = 200;
-        ctx.body = page;
-    },
-});
+export function registerRoute(getData): LitRoute {
+    return (litHtmlContext, render) => ({
+        method: RouteMethods.Get,
+        path: '/join',
+        handler: async (ctx) => {
+            const data = getData();
+            const page = await render(layout(litHtmlContext, data));
+            ctx.status = 200;
+            ctx.body = page;
+        },
+    });
+}

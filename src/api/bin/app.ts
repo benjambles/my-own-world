@@ -1,31 +1,34 @@
 #!/usr/bin/env node
-import 'module-alias/register';
 import { config } from 'dotenv';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import { resolve } from 'path';
-import { boot } from '@sharedServer/koa/app';
-import { initConnection } from '../db';
-import { getMiddleware } from '../middleware/get-middleware';
-import { loadRoutes } from '../routing/load-routes';
+import { boot } from '../../shared-server/koa/app.js';
+import { getDirPath } from '../../shared-server/utils/get-dir-path.js';
+import { initConnection } from '../db/index.js';
+import { getMiddleware } from '../middleware/get-middleware.js';
+import resources from '../resources/index.js';
+import { loadRoutes } from '../routing/load-routes.js';
 
-const env = config({ path: resolve(__dirname, '../.env') }).parsed;
+const modulePath = getDirPath(import.meta.url);
 
-const db = Object.freeze({
+const env = config({ path: resolve(modulePath, '../.env') }).parsed;
+
+const dbDetails = Object.freeze({
     user: env.MONGO_USER,
     database: env.MONGO_DB,
     password: env.MONGO_PASSWORD,
     url: env.MONGO_URL,
 });
 
-initConnection(db).then(() => {
+initConnection(dbDetails).then((dbInstance) => {
     const app = new Koa();
-    const routeHandlers = loadRoutes(resolve(__dirname, '../resources'), 'api');
+    const routeHandlers = loadRoutes(resources, dbInstance, 'api');
 
     boot({
         app,
         errorHandler,
-        isApi: false,
+        isApi: true,
         middleware: getMiddleware(env, app, routeHandlers),
         env,
     });

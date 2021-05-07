@@ -1,11 +1,12 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
+import type { ButtonSizes, ButtonTypes } from './types.js';
 
 interface ButtonData {
     text: string;
-    type?: 'button' | 'submit';
+    type?: ButtonTypes;
     action?: string;
-    size?: 'large' | 'normal' | 'small';
+    size?: ButtonSizes;
 }
 
 export const primaryButton: LitTpl<ButtonData> = (

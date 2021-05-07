@@ -1,13 +1,10 @@
-import { ObjectId } from 'mongodb';
-import { result, withCollection } from '../../db';
-
-const tales = withCollection('Tales');
+import { result } from '../../db/index.js';
 
 /**
  * Retrieve a tale with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export const getActiveTaleByUuid = async (uuid: string): Promise<Tale.TaleData> => {
+export const getActiveTaleByUuid = async (tales, uuid: string): Promise<Tale.TaleData> => {
     const data = await tales.findOne({
         uuid,
         isDeleted: false,
@@ -21,8 +18,9 @@ export const getActiveTaleByUuid = async (uuid: string): Promise<Tale.TaleData> 
  * @param offset - The number of records to skip
  */
 export const getActiveTales = async (
+    tales,
     limit: number = 10,
-    skip: number = 0
+    skip: number = 0,
 ): Promise<Tale.TaleData[]> => {
     const data = tales.find({ isDeleted: false }, { limit, skip }).toArray();
 
@@ -33,9 +31,9 @@ export const getActiveTales = async (
  * Create a new tale from validated data
  * @param data - The formatted data ready for storage
  */
-export const createTale = async (taleData: Tale.TaleData): Promise<Tale.TaleData> => {
+export const createTale = async (tales, taleData: Tale.TaleData): Promise<Tale.TaleData> => {
     const { insertedId } = await tales.insertOne(taleData);
-    const data = await getActiveTaleByUuid(insertedId);
+    const data = await getActiveTaleByUuid(tales, insertedId);
 
     return result('There was an error whilst creating the tale', data);
 };
@@ -44,11 +42,11 @@ export const createTale = async (taleData: Tale.TaleData): Promise<Tale.TaleData
  * Delete a tale with a given ID
  * @param uuid - A valid uuid
  */
-export const deleteTale = async (uuid: ObjectId): Promise<boolean> => {
+export const deleteTale = async (tales, uuid): Promise<boolean> => {
     const data = await tales.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true } },
-        { projection: { isDeleted: 1 } }
+        { projection: { isDeleted: 1 } },
     );
 
     return result('There was an error whilst updating the tale', data);
@@ -59,10 +57,7 @@ export const deleteTale = async (uuid: ObjectId): Promise<boolean> => {
  * @param uuid - A UUID representing the tale to be updated
  * @param data - An object representing a patch on a tale
  */
-export const updateTale = async (
-    uuid: ObjectId,
-    taleData: Tale.TaleData
-): Promise<Tale.TaleData> => {
+export const updateTale = async (tales, uuid, taleData: Tale.TaleData): Promise<Tale.TaleData> => {
     const data = await tales.findOneAndUpdate({ _id: uuid }, { $set: taleData });
 
     return result('There was an error whilst updating the tale', data);

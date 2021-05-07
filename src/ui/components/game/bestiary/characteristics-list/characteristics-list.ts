@@ -1,6 +1,9 @@
-import type { LitTpl } from '../../../../utils/templates/lit-tpl';
-import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
-import type { CharacteristicGroup, Characteristics } from '@gameLib/types/game/npc';
+import type {
+    CharacteristicGroup,
+    Characteristics,
+} from '../../../../../game-lib/types/game/npc.js';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './characteristics-list.css.json';
 /**
  *

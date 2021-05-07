@@ -1,4 +1,4 @@
-import { AttackType, CapValues } from '../types/game/actions';
+import type { AttackType, CapValues } from '../types/game/actions.js';
 
 interface CapResult {
     isSuccess: boolean;
@@ -10,11 +10,11 @@ interface RollResult {
     total: number;
 }
 
-export const capCheck = (
+export function capCheck(
     capValues: CapValues,
     attackType: AttackType,
     { total }: RollResult,
-): CapResult => {
+): CapResult {
     const attackTypes = {
         autoHit,
         autoCrit,
@@ -22,39 +22,39 @@ export const capCheck = (
         basic: attack,
     };
     return attackTypes[attackType](capValues, total);
-};
+}
 
 /**
  * Roll a CAP check that guarantees barrier defenses penetrated
  * @param capValues
  */
-const autoPierce = (capValues: CapValues, roll: number): CapResult => {
+function autoPierce(capValues: CapValues, roll: number): CapResult {
     return attack({ ...capValues, penetration: 20 }, roll);
-};
+}
 
 /**
  * Return the result for a CAP check that always hits, crits
  * and penetrates barriers
  */
-const autoCrit = (): CapResult => {
+function autoCrit(): CapResult {
     return {
         isCritical: true,
         isSuccess: true,
         passesBarrier: true,
     };
-};
+}
 
 /**
  * Return the result for a CAP check that always hits
  * but cannot crit or penetrate barriers
  */
-const autoHit = (): CapResult => {
+function autoHit(): CapResult {
     return {
         isCritical: false,
         isSuccess: true,
         passesBarrier: false,
     };
-};
+}
 
 /**
  * Rolls a CAP check, if the value is LTE the characters (c) value
@@ -64,7 +64,7 @@ const autoHit = (): CapResult => {
  * will ignore the opponents barrier defense.
  * @param capValues
  */
-const attack = (capValues: CapValues, roll: number): CapResult => {
+function attack(capValues: CapValues, roll: number): CapResult {
     const isCritical = roll <= capValues.critical;
 
     return {
@@ -72,4 +72,4 @@ const attack = (capValues: CapValues, roll: number): CapResult => {
         isSuccess: isCritical || roll <= capValues.accuracy,
         passesBarrier: isCritical || roll <= capValues.penetration,
     };
-};
+}

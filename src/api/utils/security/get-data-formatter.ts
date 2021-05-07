@@ -1,6 +1,6 @@
 import { none, Option, some } from 'ts-option';
-import { bHash } from './blowfish';
-import { encryptValue, hmac as getHmac } from './encryption';
+import { bHash } from './blowfish.js';
+import { encryptValue, hmac as getHmac } from './encryption.js';
 
 interface FormatOptions {
     encrypted?: string[];

@@ -1,5 +1,5 @@
 import { Joi } from 'koa-joi-router';
-import { buildJoiSpec } from '../build-joi-spec';
+import { buildJoiSpec } from '../build-joi-spec.js';
 
 test('buildJoiSpec', () => {
     const tests = [

@@ -1,6 +1,10 @@
-import * as db from './queries';
+import * as queries from './queries.js';
 
 /**
  *
  */
-export const getSystemKey = async (key: string): Promise<any> => await db.getSystemKey(key);
+export const getSystemKey = async (dbInstance, key: string): Promise<any> => {
+    const system = dbInstance.collection('System');
+
+    return await queries.getSystemKey(system, key);
+};

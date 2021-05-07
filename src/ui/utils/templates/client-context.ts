@@ -1,7 +1,7 @@
 import { html, Part, render, TemplateResult } from 'lit-html';
-import { classMap } from 'lit-html/directives/class-map';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { RouteMethods } from './lit-route';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import type { RouteMethods } from './lit-route.js';
 
 export { TemplateResult as ClientResult } from 'lit-html';
 

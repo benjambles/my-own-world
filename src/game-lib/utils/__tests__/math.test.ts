@@ -1,4 +1,4 @@
-import { clamp, cappedAdd, cappedSubtract, sum } from '../math';
+import { clamp, cappedAdd, cappedSubtract, sum } from '../math.js';
 
 test('sum', () => {
     expect(sum(0)).toEqual(0);

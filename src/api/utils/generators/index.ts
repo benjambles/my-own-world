@@ -1,5 +1,5 @@
 import { createInterface } from 'readline';
-import { createRoute } from './types/routes';
+import { createRoute } from './types/routes.js';
 
 const validTypes: string[] = ['route'];
 

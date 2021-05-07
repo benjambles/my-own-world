@@ -1,12 +1,12 @@
-import { RouteHandler } from '../../../routing/spec-parsing/get-route-middleware';
-import { partsResponse } from '../../../utils/routes/responses';
-import * as users from './users';
+import { RouteHandler } from '../../../routing/spec-parsing/get-route-middleware.js';
+import { partsResponse } from '../../../utils/routes/responses.js';
+import * as users from './users.js';
 
 /**
  * Get projects, optionally filtered by parameters
  * @route [GET] /projects/:projectId/users
  */
-export const getProjectUsers: RouteHandler = (send) => {
+export const getProjectUsers: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst fetching the projects user list.',
         status: 400,
@@ -15,7 +15,7 @@ export const getProjectUsers: RouteHandler = (send) => {
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
             const { projectId } = ctx.request.params;
-            const projectUsers = await users.get(projectId);
+            const projectUsers = await users.get(dbInstance, projectId);
             return partsResponse(projectUsers);
         });
     };

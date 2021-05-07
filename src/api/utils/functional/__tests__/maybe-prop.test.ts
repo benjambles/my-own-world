@@ -1,4 +1,4 @@
-import { maybeProp, maybePropIsFn, maybePropOr } from '../maybe-prop';
+import { maybeProp, maybePropIsFn, maybePropOr } from '../maybe-prop.js';
 
 test('maybeProp', () => {
     const obj = {

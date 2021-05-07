@@ -1,13 +1,10 @@
-import ObjectId from 'mongodb';
-import { result, withCollection } from '../../db';
-
-const projects = withCollection('Projects');
+import { result } from '../../db/index.js';
 
 /**
  * Retrieve a project with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export const getActiveProjectByUuid = async (uuid: ObjectId): Promise<Project.ProjectData> => {
+export const getActiveProjectByUuid = async (projects, uuid): Promise<Project.ProjectData> => {
     const data: Project.ProjectData = await projects.findOne({
         uuid,
         isDeleted: false,
@@ -22,6 +19,7 @@ export const getActiveProjectByUuid = async (uuid: ObjectId): Promise<Project.Pr
  * @param skip - The number of records to skip
  */
 export const getActiveProjects = async (
+    projects,
     limit: number = 10,
     skip: number = 0,
 ): Promise<Project.ProjectData[]> => {
@@ -42,10 +40,11 @@ export const getActiveProjects = async (
  * @param data - The formatted data ready for storage
  */
 export const createProject = async (
+    projects,
     projectData: Project.ProjectData,
 ): Promise<Project.ProjectData> => {
     const { insertedId } = await projects.insertOne(projectData);
-    const data = await getActiveProjectByUuid(insertedId);
+    const data = await getActiveProjectByUuid(projects, insertedId);
 
     return result('There was an error whilst creating the project', data);
 };
@@ -54,7 +53,7 @@ export const createProject = async (
  * Delete a project with a given ID
  * @param uuid - A valid uuid
  */
-export const deleteProject = async (uuid: ObjectId): Promise<boolean> => {
+export const deleteProject = async (projects, uuid): Promise<boolean> => {
     const data: boolean = await projects.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true } },
@@ -70,7 +69,8 @@ export const deleteProject = async (uuid: ObjectId): Promise<boolean> => {
  * @param data - An object representing a patch on a project
  */
 export const updateProject = async (
-    uuid: ObjectId,
+    projects,
+    uuid,
     projectData: Project.ProjectData,
 ): Promise<Project.ProjectData> => {
     const data: Project.ProjectData = await projects.findOneAndUpdate(

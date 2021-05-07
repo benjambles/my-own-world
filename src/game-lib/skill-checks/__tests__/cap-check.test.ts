@@ -1,4 +1,4 @@
-import { capCheck } from '../cap-check';
+import { capCheck } from '../cap-check.js';
 
 describe('CapTest', () => {
     const capValues = { critical: 3, accuracy: 10, penetration: 7 };

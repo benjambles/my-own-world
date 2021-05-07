@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import npcCardData from '../__tests__/npc-card.fixture';
-import { characteristicsList } from './characteristics-list';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import npcCardData from '../__tests__/npc-card.fixture.js';
+import { characteristicsList } from './characteristics-list.js';
 import './characteristics-list.css';
 
 export default {

@@ -1,7 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { heroCard } from './hero-card';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import './hero-card.css';
-import fixture from './__tests__/player-character.fixture';
+import { heroCard } from './hero-card.js';
+import fixture from './__tests__/player-character.fixture.js';
 
 export default {
     title: 'Game/Hero Card',

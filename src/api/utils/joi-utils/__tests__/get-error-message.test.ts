@@ -1,4 +1,4 @@
-import { getErrorMessage } from '../get-error-message';
+import { getErrorMessage } from '../get-error-message.js';
 
 test('getErrorMessage', () => {
     expect(getErrorMessage({ msg: "This hasn't got a value" })).toEqual("This hasn't got a value");

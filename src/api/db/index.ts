@@ -1,7 +1,6 @@
-import { Db, MongoClient } from 'mongodb';
+import MongoDB from 'mongodb';
 
-let db: Db;
-let client: MongoClient;
+let client;
 
 interface MongoConfig {
     database: string;
@@ -16,15 +15,13 @@ interface MongoConfig {
  */
 export const initConnection = async (config: MongoConfig) => {
     const connectionString = getConnectionString(config);
-    const client = await new MongoClient(connectionString, {
+    const client = await new MongoDB.MongoClient(connectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
 
     await client.connect();
-    db = client.db(config.database);
-
-    return db;
+    return client.db(config.database);
 };
 
 /**
@@ -33,12 +30,6 @@ export const initConnection = async (config: MongoConfig) => {
 export const closeConnection = () => {
     client && client.close();
 };
-
-/**
- * Returns a MongoDB collection
- * @param name
- */
-export const withCollection = (name: string) => db.collection(name);
 
 /**
  * On a null query response throw an error to the response handler otherwise return

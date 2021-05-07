@@ -1,5 +1,5 @@
-import { Middleware } from 'koa';
-import { throwNoAccessError } from '../errors/errors';
+import type { Middleware } from 'koa';
+import { throwNoAccessError } from '../errors/errors.js';
 
 /**
  * Returns a middleware that prevents users from accessing areas of the API based on their roles

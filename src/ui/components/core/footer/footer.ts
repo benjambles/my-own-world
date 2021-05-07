@@ -1,7 +1,7 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { link, LinkProps } from '../links/link';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { link, LinkProps } from '../links/link.js';
 import styles from './footer.css.json';
 
 export interface FooterData {
@@ -18,12 +18,13 @@ export interface FooterData {
 
 export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
     const { html } = context;
+    const currentYear = new Date().getFullYear();
 
     return html`
         ${lazyStylesheet(context, '/styles/core/footer/footer.css')}
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
-                <span>&copy; My Own World - 2020</span>
+                <span>&copy; My Own World - ${currentYear}</span>
                 <nav class="">${links.map((linkData) => link(context, linkData))}</nav>
             </div>
         </footer>

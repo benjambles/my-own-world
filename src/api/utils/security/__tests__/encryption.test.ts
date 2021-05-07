@@ -1,4 +1,4 @@
-import { decryptValue, encryptValue, hmac } from '../encryption';
+import { decryptValue, encryptValue, hmac } from '../encryption.js';
 
 const testStr = 'this is my value';
 const encrpytedResult =

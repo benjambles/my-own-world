@@ -1,17 +1,14 @@
-import { ObjectId } from 'mongodb';
-import { result, withCollection } from '../../../db';
-
-const users = withCollection('Users');
+import { result } from '../../../db/index.js';
 
 /**
  *
  * @param userId
  * @param props
  */
-export const getByUserId = async (userId: ObjectId): Promise<User.UserData> => {
+export const getByUserId = async (users, userId): Promise<User.UserData> => {
     const data = await users.findOne(
         { _id: userId, isDeleted: false },
-        { projection: { identities: 1 } }
+        { projection: { identities: 1 } },
     );
 
     return result('There was an error whilst fetching the identities for the user', data);
@@ -21,7 +18,7 @@ export const getByUserId = async (userId: ObjectId): Promise<User.UserData> => {
  *
  * @param data
  */
-export const create = async (userId, identityData): Promise<User.Identitfier> => {
+export const create = async (users, userId, identityData): Promise<User.Identitfier> => {
     const {
         identities: [identitiy],
     } = await users.findOneAndUpdate(
@@ -31,7 +28,7 @@ export const create = async (userId, identityData): Promise<User.Identitfier> =>
                 identities: identityData,
             },
         },
-        { projection: { identities: { $slice: -1 } }, returnNewDocument: true }
+        { projection: { identities: { $slice: -1 } }, returnNewDocument: true },
     );
 
     return result('There was an error whilst creating the identitiy', identitiy);
@@ -42,14 +39,14 @@ export const create = async (userId, identityData): Promise<User.Identitfier> =>
  * @param hash
  * @param uuid
  */
-export const remove = async (userId: ObjectId, hash: string): Promise<boolean> => {
+export const remove = async (users, userId, hash: string): Promise<boolean> => {
     const { matchedCount, modifiedCount } = await users.updateOne(
         { _id: userId, 'identities.hash': hash },
-        { $set: { 'identities.$.isDeleted': true } }
+        { $set: { 'identities.$.isDeleted': true } },
     );
 
     return result(
         `There was an error whilst deleting the identitiy with hash ${hash}`,
-        matchedCount && matchedCount === modifiedCount
+        matchedCount && matchedCount === modifiedCount,
     );
 };

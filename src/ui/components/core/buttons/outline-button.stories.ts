@@ -1,7 +1,7 @@
 import { select, text, withKnobs } from '@storybook/addon-knobs';
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context';
-import { outlineButton } from './outline-button';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
+import { outlineButton } from './outline-button.js';
 
 export default {
     title: 'Atoms/Buttons/Outline',

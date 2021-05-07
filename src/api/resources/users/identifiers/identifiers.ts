@@ -1,6 +1,8 @@
-import { ObjectId } from 'mongodb';
-import { decryptValue } from '../../../utils/security/encryption';
-import * as db from './queries';
+import mongoDB from 'mongodb';
+import { decryptValue } from '../../../utils/security/encryption.js';
+import * as queries from './queries.js';
+
+const { ObjectId } = mongoDB;
 
 export const model = {
     encrypted: ['identifier'],
@@ -14,10 +16,12 @@ export const model = {
  * @param props
  */
 export const getByUserId = async (
+    dbInstance,
     password: string,
     userId: string,
 ): Promise<User.Identitfier[]> => {
-    const { identities } = await db.getByUserId(new ObjectId(userId));
+    const users = dbInstance.collection('Users');
+    const { identities } = await queries.getByUserId(users, new ObjectId(userId));
 
     return identities.map((identity) => respond(password, identity));
 };
@@ -28,13 +32,15 @@ export const getByUserId = async (
  * @param data
  */
 export const create = async (
+    dbInstance,
     formatter,
     password: string,
     userId: string,
     data: any,
 ): Promise<User.Identitfier> => {
     const cleanData = await formatter(data);
-    const identity = await db.create(new ObjectId(userId), cleanData);
+    const users = dbInstance.collection('Users');
+    const identity = await queries.create(users, new ObjectId(userId), cleanData);
 
     return respond(password, identity);
 };
@@ -44,8 +50,10 @@ export const create = async (
  * @param userId
  * @param hash
  */
-export const remove = async (userId: string, hash: string): Promise<boolean> => {
-    return await db.remove(new ObjectId(userId), hash);
+export const remove = async (dbInstance, userId: string, hash: string): Promise<boolean> => {
+    const users = dbInstance.collection('Users');
+
+    return await queries.remove(users, new ObjectId(userId), hash);
 };
 
 /**

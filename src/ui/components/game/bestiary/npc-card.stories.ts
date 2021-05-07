@@ -1,5 +1,5 @@
-import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer';
-import { npcCard } from './npc-card';
+import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer.js';
+import { npcCard } from './npc-card.js';
 import './npc-card.css';
 import npcData from './__tests__/npc-card.fixture';
 

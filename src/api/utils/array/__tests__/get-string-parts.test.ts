@@ -1,4 +1,4 @@
-import { getStringParts } from '../get-string-parts';
+import { getStringParts } from '../get-string-parts.js';
 
 test('getStringParts', () => {
     expect(getStringParts('.', '')).toEqual([]);

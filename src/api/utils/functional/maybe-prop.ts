@@ -1,5 +1,5 @@
 import { option, Option, some } from 'ts-option';
-import { maybeFunction } from './maybe-function';
+import { maybeFunction } from './maybe-function.js';
 
 /**
  * Takes a property name, and an object and returns an Option of the result

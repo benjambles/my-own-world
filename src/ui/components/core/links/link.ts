@@ -1,4 +1,4 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
 
 export interface LinkProps {

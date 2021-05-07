@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { isDirectory, maybeIsDirectory } from '../is-directory';
+import { isDirectory, maybeIsDirectory } from '../is-directory.js';
 
 test('isDirectory', () => {
     const tests = [

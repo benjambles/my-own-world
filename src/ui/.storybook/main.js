@@ -12,11 +12,18 @@ module.exports = {
             return f;
         });
 
-        config.module.rules.push({
-            test: /\.css$/,
-            include: resolve(__dirname, '../components/'),
-            loaders: ['style-loader', 'css-loader', 'postcss-loader'],
-        });
+        config.module.rules.push(
+            {
+                test: /\.css$/,
+                include: resolve(__dirname, '../components/'),
+                loaders: ['style-loader', 'css-loader', 'postcss-loader'],
+            },
+            {
+                test: /\.(js)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        );
 
         return config;
     },

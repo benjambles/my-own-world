@@ -1,9 +1,8 @@
 import { DotenvParseOutput } from 'dotenv/types';
-import Koa, { DefaultContext, DefaultState, Middleware, ParameterizedContext } from 'koa';
-import { Joi } from 'koa-joi-router';
+import type Koa from 'koa';
+import koaJoiRouter from 'koa-joi-router';
 
-export type KoaContext = ParameterizedContext<DefaultState, DefaultContext>;
-
+export type KoaContext = Koa.ParameterizedContext<Koa.DefaultState, Koa.DefaultContext>;
 interface ProcessEnv {
     port: number;
     host: string;
@@ -14,7 +13,7 @@ interface BootHandlerOpts {
     app: Koa;
     isApi: boolean;
     errorHandler: (error: Error) => void;
-    middleware: Middleware[];
+    middleware: Koa.Middleware[];
     env: DotenvParseOutput;
 }
 
@@ -22,7 +21,7 @@ interface BootHandlerOpts {
  * Standard application runner flow
  * @param param0
  */
-export const boot = ({ app, isApi, errorHandler, middleware, env }: BootHandlerOpts) => {
+export function boot({ app, isApi, errorHandler, middleware, env }: BootHandlerOpts) {
     const envParams = getEnvParams(env);
     const { error, value } = validateEnvParams(envParams);
 
@@ -45,19 +44,19 @@ export const boot = ({ app, isApi, errorHandler, middleware, env }: BootHandlerO
     app.listen(port, host, (): void => {
         console.log('Listening on %s:%s', host, port);
     });
-};
+}
 
 /**
  *
  * @param process
  */
-const getEnvParams = (env: DotenvParseOutput): ProcessEnv => {
+function getEnvParams(env: DotenvParseOutput): ProcessEnv {
     return {
         nodeEnv: env.NODE_ENV ?? 'development',
         host: env.HOST ?? '0.0.0.0',
         port: parseInt(env.PORT, 10) ?? NaN,
     };
-};
+}
 
 /**
  * Ensures the the required parameters for a basic app to boot exist in
@@ -65,7 +64,9 @@ const getEnvParams = (env: DotenvParseOutput): ProcessEnv => {
  *
  * @param envParams
  */
-const validateEnvParams = (envParams: ProcessEnv) => {
+function validateEnvParams(envParams: ProcessEnv) {
+    const { Joi } = koaJoiRouter;
+
     return Joi.object({
         nodeEnv: Joi.string()
             .pattern(/^development|staging|production|testing&/)
@@ -75,4 +76,4 @@ const validateEnvParams = (envParams: ProcessEnv) => {
             .required(),
         port: Joi.number().port().required(),
     }).validate(envParams);
-};
+}

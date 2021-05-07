@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import npcData from '../__tests__/npc-card.fixture';
-import { statsBlock } from './stats-block';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import npcData from '../__tests__/npc-card.fixture.js';
+import { statsBlock } from './stats-block.js';
 import './stats-block.css';
 
 export default {

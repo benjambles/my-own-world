@@ -7,24 +7,17 @@
         "declarationMap": true,
         "allowJs": true,
         "checkJs": true,
-        "target": "es2017",
-        "module": "commonjs",
+        "target": "es2020",
+        "module": "esnext",
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
         "sourceMap": true,
         "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
         "rootDir": "./src",
-        "esModuleInterop": true,
         "moduleResolution": "node",
         "incremental": true,
-        "lib": ["es2019", "esnext.array", "dom"],
-        "paths": {
-            "@api/*": ["./src/api/*"],
-            "@gameLib/*": ["./src/game-lib/*"],
-            "@sharedServer/*": ["./src/shared-server/*"],
-            "@ui/*": ["./src/ui/*"],
-            "@website/*": ["./src/website/*"]
-        },
+        "lib": ["es2019", "esnext.array", "dom", "ES2020.String"],
     },
     "compileOnSave": true
 }

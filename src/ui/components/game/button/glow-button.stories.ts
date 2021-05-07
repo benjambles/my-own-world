@@ -1,5 +1,5 @@
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { glowButton } from './glow-button';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { glowButton } from './glow-button.js';
 import './glow-button.css';
 
 export default {

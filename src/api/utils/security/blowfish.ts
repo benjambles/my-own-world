@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
-import createError from 'http-errors';
-import { asyncStrToStr } from '../../typings/data';
+import * as createError from 'http-errors';
+import type { asyncStrToStr } from '../../typings/data.js';
 
 /**
  * Generate a blowfish based hash of a value using bcrypt
@@ -19,7 +19,7 @@ export const compareBHash = async (value: string, hash: string): Promise<true> =
     const isValid = await compare(value, hash);
 
     if (!isValid) {
-        throw createError(401, 'No match found');
+        throw new createError[401]('No match found');
     }
 
     return true;

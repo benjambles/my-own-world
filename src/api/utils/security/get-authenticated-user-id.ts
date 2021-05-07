@@ -1,4 +1,4 @@
-import { KoaContext } from '@sharedServer/koa/app';
+import type { KoaContext } from '../../../shared-server/koa/app.js';
 
 /**
  * Return the user that has been granted privaledges on the API
