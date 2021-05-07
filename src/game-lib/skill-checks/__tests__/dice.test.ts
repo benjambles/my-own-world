@@ -1,4 +1,4 @@
-import { Dice } from '../dice';
+import { Dice } from '../dice.js';
 
 describe.only('Dice', () => {
     it('exposes the core Dice types', () => {

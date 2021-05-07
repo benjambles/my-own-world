@@ -1,7 +1,7 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { link, LinkProps } from '../links/link';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { link, LinkProps } from '../links/link.js';
 import styles from './footer.css.json';
 
 export interface FooterData {

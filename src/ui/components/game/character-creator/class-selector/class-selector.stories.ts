@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import { classSelector } from './class-selector';
-import { ardent } from '../../character/class-card/__tests__/character-classes.fixture';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { classSelector } from './class-selector.js';
+import { ardent } from '../../character/class-card/__tests__/character-classes.fixture.js';
 import './class-selector.css';
 
 const render = getClientComponent(classSelector);

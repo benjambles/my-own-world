@@ -1,6 +1,6 @@
-import { KoaContext } from '@sharedServer/koa/app';
-import { isAdmin } from '../compares/is-admin';
-import { isUser } from '../compares/is-user';
+import type { KoaContext } from '../../../shared-server/koa/app.js';
+import { isAdmin } from '../compares/is-admin.js';
+import { isUser } from '../compares/is-user.js';
 
 /**
  * Map of functions to test against roles for granting access to endpoints

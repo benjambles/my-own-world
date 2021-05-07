@@ -2,7 +2,7 @@
     "verbose": false,
     "watch": ["dist/api", "dist/shared-server"],
     "delay": "1000",
-    "exec": "node dist/api/bin/app.js",
+    "exec": "node --experimental-json-modules dist/api/bin/app.js",
     "events": {
         "start": "cls || clear"
     }

@@ -1,6 +1,6 @@
-import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
-import { dataResponse, partsResponse } from '../../utils/routes/responses';
-import { getSystemKey } from './service';
+import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware.js';
+import { dataResponse, partsResponse } from '../../utils/routes/responses.js';
+import { getSystemKey } from './service.js';
 
 /**
  * Gets the API health
@@ -21,7 +21,7 @@ export const getHealth: RouteHandler = (send) => {
  * Gets the API version
  * @route [GET] /version
  */
-export const getVersion: RouteHandler = (send) => {
+export const getVersion: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'Service unavailable',
         status: 503,
@@ -29,7 +29,7 @@ export const getVersion: RouteHandler = (send) => {
 
     return async (ctx) => {
         await send(ctx, defaultError, async () => {
-            const { key, value } = await getSystemKey('api_version');
+            const { key, value } = await getSystemKey(dbInstance, 'api_version');
             dataResponse({
                 [key]: value,
             });

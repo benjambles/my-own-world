@@ -1,6 +1,6 @@
 import { renderToString } from '@popeindustries/lit-html-server';
-import { DotenvParseOutput } from 'dotenv/types';
-import Koa from 'koa';
+import type { DotenvParseOutput } from 'dotenv/types';
+import type Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
@@ -10,15 +10,18 @@ import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
 import { resolve } from 'path';
-import { errorHandler } from '@sharedServer/koa/error-handler';
-import { SERVER_CONTEXT } from '@ui/utils/templates/server-context';
-import { getRouteMiddleware } from './routing/get-route-middleware';
+import { errorHandler } from '../../shared-server/koa/error-handler.js';
+import { getDirPath } from '../../shared-server/utils/get-dir-path.js';
+import { SERVER_CONTEXT } from '../../ui/utils/templates/server-context.js';
+import { getRouteMiddleware } from './routing/get-route-middleware.js';
 
 /**
  * Initialize an app
  * @api public
  */
-export const getMiddleware = (env: DotenvParseOutput, app: Koa, routes): Koa.Middleware[] => {
+export function getMiddleware(env: DotenvParseOutput, app: Koa, routes): Koa.Middleware[] {
+    const modulePath = getDirPath(import.meta.url);
+
     return [
         logger(),
         conditionalGet(),
@@ -35,7 +38,7 @@ export const getMiddleware = (env: DotenvParseOutput, app: Koa, routes): Koa.Mid
         }), // Security layer
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
-        serve(resolve(__dirname, '../../ui/static')),
+        serve(resolve(modulePath, '../../ui/static')),
         ...getRouteMiddleware({
             router: router(),
             routes,
@@ -43,4 +46,4 @@ export const getMiddleware = (env: DotenvParseOutput, app: Koa, routes): Koa.Mid
             renderToString,
         }),
     ];
-};
+}

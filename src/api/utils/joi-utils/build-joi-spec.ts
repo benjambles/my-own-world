@@ -1,5 +1,5 @@
-import { wrap } from '../array/wrap';
-import { swaggerToJoiType } from './swagger-to-joi-type';
+import { wrap } from '../array/wrap.js';
+import { swaggerToJoiType } from './swagger-to-joi-type.js';
 
 interface SwaggerParam {
     name: string;

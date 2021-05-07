@@ -1,6 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { darkLink } from './dark-link';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { darkLink } from './dark-link.js';
 
 export default {
     title: 'Atoms/Links/Dark',

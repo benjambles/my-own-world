@@ -1,7 +1,9 @@
-import { ObjectId } from 'mongodb';
-import { getBasicUserDetails } from '../../users/queries';
-import { removePassword } from '../../users/users';
-import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './queries';
+import mongoDB from 'mongodb';
+import { getBasicUserDetails } from '../../users/queries.js';
+import { removePassword } from '../../users/users.js';
+import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './queries.js';
+
+const { ObjectId } = mongoDB;
 
 /**
  * Get a list of active projects
@@ -9,12 +11,14 @@ import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './querie
  * @param limit - The number of records to fetch
  * @param offset - The number of records to skip
  */
-export const get = async (projectId: string): Promise<any[]> => {
-    const projectUsers = await getActiveProjectUsers(new ObjectId(projectId));
+export const get = async (dbInstance, projectId: string): Promise<any[]> => {
+    const projects = dbInstance.collection('Projects');
+    const users = dbInstance.collection('Users');
+    const projectUsers = await getActiveProjectUsers(projects, new ObjectId(projectId));
 
     return Promise.all(
         projectUsers.map(async ({ id, role }) => {
-            const user = await getBasicUserDetails(new ObjectId(id));
+            const user = await getBasicUserDetails(users, new ObjectId(id));
             return { user: removePassword(user), role };
         }),
     );
@@ -26,9 +30,11 @@ export const get = async (projectId: string): Promise<any[]> => {
  * @param userId
  * @param roles
  */
-export const createUser = async (projectId, userId, roles): Promise<boolean> => {
+export const createUser = async (dbInstance, projectId, userId, roles): Promise<boolean> => {
     const roleIds = roles.map((id: string) => new ObjectId(id));
-    return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
+    const projects = dbInstance.collection('Projects');
+
+    return await setUserRoles(projects, new ObjectId(projectId), new ObjectId(userId), roleIds);
 };
 
 /**
@@ -37,9 +43,11 @@ export const createUser = async (projectId, userId, roles): Promise<boolean> => 
  * @param userId
  * @param roles
  */
-export const updateUserRoles = async (projectId, userId, roles): Promise<boolean> => {
+export const updateUserRoles = async (dbInstance, projectId, userId, roles): Promise<boolean> => {
     const roleIds = roles.map((id: string) => new ObjectId(id));
-    return await setUserRoles(new ObjectId(projectId), new ObjectId(userId), roleIds);
+    const projects = dbInstance.collection('Projects');
+
+    return await setUserRoles(projects, new ObjectId(projectId), new ObjectId(userId), roleIds);
 };
 
 /**
@@ -47,6 +55,8 @@ export const updateUserRoles = async (projectId, userId, roles): Promise<boolean
  * @param projectId
  * @param userId
  */
-export const deleteUser = async (projectId, userId): Promise<boolean> => {
-    return await deleteProjectUser(new ObjectId(projectId), new ObjectId(userId));
+export const deleteUser = async (dbInstance, projectId, userId): Promise<boolean> => {
+    const projects = dbInstance.collection('Projects');
+
+    return await deleteProjectUser(projects, new ObjectId(projectId), new ObjectId(userId));
 };

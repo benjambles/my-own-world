@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import { getAuthenticatedUserId } from '../get-authenticated-user-id';
+import { getAuthenticatedUserId } from '../get-authenticated-user-id.js';
 
 test('getAuthenticatedUserId', () => {
     const uuid = 'test-uuid';

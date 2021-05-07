@@ -1,6 +1,6 @@
 import { some } from 'ts-option';
-import { catchJoiErrors } from '../../../utils/middleware/catch-joi-errors';
-import { getRouteMiddleware } from '../get-route-middleware';
+import { catchJoiErrors } from '../../../utils/middleware/catch-joi-errors.js';
+import { getRouteMiddleware } from '../get-route-middleware.js';
 
 test('getRouteMiddleware', () => {
     async function _getUser() {}

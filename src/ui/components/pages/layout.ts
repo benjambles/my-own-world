@@ -1,6 +1,6 @@
-import type { LitTpl } from '../../utils/templates/lit-tpl';
-import { footer, FooterData } from '../core/footer/footer';
-import { header, HeaderData } from '../core/header/header';
+import type { LitTpl } from '../../utils/templates/lit-tpl.js';
+import { footer, FooterData } from '../core/footer/footer.js';
+import { header, HeaderData } from '../core/header/header.js';
 
 interface Data {
     meta: {
@@ -11,7 +11,7 @@ interface Data {
     [key: string]: any;
 }
 
-export const layout: LitTpl<any> = (context, data: Data, children?) => {
+export function layout(context, data: Data, children?): LitTpl<any> {
     const { html } = context;
 
     return html`
@@ -28,4 +28,4 @@ export const layout: LitTpl<any> = (context, data: Data, children?) => {
             </body>
         </html>
     `;
-};
+}

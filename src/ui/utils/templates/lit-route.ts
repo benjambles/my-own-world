@@ -1,5 +1,5 @@
-import { ClientContext, ClientRender, ClientRouteConfig } from './client-context';
-import { ServerContext, ServerRenderer, ServerRouteConfig } from './server-context';
+import { ClientContext, ClientRender, ClientRouteConfig } from './client-context.js';
+import { ServerContext, ServerRenderer, ServerRouteConfig } from './server-context.js';
 
 export enum RouteMethods {
     Get = 'get',

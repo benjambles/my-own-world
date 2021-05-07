@@ -1,5 +1,5 @@
-import Koa from 'koa';
-import { catchJoiErrors } from '../catch-joi-errors';
+import type Koa from 'koa';
+import { catchJoiErrors } from '../catch-joi-errors.js';
 
 test('catchJoiErrors', async () => {
     const ctxValid = {};
@@ -24,6 +24,6 @@ test('catchJoiErrors', async () => {
     };
 
     await expect(
-        catchJoiErrors((ctxInvalidWithMessage as unknown) as Koa.Context, async () => {})
+        catchJoiErrors((ctxInvalidWithMessage as unknown) as Koa.Context, async () => {}),
     ).rejects.toThrow();
 });

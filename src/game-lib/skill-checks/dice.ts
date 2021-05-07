@@ -1,4 +1,4 @@
-import { clamp, sum } from '../utils/math';
+import { clamp, sum } from '../utils/math.js';
 
 interface RollResult {
     rolls: number[];

@@ -1,6 +1,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { barLink } from './bar-link';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { barLink } from './bar-link.js';
 
 export default {
     title: 'Atoms/Links/Bar',

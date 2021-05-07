@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
-import npcData from '../__tests__/npc-card.fixture';
-import { turnOrder } from './turn-order';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import npcData from '../__tests__/npc-card.fixture.js';
+import { turnOrder } from './turn-order.js';
 import './turn-order.css';
 
 export default {

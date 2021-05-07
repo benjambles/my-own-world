@@ -1,5 +1,5 @@
-import type { LitTpl } from '../../../../../utils/templates/lit-tpl';
-import { lazyStylesheet } from '../../../../utils/lazy-stylesheet';
+import type { LitTpl } from '../../../../../utils/templates/lit-tpl.js';
+import { lazyStylesheet } from '../../../../utils/lazy-stylesheet.js';
 
 /**
  *

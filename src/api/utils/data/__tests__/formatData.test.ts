@@ -1,5 +1,5 @@
-import { getDataFormatter } from '../../security/get-data-formatter';
-import { formatData } from '../formatData';
+import { getDataFormatter } from '../../security/get-data-formatter.js';
+import { formatData } from '../formatData.js';
 
 test('formatData', async () => {
     const model = {

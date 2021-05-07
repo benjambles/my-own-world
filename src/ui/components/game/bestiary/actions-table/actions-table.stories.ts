@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer';
+import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import npcCardData from '../__tests__/npc-card.fixture';
-import { actionsTable } from './actions-table';
+import { actionsTable } from './actions-table.js';
 import './actions-table.css';
 
 export default {

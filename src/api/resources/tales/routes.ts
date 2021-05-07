@@ -1,14 +1,14 @@
-import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
-import { formatData } from '../../utils/data/formatData';
-import { partsResponse } from '../../utils/routes/responses';
-import { getDataFormatter } from '../../utils/security/get-data-formatter';
-import * as tales from './tales';
+import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware.js';
+import { formatData } from '../../utils/data/formatData.js';
+import { partsResponse } from '../../utils/routes/responses.js';
+import { getDataFormatter } from '../../utils/security/get-data-formatter.js';
+import * as tales from './tales.js';
 
 /**
  * Get tales, optionally filtered by parameters
  * @route [GET] /tales
  */
-export const getTales: RouteHandler = (send) => {
+export const getTales: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst fetching tales.',
         status: 400,
@@ -16,7 +16,7 @@ export const getTales: RouteHandler = (send) => {
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
             const { limit = 10, offset = 0 }: DbGet = ctx.request.query;
-            const talesData: Tale.TaleData[] = await tales.get(limit, offset);
+            const talesData: Tale.TaleData[] = await tales.get(dbInstance, limit, offset);
 
             return partsResponse(talesData);
         });
@@ -27,7 +27,7 @@ export const getTales: RouteHandler = (send) => {
  * Create a new tale
  * @route [POST] /tales
  */
-export const createTale: RouteHandler = (send) => {
+export const createTale: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst saving the tale',
         status: 400,
@@ -36,6 +36,7 @@ export const createTale: RouteHandler = (send) => {
         await send(ctx, defaultError, async (ctx) => {
             const tale = ctx.request.body as Tale.Request;
             const taleData: Tale.TaleData = await tales.create(
+                dbInstance,
                 formatData(getDataFormatter(ctx.env.ENC_SECRET, tales.model)),
                 tale,
             );
@@ -49,14 +50,14 @@ export const createTale: RouteHandler = (send) => {
  * Get a tale and return it's data object
  * @route [GET] /tales/:taleId
  */
-export const getTaleById: RouteHandler = (send) => {
+export const getTaleById: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst fetching the tale.',
         status: 400,
     };
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
-            const taleData = await tales.getOne(ctx.request.params.taleId);
+            const taleData = await tales.getOne(dbInstance, ctx.request.params.taleId);
 
             return partsResponse(taleData);
         });
@@ -67,7 +68,7 @@ export const getTaleById: RouteHandler = (send) => {
  * Update a tale and return the updated data
  * @route [PUT] /tales/:taleId
  */
-export const updateTaleById: RouteHandler = (send) => {
+export const updateTaleById: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst updating the tale.',
         status: 400,
@@ -75,6 +76,7 @@ export const updateTaleById: RouteHandler = (send) => {
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
             const taleUpdated = await tales.update(
+                dbInstance,
                 formatData(getDataFormatter(ctx.env.ENC_SECRET, tales.model)),
                 ctx.request.params.taleId,
                 ctx.request.body as Tale.TaleData,
@@ -89,14 +91,14 @@ export const updateTaleById: RouteHandler = (send) => {
  * Mark a tale as deleted
  * @route [DELETE] /tales/:taleId
  */
-export const deleteTaleById: RouteHandler = (send) => {
+export const deleteTaleById: RouteHandler = (send, dbInstance) => {
     const defaultError = {
         message: 'There was an error whilst deleting the tale.',
         status: 400,
     };
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
-            const taleDeleted = await tales.remove(ctx.request.params.taleId);
+            const taleDeleted = await tales.remove(dbInstance, ctx.request.params.taleId);
 
             return partsResponse(taleDeleted);
         });

@@ -1,6 +1,8 @@
-import { getAccessChecker } from '../../utils/middleware/get-access-checker';
-import { bindOptions } from '../../utils/routes/bind-options';
-import * as config from './config.json';
+import { getAccessChecker } from '../../utils/middleware/get-access-checker.js';
+import { bindOptions } from '../../utils/routes/bind-options.js';
+import translationsConfig from './config.json';
+
+export const config = translationsConfig;
 
 /**
  * Routes on /users and /users/*

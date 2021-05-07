@@ -1,4 +1,4 @@
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 /**
  * Binds access roles for the current route to the Koa context for authorization checks

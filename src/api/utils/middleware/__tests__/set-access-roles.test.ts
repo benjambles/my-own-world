@@ -1,5 +1,5 @@
 import { createMockContext } from '@shopify/jest-koa-mocks';
-import { setAccessRoles } from '../set-access-roles';
+import { setAccessRoles } from '../set-access-roles.js';
 
 test('setAccessRoles', () => {
     const roles = ['role:user', 'role:owner'];

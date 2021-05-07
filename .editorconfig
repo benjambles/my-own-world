@@ -1,2 +1,10 @@
-indent_style = tab
+root = true
+
+[*]
+charset = utf-8
 indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false

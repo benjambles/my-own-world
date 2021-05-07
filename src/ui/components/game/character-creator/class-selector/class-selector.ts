@@ -1,5 +1,5 @@
-import type { LitTpl } from '../../../../utils/templates/lit-tpl';
-import { classCard, ClassDetails } from '../../character/class-card/class-card';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { classCard, ClassDetails } from '../../character/class-card/class-card.js';
 import styles from './class-selector.css.json';
 
 interface ClassSelector {

@@ -1,4 +1,4 @@
-import { ActionSpeeds } from './actions';
+import type { ActionSpeeds } from './actions.js';
 
 export type UseTypes = 'combat' | 'crossroad' | 'custom' | 'role-playing' | 'encounter';
 export type UseLimits = 'combat' | 'campaign' | 'milestone' | 'times';

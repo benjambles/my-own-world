@@ -1,4 +1,4 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 
 export interface InputData {
     id: string;

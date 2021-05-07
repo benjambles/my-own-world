@@ -1,4 +1,4 @@
-import { maybeFunction } from '../maybe-function';
+import { maybeFunction } from '../maybe-function.js';
 
 test('maybeFunction', () => {
     expect(maybeFunction(async () => {}).isDefined).toEqual(true);

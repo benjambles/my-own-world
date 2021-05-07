@@ -1,5 +1,5 @@
 import { some } from 'ts-option';
-import { getDataFormatter } from '../get-data-formatter';
+import { getDataFormatter } from '../get-data-formatter.js';
 
 test('getDataFormatter', async () => {
     const formatNoModel = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG', {});

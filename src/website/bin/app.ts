@@ -1,15 +1,17 @@
 #!/usr/bin/env node
-import 'module-alias/register';
 import { config } from 'dotenv';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import { resolve } from 'path';
-import { boot } from '@sharedServer/koa/app';
-import { getMiddleware } from '../middleware/get-middleware';
-import { routes } from '../routes/routes';
+import { boot } from '../../shared-server/koa/app.js';
+import { getDirPath } from '../../shared-server/utils/get-dir-path.js';
+import { getMiddleware } from '../middleware/get-middleware.js';
+import { routes } from '../routes/routes.js';
+
+const modulePath = getDirPath(import.meta.url);
 
 const app = new Koa();
-const env = config({ path: resolve(__dirname, '../.env') }).parsed;
+const env = config({ path: resolve(modulePath, '../.env') }).parsed;
 
 boot({
     app,

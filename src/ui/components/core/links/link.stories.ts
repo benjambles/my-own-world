@@ -1,6 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer';
-import { link } from './link';
+import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { link } from './link.js';
 
 export default {
     title: 'Atoms/Links/Light',

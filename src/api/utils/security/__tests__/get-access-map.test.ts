@@ -1,5 +1,5 @@
 import { createMockContext } from '@shopify/jest-koa-mocks';
-import { getAccessMap } from '../get-access-map';
+import { getAccessMap } from '../get-access-map.js';
 
 test('getAccessMap', () => {
     const tests = [

@@ -1,12 +1,12 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { actionsTable } from './actions-table/actions-table';
-import { characteristicsList } from './characteristics-list/characteristics-list';
-import { actionGrid } from './grid/grid';
+import type { NPCCard } from '../../../../game-lib/types/game/npc.js';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { actionsTable } from './actions-table/actions-table.js';
+import { characteristicsList } from './characteristics-list/characteristics-list.js';
+import { actionGrid } from './grid/grid.js';
 import cardStyles from './npc-card.css.json';
-import type { NPCCard } from '@gameLib/types/game/npc';
-import { statsBlock } from './stats-block/stats-block';
-import { turnOrder } from './turn-order/turn-order';
+import { statsBlock } from './stats-block/stats-block.js';
+import { turnOrder } from './turn-order/turn-order.js';
 
 export const npcCard: LitTpl<NPCCard> = (
     context,

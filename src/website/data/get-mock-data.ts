@@ -1,3 +1,5 @@
-import { mockData } from '@ui/utils/mock-data';
+import { mockData } from '../../ui/utils/mock-data.js';
 
-export const getMockData = () => mockData;
+export function getMockData() {
+    return mockData;
+}

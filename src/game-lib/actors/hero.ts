@@ -1,27 +1,27 @@
-import { HeroData } from '../types/game/hero';
-import { clamp } from '../utils/math';
+import type { HeroData } from '../types/game/hero.js';
+import { clamp } from '../utils/math.js';
 
 /**
  *
  * @param hero
  */
-export const getCurrentActionPoints = (hero: HeroData): number => {
+export function getCurrentActionPoints(hero: HeroData): number {
     return hero.actionPoints.current ?? 0;
-};
+}
 
 /**
  *
  * @param hero
  * @param newTotal
  */
-export const setCurrentActionPoints = (hero: HeroData, newTotal: number) => {
+export function setCurrentActionPoints(hero: HeroData, newTotal: number) {
     return { ...hero, actionPoints: { ...hero.actionPoints, current: newTotal } };
-};
+}
 
 /**
  *
  * @param hero
  */
-export const getMaxActionPoints = (hero: HeroData): number => {
+export function getMaxActionPoints(hero: HeroData): number {
     return clamp(0, 4, hero.actionPoints.max || 4);
-};
+}

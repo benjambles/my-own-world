@@ -1,4 +1,4 @@
-import { getUUID } from '../get-uuid';
+import { getUUID } from '../get-uuid.js';
 
 test('getUUID', () => {
     const result = getUUID('95fe5ad9-4f5b-4683-a902-747aaa31e00f', 'test value');

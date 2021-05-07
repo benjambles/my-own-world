@@ -1,4 +1,4 @@
-import { dataResponse, partsResponse } from '../responses';
+import { dataResponse, partsResponse } from '../responses.js';
 
 test('partsResponse', () => {
     const expectedResult = {

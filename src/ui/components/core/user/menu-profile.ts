@@ -1,7 +1,7 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet';
-import { barLink } from '../links/bar-link';
-import { link } from '../links/link';
+import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
+import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { barLink } from '../links/bar-link.js';
+import { link } from '../links/link.js';
 import styles from './menu-profile.css.json';
 
 export interface MenuProfileData {

@@ -1,5 +1,5 @@
-import * as Access from '../../../utils/middleware/set-access-roles';
-import { getSecurityMiddleware } from '../get-security-middleware';
+import * as Access from '../../../utils/middleware/set-access-roles.js';
+import { getSecurityMiddleware } from '../get-security-middleware.js';
 
 test('getSecurityMiddleware', () => {
     jest.spyOn(Access, 'setAccessRoles').mockImplementation(() => async () => {});

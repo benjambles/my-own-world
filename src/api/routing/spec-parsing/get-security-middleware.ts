@@ -1,7 +1,7 @@
-import Koa from 'koa';
-import { Option } from 'ts-option';
-import { maybePropOr } from '../../utils/functional/maybe-prop';
-import { setAccessRoles } from '../../utils/middleware/set-access-roles';
+import type Koa from 'koa';
+import type { Option } from 'ts-option';
+import { maybePropOr } from '../../utils/functional/maybe-prop.js';
+import { setAccessRoles } from '../../utils/middleware/set-access-roles.js';
 
 /**
  * Takes an object representing a routes security configuration and returns an array containing

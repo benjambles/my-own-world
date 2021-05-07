@@ -1,5 +1,5 @@
-import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer';
-import { footer } from './footer';
+import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer.js';
+import { footer } from './footer.js';
 import './footer.css';
 
 export default {

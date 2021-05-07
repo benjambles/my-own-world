@@ -1,13 +1,15 @@
-import { terms } from '@ui/components/pages/public/terms';
-import { LitRoute, RouteMethods } from '@ui/utils/templates/lit-route';
+import { terms } from '../../../ui/components/pages/public/terms.js';
+import { LitRoute, RouteMethods } from '../../../ui/utils/templates/lit-route.js';
 
-export const termsRoute = (getData): LitRoute => (litHtmlContext, render) => ({
-    method: RouteMethods.Get,
-    path: '/terms',
-    handler: async (ctx) => {
-        const data = getData();
-        const page = await render(terms(litHtmlContext, data));
-        ctx.status = 200;
-        ctx.body = page;
-    },
-});
+export function termsRoute(getData): LitRoute {
+    return (litHtmlContext, render) => ({
+        method: RouteMethods.Get,
+        path: '/terms',
+        handler: async (ctx) => {
+            const data = getData();
+            const page = await render(terms(litHtmlContext, data));
+            ctx.status = 200;
+            ctx.body = page;
+        },
+    });
+}

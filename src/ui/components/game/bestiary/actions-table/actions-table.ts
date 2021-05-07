@@ -1,6 +1,6 @@
-import type { Action, ActionGroup, Actions } from '@gameLib/types/game/npc';
-import type { LitTpl } from '../../../../utils/templates/lit-tpl';
-import { lazyStylesheet } from '../../../utils/lazy-stylesheet';
+import type { Action, ActionGroup, Actions } from '../../../../../game-lib/types/game/npc.js';
+import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './actions-table.css.json';
 
 /**

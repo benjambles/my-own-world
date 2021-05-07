@@ -1,7 +1,7 @@
-import { LitRoute } from '../../../ui/utils/templates/lit-route';
-import { getMockData } from '../../data/get-mock-data';
-import { accountRoute } from './account-route';
-import { registerRoute } from './register-route';
+import type { LitRoute } from '../../../ui/utils/templates/lit-route.js';
+import { getMockData } from '../../data/get-mock-data.js';
+import { accountRoute } from './account-route.js';
+import { registerRoute } from './register-route.js';
 
 export const accountRoutes: LitRoute[] = [accountRoute, registerRoute].map((route) =>
     route(getMockData),

@@ -1,4 +1,4 @@
-import { Item } from './items';
+import type { Item } from './items.js';
 
 export interface Milestone {
     title: string;

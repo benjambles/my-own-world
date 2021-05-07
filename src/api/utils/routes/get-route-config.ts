@@ -1,4 +1,4 @@
-import { getStringParts } from '../array/get-string-parts';
+import { getStringParts } from '../array/get-string-parts.js';
 
 export const getRouteConfig = (routeConfig, state) => {
     const pathParts = getStringParts('/', state.route?.path ?? '');

@@ -1,6 +1,8 @@
-import { ObjectId } from 'mongodb';
-import { compareBHash } from '../../utils/security/blowfish';
-import * as db from './queries';
+import mongoDB from 'mongodb';
+import { compareBHash } from '../../utils/security/blowfish.js';
+import * as queries from './queries.js';
+
+const { ObjectId } = mongoDB;
 
 export const model = {
     encrypted: ['email'],
@@ -22,18 +24,24 @@ export const removePassword = (user: User.UserData): User.UserData => {
  * @param limit - The number of records to fetch
  * @param offset - The number of records to skip
  */
-export const get = async (limit: number = 10, offset: number = 0): Promise<User.UserData[]> => {
-    const users = await db.getActiveUsers(limit, offset);
+export const get = async (
+    dbInstance,
+    limit: number = 10,
+    offset: number = 0,
+): Promise<User.UserData[]> => {
+    const users = dbInstance.collection('Users');
+    const userProfiles = await queries.getActiveUsers(users, limit, offset);
 
-    return users.map(removePassword);
+    return userProfiles.map(removePassword);
 };
 
 /**
  * Fetches a user record from the database using the uuid as the search value
  * @param uuid - A valid uuid
  */
-export const getOne = async (uuid: string): Promise<User.UserData> => {
-    const user = await db.getActiveUserByUuid(new ObjectId(uuid));
+export const getOne = async (dbInstance, uuid: string): Promise<User.UserData> => {
+    const users = dbInstance.collection('Users');
+    const user = await queries.getActiveUserByUuid(users, new ObjectId(uuid));
 
     return removePassword(user);
 };
@@ -42,8 +50,9 @@ export const getOne = async (uuid: string): Promise<User.UserData> => {
  * Fetches a user record from the database using the email address as the search value
  * @param email - A valid email address
  */
-export const getByEmail = async (identifier: string): Promise<User.UserData> => {
-    const user = await db.getActiveUserByIdentifier(identifier);
+export const getByEmail = async (dbInstance, identifier: string): Promise<User.UserData> => {
+    const users = dbInstance.collection('Users');
+    const user = await queries.getActiveUserByIdentifier(users, identifier);
 
     return user;
 };
@@ -52,9 +61,14 @@ export const getByEmail = async (identifier: string): Promise<User.UserData> => 
  * Creates a new user record in the database
  * @param data - The fields required to create a new user record
  */
-export const create = async (formatter, data: User.UserData): Promise<User.UserData> => {
+export const create = async (
+    dbInstance,
+    formatter,
+    data: User.UserData,
+): Promise<User.UserData> => {
     const cleanData = await formatter(data);
-    const user = await db.createUser(cleanData);
+    const users = dbInstance.collection('Users');
+    const user = await queries.createUser(users, cleanData);
 
     return removePassword(user);
 };
@@ -65,12 +79,14 @@ export const create = async (formatter, data: User.UserData): Promise<User.UserD
  * @param data - An object representing a portion of a user object
  */
 export const update = async (
+    dbInstance,
     formatter,
     uuid: string,
     data: User.UserData,
 ): Promise<User.UserData> => {
     const cleanData = await formatter(data);
-    const user = await db.updateUser(new ObjectId(uuid), cleanData);
+    const users = dbInstance.collection('Users');
+    const user = await queries.updateUser(users, new ObjectId(uuid), cleanData);
 
     return removePassword(user);
 };
@@ -79,8 +95,10 @@ export const update = async (
  * Mark a user as inactive
  * @param uuid - The UUID of the user
  */
-export const remove = async (uuid: string): Promise<boolean> => {
-    return await db.deleteUser(new ObjectId(uuid));
+export const remove = async (dbInstance, uuid: string): Promise<boolean> => {
+    const users = dbInstance.collection('Users');
+
+    return await queries.deleteUser(users, new ObjectId(uuid));
 };
 
 /**
@@ -89,10 +107,12 @@ export const remove = async (uuid: string): Promise<boolean> => {
  * @param password - A plain text password
  */
 export const authenticate = async (
+    dbInstance,
     identifier: string,
     password: string,
 ): Promise<User.UserData> => {
-    const user = await db.getActiveUserByIdentifier(identifier);
+    const users = dbInstance.collection('Users');
+    const user = await queries.getActiveUserByIdentifier(users, identifier);
     await compareBHash(password, user.password);
 
     return removePassword(user);

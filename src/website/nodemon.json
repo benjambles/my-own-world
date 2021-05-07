@@ -2,7 +2,7 @@
     "verbose": false,
     "watch": ["dist/website", "dist/ui", "dist/shared-server", "dist/game-lib"],
     "delay": "1000",
-    "exec": "node dist/website/bin/app.js",
+    "exec": "node --experimental-json-modules dist/website/bin/app.js",
     "events": {
         "start": "cls || clear"
     }

@@ -1,4 +1,4 @@
-import { HeroData } from '../../../../../../types/game/hero';
+import { HeroData } from '../../../../../../game-lib/types/game/hero.js';
 
 const mockHero: HeroData = {
     name: 'Eva Lumier',

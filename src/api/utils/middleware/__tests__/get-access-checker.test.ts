@@ -1,6 +1,6 @@
-import Koa from 'koa';
-import { getAccessMap } from '../../security/get-access-map';
-import { getAccessChecker } from '../get-access-checker';
+import type Koa from 'koa';
+import { getAccessMap } from '../../security/get-access-map.js';
+import { getAccessChecker } from '../get-access-checker.js';
 
 test('getAccessChecker', async () => {
     const checkerNoMap = getAccessChecker();

@@ -1,6 +1,6 @@
-import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware';
-import { getRouteConfig } from './get-route-config';
-import { dataResponse } from './responses';
+import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware.js';
+import { getRouteConfig } from './get-route-config.js';
+import { dataResponse } from './responses.js';
 
 /**
  * Returns a middleware for generating OPTIONS and returning
