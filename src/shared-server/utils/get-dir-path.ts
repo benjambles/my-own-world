@@ -1,6 +1,6 @@
-import { parse } from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 export function getDirPath(importUrl: string): string {
-    const { pathname } = new URL(importUrl);
-    return parse(pathname.replace(/^(\/)(.*)$/, '$2')).dir;
+    return dirname(fileURLToPath(importUrl));
 }
