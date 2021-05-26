@@ -1,10 +1,9 @@
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { darkLink } from './dark-link.js';
 
 export default {
     title: 'Atoms/Links/Dark',
-    decorators: [withKnobs, linkStoryRenderer],
+    decorators: [linkStoryRenderer],
     parameters: {
         componentSubtitle: 'A wrapper around the standard anchor tag for dark backgrounds',
         docs: {
@@ -39,17 +38,5 @@ export const bold = () => {
         text: 'Bold Link',
         href: '/',
         display: { bold: true },
-    });
-};
-
-export const playground = () => {
-    return render({
-        text: text('text', 'Click here', 'Attributes'),
-        href: text('href', '/', 'Attributes'),
-        display: {
-            active: boolean('display.active', false, 'Display Props'),
-            bold: boolean('display.bold', false, 'Display Props'),
-            underlined: boolean('display.underlined', false, 'Display Props'),
-        },
     });
 };

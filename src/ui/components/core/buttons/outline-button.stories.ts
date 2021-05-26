@@ -1,4 +1,3 @@
-import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
 import { outlineButton } from './outline-button.js';
@@ -14,15 +13,19 @@ export default {
 
 const render = getClientComponent(outlineButton);
 
-export const playground = () => {
-    return render({
-        text: text('text', 'Button text', 'Required'),
-        type: select('type', ['button', 'submit'], undefined, 'Optional'),
-        action: text('action', undefined, 'Optional'),
-        size: select('size', ['normal', 'large', 'small'], undefined, 'Optional'),
-    });
+export const playground = (args) => render(args);
+playground.args = {
+    action: undefined,
+    size: 'normal',
+    text: 'Button Text',
+    type: 'button',
 };
-playground.decorators = [withKnobs];
+playground.argTypes = {
+    action: { control: { type: 'text', required: false } },
+    size: { control: { type: 'select' }, options: ['normal', 'large', 'small'] },
+    text: { control: { type: 'text', required: true } },
+    type: { control: { type: 'select' }, options: ['button', 'submit'] },
+};
 
 export const buttonSizes = () => {
     return CLIENT_CONTEXT.html` 

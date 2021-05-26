@@ -1,4 +1,3 @@
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { link } from './link.js';
 
@@ -40,16 +39,3 @@ export const bold = () => {
         display: { bold: true },
     });
 };
-
-export const playground = () => {
-    return render({
-        text: text('text', 'Click here', 'Attributes'),
-        href: text('href', '/', 'Attributes'),
-        display: {
-            active: boolean('display.active', false, 'Display Props'),
-            bold: boolean('display.bold', false, 'Display Props'),
-            underlined: boolean('display.underlined', false, 'Display Props'),
-        },
-    });
-};
-playground.decorators = [withKnobs];

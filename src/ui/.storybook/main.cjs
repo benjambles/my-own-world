@@ -24,12 +24,15 @@ module.exports = {
             name: '@storybook/addon-postcss',
             options: {
                 postcssLoaderOptions: {
-                    config: resolve(__dirname, '../postcss.config.cjs'),
+                    implementation: require('postcss'),
+                    postcssOptions: {
+                        config: resolve(__dirname, '../postcss.config.cjs'),
+                    },
                 },
             },
         },
         '@storybook/addon-a11y',
-        '@storybook/addon-knobs',
+        '@storybook/addon-controls',
         '@storybook/addon-essentials',
     ],
 };
