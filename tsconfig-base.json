@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "skipLibCheck": true,
-        "outDir": "./dist",
         "pretty": true,
         "declaration": true,
         "declarationMap": true,
@@ -14,7 +13,6 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-        "rootDir": "./src",
         "moduleResolution": "node",
         "incremental": true,
         "lib": ["es2019", "esnext.array", "dom", "ES2020.String"],

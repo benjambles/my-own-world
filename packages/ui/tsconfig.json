@@ -1,0 +1,26 @@
+{
+    "extends": "../../tsconfig-base.json",
+    "compilerOptions": {
+        "tsBuildInfoFile": "buildcache",
+        "composite": true,
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true,
+                "rules": {
+                    "no-unknown-tag-name": "off",
+                    "no-unknown-event": "warn"
+                }
+            }
+        ],
+        "rootDir": "src",
+        "outDir": "lib"
+    },
+    "references": [
+        {
+            "path": "../game-lib"
+        }
+    ],
+    "include": ["src/**/*.ts", "src/**/*.css.json"],
+    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"]
+}

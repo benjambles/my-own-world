@@ -1,12 +1,12 @@
 {
-    "src/**/*.{js,ts}": [
+    "packages/*/src/**/*.{js,ts}": [
         "prettier --write",
-        "eslint --fix",
+        "eslint --fix --ext .js,.ts",
     ],
-    "src/ui/**/*.css": [
+    "packages/ui/src/**/*.css": [
         "prettier --write"
     ],
-    "src/**/*.json": [
+    "packages/*/src/**/*.json": [
         "prettier --write"
     ]
 }

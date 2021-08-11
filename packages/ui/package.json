@@ -1,0 +1,57 @@
+{
+    "name": "@benjambles/mow-ui",
+    "version": "1.0.0",
+    "description": "Design system for My Own World application",
+    "exports": {
+        "./lib/*": "./lib/*",
+        "./src/*": "./src/*"
+    },
+    "type": "module",
+    "browserslist": [
+        "> 1% and last 2 versions",
+        "not IE 11"
+    ],
+    "scripts": {
+        "build": "npm run css && npm run ts",
+        "postbuild": "npm run copy",
+        "ts": "tsc -b -v",
+        "ts:clean": "tsc -b --clean",
+        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir lib/static/styles",
+        "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 lib",
+        "test": "jest",
+        "storybook": "start-storybook --modern -s lib/static"
+    },
+    "author": "Ben Allen",
+    "license": "ISC",
+    "dependencies": {
+        "@benjambles/mow-game": "../game-lib",
+        "@popeindustries/lit-html-server": "3.1.0",
+        "lit-element": "2.5.1",
+        "lit-html": "1.4.1"
+    },
+    "devDependencies": {
+        "@storybook/addon-a11y": "6.4.0-alpha.24",
+        "@storybook/addon-essentials": "6.4.0-alpha.24",
+        "@storybook/addon-postcss": "2.0.0",
+        "@storybook/addons": "6.4.0-alpha.24",
+        "@storybook/builder-webpack5": "6.4.0-alpha.24",
+        "@storybook/html": "6.4.0-alpha.24",
+        "@storybook/manager-webpack5": "6.4.0-alpha.24",
+        "@types/jest": "26.0.24",
+        "copyfiles": "2.4.1",
+        "css-loader": "6.2.0",
+        "cssnano": "5.0.7",
+        "jest": "27.0.6",
+        "jest-ts-webcompat-resolver": "^1.0.0",
+        "postcss": "8.3.6",
+        "postcss-cli": "8.3.1",
+        "postcss-import": "14.0.2",
+        "postcss-loader": "6.1.1",
+        "postcss-modules": "4.2.2",
+        "style-loader": "3.2.1",
+        "ts-jest": "27.0.4",
+        "ts-lit-plugin": "1.2.1",
+        "ts-loader": "9.2.4",
+        "typescript": "4.3.5"
+    }
+}
