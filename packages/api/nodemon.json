@@ -1,6 +1,6 @@
 {
     "verbose": false,
-    "watch": ["dist/api", "dist/shared-server"],
+    "watch": ["./lib", "../shared-server/lib"],
     "delay": "1000",
     "exec": "node --experimental-json-modules lib/bin/app.js",
     "events": {
