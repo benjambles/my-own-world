@@ -3,10 +3,6 @@
     "version": "1.0.0",
     "description": "Tools for world builders",
     "main": "index.js",
-    "browserslist": [
-        "> 1% and last 2 versions",
-        "not IE 11"
-    ],
     "type": "module",
     "workspaces": [
         "packages/*"

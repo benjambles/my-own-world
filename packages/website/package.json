@@ -4,6 +4,10 @@
     "description": "Tools for world builders",
     "main": "index.js",
     "type": "module",
+    "browserslist": [
+        "> 1% and last 2 versions",
+        "not IE 11"
+    ],
     "scripts": {
         "build": "npm run ts",
         "ts": "tsc -b -v",
