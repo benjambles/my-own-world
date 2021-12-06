@@ -1,24 +1,13 @@
-const { resolve } = require('path');
-
 module.exports = {
     core: {
         builder: 'webpack5',
     },
-    stories: ['../src/components/**/*.stories.ts'],
-    webpackFinal: async (config) => {
-        config.experiments = {
-            outputModule: true,
-        };
-
-        config.module.rules.push({
-            test: /\.m?js/,
-            resolve: {
-                fullySpecified: false,
-            },
-        });
-
-        return config;
+    framework: '@storybook/html',
+    features: {
+        storyStoreV7: true,
     },
+    staticDirs: ['../lib/static'],
+    stories: ['../src/components/**/*.stories.ts'],
     addons: [
         {
             name: '@storybook/addon-postcss',
@@ -26,7 +15,7 @@ module.exports = {
                 postcssLoaderOptions: {
                     implementation: require('postcss'),
                     postcssOptions: {
-                        config: resolve(__dirname, '../postcss.config.cjs'),
+                        config: '../postcss.config.cjs',
                     },
                 },
             },

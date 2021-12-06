@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "description": "Design system for My Own World application",
     "exports": {
-        "./lib/*": "./lib/*",
-        "./src/*": "./src/*"
+        "./lib/*": "./lib/*"
     },
     "type": "module",
     "browserslist": [
@@ -19,7 +18,7 @@
         "css": "postcss src/components/**/*.css --base src/components --config src/ --dir lib/static/styles",
         "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 lib",
         "test": "jest",
-        "storybook": "start-storybook --modern -s lib/static"
+        "storybook": "start-storybook --modern"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -30,13 +29,13 @@
         "lit-html": "1.4.1"
     },
     "devDependencies": {
-        "@storybook/addon-a11y": "6.4.0-beta.7",
-        "@storybook/addon-essentials": "6.4.0-beta.7",
+        "@storybook/addon-a11y": "6.5.0-alpha.1",
+        "@storybook/addon-essentials": "6.5.0-alpha.1",
         "@storybook/addon-postcss": "2.0.0",
-        "@storybook/addons": "6.4.0-beta.7",
-        "@storybook/builder-webpack5": "6.4.0-beta.7",
-        "@storybook/html": "6.4.0-beta.7",
-        "@storybook/manager-webpack5": "6.4.0-beta.7",
+        "@storybook/addons": "6.5.0-alpha.1",
+        "@storybook/builder-webpack5": "6.5.0-alpha.1",
+        "@storybook/html": "6.5.0-alpha.1",
+        "@storybook/manager-webpack5": "6.5.0-alpha.1",
         "@types/jest": "26.0.24",
         "copyfiles": "2.4.1",
         "css-loader": "6.2.0",
