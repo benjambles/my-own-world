@@ -1,9 +1,0 @@
-{
-    "verbose": false,
-    "watch": ["./lib", "../ui/lib", "../shared-server/lib", "../game-lib/lib"],
-    "delay": "1000",
-    "exec": "node --experimental-json-modules lib/bin/app.js",
-    "events": {
-        "start": "cls || clear"
-    }
-}

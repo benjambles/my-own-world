@@ -1,6 +1,7 @@
+import { Meta, StoryFn } from '@storybook/web-components';
 import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
-import { destructiveButton } from './destructive-button.js';
+import { ButtonData, destructiveButton } from './destructive-button.js';
 
 export default {
     title: 'Atoms/Buttons/Destructive',
@@ -9,11 +10,13 @@ export default {
             'Destructive buttons are used to denote actions the user can take that are destructive in nature',
     },
     decorators: [linkStoryRenderer],
-};
+} as Meta;
 
 const render = getClientComponent(destructiveButton);
 
-export const playground = (args) => render(args);
+export const Template: StoryFn<ButtonData> = (args) => render(args);
+
+const playground = Template.bind({});
 playground.args = {
     action: undefined,
     size: 'normal',
@@ -28,7 +31,7 @@ playground.argTypes = {
 };
 
 export const buttonSizes = () => {
-    return CLIENT_CONTEXT.html` 
+    return CLIENT_CONTEXT.html`
         ${render({
             text: 'Small Button',
             size: 'small',
@@ -43,7 +46,7 @@ export const buttonSizes = () => {
 
 export const buttonTypes = () => {
     return CLIENT_CONTEXT.html`
-        ${render({ text: 'Basic Button' })}
+        ${render({ text: 'Basic Button' })} 
         ${render({ text: 'Submit Button' })}
         ${render({
             text: 'Action Button',

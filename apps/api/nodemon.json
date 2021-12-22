@@ -1,0 +1,9 @@
+{
+    "verbose": false,
+    "watch": ["./dist", "../../packages/shared-server/dist"],
+    "delay": "1000",
+    "exec": "node --experimental-json-modules dist/bin/app.js",
+    "events": {
+        "start": "cls || clear"
+    }
+}

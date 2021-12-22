@@ -1,12 +1,5 @@
 {
-    "packages/*/src/**/*.{js,ts}": [
-        "prettier --write",
-        "eslint --fix --ext .js,.ts",
-    ],
-    "packages/ui/src/**/*.css": [
-        "prettier --write"
-    ],
-    "packages/*/src/**/*.json": [
-        "prettier --write"
-    ]
+    "{apps,packages}/*/src/**/*.{js,ts}": ["prettier --write", "eslint --fix --ext .js,.ts"],
+    "{apps,packages}/*/src/**/*.css": ["prettier --write"],
+    "{apps,packages}/*/src/**/*.json": ["prettier --write"]
 }

@@ -1,0 +1,44 @@
+version: '3.8'
+services: 
+  api:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+      - 9230:9230
+    environment:
+      - PORT=3000
+    working_dir: /app
+    volumes:
+      - ./apps/api/dist:/app/apps/api/dist
+      - ./apps/website/dist:/app/apps/website/dist
+      - ./packages/game-lib/dist:/app/packages/game-lib/dist
+      - ./packages/shared-server/dist:/app/packages/shared-server/dist
+      - ./packages/ui/dist:/app/packages/ui/dist
+    command: npm run start --workspace=apps/api -- -L
+  website:
+    build:
+      context: .
+    ports:
+      - 3001:3001
+      - 9229:9229
+    environment:
+      - PORT=3001
+    working_dir: /app
+    volumes:
+      - ./apps/api/dist:/app/apps/api/dist
+      - ./apps/website/dist:/app/apps/website/dist
+      - ./packages/game-lib/dist:/app/packages/game-lib/dist
+      - ./packages/shared-server/dist:/app/packages/shared-server/dist
+      - ./packages/ui/dist:/app/packages/ui/dist
+    command: npm run start --workspace=apps/website -- -L
+#   mongo:
+#     image: mongo:4.2.8
+#     ports:
+#     - 27017:27017
+#     volumes:
+#     - mongodb:/data/db
+#     - mongodb_config:/data/configdb
+# volumes:
+#   mongodb:
+#   mongodb_config:

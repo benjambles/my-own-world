@@ -1,9 +1,9 @@
 module.exports = {
     projects: [
-        '<rootDir>/packages/api',
+        '<rootDir>/apps/api',
+        '<rootDir>/apps/website',
         '<rootDir>/packages/game-lib',
         '<rootDir>/packages/shared-server',
         '<rootDir>/packages/ui',
-        '<rootDir>/packages/website',
     ],
 };

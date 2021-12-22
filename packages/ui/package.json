@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Design system for My Own World application",
     "exports": {
-        "./lib/*": "./lib/*"
+        "./dist/*": "./dist/*"
     },
     "type": "module",
     "browserslist": [
@@ -15,42 +15,50 @@
         "postbuild": "npm run copy",
         "ts": "tsc -b -v",
         "ts:clean": "tsc -b --clean",
-        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir lib/static/styles",
-        "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 lib",
+        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/static/styles",
+        "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 dist",
         "test": "jest",
-        "storybook": "start-storybook --modern"
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook",
+        "lint": "eslint --fix --ext .js,.ts"
     },
     "author": "Ben Allen",
     "license": "ISC",
     "dependencies": {
-        "@benjambles/mow-game": "../game-lib",
+        "@benjambles/mow-game": "../../packages/game-lib",
         "@popeindustries/lit-html-server": "3.1.0",
         "lit-element": "2.5.1",
         "lit-html": "1.4.1"
     },
     "devDependencies": {
-        "@storybook/addon-a11y": "6.5.0-alpha.1",
-        "@storybook/addon-essentials": "6.5.0-alpha.1",
+        "@babel/core": "7.16.0",
+        "@storybook/addon-a11y": "6.5.0-alpha.3",
+        "@storybook/addon-actions": "6.5.0-alpha.3",
+        "@storybook/addon-essentials": "6.5.0-alpha.3",
+        "@storybook/addon-links": "6.5.0-alpha.3",
         "@storybook/addon-postcss": "2.0.0",
-        "@storybook/addons": "6.5.0-alpha.1",
-        "@storybook/builder-webpack5": "6.5.0-alpha.1",
-        "@storybook/html": "6.5.0-alpha.1",
-        "@storybook/manager-webpack5": "6.5.0-alpha.1",
+        "@storybook/addons": "6.5.0-alpha.3",
+        "@storybook/builder-webpack5": "6.5.0-alpha.3",
+        "@storybook/html": "6.5.0-alpha.3",
+        "@storybook/manager-webpack5": "6.5.0-alpha.3",
+        "@storybook/web-components": "6.5.0-alpha.3",
         "@types/jest": "26.0.24",
+        "babel-loader": "8.2.3",
         "copyfiles": "2.4.1",
         "css-loader": "6.2.0",
         "cssnano": "5.0.7",
         "jest": "27.0.6",
-        "jest-ts-webcompat-resolver": "^1.0.0",
+        "jest-ts-webcompat-resolver": "1.0.0",
         "postcss": "8.3.6",
         "postcss-cli": "8.3.1",
         "postcss-import": "14.0.2",
         "postcss-loader": "6.1.1",
         "postcss-modules": "4.2.2",
+        "resolve-typescript-plugin": "1.1.1",
         "style-loader": "3.2.1",
         "ts-jest": "27.0.4",
         "ts-lit-plugin": "1.2.1",
         "ts-loader": "9.2.4",
-        "typescript": "4.3.5"
+        "typescript": "4.5.2"
     }
 }

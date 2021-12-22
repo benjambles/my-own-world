@@ -1,7 +1,7 @@
 import type {
     CharacteristicGroup,
     Characteristics,
-} from '@benjambles/mow-game/lib/types/game/npc.js';
+} from '@benjambles/mow-game/dist/types/game/npc.js';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './characteristics-list.css.json';

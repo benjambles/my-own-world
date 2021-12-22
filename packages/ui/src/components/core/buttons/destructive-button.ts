@@ -2,7 +2,7 @@ import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
 import baseStyles from '../../global-css/base.css.json';
 import type { ButtonSizes, ButtonTypes } from './types.js';
 
-interface ButtonData {
+export interface ButtonData {
     text: string;
     type?: ButtonTypes;
     action?: string;

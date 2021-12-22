@@ -1,4 +1,4 @@
-import type { HeroData } from '@benjambles/mow-game/lib/types/game/hero.js';
+import type { HeroData } from '@benjambles/mow-game/dist/types/game/hero.js';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
 import styles from './hero-card.css.json';
 

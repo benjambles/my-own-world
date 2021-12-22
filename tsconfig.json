@@ -2,13 +2,13 @@
     "files": [],
     "references": [
         {
-            "path": "./packages/api"
+            "path": "./apps/api"
+        },
+        {
+            "path": "./apps/website"
         },
         {
             "path": "./packages/game-lib"
-        },
-        {
-            "path": "./packages/website"
         },
         {
             "path": "./packages/shared-server"

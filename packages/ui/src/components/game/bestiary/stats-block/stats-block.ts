@@ -1,4 +1,4 @@
-import type { Stats } from '@benjambles/mow-game/lib/types/game/npc.js';
+import type { Stats } from '@benjambles/mow-game/dist/types/game/npc.js';
 import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './stats-block.css.json';

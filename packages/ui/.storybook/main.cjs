@@ -1,12 +1,15 @@
+const ResolveTypeScriptPlugin = require('resolve-typescript-plugin').default;
+const { resolve } = require('path');
+
 module.exports = {
     core: {
         builder: 'webpack5',
     },
-    framework: '@storybook/html',
+    framework: '@storybook/web-components',
     features: {
         storyStoreV7: true,
     },
-    staticDirs: ['../lib/static'],
+    staticDirs: ['../dist/static'],
     stories: ['../src/components/**/*.stories.ts'],
     addons: [
         {
@@ -15,12 +18,22 @@ module.exports = {
                 postcssLoaderOptions: {
                     implementation: require('postcss'),
                     postcssOptions: {
-                        config: '../postcss.config.cjs',
+                        config: resolve(__dirname, '../postcss.config.cjs'),
                     },
                 },
             },
         },
+        '@storybook/addon-links',
         '@storybook/addon-a11y',
         '@storybook/addon-essentials',
     ],
+    webpackFinal: async (config) => {
+        config.resolve = {
+            ...config.resolve,
+            plugins: [new ResolveTypeScriptPlugin()],
+        };
+
+        // Return the altered config
+        return config;
+    },
 };
