@@ -1,5 +1,7 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
+import { html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import baseStyles from '../../global-css/base.css.js';
 import type { ButtonSizes, ButtonTypes } from './types.js';
 
 interface ButtonData {
@@ -9,25 +11,17 @@ interface ButtonData {
     size?: ButtonSizes;
 }
 
-export const outlineButton: LitTpl<ButtonData> = (
-    context,
-    { text, type = 'button', action, size = 'normal' }: ButtonData,
-) => {
-    const {
-        html,
-        directives: { ifDefined, classMap },
-    } = context;
-
-    const cssClasses = classMap({
+export function outlineButton({ text, type = 'button', action, size = 'normal' }: ButtonData) {
+    const cssClasses = {
         [baseStyles.button]: true,
         [baseStyles.buttonOutline]: true,
         [baseStyles.buttonLarge]: size === 'large',
         [baseStyles.buttonSmall]: size === 'small',
-    });
+    };
 
     return html`
-        <button type="${type}" class="${cssClasses}" data-action="${ifDefined(action)}">
+        <button type="${type}" class="${classMap(cssClasses)}" data-action="${ifDefined(action)}">
             ${text}
         </button>
     `;
-};
+}

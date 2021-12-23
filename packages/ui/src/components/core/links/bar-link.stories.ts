@@ -1,4 +1,4 @@
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { barLink } from './bar-link.js';
 
 export default {
@@ -12,12 +12,10 @@ export default {
     },
 };
 
-const render = getClientComponent(barLink);
-
-export const linkBar = () => render({ text: 'Bar Link', href: '/' });
+export const linkBar = () => barLink({ text: 'Bar Link', href: '/' });
 
 export const activeLinkBar = () => {
-    return render({
+    return barLink({
         text: 'Active Link Bar',
         href: '/',
         active: true,

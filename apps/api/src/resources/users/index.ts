@@ -3,7 +3,7 @@ import { getAccessChecker } from '../../utils/middleware/get-access-checker.js';
 import { bindOptions } from '../../utils/routes/bind-options.js';
 import { getAccessMap } from '../../utils/security/get-access-map.js';
 import { getAuthenticatedUserId } from '../../utils/security/get-authenticated-user-id.js';
-import userConfig from './config.json';
+import userConfig from './config.json' assert { type: 'json' };
 import * as identifierRoutes from './identifiers/routes.js';
 import * as userRoutes from './routes.js';
 

@@ -1,5 +1,6 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
+import { html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import baseStyles from '../../global-css/base.css.js';
 
 export interface BarLinkProps {
     href: string;
@@ -7,14 +8,7 @@ export interface BarLinkProps {
     active?: boolean;
 }
 
-export const barLink: LitTpl<BarLinkProps> = (
-    context,
-    { text, href, active = false }: BarLinkProps,
-) => {
-    const {
-        html,
-        directives: { classMap },
-    } = context;
+export function barLink({ text, href, active = false }: BarLinkProps) {
     return html`<a
         href="${href}"
         role="menuitem"
@@ -24,4 +18,4 @@ export const barLink: LitTpl<BarLinkProps> = (
         })}"
         >${text}</a
     >`;
-};
+}

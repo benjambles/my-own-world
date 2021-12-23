@@ -7,7 +7,6 @@ export const mockData = {
     },
     header: {
         navigationLinks: [
-            { text: 'Explore', href: '/explore' },
             { text: 'Learn', href: '/learn' },
             { text: 'Blog', href: '/blog' },
         ],

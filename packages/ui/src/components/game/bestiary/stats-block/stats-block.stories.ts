@@ -1,7 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import npcData from '../__tests__/npc-card.fixture.js';
-import { statsBlock } from './stats-block.js';
 import './stats-block.css';
+import { statsBlock } from './stats-block.js';
 
 export default {
     title: 'Game/Bestiary/NPC Card/Stats Block',
@@ -12,10 +12,8 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(statsBlock);
-
 export const base = () => {
-    return render({
+    return statsBlock({
         name: npcData.name,
         variant: npcData.variant,
         stats: npcData.stats,

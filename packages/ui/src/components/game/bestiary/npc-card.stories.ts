@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer.js';
-import { npcCard } from './npc-card.js';
+import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './npc-card.css';
+import { npcCard } from './npc-card.js';
 import npcData from './__tests__/npc-card.fixture';
 
 export default {
@@ -12,6 +12,4 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(npcCard);
-
-export const veteran = () => render(npcData);
+export const veteran = () => npcCard(npcData);

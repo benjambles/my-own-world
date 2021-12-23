@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
-import { actionGrid } from './grid.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import './grid.css';
+import { actionGrid } from './grid.js';
 
 export default {
     title: 'Game/Bestiary/NPC Card/Action Grid',
@@ -10,8 +10,6 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(actionGrid);
-
 export const base = () => {
-    return render(undefined);
+    return actionGrid();
 };

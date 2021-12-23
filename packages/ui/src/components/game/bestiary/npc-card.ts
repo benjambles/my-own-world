@@ -1,33 +1,26 @@
 import type { NPCCard } from '@benjambles/mow-game/dist/types/game/npc.js';
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import { actionsTable } from './actions-table/actions-table.js';
 import { characteristicsList } from './characteristics-list/characteristics-list.js';
 import { actionGrid } from './grid/grid.js';
-import cardStyles from './npc-card.css.json';
+import cardStyles from './npc-card.css.js';
 import { statsBlock } from './stats-block/stats-block.js';
 import { turnOrder } from './turn-order/turn-order.js';
 
-export const npcCard: LitTpl<NPCCard> = (
-    context,
-    { name, variant, stats, characteristics, turn_order, actions }: NPCCard,
-) => {
-    const { html } = context;
-
+export function npcCard({ name, variant, stats, characteristics, turn_order, actions }: NPCCard) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/bestiary/npc-card.css')}
+        ${lazyStylesheet('/styles/core/bestiary/npc-card.css')}
         <article class="${cardStyles.card}">
             <h1 class="${cardStyles.cardFull}">${name}</h1>
-            <div class="${cardStyles.cardFull}">
-                ${statsBlock(context, { name, variant, stats })}
-            </div>
+            <div class="${cardStyles.cardFull}">${statsBlock({ name, variant, stats })}</div>
             <div class="${cardStyles.cardLeft} ${cardStyles.flexCol}">
-                ${actionGrid(context, undefined)} ${turnOrder(context, turn_order)}
+                ${actionGrid()} ${turnOrder(turn_order)}
             </div>
 
             <div class="${cardStyles.cardRight}">
-                ${characteristicsList(context, characteristics)} ${actionsTable(context, actions)}
+                ${characteristicsList(characteristics)} ${actionsTable(actions)}
             </div>
         </article>
     `;
-};
+}

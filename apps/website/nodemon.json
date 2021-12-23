@@ -7,7 +7,7 @@
         "../../packages/game-lib/dist"
     ],
     "delay": "1000",
-    "exec": "node --experimental-json-modules dist/bin/app.js",
+    "exec": "node --experimental-vm-modules --experimental-json-modules dist/bin/app.js",
     "events": {
         "start": "cls || clear"
     }

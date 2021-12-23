@@ -1,11 +1,21 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
+import { html } from 'lit';
+import baseStyles from '../../global-css/base.css.js';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
-import { link, LinkProps } from '../links/link.js';
-import styles from './footer.css.json';
+import { link } from '../links/link.js';
+import styles from './footer.css.js';
 
 export interface FooterData {
     links: LinkProps[];
+}
+
+interface LinkProps {
+    href: string;
+    text: string;
+    display?: {
+        active?: boolean;
+        underlined?: boolean;
+        bold?: boolean;
+    };
 }
 
 /**
@@ -16,17 +26,16 @@ export interface FooterData {
  * @param data
  */
 
-export const footer: LitTpl<FooterData> = (context, { links }: FooterData) => {
-    const { html } = context;
+export function footer({ links }: FooterData) {
     const currentYear = new Date().getFullYear();
 
     return html`
-        ${lazyStylesheet(context, '/styles/core/footer/footer.css')}
+        ${lazyStylesheet('/styles/core/footer/footer.css')}
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - ${currentYear}</span>
-                <nav class="">${links.map((linkData) => link(context, linkData))}</nav>
+                <nav class="">${links.map((linkData) => link(linkData))}</nav>
             </div>
         </footer>
     `;
-};
+}

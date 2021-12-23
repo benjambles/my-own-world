@@ -1,15 +1,13 @@
 import type { HeroData } from '@benjambles/mow-game/dist/types/game/hero.js';
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
-import styles from './hero-card.css.json';
+import { html } from 'lit';
+import styles from './hero-card.css.js';
 
 /**
  * Render a character sheet for a player character
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-export const heroCard: LitTpl<HeroData> = (context, data: HeroData) => {
-    const { html } = context;
-
+export function heroCard(data: HeroData) {
     return html`
         <article class="${styles.heroCard}">
             <div class="${styles.col1}">
@@ -23,4 +21,4 @@ export const heroCard: LitTpl<HeroData> = (context, data: HeroData) => {
             <div class="${styles.col2}">Col2</div>
         </article>
     `;
-};
+}

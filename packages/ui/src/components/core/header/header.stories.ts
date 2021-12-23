@@ -1,13 +1,11 @@
-import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer.js';
-import { header } from './header.js';
+import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './header.css';
+import { header } from './header.js';
 
 export default {
     title: 'Furniture/Header',
     decorators: [storyRenderer],
 };
-
-const render = getClientComponent(header);
 
 const navigationLinks = [
     { text: 'Explore', href: '/explore' },
@@ -21,16 +19,15 @@ const navigationLinksActive = [
     { text: 'Blog', href: '/blog' },
 ];
 
-export const headerLoggedOut = () => render({ navigationLinks, user: {} });
+export const headerLoggedOut = () => header({ navigationLinks, user: {} });
 
 export const headerLoggedActiveLink = () =>
-    render({
+    header({
         navigationLinks: navigationLinksActive,
-        user: {},
     });
 
 export const headerLoggedIn = () => {
-    return render({
+    return header({
         navigationLinks,
         user: {
             profile: {

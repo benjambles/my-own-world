@@ -1,7 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import npcCardData from '../__tests__/npc-card.fixture';
-import { actionsTable } from './actions-table.js';
 import './actions-table.css';
+import { actionsTable } from './actions-table.js';
 
 export default {
     title: 'Game/Bestiary/NPC Card/Actions',
@@ -12,19 +12,17 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(actionsTable);
-
-export const complete = () => render(npcCardData.actions);
+export const complete = () => actionsTable(npcCardData.actions);
 
 export const basicOnly = () => {
-    return render({
+    return actionsTable({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
     });
 };
 
 export const withSpecial = () => {
-    return render({
+    return actionsTable({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         special: npcCardData.actions.special,
@@ -32,7 +30,7 @@ export const withSpecial = () => {
 };
 
 export const withLearnable = () => {
-    return render({
+    return actionsTable({
         limit: npcCardData.actions.limit,
         basic: npcCardData.actions.basic,
         learnable: npcCardData.actions.learnable,

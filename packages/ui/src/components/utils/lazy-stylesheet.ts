@@ -1,10 +1,9 @@
-import type { LitTpl } from '../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 
 /**
  * Returns a lazy loading stylesheet tag
  * @param href
  */
-export function lazyStylesheet(context, href: string): LitTpl<string> {
-    const { html } = context;
+export function lazyStylesheet(href: string) {
     return html`<link rel="preload" href="${href}" as="style" onload="this.rel='stylesheet'" />`;
 }

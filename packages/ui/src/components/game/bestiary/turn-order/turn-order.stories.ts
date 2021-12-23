@@ -1,7 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import npcData from '../__tests__/npc-card.fixture.js';
-import { turnOrder } from './turn-order.js';
 import './turn-order.css';
+import { turnOrder } from './turn-order.js';
 
 export default {
     title: 'Game/Bestiary/NPC Card/Turn Order',
@@ -12,6 +12,4 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(turnOrder);
-
-export const base = () => render(npcData.turn_order);
+export const base = () => turnOrder(npcData.turn_order);

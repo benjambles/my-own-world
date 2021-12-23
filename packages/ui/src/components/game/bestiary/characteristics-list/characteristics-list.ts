@@ -2,40 +2,30 @@ import type {
     CharacteristicGroup,
     Characteristics,
 } from '@benjambles/mow-game/dist/types/game/npc.js';
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
-import styles from './characteristics-list.css.json';
+import styles from './characteristics-list.css.js';
+
 /**
  *
  * @param context
  * @param characteristics
  */
-export const characteristicsList: LitTpl<Characteristics> = (
-    context,
-    { base, optional }: Characteristics,
-) => {
-    const { html } = context;
-
+export function characteristicsList({ base, optional }: Characteristics) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/bestiary/character-list/character-list.css')}
+        ${lazyStylesheet('/styles/core/bestiary/character-list/character-list.css')}
         <section class="${styles.characteristics}">
-            ${characteristicGroup(context, base)}
-            ${optional ? characteristicGroup(context, optional) : null}
+            ${characteristicGroup(base)} ${optional ? characteristicGroup(optional) : null}
         </section>
     `;
-};
+}
 
 /**
  *
  * @param context
  * @param characteristics
  */
-const characteristicGroup: LitTpl<CharacteristicGroup> = (
-    context,
-    { title, details }: CharacteristicGroup,
-) => {
-    const { html } = context;
-
+function characteristicGroup({ title, details }: CharacteristicGroup) {
     return html`
         <h2>${title}</h2>
         <dl class="${styles.characteristics__group}">
@@ -50,4 +40,4 @@ const characteristicGroup: LitTpl<CharacteristicGroup> = (
             )}
         </dl>
     `;
-};
+}

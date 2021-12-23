@@ -1,5 +1,5 @@
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
+import { html } from 'lit';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { outlineButton } from './outline-button.js';
 
 export default {
@@ -11,9 +11,7 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = getClientComponent(outlineButton);
-
-export const playground = (args) => render(args);
+export const playground = (args) => outlineButton(args);
 playground.args = {
     action: undefined,
     size: 'normal',
@@ -28,13 +26,13 @@ playground.argTypes = {
 };
 
 export const buttonSizes = () => {
-    return CLIENT_CONTEXT.html` 
-        ${render({
+    return html`
+        ${outlineButton({
             text: 'Small Button',
             size: 'small',
         })}
-        ${render({ text: 'Basic Button' })}
-        ${render({
+        ${outlineButton({ text: 'Basic Button' })}
+        ${outlineButton({
             text: 'Large Button',
             size: 'large',
         })}
@@ -42,10 +40,9 @@ export const buttonSizes = () => {
 };
 
 export const buttonTypes = () => {
-    return CLIENT_CONTEXT.html`
-        ${render({ text: 'Basic Button' })}
-        ${render({ text: 'Submit Button' })}
-        ${render({
+    return html`
+        ${outlineButton({ text: 'Basic Button' })} ${outlineButton({ text: 'Submit Button' })}
+        ${outlineButton({
             text: 'Action Button',
             action: 'LOGIN.SUBMIT',
         })}

@@ -4,7 +4,7 @@ import { getAccessMap } from '../../utils/security/get-access-map.js';
 // import * as actorRoutes from './actors/routes.js';
 // import * as encounterRoutes from './encounters/routes.js';
 // import * as sceneRoutes from './scenes/routes.js';
-import talesConfig from './config.json';
+import talesConfig from './config.json' assert { type: 'json' };
 import * as taleRoutes from './routes.js';
 
 export const config = talesConfig;

@@ -1,7 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import npcCardData from '../__tests__/npc-card.fixture.js';
-import { characteristicsList } from './characteristics-list.js';
 import './characteristics-list.css';
+import { characteristicsList } from './characteristics-list.js';
 
 export default {
     title: 'Game/Bestiary/NPC Card/Characteristics',
@@ -11,12 +11,10 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(characteristicsList);
-
-export const withOptional = () => render(npcCardData.characteristics);
+export const withOptional = () => characteristicsList(npcCardData.characteristics);
 
 export const defaultOnly = () => {
-    return render({
+    return characteristicsList({
         base: npcCardData.characteristics.base,
     });
 };

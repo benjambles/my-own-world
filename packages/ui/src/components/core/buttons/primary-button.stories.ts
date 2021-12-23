@@ -1,5 +1,5 @@
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
+import { html } from 'lit';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { primaryButton } from './primary-button.js';
 
 export default {
@@ -10,9 +10,7 @@ export default {
     decorators: [linkStoryRenderer],
 };
 
-const render = getClientComponent(primaryButton);
-
-export const playground = (args) => render(args);
+export const playground = (args) => primaryButton(args);
 playground.args = {
     action: undefined,
     size: 'normal',
@@ -27,21 +25,20 @@ playground.argTypes = {
 };
 
 export const buttonSizes = () => {
-    return CLIENT_CONTEXT.html` 
-        ${render({
+    return html`
+        ${primaryButton({
             text: 'Small Button',
             size: 'small',
         })}
-        ${render({ text: 'Basic Button' })}
-        ${render({ text: 'Large Button', size: 'large' })}
+        ${primaryButton({ text: 'Basic Button' })}
+        ${primaryButton({ text: 'Large Button', size: 'large' })}
     `;
 };
 
 export const buttonTypes = () => {
-    return CLIENT_CONTEXT.html`
-        ${render({ text: 'Basic Button' })}
-        ${render({ text: 'Submit Button' })}
-        ${render({
+    return html`
+        ${primaryButton({ text: 'Basic Button' })} ${primaryButton({ text: 'Submit Button' })}
+        ${primaryButton({
             text: 'Action Button',
             action: 'LOGIN.SUBMIT',
         })}

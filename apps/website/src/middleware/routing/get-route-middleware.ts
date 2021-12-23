@@ -1,31 +1,17 @@
-import type {
-    ServerContext,
-    ServerRenderer,
-} from '@benjambles/mow-ui/dist/utils/templates/server-context.js';
-import type { Router, Spec } from 'koa-joi-router';
+import { Middleware } from 'koa';
+import { Router, Spec } from 'koa-joi-router';
 
 interface GetRouteMiddleware {
     router: Router;
-    renderContext: ServerContext;
-    renderToString: ServerRenderer;
-    routes: CreateRouteHandler[];
-}
-
-interface CreateRouteHandler {
-    (renderContext, renderToString): Spec;
+    routes: Spec[];
 }
 
 /**
  *
  * @param param0
  */
-export function getRouteMiddleware({
-    router,
-    renderContext,
-    renderToString,
-    routes,
-}: GetRouteMiddleware) {
+export function getRouteMiddleware({ router, routes }: GetRouteMiddleware): Middleware[] {
     return routes.map((routeHandler) => {
-        return router.route(routeHandler(renderContext, renderToString)).middleware();
+        return router.route(routeHandler).middleware();
     });
 }

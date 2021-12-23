@@ -1,9 +1,7 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import './class-card.css';
 import { classCard } from './class-card.js';
 import { ardent } from './__tests__/character-classes.fixture.js';
-import './class-card.css';
-
-const render = getClientComponent(classCard);
 
 export default {
     title: 'Game/Character Creator/Class Card',
@@ -15,5 +13,5 @@ export default {
 };
 
 export const base = () => {
-    return render({ view: 'large', classDetails: ardent });
+    return classCard({ view: 'large', classDetails: ardent });
 };

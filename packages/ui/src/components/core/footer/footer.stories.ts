@@ -1,6 +1,6 @@
-import { getClientComponent, storyRenderer } from '../../../utils/storybook/story-renderer.js';
-import { footer } from './footer.js';
+import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './footer.css';
+import { footer } from './footer.js';
 
 export default {
     title: 'Furniture/Footer',
@@ -16,7 +16,5 @@ const links = [
     { text: 'Accessibility', href: '/accessibility' },
 ];
 
-const render = getClientComponent(footer);
-
-export const base = () => render({ links });
+export const base = () => footer({ links });
 base.storyName = 'default';

@@ -1,6 +1,6 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
-
+import { html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import baseStyles from '../../global-css/base.css.js';
 export interface DarkLinkProps {
     href: string;
     text: string;
@@ -11,14 +11,7 @@ export interface DarkLinkProps {
     };
 }
 
-export const darkLink: LitTpl<DarkLinkProps> = (
-    context,
-    { text, href, display = {} }: DarkLinkProps,
-) => {
-    const {
-        html,
-        directives: { classMap },
-    } = context;
+export function darkLink({ text, href, display = {} }: DarkLinkProps) {
     return html`<a
         href="${href}"
         class="${classMap({
@@ -29,4 +22,4 @@ export const darkLink: LitTpl<DarkLinkProps> = (
         })}"
         >${text}</a
     >`;
-};
+}

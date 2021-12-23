@@ -1,7 +1,7 @@
 import type { Stats } from '@benjambles/mow-game/dist/types/game/npc.js';
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
-import styles from './stats-block.css.json';
+import styles from './stats-block.css.js';
 
 interface StatsData {
     name: string;
@@ -14,11 +14,9 @@ interface StatsData {
  * @param context
  * @param data
  */
-export const statsBlock: LitTpl<StatsData> = (context, { name, variant, stats }: StatsData) => {
-    const { html } = context;
-
+export function statsBlock({ name, variant, stats }: StatsData) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/bestiary/stats-block/stats-block.css')}
+        ${lazyStylesheet('/styles/core/bestiary/stats-block/stats-block.css')}
         <section class="${styles.stats}">
             <span class="${styles.name}">
                 <b>Name:</b>
@@ -37,4 +35,4 @@ export const statsBlock: LitTpl<StatsData> = (context, { name, variant, stats }:
             <span> <b>Size:</b> ${stats.size} </span>
         </section>
     `;
-};
+}

@@ -1,28 +1,24 @@
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
-import styles from './grid.css.json';
+import styles from './grid.css.js';
 
-export const actionGrid: LitTpl<undefined> = (context) => {
-    const { html } = context;
-
+export function actionGrid() {
     return html`
-        ${lazyStylesheet(context, '/styles/bestiary/grid.css')}
+        ${lazyStylesheet('/styles/bestiary/grid.css')}
         <ol class="${styles.grid}">
             <li>
                 <div class="${styles.hex} ${styles.centre}">
                     <span><span class="${styles.label}">Basic Attack</span></span>
                 </div>
                 <ol>
-                    ${[1, 2, 3, 4, 5, 6].map((count) => arm(context, count))}
+                    ${[1, 2, 3, 4, 5, 6].map(arm)}
                 </ol>
             </li>
         </ol>
     `;
-};
+}
 
-const arm: LitTpl<number> = (context, count: number) => {
-    const { html } = context;
-
+function arm(count: number) {
     return html`
         <li class="${styles.arm} ${styles[`arm${count}`]}">
             <ol class="${styles.rows}">
@@ -68,4 +64,4 @@ const arm: LitTpl<number> = (context, count: number) => {
             </ol>
         </li>
     `;
-};
+}

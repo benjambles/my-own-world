@@ -1,6 +1,6 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
-
+import { html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import baseStyles from '../../global-css/base.css.js';
 export interface LinkProps {
     href: string;
     text: string;
@@ -11,11 +11,7 @@ export interface LinkProps {
     };
 }
 
-export const link: LitTpl<LinkProps> = (context, { text, href, display = {} }: LinkProps) => {
-    const {
-        html,
-        directives: { classMap },
-    } = context;
+export function link({ text, href, display = {} }: LinkProps) {
     return html`<a
         href="${href}"
         class="${classMap({
@@ -25,4 +21,4 @@ export const link: LitTpl<LinkProps> = (context, { text, href, display = {} }: L
         })}"
         >${text}</a
     >`;
-};
+}

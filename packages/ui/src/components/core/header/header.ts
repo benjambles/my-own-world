@@ -1,32 +1,28 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import baseStyles from '../../global-css/base.css.json';
+import { html } from 'lit';
+import baseStyles from '../../global-css/base.css.js';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import { darkLink, DarkLinkProps } from '../links/dark-link.js';
 import { menuProfile, MenuProfileData } from '../user/menu-profile.js';
-import styles from './header.css.json';
+import styles from './header.css.js';
 
 export interface HeaderData {
     navigationLinks: DarkLinkProps[];
-    user: MenuProfileData;
+    user?: MenuProfileData;
 }
 
-export const header: LitTpl<HeaderData> = (context, { navigationLinks, user }: HeaderData) => {
-    const { html } = context;
-
+export function header({ navigationLinks, user }: HeaderData) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/header/header.css')}
+        ${lazyStylesheet('/styles/core/header/header.css')}
         <header class="${styles.header}">
             <div class="${baseStyles.container} ${styles.header__container}">
                 <a href="/" class="logo">My Own World</a>
 
-                <nav class="${styles.nav} ${styles.primaryNav}">
-                    ${linkList(context, navigationLinks)}
-                </nav>
+                <nav class="${styles.nav} ${styles.primaryNav}">${linkList(navigationLinks)}</nav>
 
                 <div class="${styles.nav} ${styles.accountNav}">
-                    ${user.profile
-                        ? menuProfile(context, user)
-                        : linkList(context, [
+                    ${user?.profile
+                        ? menuProfile(user)
+                        : linkList([
                               { text: 'Sign in', href: '/login' },
                               { text: 'Sign up', href: '/join' },
                           ])}
@@ -34,14 +30,12 @@ export const header: LitTpl<HeaderData> = (context, { navigationLinks, user }: H
             </div>
         </header>
     `;
-};
+}
 
-const linkList = (context, links) => {
-    const { html } = context;
-
+function linkList(links) {
     return html`
         <ul>
-            ${links.map((link) => html`<li>${darkLink(context, link)}</li>`)}
+            ${links.map((link) => html`<li>${darkLink(link)}</li>`)}
         </ul>
     `;
-};
+}

@@ -1,11 +1,8 @@
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { layout } from '../../layout.js';
 import { homeIntro } from './home-intro/home-intro.js';
 
-export const home: LitTpl<any> = (context, data) => {
-    const { html } = context;
-
-    const page = html` <main class="page--home">${homeIntro(context, undefined)}</main> `;
-
-    return html`${layout(context, data, page)}`;
-};
+export function home(data) {
+    const page = html`<main class="page--home">${homeIntro()}</main>`;
+    return html`${layout(data, page)}`;
+}

@@ -1,10 +1,8 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import layoutStyles from '../../global-css/base.css.json';
+import { html } from 'lit';
+import layoutStyles from '../../global-css/base.css.js';
 import { layout } from '../layout.js';
 
-export const terms: LitTpl<any> = (context, data) => {
-    const { html } = context;
-
+export function terms(data) {
     const page = html`
         <main class="page--terms">
             <div class="${layoutStyles.container}">
@@ -13,5 +11,5 @@ export const terms: LitTpl<any> = (context, data) => {
         </main>
     `;
 
-    return html`${layout(context, data, page)}`;
-};
+    return html`${layout(data, page)}`;
+}

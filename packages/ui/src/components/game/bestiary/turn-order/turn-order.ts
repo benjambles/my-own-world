@@ -1,14 +1,12 @@
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
-import styles from './turn-order.css.json';
+import styles from './turn-order.css.js';
 
 type TurnOrder = string[];
 
-export const turnOrder: LitTpl<TurnOrder> = (context, turns: TurnOrder) => {
-    const { html } = context;
-
+export function turnOrder(turns: TurnOrder) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/bestiary/turn-order/turn-order.css')}
+        ${lazyStylesheet('/styles/core/bestiary/turn-order/turn-order.css')}
         <section class="${styles.turnOrder}">
             <h2>Turn order</h2>
             <ol>
@@ -16,4 +14,4 @@ export const turnOrder: LitTpl<TurnOrder> = (context, turns: TurnOrder) => {
             </ol>
         </section>
     `;
-};
+}

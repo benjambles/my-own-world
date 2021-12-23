@@ -1,4 +1,4 @@
-import { getClientComponent, storyRenderer } from '../../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import './hero-card.css';
 import { heroCard } from './hero-card.js';
 import fixture from './__tests__/player-character.fixture.js';
@@ -12,6 +12,4 @@ export default {
     decorators: [storyRenderer],
 };
 
-const render = getClientComponent(heroCard);
-
-export const full = () => render(fixture);
+export const full = () => heroCard(fixture);

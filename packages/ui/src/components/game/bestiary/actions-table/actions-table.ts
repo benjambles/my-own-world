@@ -1,21 +1,16 @@
 import type { Action, ActionGroup, Actions } from '@benjambles/mow-game/dist/types/game/npc.js';
-import type { LitTpl } from '../../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
-import styles from './actions-table.css.json';
+import styles from './actions-table.css.js';
 
 /**
  *
- * @param context
  * @param characteristics
  */
-export const actionsTable: LitTpl<Actions> = (
-    context,
-    { limit, basic, special, learnable }: Actions,
-) => {
-    const { html } = context;
-
+export function actionsTable({ limit, basic, special, learnable }: Actions) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/bestiary/actions-table/actions-table.css')}
+        ${lazyStylesheet('/styles/core/bestiary/actions-table/actions-table.css')}
         <section class="${styles.actions}">
             <table>
                 <thead>
@@ -26,20 +21,20 @@ export const actionsTable: LitTpl<Actions> = (
                         <th>Effect</th>
                     </tr>
                 </thead>
-                ${actionGroup(context, {
+                ${actionGroup({
                     actions: basic,
                     title: 'Basic Actions',
                     limit,
                 })}
                 ${special
-                    ? actionGroup(context, {
+                    ? actionGroup({
                           actions: special,
                           title: 'Special Abilities',
                           className: styles.specialActions,
                       })
                     : null}
                 ${learnable
-                    ? actionGroup(context, {
+                    ? actionGroup({
                           actions: learnable,
                           title: 'Learnable Special Abilities',
                           className: styles.learnableActions,
@@ -48,7 +43,7 @@ export const actionsTable: LitTpl<Actions> = (
             </table>
         </section>
     `;
-};
+}
 
 interface ActionGroupData {
     actions: ActionGroup;
@@ -57,14 +52,7 @@ interface ActionGroupData {
     className?: string;
 }
 
-const actionGroup: LitTpl<ActionGroupData> = (
-    context,
-    { actions, title, limit, className }: ActionGroupData,
-) => {
-    const {
-        html,
-        directives: { ifDefined },
-    } = context;
+function actionGroup({ actions, title, limit, className }: ActionGroupData) {
     const titleCols = limit ? 3 : 4;
 
     return html`
@@ -75,13 +63,12 @@ const actionGroup: LitTpl<ActionGroupData> = (
                     ? html`<th colspan="1">[Storyteller only] Actions per Turn: ${limit}</th>`
                     : null}
             </tr>
-            ${Object.values(actions).map((action) => actionRow(context, action))}
+            ${Object.values(actions).map((action) => actionRow(action))}
         </tbody>
     `;
-};
+}
 
-const actionRow: LitTpl<Action> = (context, { name, autoHit, type, range, effect }: Action) => {
-    const { html } = context;
+function actionRow({ name, autoHit, type, range, effect }: Action) {
     return html`
         <tr>
             <td>${name}${autoHit ? html`<span>Auto Hit</span>` : null}</td>
@@ -90,4 +77,4 @@ const actionRow: LitTpl<Action> = (context, { name, autoHit, type, range, effect
             <td>${effect}</td>
         </tr>
     `;
-};
+}

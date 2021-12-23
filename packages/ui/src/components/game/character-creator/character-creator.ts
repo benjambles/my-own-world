@@ -1,5 +1,5 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import styles from './character-creator.css.json';
+import { html } from 'lit';
+import styles from './character-creator.css.js';
 
 interface CharacterCreator {}
 
@@ -8,8 +8,6 @@ interface CharacterCreator {}
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-export const characterCreator: LitTpl<CharacterCreator> = (context, data: CharacterCreator) => {
-    const { html } = context;
-
+export function characterCreator(data: CharacterCreator) {
     return html`<div class=${styles.characterCreator}>${data}</div>`;
-};
+}

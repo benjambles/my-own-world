@@ -1,4 +1,4 @@
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { link } from './link.js';
 
 export default {
@@ -12,12 +12,10 @@ export default {
     },
 };
 
-const render = getClientComponent(link);
-
-export const standard = () => render({ text: 'Link', href: '/' });
+export const standard = () => link({ text: 'Link', href: '/' });
 
 export const active = () => {
-    return render({
+    return link({
         text: 'Active Link',
         href: '/',
         display: { active: true },
@@ -25,7 +23,7 @@ export const active = () => {
 };
 
 export const underlined = () => {
-    return render({
+    return link({
         text: 'Underlined Link',
         href: '/',
         display: { underlined: true },
@@ -33,7 +31,7 @@ export const underlined = () => {
 };
 
 export const bold = () => {
-    return render({
+    return link({
         text: 'Bold Link',
         href: '/',
         display: { bold: true },

@@ -1,4 +1,5 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export interface InputData {
     id: string;
@@ -22,15 +23,14 @@ export interface InputData {
         | 'number';
 }
 
-export const inputBox: LitTpl<InputData> = (
-    context,
-    { id, label, type = 'text', placeholder, defaultText = '', name }: InputData,
-) => {
-    const {
-        html,
-        directives: { ifDefined },
-    } = context;
-
+export function inputBox({
+    id,
+    label,
+    type = 'text',
+    placeholder,
+    defaultText = '',
+    name,
+}: InputData) {
     return html`
         <label for="${id}">${label}</label>
         <input
@@ -41,4 +41,4 @@ export const inputBox: LitTpl<InputData> = (
             id="${id}"
         />
     `;
-};
+}

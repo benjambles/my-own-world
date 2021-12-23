@@ -1,22 +1,20 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
+import { html } from 'lit';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import { barLink } from '../links/bar-link.js';
 import { link } from '../links/link.js';
-import styles from './menu-profile.css.json';
+import styles from './menu-profile.css.js';
 
 export interface MenuProfileData {
-    profile?: {
+    profile: {
         image: string;
         name: string;
         username: string;
     };
 }
 
-export const menuProfile: LitTpl<MenuProfileData> = (context, { profile }: MenuProfileData) => {
-    const { html } = context;
-
+export function menuProfile({ profile }: MenuProfileData) {
     return html`
-        ${lazyStylesheet(context, '/styles/core/user/menu-profile.css')}
+        ${lazyStylesheet('/styles/core/user/menu-profile.css')}
         <details class="${styles.menuProfile}">
             <summary aria-haspopup="true" role="button">
                 <img src="${profile.image}" alt="${profile.name}" class="${styles.profileImage}" />
@@ -24,25 +22,25 @@ export const menuProfile: LitTpl<MenuProfileData> = (context, { profile }: MenuP
             <div class="${styles.menuProfile__dropdown}" role="menu">
                 <span class="${styles.userLabel}">
                     Signed in as <br />
-                    ${link(context, {
+                    ${link({
                         display: { bold: true },
                         text: profile.name,
                         href: `/profile/${profile.username}`,
                     })}
                 </span>
                 <hr class="${styles.divider}" />
-                ${barLink(context, {
+                ${barLink({
                     text: 'Your profile',
                     href: `/profile/${profile.username}`,
                 })}
                 <hr class="${styles.divider}" />
-                ${barLink(context, {
+                ${barLink({
                     text: 'Preferences',
                     href: '/preferences',
                 })}
-                ${barLink(context, { text: 'Help', href: '/help' })}
-                ${barLink(context, { text: 'Logout', href: '/logout' })}
+                ${barLink({ text: 'Help', href: '/help' })}
+                ${barLink({ text: 'Logout', href: '/logout' })}
             </div>
         </details>
     `;
-};
+}

@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/web-components';
-import { getClientComponent, linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
-import { CLIENT_CONTEXT } from '../../../utils/templates/client-context.js';
+import { html } from 'lit';
+import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
 import { ButtonData, destructiveButton } from './destructive-button.js';
 
 export default {
@@ -12,9 +12,7 @@ export default {
     decorators: [linkStoryRenderer],
 } as Meta;
 
-const render = getClientComponent(destructiveButton);
-
-export const Template: StoryFn<ButtonData> = (args) => render(args);
+export const Template: StoryFn<ButtonData> = (args) => destructiveButton(args);
 
 const playground = Template.bind({});
 playground.args = {
@@ -31,13 +29,13 @@ playground.argTypes = {
 };
 
 export const buttonSizes = () => {
-    return CLIENT_CONTEXT.html`
-        ${render({
+    return html`
+        ${destructiveButton({
             text: 'Small Button',
             size: 'small',
         })}
-        ${render({ text: 'Basic Button' })}
-        ${render({
+        ${destructiveButton({ text: 'Basic Button' })}
+        ${destructiveButton({
             text: 'Large Button',
             size: 'large',
         })}
@@ -45,10 +43,10 @@ export const buttonSizes = () => {
 };
 
 export const buttonTypes = () => {
-    return CLIENT_CONTEXT.html`
-        ${render({ text: 'Basic Button' })} 
-        ${render({ text: 'Submit Button' })}
-        ${render({
+    return html`
+        ${destructiveButton({ text: 'Basic Button' })}
+        ${destructiveButton({ text: 'Submit Button' })}
+        ${destructiveButton({
             text: 'Action Button',
             action: 'LOGIN.SUBMIT',
         })}

@@ -6,4 +6,5 @@ buildcache
 dist
 node_modules
 **/*.css.json
+**/*.css.ts
 coverage

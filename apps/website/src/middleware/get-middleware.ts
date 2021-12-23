@@ -1,7 +1,5 @@
 import { errorHandler } from '@benjambles/mow-server/dist/koa/error-handler.js';
 import { getDirPath } from '@benjambles/mow-server/dist/utils/get-dir-path.js';
-import { SERVER_CONTEXT } from '@benjambles/mow-ui/dist/utils/templates/server-context.js';
-import { renderToString } from '@popeindustries/lit-html-server';
 import type { DotenvParseOutput } from 'dotenv/types';
 import type Koa from 'koa';
 import compress from 'koa-compress';
@@ -10,6 +8,7 @@ import etag from 'koa-etag';
 import helmet from 'koa-helmet';
 import router from 'koa-joi-router';
 import koaJWT from 'koa-jwt';
+import { nodeResolve } from 'koa-node-resolve';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
 import { resolve } from 'path';
@@ -38,12 +37,11 @@ export function getMiddleware(env: DotenvParseOutput, app: Koa, routes): Koa.Mid
         }), // Security layer
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
+        nodeResolve({}),
         serve(resolve(modulePath, '../../../../packages/ui/dist/static')),
         ...getRouteMiddleware({
             router: router(),
             routes,
-            renderContext: SERVER_CONTEXT,
-            renderToString,
         }),
     ];
 }

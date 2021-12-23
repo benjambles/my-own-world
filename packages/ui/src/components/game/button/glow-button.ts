@@ -1,5 +1,5 @@
-import type { LitTpl } from '../../../utils/templates/lit-tpl.js';
-import styles from './glow-button.css.json';
+import { html } from 'lit';
+import styles from './glow-button.css.js';
 
 interface Data {
     text: string;
@@ -10,9 +10,7 @@ interface Data {
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-export const glowButton: LitTpl<Data> = (context, data: Data) => {
-    const { html } = context;
-
+export function glowButton(data: Data) {
     return html`
         <button class="${styles.buttonWrapper}">
             <span class="${styles.glowButton}">
@@ -20,4 +18,4 @@ export const glowButton: LitTpl<Data> = (context, data: Data) => {
             </span>
         </button>
     `;
-};
+}
