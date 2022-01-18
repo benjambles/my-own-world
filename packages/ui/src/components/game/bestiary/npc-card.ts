@@ -1,4 +1,4 @@
-import type { NPCCard } from '@benjambles/mow-game/dist/types/game/npc.js';
+import type { NPCCard } from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import { actionsTable } from './actions-table/actions-table.js';

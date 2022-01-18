@@ -12,7 +12,7 @@ services:
     volumes:
       - ./apps/api/dist:/app/apps/api/dist
       - ./apps/website/dist:/app/apps/website/dist
-      - ./packages/game-lib/dist:/app/packages/game-lib/dist
+      - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
       - ./packages/shared-server/dist:/app/packages/shared-server/dist
       - ./packages/ui/dist:/app/packages/ui/dist
     command: npm run start --workspace=apps/api -- -L
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./apps/api/dist:/app/apps/api/dist
       - ./apps/website/dist:/app/apps/website/dist
-      - ./packages/game-lib/dist:/app/packages/game-lib/dist
+      - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
       - ./packages/shared-server/dist:/app/packages/shared-server/dist
       - ./packages/ui/dist:/app/packages/ui/dist
     command: npm run start --workspace=apps/website -- -L

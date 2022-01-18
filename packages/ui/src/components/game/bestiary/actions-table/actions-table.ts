@@ -1,4 +1,4 @@
-import type { Action, ActionGroup, Actions } from '@benjambles/mow-game/dist/types/game/npc.js';
+import type { Action, ActionGroup, Actions } from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';

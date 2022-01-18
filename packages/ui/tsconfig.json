@@ -18,7 +18,7 @@
     },
     "references": [
         {
-            "path": "../game-lib"
+            "path": "../rise-engine"
         }
     ],
     "include": ["src/**/*.ts", "src/**/*.css.json"],

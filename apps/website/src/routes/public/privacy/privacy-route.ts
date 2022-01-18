@@ -1,7 +1,7 @@
 import { streamTemplate } from '../../../utils/stream-template.js';
-import { RouteMethods } from '../../routes.js';
+import { RouteMethods, RouteConfig } from '../../routes.js';
 
-export function privacyRoute(getData) {
+export function privacyRoute(getData): RouteConfig {
     return {
         method: RouteMethods.Get,
         path: '/privacy-policy',

@@ -1,4 +1,4 @@
-import { NPCCard } from '@benjambles/mow-game/dist/types/game/npc.js';
+import { NPCCard } from '@benjambles/rise-engine/dist/types/game/npc.js';
 
 const cardData: NPCCard = {
     name: 'Chaser DoorCrasher',

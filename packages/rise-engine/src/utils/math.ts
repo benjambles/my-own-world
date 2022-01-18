@@ -1,9 +1,13 @@
+/**
+ * Returns the sum of all the numbers provided as arguements
+ * @param nums
+ */
 export function sum(...nums: number[]): number {
     return nums.reduce((a, b) => a + b, 0);
 }
 
 /**
- * Function that given a max, min and initial value will
+ * Given a max, min and initial value will
  * return a value that doesn't break out of those bounds
  * @param min - The lowest possible value
  * @param max - The highest possible value
@@ -14,7 +18,7 @@ export function clamp(min: number, max: number, value: number): number {
 }
 
 /**
- * Function that given a max, change value and initial value will
+ * Given a max, change value and initial value will
  * return a value that doesn't go above the max value.
  * Negative increment values have no effect.
  * @param max - The highest possible value
@@ -25,7 +29,7 @@ export function cappedAdd(max: number, offset: number, initialValue: number): nu
     return Math.min(initialValue + Math.max(offset, 0), max);
 }
 /**
- * Function that given a min, change value and initial value will
+ * Given a min, change value and initial value will
  * return a value that doesn't go below the min value.
  * Negative decremement values have no effect.
  * @param min - The lowest possible value

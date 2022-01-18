@@ -16,7 +16,7 @@
     "author": "Ben Allen",
     "license": "ISC",
     "dependencies": {
-        "@benjambles/mow-game": "../../packages/game-lib",
+        "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/mow-server": "../../packages/shared-server",
         "bcrypt": "5.0.1",
         "dotenv": "10.0.0",

@@ -19,7 +19,7 @@
     "author": "Ben Allen",
     "license": "ISC",
     "dependencies": {
-        "@benjambles/mow-game": "../../packages/game-lib",
+        "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/mow-ui": "../../packages/ui",
         "@lit-labs/ssr": "1.0.0",

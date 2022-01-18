@@ -1,7 +1,7 @@
 import { streamTemplate } from '../../../utils/stream-template.js';
-import { RouteMethods } from '../../routes.js';
+import { RouteMethods, RouteConfig } from '../../routes.js';
 
-export function registerRoute(getData) {
+export function registerRoute(getData): RouteConfig {
     return {
         method: RouteMethods.Get,
         path: '/join',

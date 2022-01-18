@@ -1,4 +1,4 @@
-import { HeroData } from '@benjambles/mow-game/dist/types/game/hero.js';
+import { HeroData } from '@benjambles/rise-engine/dist/types/game/hero.js';
 
 const mockHero: HeroData = {
     name: 'Eva Lumier',

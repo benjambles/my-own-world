@@ -1,3 +1,4 @@
+import { Middleware } from 'koa';
 import { accountRoutes } from './account/index.js';
 import { publicRoutes } from './public/index.js';
 
@@ -7,4 +8,10 @@ export const enum RouteMethods {
     Post = 'post',
 }
 
-export const routes = [accountRoutes, publicRoutes].flat();
+export interface RouteConfig {
+    method: RouteMethods;
+    path: string;
+    handler: Middleware;
+}
+
+export const routes: RouteConfig[] = [accountRoutes, publicRoutes].flat();

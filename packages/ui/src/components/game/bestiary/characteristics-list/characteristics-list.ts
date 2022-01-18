@@ -1,7 +1,7 @@
 import type {
     CharacteristicGroup,
     Characteristics,
-} from '@benjambles/mow-game/dist/types/game/npc.js';
+} from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './characteristics-list.css.js';

@@ -1,4 +1,4 @@
-import type { Stats } from '@benjambles/mow-game/dist/types/game/npc.js';
+import type { Stats } from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './stats-block.css.js';

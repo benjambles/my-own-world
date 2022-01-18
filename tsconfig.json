@@ -8,7 +8,7 @@
             "path": "./apps/website"
         },
         {
-            "path": "./packages/game-lib"
+            "path": "./packages/rise-engine"
         },
         {
             "path": "./packages/shared-server"
