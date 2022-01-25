@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { classMap } from 'lit/directives/class-map';
+import { classMap } from 'lit/directives/class-map.js';
 import styles from './class-card.css.js';
 export interface ClassDetails {
     name: string;

@@ -1,6 +1,6 @@
 import type { Action, ActionGroup, Actions } from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './actions-table.css.js';
 
@@ -10,7 +10,7 @@ import styles from './actions-table.css.js';
  */
 export function actionsTable({ limit, basic, special, learnable }: Actions) {
     return html`
-        ${lazyStylesheet('/styles/core/bestiary/actions-table/actions-table.css')}
+        ${lazyStylesheet('/styles/game/bestiary/actions-table/actions-table.css')}
         <section class="${styles.actions}">
             <table>
                 <thead>

@@ -12,9 +12,9 @@ export default {
     decorators: [linkStoryRenderer],
 } as Meta;
 
-export const Template: StoryFn<ButtonData> = (args) => destructiveButton(args);
+const Template: StoryFn<ButtonData> = (args) => destructiveButton(args);
 
-const playground = Template.bind({});
+export const playground = Template.bind({});
 playground.args = {
     action: undefined,
     size: 'normal',

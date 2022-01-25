@@ -6,9 +6,6 @@ module.exports = {
         builder: 'webpack5',
     },
     framework: '@storybook/web-components',
-    features: {
-        storyStoreV7: true,
-    },
     staticDirs: ['../dist/static'],
     stories: ['../src/components/**/*.stories.ts'],
     addons: [

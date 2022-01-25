@@ -1,9 +1,4 @@
-import { addDecorator } from '@storybook/web-components';
-import { withA11y } from '@storybook/addon-a11y';
-
-import '../lib/static/styles/global-css/base.css';
-
-addDecorator(withA11y);
+import '../dist/static/styles/global-css/base.css';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
