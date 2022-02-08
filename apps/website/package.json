@@ -13,8 +13,9 @@
         "ts": "tsc -b -v",
         "clean:ts": "tsc -b --clean",
         "test": "jest",
-        "start": "nodemon --config nodemon.json --inspect=:9229",
-        "lint": "eslint --fix --ext .js,.ts"
+        "dev": "nodemon --config nodemon.json --inspect=:9229",
+        "lint": "eslint --fix --ext .js,.ts",
+        "start": "node --experimental-vm-modules --experimental-json-modules dist/app.js"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -23,7 +24,6 @@
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/mow-ui": "../../packages/ui",
         "@lit-labs/ssr": "1.0.0",
-        "@popeindustries/lit-html-server": "3.1.0",
         "dotenv": "10.0.0",
         "http-errors": "1.8.0",
         "koa": "2.13.1",
@@ -32,9 +32,9 @@
         "koa-conditional-get": "3.0.0",
         "koa-etag": "4.0.0",
         "koa-helmet": "6.1.0",
+        "koa-joi-router": "7.0.0",
         "koa-node-resolve": "1.0.0-pre.9",
         "koa-pino-logger": "3.0.0",
-        "koa-router": "10.0.0",
         "koa-static": "5.0.0"
     },
     "devDependencies": {

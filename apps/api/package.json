@@ -9,9 +9,10 @@
         "ts": "tsc -b -v",
         "clean:ts": "tsc -b --clean",
         "test": "jest",
-        "start": "nodemon --config nodemon.json --inspect=:9230",
+        "dev": "nodemon --config nodemon.json --inspect=:9230",
         "api:generator": "node dist/generators/index.js",
-        "lint": "eslint --fix --ext .js,.ts"
+        "lint": "eslint --fix --ext .js,.ts",
+        "start": "node --experimental-json-modules dist/app.js"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -31,7 +32,6 @@
         "koa-joi-router": "7.0.0",
         "koa-jwt": "4.0.1",
         "koa-pino-logger": "3.0.0",
-        "koa-router": "10.0.0",
         "koa-static": "5.0.0",
         "mongodb": "3.6.6",
         "ts-option": "2.1.0",

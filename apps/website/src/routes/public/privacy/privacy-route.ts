@@ -12,7 +12,8 @@ export function privacyRoute(getData): RouteConfig {
                 ctx,
                 data,
                 importUrl: import.meta.url,
-                renderFile: './privacy-renderer.js',
+                renderFile: '../../../utils/render-template.js',
+                rootComponent: '@benjambles/mow-ui/dist/components/pages/public/terms.js',
             });
         },
     };

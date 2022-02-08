@@ -11,7 +11,8 @@ export function registerRoute(getData): RouteConfig {
                 ctx,
                 data,
                 importUrl: import.meta.url,
-                renderFile: './register-renderer.js',
+                renderFile: '../../../utils/render-template.js',
+                rootComponent: '@benjambles/mow-ui/dist/components/pages/public/terms.js',
             });
         },
     };

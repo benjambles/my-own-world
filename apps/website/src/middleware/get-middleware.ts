@@ -1,26 +1,33 @@
 import { errorHandler } from '@benjambles/mow-server/dist/koa/error-handler.js';
-import { getDirPath } from '@benjambles/mow-server/dist/utils/get-dir-path.js';
 import type { DotenvParseOutput } from 'dotenv/types';
 import type Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
-import router from 'koa-joi-router';
+import router, { Spec } from 'koa-joi-router';
 import koaJWT from 'koa-jwt';
 import { nodeResolve } from 'koa-node-resolve';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
-import { resolve } from 'path';
-import { getRouteMiddleware } from './routing/get-route-middleware.js';
+
+interface GetMiddlewareProps {
+    env: DotenvParseOutput;
+    app: Koa;
+    routes: Spec[];
+    staticPath: string;
+}
 
 /**
  * Initialize an app
  * @api public
  */
-export function getMiddleware(env: DotenvParseOutput, app: Koa, routes): Koa.Middleware[] {
-    const modulePath = getDirPath(import.meta.url);
-
+export function getMiddleware({
+    env,
+    app,
+    routes,
+    staticPath,
+}: GetMiddlewareProps): Koa.Middleware[] {
     return [
         logger(),
         conditionalGet(),
@@ -38,10 +45,7 @@ export function getMiddleware(env: DotenvParseOutput, app: Koa, routes): Koa.Mid
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
         nodeResolve({}),
-        serve(resolve(modulePath, '../../../../packages/ui/dist/static')),
-        ...getRouteMiddleware({
-            router: router(),
-            routes,
-        }),
+        serve(staticPath),
+        router().route(routes).middleware(),
     ];
 }

@@ -12,7 +12,8 @@ export function homeRoute(getData): RouteConfig {
                 ctx,
                 data,
                 importUrl: import.meta.url,
-                renderFile: './home-renderer.js',
+                renderFile: '../../../utils/render-template.js',
+                rootComponent: '@benjambles/mow-ui/dist/components/pages/public/home/home.js',
             });
         },
     };

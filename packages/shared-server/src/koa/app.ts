@@ -1,14 +1,9 @@
+import { config } from 'dotenv';
 import { DotenvParseOutput } from 'dotenv/types';
 import type Koa from 'koa';
-import koaJoiRouter from 'koa-joi-router';
+import { resolveImportPath } from '../utils/paths.js';
 
 export type KoaContext = Koa.ParameterizedContext<Koa.DefaultState, Koa.DefaultContext>;
-
-interface ProcessEnv {
-    port: number;
-    host: string;
-    nodeEnv: string;
-}
 
 interface BootHandlerOpts {
     app: Koa;
@@ -23,15 +18,6 @@ interface BootHandlerOpts {
  * @param param0
  */
 export function boot({ app, isApi, errorHandler, middleware, env }: BootHandlerOpts) {
-    const envParams = getEnvParams(env);
-    const { error, value } = validateEnvParams(envParams);
-
-    if (error) {
-        throw error;
-    }
-
-    const { port, host } = value;
-
     // override koa's undocumented error handler
     app.context.onerror = errorHandler;
 
@@ -42,39 +28,23 @@ export function boot({ app, isApi, errorHandler, middleware, env }: BootHandlerO
 
     middleware.forEach((fn) => app.use(fn));
 
-    app.listen(port, host, (): void => {
-        console.log('Listening on %s:%s', host, port);
-    });
-}
+    return () => {
+        const { PORT, HOST } = env;
 
-/**
- *
- * @param process
- */
-function getEnvParams(env: DotenvParseOutput): ProcessEnv {
-    return {
-        nodeEnv: env.NODE_ENV ?? 'development',
-        host: env.HOST ?? '0.0.0.0',
-        port: parseInt(env.PORT, 10) ?? NaN,
+        return app.listen(parseInt(PORT, 10), HOST, () => {
+            console.log('Listening on %s:%s', HOST, PORT);
+        });
     };
 }
 
-/**
- * Ensures the the required parameters for a basic app to boot exist in
- * the node environment
- *
- * @param envParams
- */
-function validateEnvParams(envParams: ProcessEnv) {
-    const { Joi } = koaJoiRouter;
+export function parseEnvFile(validator, paths) {
+    const env = config({ path: resolveImportPath(paths.base, paths.env) }).parsed;
 
-    return Joi.object({
-        nodeEnv: Joi.string()
-            .pattern(/^development|staging|production|testing&/)
-            .required(),
-        host: Joi.string()
-            .ip({ version: ['ipv4', 'ipv6'] })
-            .required(),
-        port: Joi.number().port().required(),
-    }).validate(envParams);
+    const { error, value } = validator(env);
+
+    if (error) {
+        throw error;
+    }
+
+    return value;
 }

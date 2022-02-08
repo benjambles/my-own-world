@@ -7,7 +7,7 @@
         "../../packages/rise-engine/dist"
     ],
     "delay": "1000",
-    "exec": "node --experimental-vm-modules --experimental-json-modules dist/bin/app.js",
+    "exec": "npm run start",
     "events": {
         "start": "cls || clear"
     }

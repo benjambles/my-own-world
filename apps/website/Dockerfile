@@ -30,4 +30,4 @@ COPY --from=build /app/dist .
 
 USER node
 
-ENTRYPOINT ["npm", "run website"]
+ENTRYPOINT ["npm", "run start"]

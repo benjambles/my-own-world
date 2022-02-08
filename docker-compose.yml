@@ -15,7 +15,7 @@ services:
       - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
       - ./packages/shared-server/dist:/app/packages/shared-server/dist
       - ./packages/ui/dist:/app/packages/ui/dist
-    command: npm run start --workspace=apps/api -- -L
+    command: npm run dev --workspace=apps/api -- -L
   website:
     build:
       context: .
@@ -31,7 +31,7 @@ services:
       - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
       - ./packages/shared-server/dist:/app/packages/shared-server/dist
       - ./packages/ui/dist:/app/packages/ui/dist
-    command: npm run start --workspace=apps/website -- -L
+    command: npm run dev --workspace=apps/website -- -L
 #   mongo:
 #     image: mongo:4.2.8
 #     ports:

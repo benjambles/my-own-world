@@ -12,7 +12,8 @@ export function accessibilityRoute(getData): RouteConfig {
                 ctx,
                 data,
                 importUrl: import.meta.url,
-                renderFile: './accessibility-renderer.js',
+                renderFile: '../../../utils/render-template.js',
+                rootComponent: '@benjambles/mow-ui/dist/components/pages/public/terms.js',
             });
         },
     };
