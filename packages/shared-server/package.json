@@ -17,8 +17,16 @@
     "license": "ISC",
     "dependencies": {
         "dotenv": "10.0.0",
+        "joi": "^17.6.0",
         "koa": "2.13.1",
-        "koa-router": "10.0.0"
+        "koa-better-error-handler": "7.0.1",
+        "koa-compress": "5.0.1",
+        "koa-conditional-get": "3.0.0",
+        "koa-etag": "4.0.0",
+        "koa-helmet": "6.1.0",
+        "koa-jwt": "4.0.1",
+        "koa-pino-logger": "3.0.0",
+        "koa-static": "5.0.0"
     },
     "devDependencies": {
         "@shopify/jest-koa-mocks": "3.0.1",

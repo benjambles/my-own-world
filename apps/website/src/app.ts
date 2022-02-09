@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-import { boot, parseEnvFile } from '@benjambles/mow-server/dist/koa/app.js';
+import { boot } from '@benjambles/mow-server/dist/koa/app.js';
+import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
+import Joi from 'joi';
 import Koa from 'koa';
-import errorHandler from 'koa-better-error-handler';
-import koaJoiRouter from 'koa-joi-router';
-import { getMiddleware } from './middleware/get-middleware.js';
-import { routes } from './routes/routes.js';
+import { routesConfig } from './routes/routes-config.js';
 
 interface AppConfig {
     app: Koa;
+    envSchema: Joi.PartialSchemaMap<any>;
     paths: {
         base: string;
         env: string;
@@ -16,45 +16,42 @@ interface AppConfig {
     };
 }
 
-export async function configureApp({ app, paths }: AppConfig) {
-    const env = parseEnvFile(validateEnvParams, paths);
+export const envSchema = {
+    NODE_ENV: Joi.string()
+        .pattern(/^development|staging|production|testing&/)
+        .required(),
+    HOST: Joi.string()
+        .ip({ version: ['ipv4', 'ipv6'] })
+        .required(),
+    PORT: Joi.number().port().required(),
+    JWT_SECRET: Joi.string().uuid().required(),
+};
+
+export async function configureApp({ app, paths, envSchema }: AppConfig) {
+    const env = parseEnvFile(envSchema, paths);
 
     return boot({
         app,
-        errorHandler,
-        isApi: false,
-        middleware: getMiddleware({
-            env,
-            app,
-            routes,
-            staticPath: resolveImportPath(paths.base, paths.static),
-        }),
         env,
+        routesConfig,
+        config: {
+            isApi: false,
+            helmetConfig: {
+                contentSecurityPolicy: {
+                    directives: {
+                        'default-src': ['*'],
+                        'script-src-attr': ["'unsafe-inline'"],
+                        'upgrade-insecure-requests': [],
+                    },
+                },
+            },
+            staticPath: resolveImportPath(paths.base, paths.static),
+        },
     });
 }
 
-/**
- * Ensures the the required parameters for a basic app to boot exist in
- * the node environment
- *
- * @param envParams
- */
-export function validateEnvParams(envParams = {}) {
-    const { Joi } = koaJoiRouter;
-
-    return Joi.object({
-        NODE_ENV: Joi.string()
-            .pattern(/^development|staging|production|testing&/)
-            .required(),
-        HOST: Joi.string()
-            .ip({ version: ['ipv4', 'ipv6'] })
-            .required(),
-        PORT: Joi.number().port().required(),
-        JWT_SECRET: Joi.string().uuid().required(),
-    }).validate(envParams);
-}
-
 configureApp({
+    envSchema,
     app: new Koa(),
     paths: {
         base: import.meta.url,

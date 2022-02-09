@@ -1,5 +1,5 @@
 import { streamTemplate } from '../../../utils/stream-template.js';
-import { RouteMethods, RouteConfig } from '../../routes.js';
+import { RouteMethods, RouteConfig } from '../../routes-config.js';
 
 export function accessibilityRoute(getData): RouteConfig {
     return {

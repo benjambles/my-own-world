@@ -13,3 +13,5 @@ export function terms(data) {
 
     return html`${layout(data, page)}`;
 }
+
+export default terms;

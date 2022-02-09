@@ -14,4 +14,4 @@ export interface RouteConfig {
     handler: Middleware;
 }
 
-export const routes: RouteConfig[] = [accountRoutes, publicRoutes].flat();
+export const routesConfig: RouteConfig[] = [accountRoutes, publicRoutes].flat();

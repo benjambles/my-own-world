@@ -6,3 +6,5 @@ export function home(data) {
     const page = html`<main class="page--home">${homeIntro()}</main>`;
     return html`${layout(data, page)}`;
 }
+
+export default home;
