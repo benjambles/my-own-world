@@ -1,5 +1,5 @@
 import mongoDB from 'mongodb';
-import { decryptValue } from '../../../utils/security/encryption.js';
+import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import * as queries from './queries.js';
 
 const { ObjectId } = mongoDB;

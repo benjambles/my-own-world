@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import { boot } from '@benjambles/mow-server/dist/koa/app.js';
+import { configureServer } from '@benjambles/mow-server/dist/index.js';
+import { loadRoutes } from '@benjambles/mow-server/dist/routing/load-routes.js';
+import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import Joi from 'joi';
 import Koa from 'koa';
-import { initConnection } from './db/index.js';
 import resources from './resources/index.js';
-import { loadRoutes } from './routing/load-routes.js';
 
 interface AppConfig {
     app: Koa;
@@ -36,7 +36,7 @@ export const envSchema = {
     JWT_SECRET: Joi.string().uuid().required(),
 };
 
-export async function configureApp({ app, db, envSchema, paths }: AppConfig) {
+export async function getListener({ app, db, envSchema, paths }: AppConfig) {
     const env = parseEnvFile(envSchema, paths);
 
     const dbInstance = await db({
@@ -47,7 +47,7 @@ export async function configureApp({ app, db, envSchema, paths }: AppConfig) {
     });
     const routes = loadRoutes(resources, dbInstance, 'api').map((route) => route.middleware());
 
-    return boot({
+    return configureServer({
         app,
         env,
         routes,
@@ -57,12 +57,12 @@ export async function configureApp({ app, db, envSchema, paths }: AppConfig) {
     });
 }
 
-configureApp({
+getListener({
     envSchema,
     app: new Koa(),
     db: initConnection,
     paths: {
         base: import.meta.url,
-        env: '../../.env',
+        env: '../.env',
     },
 }).then((listener) => listener());

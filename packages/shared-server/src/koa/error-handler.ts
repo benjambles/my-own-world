@@ -1,4 +1,4 @@
-import type Koa from 'koa';
+import Koa from 'koa';
 
 /**
  * Centralised error handling logging. Additional middleware should not

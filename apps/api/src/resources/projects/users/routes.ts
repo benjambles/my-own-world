@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
-import { partsResponse } from '../../../utils/routes/responses.js';
-import { Send } from '../../../utils/routes/send.js';
+import { partsResponse } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { Send } from '@benjambles/mow-server/dist/utils/routes/send.js';
 import * as users from './users.js';
 
 /**

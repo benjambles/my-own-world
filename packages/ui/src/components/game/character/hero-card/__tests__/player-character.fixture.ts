@@ -179,14 +179,10 @@ const mockHero: HeroData = {
                 sustain: 1,
                 trigger: 1,
             },
-            move_distance: {
-                min: 1,
-                max: 5,
-            },
             actions: {
-                tide_turner: 2,
-                move: 1,
-                shift: 1,
+                tide_turner_charges: 2,
+                move: { min: 1, max: 1 },
+                shift: { min: 1, max: 1 },
             },
             critical: 2,
             accuracy: 10,
@@ -206,14 +202,33 @@ const mockHero: HeroData = {
                 sustain: 1,
                 trigger: 1,
             },
-            move_distance: {
-                min: 1,
-                max: 5,
+            actions: {
+                tide_turner_charges: 2,
+                move: { min: 1, max: 1 },
+                shift: { min: 1, max: 1 },
+            },
+            critical: 2,
+            accuracy: 10,
+            penetration: 5,
+            toughness: 4,
+            resistance: 4,
+            willpower: 4,
+            dodge: 4,
+        },
+        current: {
+            hp: 20,
+            defense: 4,
+            barrier: 4,
+            skill: 8,
+            limits: {
+                amplify: 1,
+                sustain: 1,
+                trigger: 1,
             },
             actions: {
-                tide_turner: 2,
-                move: 1,
-                shift: 1,
+                tide_turner_charges: 2,
+                move: { min: 1, max: 1 },
+                shift: { min: 1, max: 1 },
             },
             critical: 2,
             accuracy: 10,
@@ -244,13 +259,15 @@ const mockHero: HeroData = {
     },
     equipment: {
         melee: {
+            type: 'melee',
             name: 'Scepter',
             id: 'scepter',
             hands: 1,
             range: 1,
             damage: {
-                dice: {
-                    d4: 1,
+                attack_dice: {
+                    sides: 4,
+                    bonus_dice: 1,
                 },
                 type: 'toughness',
             },
@@ -265,19 +282,24 @@ const mockHero: HeroData = {
             offsets: {
                 resistance: 2,
             },
+            additional_effect: '',
         },
         ranged: {
+            type: 'ranged',
+            range: 6,
             name: 'Wand',
             id: 'wand',
             damage: {
-                dice: {
-                    d6: 1,
+                attack_dice: {
+                    sides: 6,
+                    bonus_dice: 0,
                 },
                 type: 'resistance',
             },
             offsets: {
                 critical: 1,
             },
+            additional_effect: '',
         },
         armour: {
             name: 'Robes',
@@ -300,6 +322,7 @@ const mockHero: HeroData = {
                     period: 'milestone',
                     used: 0,
                 },
+                locked: true,
             },
             {
                 name: 'Life Binder',
@@ -314,6 +337,7 @@ const mockHero: HeroData = {
                     period: 'milestone',
                     used: 0,
                 },
+                locked: false,
             },
         ],
         items: [],

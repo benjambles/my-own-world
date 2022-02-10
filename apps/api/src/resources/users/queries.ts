@@ -1,4 +1,4 @@
-import { result } from '../../db/index.js';
+import { result } from '@benjambles/mow-server/dist/utils/db.js';
 
 /**
  * Retrieve a user with a matching uuid from the database

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { boot } from '@benjambles/mow-server/dist/koa/app.js';
+import { configureServer } from '@benjambles/mow-server/dist/index.js';
 import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
 import Joi from 'joi';
@@ -27,10 +27,10 @@ export const envSchema = {
     JWT_SECRET: Joi.string().uuid().required(),
 };
 
-export async function configureApp({ app, paths, envSchema }: AppConfig) {
+export async function getListener({ app, paths, envSchema }: AppConfig) {
     const env = parseEnvFile(envSchema, paths);
 
-    return boot({
+    return configureServer({
         app,
         env,
         routesConfig,
@@ -50,12 +50,12 @@ export async function configureApp({ app, paths, envSchema }: AppConfig) {
     });
 }
 
-configureApp({
+getListener({
     envSchema,
     app: new Koa(),
     paths: {
         base: import.meta.url,
-        env: '../../.env',
-        static: '../../../../packages/ui/dist/static',
+        env: '../.env',
+        static: '../../../packages/ui/dist/static',
     },
 }).then((listener) => listener());

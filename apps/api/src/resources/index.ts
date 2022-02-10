@@ -1,7 +1,7 @@
-import * as projects from './projects/index.js';
-import * as service from './service/index.js';
-import * as tales from './tales/index.js';
-import * as translations from './translations/index.js';
-import * as users from './users/index.js';
+import projects from './projects/index.js';
+import service from './service/index.js';
+import tales from './tales/index.js';
+import translations from './translations/index.js';
+import users from './users/index.js';
 
 export default [projects, service, tales, translations, users];

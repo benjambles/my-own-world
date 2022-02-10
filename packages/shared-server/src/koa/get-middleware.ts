@@ -1,5 +1,5 @@
-import type { DotenvParseOutput } from 'dotenv/types';
-import type Koa from 'koa';
+import { DotenvParseOutput } from 'dotenv/types';
+import Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';

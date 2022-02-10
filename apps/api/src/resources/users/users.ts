@@ -1,5 +1,5 @@
+import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
 import mongoDB from 'mongodb';
-import { compareBHash } from '../../utils/security/blowfish.js';
 import * as queries from './queries.js';
 
 const { ObjectId } = mongoDB;

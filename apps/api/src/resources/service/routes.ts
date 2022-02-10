@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
-import { dataResponse, partsResponse } from '../../utils/routes/responses.js';
-import { Send } from '../../utils/routes/send.js';
+import { dataResponse, partsResponse } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { Send } from '@benjambles/mow-server/dist/utils/routes/send.js';
 import { getSystemKey } from './service.js';
 
 /**
