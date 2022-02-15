@@ -22,7 +22,7 @@ export function getUsers(dbInstance): Middleware {
         const usersData: User.UserData[] = await users.get(
             dbInstance,
             paramToNumber(limit, 10),
-            paramToNumber(offset, 10),
+            paramToNumber(offset, 0),
         );
 
         return usersData;

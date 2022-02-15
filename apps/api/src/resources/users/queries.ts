@@ -5,7 +5,10 @@ import { result } from '@benjambles/mow-server/dist/utils/db.js';
  * @param uuid - A valid uuid
  */
 export async function getActiveUserByUuid(users, uuid): Promise<User.UserData> {
-    const data = await users.findOne({ _id: uuid, isDeleted: false });
+    const data = await users.findOne(
+        { _id: uuid, isDeleted: false },
+        { projection: { identities: 0 } },
+    );
 
     return result('There was an error whilst fetching the user', data);
 }
@@ -46,7 +49,9 @@ export async function getActiveUsers(
     limit: number = 10,
     skip: number = 0,
 ): Promise<User.UserData[]> {
-    const data = await users.find({ isDeleted: false }, { limit, skip }).toArray();
+    const data = await users
+        .find({ isDeleted: false }, { projection: { identities: 0 }, skip, limit })
+        .toArray();
 
     return result('There was an error whilst fetching users', data);
 }
@@ -82,7 +87,10 @@ export async function deleteUser(users, uuid): Promise<boolean> {
  * @param data - An object representing a patch on a User profile
  */
 export async function updateUser(users, uuid, userData: User.UserData): Promise<User.UserData> {
-    const data = await users.findOneAndUpdate({ _id: uuid }, { $set: { userData } });
+    const data = await users.findOneAndUpdate(
+        { _id: uuid },
+        { $set: { userData }, projection: { identities: 0 } },
+    );
 
     return result('There was an error whilst updating the user', data);
 }
