@@ -1,3 +1,6 @@
+import { Middleware } from 'koa';
+import { send } from './send.js';
+
 export interface DataResponse {
     data: any;
 }
@@ -45,4 +48,27 @@ export function getResponseBody(response, status): PartsResponse | DataResponse 
     }
 
     return dataResponse(response.data);
+}
+
+interface DefaultError {
+    message: string;
+    status: number;
+}
+
+export function getPartsMiddleware(defaultError: DefaultError, callback): Middleware {
+    return async (ctx) => {
+        await send(ctx, defaultError, async (ctx) => {
+            const responseBody = await callback(ctx);
+            return partsResponse(responseBody);
+        });
+    };
+}
+
+export function getDataMiddleware(defaultError: DefaultError, callback): Middleware {
+    return async (ctx) => {
+        await send(ctx, defaultError, async (ctx) => {
+            const responseBody = await callback(ctx);
+            return dataResponse(responseBody);
+        });
+    };
 }

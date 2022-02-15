@@ -3,7 +3,6 @@ import { Option, some } from 'ts-option';
 import { getFilledArray, reduceEntries } from '../utils/arrays.js';
 import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop.js';
 import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
-import { send } from '../utils/routes/send.js';
 import { getRouteMiddleware, RouteHandlers } from './spec-parsing/get-route-middleware.js';
 import { getSecurityMiddleware } from './spec-parsing/get-security-middleware.js';
 
@@ -44,7 +43,7 @@ function mapMethods(path: string, verbs, routeHandlers: RouteHandlers, dbInstanc
     return verbs.flatMap(
         reduceEntries((configs, [method, spec]) => {
             const routeConfig = concatOrElse(
-                getRouteMiddleware(spec, routeHandlers, send, dbInstance),
+                getRouteMiddleware(spec, routeHandlers, dbInstance),
                 getSecurityMiddleware(spec),
             ).map((handler) => {
                 const { Joi } = router;

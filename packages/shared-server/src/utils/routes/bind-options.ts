@@ -1,6 +1,6 @@
 import { RouteHandler } from '../../routing/spec-parsing/get-route-middleware.js';
 import { getRouteConfig } from './get-route-config.js';
-import { dataResponse } from './responses.js';
+import { getDataMiddleware } from './responses.js';
 
 /**
  * Returns a middleware for generating OPTIONS and returning
@@ -16,19 +16,17 @@ export function bindOptions(routeConfig): RouteHandler {
      * Return the options and config for the route
      * @route [OPTIONS]
      */
-    return (send) => {
-        return async (ctx) => {
-            await send(ctx, defaultError, async (ctx) => {
-                const response = getRouteConfig(routeConfig, ctx.state);
+    return () => {
+        return getDataMiddleware(defaultError, async (ctx) => {
+            const response = getRouteConfig(routeConfig, ctx.state);
 
-                ctx.set(
-                    'Allow',
-                    Object.keys(response.verbs).reduce(getHTTPMethods, []).join(', ').toUpperCase(),
-                );
+            ctx.set(
+                'Allow',
+                Object.keys(response.verbs).reduce(getHTTPMethods, []).join(', ').toUpperCase(),
+            );
 
-                return dataResponse(response);
-            });
-        };
+            return response;
+        });
     };
 }
 
