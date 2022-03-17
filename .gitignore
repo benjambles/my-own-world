@@ -1,5 +1,4 @@
 .cache
-.vscode
 *.log
 **/.env
 buildcache
@@ -8,3 +7,7 @@ node_modules
 **/*.css.json
 **/*.css.ts
 coverage
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/config-snippets.code-snippets
