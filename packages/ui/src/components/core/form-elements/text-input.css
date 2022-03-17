@@ -1,0 +1,28 @@
+.label {
+    display: block;
+    margin-top: 20px;
+    font-size: 1.6rem;
+    font-family: 'Oxanium', monospace;
+    letter-spacing: 0.2ch;
+    font-weight: 300;
+}
+
+.text-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    font-size: 1.6rem;
+    transition: 0.1s border-color, 0.1s box-shadow;
+}
+
+.text-input:active,
+.text-input:focus {
+    border: 1px solid #ffae78;
+    box-shadow: 0 0 5px #f57723;
+}
+
+.text-input:hover {
+    border: 1px solid #ffae78;
+}

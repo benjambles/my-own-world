@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { primaryButton } from '../../../../core/buttons/primary-button.js';
-import { inputBox } from '../../../../core/form-elements/input-box.js';
+import { textInput } from '../../../../core/form-elements/text-input.js';
 import { link } from '../../../../core/links/link.js';
 import baseStyles from '../../../../global-css/base.css.js';
 import { lazyStylesheet } from '../../../../utils/lazy-stylesheet.js';
@@ -15,24 +15,25 @@ export function homeIntro() {
                     <h1>Create, Discover, Learn</h1>
 
                     <p>
-                        My own world was built for people who love world building, story telling,
-                        exploring new worlds, and sharing experiences with friends.
+                        My own world was built for people who love world building, story
+                        telling, exploring new worlds, and sharing experiences with
+                        friends.
                     </p>
 
                     <p>
-                        Best of all, it's open source! Add new features, or run your own copy, with
-                        a little coding knowledge there's no limits.
+                        Best of all, it's open source! Add new features, or run your own
+                        copy, with a little coding knowledge there's no limits.
                     </p>
                 </div>
 
                 <form action="/signup">
-                    ${inputBox({ label: 'Username', id: 'username' })}
-                    ${inputBox({
+                    ${textInput({ label: 'Username', id: 'username' })}
+                    ${textInput({
                         label: 'Email',
                         id: 'email',
                         type: 'email',
                     })}
-                    ${inputBox({
+                    ${textInput({
                         label: 'Password',
                         id: 'password',
                         type: 'password',

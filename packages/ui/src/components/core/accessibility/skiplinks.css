@@ -1,0 +1,30 @@
+.skiplinks a {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: fixed;
+    width: 1px;
+    z-index: 100;
+    transition: top 0.5s;
+    top: 0;
+}
+
+.skiplinks a:focus,
+.skiplinks a:target {
+    background: var(--special-4);
+    clip: auto;
+    clip-path: none;
+    color: var(--shade-0);
+    display: flex;
+    flex-direction: column;
+    left: 1rem;
+    height: auto;
+    top: 1rem;
+    width: auto;
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+}

@@ -1,7 +1,8 @@
 .profile-image {
-    border-radius: 5px;
     border: 2px solid white;
-    height: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    height: 32px;
 }
 
 .menu-profile {
@@ -10,6 +11,7 @@
 }
 
 .menu-profile > summary {
+    display: flex;
     cursor: pointer;
 }
 
@@ -18,12 +20,12 @@
 }
 
 .menu-profile > summary::-webkit-details-marker {
-    color: white;
-    top: -6px;
-    position: relative;
     width: 0.5em;
     height: 0.5em;
     margin-inline-end: 0.1em;
+    position: relative;
+    top: -6px;
+    color: white;
 }
 
 .menu-profile > summary:hover::-webkit-details-marker,

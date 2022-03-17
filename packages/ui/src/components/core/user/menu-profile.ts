@@ -17,7 +17,11 @@ export function menuProfile({ profile }: MenuProfileData) {
         ${lazyStylesheet('/styles/core/user/menu-profile.css')}
         <details class="${styles.menuProfile}">
             <summary aria-haspopup="true" role="button">
-                <img src="${profile.image}" alt="${profile.name}" class="${styles.profileImage}" />
+                <img
+                    src="${profile.image}"
+                    alt="${profile.name}"
+                    class="${styles.profileImage}"
+                />
             </summary>
             <div class="${styles.menuProfile__dropdown}" role="menu">
                 <span class="${styles.userLabel}">
