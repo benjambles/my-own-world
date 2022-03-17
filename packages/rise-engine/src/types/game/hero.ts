@@ -1,14 +1,21 @@
-import type { ActionTypes, ClassAction, ClassTrait, Maneuver, TideTurner } from './actions.js';
-import type { Anchor, Armour, Item, Keepsake } from './items.js';
+import type {
+    ActionTypes,
+    ClassAction,
+    ClassTrait,
+    Maneuver,
+    TideTurner,
+} from './actions.js';
+import type { Anchor, Armour, Item, Keepsake, OffhandWeapon, Weapon } from './items.js';
 
 export interface HeroData {
     name: string;
-    tier: 1 | 2 | 3 | 4;
+    tier: number;
     class: ClassOptions;
     profession: ProfessionOptions;
     stats: {
         base: Stats;
         resolved: Stats;
+        current: Stats;
     };
     actionPoints: {
         current: number;
@@ -16,42 +23,9 @@ export interface HeroData {
     };
     skills: SkillOptions;
     equipment: {
-        melee: {
-            name: 'Scepter';
-            id: 'scepter';
-            hands: 1;
-            range: 1;
-            damage: {
-                dice: {
-                    d4: 1;
-                };
-                type: 'toughness';
-            };
-            offsets: {
-                accuracy: 1;
-            };
-            additional_effect: 'Your first Spell each Encounter is a Fast Action.';
-        };
-        offhand: {
-            name: 'Focus Item';
-            id: 'focus_item';
-            offsets: {
-                resistance: 2;
-            };
-        };
-        ranged: {
-            name: 'Wand';
-            id: 'wand';
-            damage: {
-                dice: {
-                    d6: 1;
-                };
-                type: 'resistance';
-            };
-            offsets: {
-                critical: 1;
-            };
-        };
+        melee: Weapon;
+        offhand?: OffhandWeapon;
+        ranged: Weapon;
         armour: Armour;
         keepsakes: [Keepsake, Keepsake?];
         items: Item[];
@@ -106,14 +80,16 @@ export interface Stats {
     barrier: number;
     skill: number;
     limits: Record<ActionTypes, number>;
-    move_distance: {
-        min: number;
-        max: number;
-    };
     actions: {
-        tide_turner: number;
-        move: number;
-        shift: number;
+        tide_turner_charges: number;
+        move: {
+            min: number;
+            max: number;
+        };
+        shift: {
+            min: number;
+            max: number;
+        };
     };
     critical: number;
     accuracy: number;

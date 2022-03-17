@@ -1,4 +1,7 @@
-import { getCurrentActionPoints, setCurrentActionPoints } from '../actors/hero.js';
+import {
+    getCurrentActionPoints,
+    setCurrentActionPoints,
+} from '../actors/hero/actions.js';
 import type { ActionSpeeds, CombatAction } from '../types/game/actions.js';
 import type { HeroData } from '../types/game/hero.js';
 
@@ -19,7 +22,10 @@ interface ActionPointResult {
     remainingPoints: number;
 }
 
-export function canAffordAction({ speed }: CombatAction, currentPoints: number): ActionPointResult {
+export function canAffordAction(
+    { speed }: CombatAction,
+    currentPoints: number,
+): ActionPointResult {
     const points: Record<ActionSpeeds, number> = {
         free: 0,
         fast: 1,

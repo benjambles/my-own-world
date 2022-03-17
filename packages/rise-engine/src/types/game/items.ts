@@ -1,4 +1,4 @@
-import type { ActionSpeeds } from './actions.js';
+import type { ActionSpeeds, CapValues } from './actions.js';
 
 export type UseTypes = 'combat' | 'crossroad' | 'custom' | 'role-playing' | 'encounter';
 export type UseLimits = 'combat' | 'campaign' | 'milestone' | 'times';
@@ -20,6 +20,7 @@ export interface Item {
 
 export interface Keepsake extends Item {
     type: 'keepsake';
+    locked: boolean;
 }
 
 export interface Anchor {
@@ -35,6 +36,7 @@ interface EqupimentBase {
 
 type AttackTypes = 'resistance' | 'toughness';
 type DefenseTypes = AttackTypes | 'dodge';
+type OffsetTypes = DefenseTypes | 'willpower';
 
 export interface Armour extends EqupimentBase {
     offsets: Partial<
@@ -42,4 +44,32 @@ export interface Armour extends EqupimentBase {
             [key in DefenseTypes]: number;
         }
     >;
+}
+
+export interface Weapon extends EqupimentBase {
+    type: 'melee' | 'ranged';
+    range: number;
+    damage: WeaponDamage;
+    offsets: Partial<CapValues>;
+    additional_effect: string;
+    affect_handler?: Function;
+    hands?: number;
+}
+
+export interface OffhandWeapon extends EqupimentBase {
+    offsets: Partial<
+        {
+            [key in OffsetTypes | 'damage']: number;
+        }
+    >;
+    additional_effect: string;
+    affect_handler?: Function;
+}
+
+interface WeaponDamage {
+    attack_dice: {
+        sides: number;
+        bonus_dice: number;
+    };
+    type: AttackTypes;
 }

@@ -3,8 +3,8 @@ import type { Milestone } from '../game/milestone.js';
 export const milestoneMock: Milestone = {
     author: 'Ben Allen',
     language: 'en-GB',
-    createdOn: new Date('now'),
-    updatedAt: new Date('now'),
+    createdOn: new Date(),
+    updatedAt: new Date(),
     title: '',
     description: '',
     synopsis: '',
