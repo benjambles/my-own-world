@@ -141,7 +141,7 @@ export async function deleteActor(actors, uuid): Promise<boolean> {
     const data: boolean = await actors.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true } },
-        { actorion: { isDeleted: 1 } },
+        { projection: { isDeleted: 1 } },
     );
 
     return result('There was an error whilst updating the actor', data);

@@ -52,6 +52,13 @@ export interface Payment {
     statusLog: Status[];
 }
 
+/**
+ *
+ * @param dbInstance
+ * @param userId
+ * @param limit
+ * @param offset
+ */
 export async function get(
     dbInstance,
     userId: string,
@@ -59,14 +66,19 @@ export async function get(
     offset: number = 0,
 ): Promise<Order[]> {
     const orders = dbInstance.collection('Orders');
-    const orderProfiles = await queries.getOrders(orders, limit, offset, userId);
+    const orderDetails = await queries.getActiveOrders(orders, userId, limit, offset);
 
-    return orderProfiles;
+    return orderDetails;
 }
 
+/**
+ *
+ * @param dbInstance
+ * @param uuid
+ */
 export async function getOne(dbInstance, uuid: string): Promise<Order> {
-    const orders = dbInstance.collection('Users');
-    const order = await queries.getActiveUserByUuid(orders, new ObjectId(uuid));
+    const orders = dbInstance.collection('Orders');
+    const order = await queries.getActiveOrderByUuid(orders, new ObjectId(uuid));
 
     return order;
 }
@@ -78,7 +90,7 @@ export async function getOne(dbInstance, uuid: string): Promise<Order> {
 export async function create(dbInstance, formatter, data: Order): Promise<Order> {
     const cleanData = await formatter(data);
     const orders = dbInstance.collection('Orders');
-    const order = await queries.createUser(orders, {
+    const order = await queries.createOrder(orders, {
         ...cleanData,
         statusLog: [
             {
@@ -117,6 +129,5 @@ export async function remove(dbInstance, uuid: string): Promise<boolean> {
     const orders = dbInstance.collection('Orders');
 
     // TODO mark payment as cancelled and update provider
-
     return await queries.deleteOrder(orders, new ObjectId(uuid));
 }
