@@ -2,12 +2,18 @@ import { html } from 'lit';
 import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import styles from './skiplinks.css.js';
 
-export function skiplinks() {
+interface SkipLink {
+    text: string;
+    href: string;
+}
+
+export function skiplinks(links: SkipLink[]) {
     return html`
         ${lazyStylesheet('/styles/core/accessibility/skiplinks.css')}
         <div class=${styles.skiplinks}>
-            <a href="#content">Skip to the content</a>
-            <a href="#footer">Skip to the footer</a>
+            ${links.map(({ text, href }) => {
+                return html`<a href="${href}">${text}</a>`;
+            })}
         </div>
     `;
 }

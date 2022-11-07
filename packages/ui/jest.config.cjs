@@ -1,6 +1,6 @@
 module.exports = {
     collectCoverageFrom: ['src/**/*.ts'],
-    coveragePathIgnorePatterns: ['fixture.*', 'stories.*'],
+    coveragePathIgnorePatterns: ['fixture.*', 'stories.*', '*.css.ts'],
     displayName: {
         name: 'WEBSITE',
         color: 'blue',

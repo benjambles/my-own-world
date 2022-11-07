@@ -1,3 +1,8 @@
+.input-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
 .label {
     display: block;
     margin-top: 20px;
@@ -8,21 +13,54 @@
 }
 
 .text-input {
+    align-items: center;
+    background-clip: content-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
     width: 100%;
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
     margin-top: 5px;
     font-size: 1.6rem;
-    transition: 0.1s border-color, 0.1s box-shadow;
+    overflow: hidden;
+    position: relative;
+    padding: 2px;
 }
 
-.text-input:active,
-.text-input:focus {
-    border: 1px solid #ffae78;
-    box-shadow: 0 0 5px #f57723;
+.text-input::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: 0;
+    border-radius: inherit;
+    background-image: var(--gradient-glow);
 }
 
-.text-input:hover {
-    border: 1px solid #ffae78;
+.text-input input {
+    padding: 12px 20px 10px;
+    width: 100%;
+    border: 0 none;
+    border-radius: 2px;
+}
+
+.text-input:focus-within::after {
+    content: ' ';
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    top: 5px;
+    bottom: 5px;
+    border: 1px dotted rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+}
+
+.input-wrapper:hover .text-input::before,
+.input-wrapper:focus-within .text-input::before {
+    background: var(--gradient-glow-reverse);
 }

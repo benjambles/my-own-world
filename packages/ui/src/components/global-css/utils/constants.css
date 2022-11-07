@@ -17,4 +17,7 @@
     --shade-5: #000;
 
     --resistance: #afd4f1;
+
+    --gradient-glow: linear-gradient(45deg, deepskyblue, fuchsia);
+    --gradient-glow-reverse: linear-gradient(200deg, red, lightgreen);
 }

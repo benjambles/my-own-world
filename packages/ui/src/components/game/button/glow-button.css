@@ -56,7 +56,7 @@
     z-index: -1;
     margin: -60px;
     border-radius: inherit;
-    background-image: linear-gradient(45deg, deepskyblue, fuchsia);
+    background-image: var(--gradient-glow);
     transition: opacity 100ms ease-out;
     animation: rotate 2s linear infinite;
     animation-play-state: paused;

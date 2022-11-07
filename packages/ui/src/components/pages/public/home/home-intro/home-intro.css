@@ -4,6 +4,12 @@
     padding: 60px 20px;
 }
 
+.home-intro h1 {
+    background-image: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .home-intro__text p {
     font-size: 2rem;
 }

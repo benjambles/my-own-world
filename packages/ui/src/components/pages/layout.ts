@@ -12,6 +12,13 @@ interface Data {
     [key: string]: any;
 }
 
+const linkList = [
+    { text: 'Skip to the content', href: '#content' },
+    { text: 'Skip to the footer', href: '#footer' },
+];
+
 export function layout(data: Data, children?) {
-    return html`${skiplinks()}${header(data.header)} ${children} ${footer(data.footer)} `;
+    return html`
+        ${skiplinks(linkList)}${header(data.header)} ${children} ${footer(data.footer)}
+    `;
 }

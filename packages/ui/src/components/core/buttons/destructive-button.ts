@@ -11,7 +11,12 @@ export interface ButtonData {
     size?: ButtonSizes;
 }
 
-export function destructiveButton({ text, type = 'button', action, size = 'normal' }: ButtonData) {
+export function destructiveButton({
+    text,
+    type = 'button',
+    action,
+    size = 'normal',
+}: ButtonData) {
     const cssClasses = {
         [baseStyles.button]: true,
         [baseStyles.buttonDestructive]: true,
@@ -20,7 +25,11 @@ export function destructiveButton({ text, type = 'button', action, size = 'norma
     };
 
     return html`
-        <button type="${type}" class=${classMap(cssClasses)} data-action="${ifDefined(action)}">
+        <button
+            type="${type}"
+            class=${classMap(cssClasses)}
+            data-action="${ifDefined(action)}"
+        >
             ${text}
         </button>
     `;

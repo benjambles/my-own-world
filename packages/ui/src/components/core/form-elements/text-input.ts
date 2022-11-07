@@ -35,13 +35,16 @@ export function textInput({
     return html`
         ${lazyStylesheet('/styles/core/form-elements/text-input.css')}
         <label class=${styles.label} for="${id}">${label}</label>
-        <input
-            class=${styles.textInput}
-            type="${type}"
-            value="${defaultText}"
-            placeholder="${ifDefined(placeholder)}"
-            name="${name ? name : id}"
-            id="${id}"
-        />
+        <div class=${styles.inputWrapper}>
+            <div class=${styles.textInput}>
+                <input
+                    type="${type}"
+                    value="${defaultText}"
+                    placeholder="${ifDefined(placeholder)}"
+                    name="${name ? name : id}"
+                    id="${id}"
+                />
+            </div>
+        </div>
     `;
 }
