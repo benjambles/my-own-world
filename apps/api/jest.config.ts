@@ -1,8 +1,10 @@
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns: ['fixture.*'],
     displayName: {
-        name: 'SKIRMISH ENGINE',
+        name: 'API',
         color: 'blue',
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
@@ -12,3 +14,5 @@ module.exports = {
     testRegex: '/__tests__/.*\\.test\\.ts$',
     verbose: true,
 };
+
+export default config;

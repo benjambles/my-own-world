@@ -1,4 +1,8 @@
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
+    collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+    preset: 'ts-jest',
     projects: [
         '<rootDir>/apps/api',
         '<rootDir>/apps/website',
@@ -6,4 +10,7 @@ module.exports = {
         '<rootDir>/packages/shared-server',
         '<rootDir>/packages/ui',
     ],
+    verbose: true,
 };
+
+export default config;

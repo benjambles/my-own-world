@@ -2,10 +2,10 @@ import { createMockContext } from '@shopify/jest-koa-mocks';
 import { badResponseError, throwNoAccessError } from '../errors.js';
 
 const ctx = createMockContext();
-const throwSpy = jest.spyOn(ctx, 'throw');
+let throwSpy;
 
 beforeEach(() => {
-    throwSpy.mockReset();
+    throwSpy = jest.spyOn(ctx, 'throw');
 });
 
 test('throwNoAccessError', () => {

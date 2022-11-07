@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns: ['fixture.*'],
     displayName: {
@@ -11,3 +13,5 @@ module.exports = {
     testRegex: '/__tests__/.*\\.test\\.tsx?$',
     verbose: true,
 };
+
+export default config;

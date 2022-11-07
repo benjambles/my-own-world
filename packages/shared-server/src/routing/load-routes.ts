@@ -4,6 +4,7 @@ import { maybeProp } from '../utils/functional/maybe-prop.js';
 import { attachDefaultHandlers } from './attach-default-handlers.js';
 import { createRoute } from './create-route.js';
 import { getRouteMapping } from './get-route-mapping.js';
+import type { Router } from 'koa-joi-router';
 
 /**
  * Load resources in `root` directory.
@@ -31,7 +32,10 @@ function getRouter(getPrefixedRoute, resource, dbInstance): Option<Router> {
 
     const handlers = attachDefaultHandlers(config, accessMap, routeHandlers);
 
-    return getRouteMapping(some([]), handlers, maybeProp('paths', config), dbInstance).map(
-        getPrefixedRoute,
-    );
+    return getRouteMapping(
+        some([]),
+        handlers,
+        maybeProp('paths', config),
+        dbInstance,
+    ).map(getPrefixedRoute);
 }

@@ -3,17 +3,9 @@ declare module '*.json' {
     export default value;
 }
 
-declare function router(): Router;
-
 interface DbGet {
     limit: number;
     offset: number;
-}
-
-interface Router {
-    route(routes: JoiRoute[]);
-    middleware();
-    routes();
 }
 
 interface JoiRoute {
