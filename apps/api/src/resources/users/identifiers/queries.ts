@@ -1,11 +1,11 @@
 import { result } from '@benjambles/mow-server/dist/utils/db.js';
-
+import { Identifier, User } from '../users.js';
 /**
  *
  * @param userId
  * @param props
  */
-export async function getByUserId(users, userId): Promise<User.UserData> {
+export async function getByUserId(users, userId): Promise<User> {
     const data = await users.findOne(
         { _id: userId, isDeleted: false },
         { projection: { identities: 1 } },
@@ -18,7 +18,7 @@ export async function getByUserId(users, userId): Promise<User.UserData> {
  *
  * @param data
  */
-export async function create(users, userId, identityData): Promise<User.Identitfier> {
+export async function create(users, userId, identityData): Promise<Identifier> {
     const {
         identities: [identitiy],
     } = await users.findOneAndUpdate(

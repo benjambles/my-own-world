@@ -16,7 +16,7 @@ interface AppConfig {
     };
 }
 
-export const envSchema = {
+export const envSchema: Joi.PartialSchemaMap<any> = {
     NODE_ENV: Joi.string()
         .pattern(/^development|staging|production|testing&/)
         .required(),

@@ -1,6 +1,6 @@
 import mongoDB from 'mongodb';
 import { getBasicUserDetails } from '../../users/queries.js';
-import { removePassword } from '../../users/users.js';
+import { cleanResponse } from '../../users/users.js';
 import { deleteProjectUser, getActiveProjectUsers, setUserRoles } from './queries.js';
 
 const { ObjectId } = mongoDB;
@@ -19,7 +19,7 @@ export async function get(dbInstance, projectId: string): Promise<any[]> {
     return Promise.all(
         projectUsers.map(async ({ id, role }) => {
             const user = await getBasicUserDetails(users, new ObjectId(id));
-            return { user: removePassword(user), role };
+            return { user: cleanResponse(user), role };
         }),
     );
 }
@@ -34,7 +34,12 @@ export async function createUser(dbInstance, projectId, userId, roles): Promise<
     const roleIds = roles.map((id: string) => new ObjectId(id));
     const projects = dbInstance.collection('Projects');
 
-    return await setUserRoles(projects, new ObjectId(projectId), new ObjectId(userId), roleIds);
+    return await setUserRoles(
+        projects,
+        new ObjectId(projectId),
+        new ObjectId(userId),
+        roleIds,
+    );
 }
 
 /**
@@ -43,11 +48,21 @@ export async function createUser(dbInstance, projectId, userId, roles): Promise<
  * @param userId
  * @param roles
  */
-export async function updateUserRoles(dbInstance, projectId, userId, roles): Promise<boolean> {
+export async function updateUserRoles(
+    dbInstance,
+    projectId,
+    userId,
+    roles,
+): Promise<boolean> {
     const roleIds = roles.map((id: string) => new ObjectId(id));
     const projects = dbInstance.collection('Projects');
 
-    return await setUserRoles(projects, new ObjectId(projectId), new ObjectId(userId), roleIds);
+    return await setUserRoles(
+        projects,
+        new ObjectId(projectId),
+        new ObjectId(userId),
+        roleIds,
+    );
 }
 
 /**
@@ -58,5 +73,9 @@ export async function updateUserRoles(dbInstance, projectId, userId, roles): Pro
 export async function deleteUser(dbInstance, projectId, userId): Promise<boolean> {
     const projects = dbInstance.collection('Projects');
 
-    return await deleteProjectUser(projects, new ObjectId(projectId), new ObjectId(userId));
+    return await deleteProjectUser(
+        projects,
+        new ObjectId(projectId),
+        new ObjectId(userId),
+    );
 }

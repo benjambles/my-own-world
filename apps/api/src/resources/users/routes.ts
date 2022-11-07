@@ -1,4 +1,7 @@
-import { formatData, getDataFormatter } from '@benjambles/mow-server/dist/utils/data/index.js';
+import {
+    formatData,
+    getDataFormatter,
+} from '@benjambles/mow-server/dist/utils/data/index.js';
 import { paramToNumber } from '@benjambles/mow-server/dist/utils/data/param-to-number.js';
 import { getPartsMiddleware } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { hmac } from '@benjambles/mow-server/dist/utils/security/encryption.js';
@@ -19,7 +22,7 @@ export function getUsers(dbInstance): Middleware {
 
     return getPartsMiddleware(defaultError, async (ctx) => {
         const { limit, offset } = ctx.request.query;
-        const usersData: User.UserData[] = await users.get(
+        const usersData: users.UserResponse[] = await users.get(
             dbInstance,
             paramToNumber(limit, 10),
             paramToNumber(offset, 0),
@@ -40,8 +43,8 @@ export function createUser(dbInstance): Middleware {
     };
 
     return getPartsMiddleware(defaultError, async (ctx) => {
-        const { user, identifier } = ctx.request.body as User.Request;
-        const userData: User.UserData = await users.create(
+        const { user, identifier } = ctx.request.body;
+        const userData: users.UserResponse = await users.create(
             dbInstance,
             formatData(getDataFormatter(ctx.env.ENC_TYPE, users.model)),
             user,
@@ -89,7 +92,7 @@ export function updateUserById(dbInstance): Middleware {
             dbInstance,
             formatData(getDataFormatter(ctx.env.ENC_TYPE, users.model)),
             ctx.request.params.userId,
-            ctx.request.body as User.UserData,
+            ctx.request.body as users.UserResponse,
         );
 
         return userUpdated;
@@ -125,7 +128,12 @@ export function authenticateUser(dbInstance): Middleware {
     return getPartsMiddleware(defaultError, async (ctx) => {
         const { identifier = null, password = null } = ctx.request.body as any;
         const hashedIdentifier = hmac(ctx.env.ENC_SECRET, identifier);
-        const userData = await users.authenticate(dbInstance, hashedIdentifier, password);
+        const userData = await users.authenticate(
+            dbInstance,
+            hashedIdentifier,
+            password,
+            ctx.request.ip,
+        );
         const token = await getToken(ctx.env.JWT_SECRET, userData);
 
         return { token, user: userData };

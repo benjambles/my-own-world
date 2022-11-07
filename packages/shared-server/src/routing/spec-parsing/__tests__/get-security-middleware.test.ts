@@ -1,4 +1,4 @@
-import * as Access from '../../../utils/middleware/set-access-roles.js';
+import * as Access from '../../../koa/middleware/set-access-roles.js';
 import { getSecurityMiddleware } from '../get-security-middleware.js';
 
 test('getSecurityMiddleware', () => {

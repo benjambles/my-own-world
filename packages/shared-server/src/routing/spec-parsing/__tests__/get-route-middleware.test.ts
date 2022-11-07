@@ -1,5 +1,5 @@
 import { some } from 'ts-option';
-import { catchJoiErrors } from '../../../utils/middleware/catch-joi-errors.js';
+import { catchJoiErrors } from '../../../koa/middleware/catch-joi-errors.js';
 import { getRouteMiddleware } from '../get-route-middleware.js';
 
 test('getRouteMiddleware', () => {
@@ -11,7 +11,6 @@ test('getRouteMiddleware', () => {
         {
             getUser: () => _getUser,
         },
-        async () => {},
         {},
     );
     expect(noOperationIdTest.isEmpty).toEqual(true);
@@ -21,7 +20,6 @@ test('getRouteMiddleware', () => {
         {
             deleteUser: () => _deleteUser,
         },
-        async () => {},
         {},
     );
     expect(noHandlerTest.isEmpty).toEqual(true);
@@ -30,6 +28,6 @@ test('getRouteMiddleware', () => {
         getUser: () => _getUser,
         checkAccess: async () => {},
     };
-    const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap, async () => {}, {});
+    const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap, {});
     expect(result).toEqual(some([catchJoiErrors, _getUser, fnMap.checkAccess]));
 });

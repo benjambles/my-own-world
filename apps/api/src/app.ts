@@ -6,37 +6,22 @@ import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import Joi from 'joi';
 import Koa from 'koa';
 import resources from './resources/index.js';
+import { envSchema } from './schema/env-schema.js';
 
 interface AppConfig {
     app: Koa;
-    db: (params: { user: string; database: string; password: string; url: string }) => Promise<any>;
+    db: (params: {
+        user: string;
+        database: string;
+        password: string;
+        url: string;
+    }) => Promise<any>;
     envSchema: Joi.PartialSchemaMap<any>;
     paths: {
         base: string;
         env: string;
     };
 }
-
-export const envSchema = {
-    NODE_ENV: Joi.string()
-        .pattern(/^development|staging|production|testing&/)
-        .required(),
-    HOST: Joi.string()
-        .ip({ version: ['ipv4', 'ipv6'] })
-        .required(),
-    PORT: Joi.number().port().required(),
-    MONGO_USER: Joi.string().default(''),
-    MONGO_DB: Joi.string().required(),
-    MONGO_PASSWORD: Joi.string().default(''),
-    MONGO_URL: Joi.string()
-        .uri({
-            scheme: ['mongodb'],
-        })
-        .required(),
-    JWT_SECRET: Joi.string().uuid().required(),
-    UUIDV5_NS: Joi.string().uuid().required(),
-    ENC_SECRET: Joi.string().required(),
-};
 
 export async function getListener({ app, db, envSchema, paths }: AppConfig) {
     const env = parseEnvFile(envSchema, paths);
@@ -47,7 +32,9 @@ export async function getListener({ app, db, envSchema, paths }: AppConfig) {
         password: env.MONGO_PASSWORD,
         url: env.MONGO_URL,
     });
-    const routes = loadRoutes(resources, dbInstance, 'api').map((route) => route.middleware());
+    const routes = loadRoutes(resources, dbInstance, 'api').map((route) =>
+        route.middleware(),
+    );
 
     return configureServer({
         app,

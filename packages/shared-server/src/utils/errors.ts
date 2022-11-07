@@ -26,7 +26,11 @@ export function badResponseError(ctx: KoaContext) {
  * @param error - A JS, or http-errors error object
  * @param safe - Default error parameters for when an error isn't sent, or to hide dev errors
  */
-export function throwSafeError(ctx: KoaContext, error, safe = { message: '', status: 400 }): void {
+export function throwSafeError(
+    ctx: KoaContext,
+    error,
+    safe = { message: '', status: 400 },
+): void {
     if (isProduction(ctx.env.nodeEnv)) {
         ctx.throw(safe.status, safe.message);
     }

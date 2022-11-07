@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import { getAccessMap } from '../../security/get-access-map.js';
+import { getAccessMap } from '../../../utils/routes/get-access-map.js';
 import { getAccessChecker } from '../get-access-checker.js';
 
 test('getAccessChecker', async () => {
@@ -20,12 +20,16 @@ test('getAccessChecker', async () => {
         throw: err,
         state: { accessRoles: ['role:admin'], user: {} },
     };
-    await expect(() => checkerWithMap(ctxFail as Koa.Context, async () => {})).rejects.toThrow();
+    await expect(() =>
+        checkerWithMap(ctxFail as Koa.Context, async () => {}),
+    ).rejects.toThrow();
 
     // Passed roles and state data matches map
     const ctxPass: unknown = {
         throw: err,
-        state: { accessRoles: ['role:user', 'role:owner'], user: {} },
+        state: { accessRoles: ['role:user', 'role:owner'], user: { uuid: 'some-key' } },
     };
-    await expect(checkerWithMap(ctxPass as Koa.Context, async () => {})).resolves.not.toThrow();
+    await expect(
+        checkerWithMap(ctxPass as Koa.Context, async () => {}),
+    ).resolves.not.toThrow();
 });

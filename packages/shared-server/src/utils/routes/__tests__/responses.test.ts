@@ -11,7 +11,7 @@ test('partsResponse', () => {
     };
     const { body, meta } = expectedResult;
     expect(partsResponse(body, meta)).toEqual(expectedResult);
-    expect(partsResponse()).toEqual({ parts: { body: {}, meta: {} } });
+    expect(partsResponse()).toEqual({ body: {}, meta: {} });
 });
 
 test('dataResponse', () => {
