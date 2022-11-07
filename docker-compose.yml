@@ -1,44 +1,46 @@
 version: '3.8'
+x-source:
+  &source-code
+  - ./apps/api/dist:/app/apps/api/dist
+  - ./apps/website/dist:/app/apps/website/dist
+  - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
+  - ./packages/shared-server/dist:/app/packages/shared-server/dist
+  - ./packages/ui/dist:/app/packages/ui/dist
 services: 
   api:
     build:
       context: .
+    depends_on:
+      - mow_db
+    env_file: ./apps/api/.env
     ports:
       - 3000:3000
       - 9230:9230
-    environment:
-      - PORT=3000
     working_dir: /app
-    volumes:
-      - ./apps/api/dist:/app/apps/api/dist
-      - ./apps/website/dist:/app/apps/website/dist
-      - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
-      - ./packages/shared-server/dist:/app/packages/shared-server/dist
-      - ./packages/ui/dist:/app/packages/ui/dist
+    volumes: *source-code
     command: npm run dev --workspace=apps/api -- -L
   website:
     build:
       context: .
+    env_file: ./apps/website/.env
     ports:
       - 3001:3001
       - 9229:9229
-    environment:
-      - PORT=3001
     working_dir: /app
-    volumes:
-      - ./apps/api/dist:/app/apps/api/dist
-      - ./apps/website/dist:/app/apps/website/dist
-      - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
-      - ./packages/shared-server/dist:/app/packages/shared-server/dist
-      - ./packages/ui/dist:/app/packages/ui/dist
+    volumes: *source-code
     command: npm run dev --workspace=apps/website -- -L
-#   mongo:
-#     image: mongo:4.2.8
-#     ports:
-#     - 27017:27017
-#     volumes:
-#     - mongodb:/data/db
-#     - mongodb_config:/data/configdb
-# volumes:
-#   mongodb:
-#   mongodb_config:
+  mow_db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-entrypoint:/docker-entrypoint-initdb.d
+      - mongodb:/data/db
+      - mongoconfig:/data/configdb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+volumes:
+  mongodb:
+  mongoconfig:
