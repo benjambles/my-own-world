@@ -24,13 +24,13 @@
         "@benjambles/mow-ui": "../../packages/ui",
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@lit-labs/ssr": "1.0.0",
-        "http-errors": "1.8.0",
+        "http-errors": "2.0.0",
         "joi": "17.7.0",
         "koa": "2.13.4"
     },
     "devDependencies": {
         "@shopify/jest-koa-mocks": "5.0.1",
-        "@types/http-errors": "1.8.1",
+        "@types/http-errors": "2.0.1",
         "@types/jest": "29.2.2",
         "@types/koa": "2.13.5",
         "@types/node": "18.11.9",
