@@ -15,12 +15,14 @@ interface MongoConfig {
  */
 export async function initConnection(config: MongoConfig) {
     const connectionString = getConnectionString(config);
-    const client = await new MongoDB.MongoClient(connectionString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+    const client = await new MongoDB.MongoClient(connectionString);
 
+    // Connect the client to the server (optional starting in v4.7)
     await client.connect();
+
+    // Establish and verify connection
+    await client.db('admin').command({ ping: 1 });
+
     return client.db(config.database);
 }
 
