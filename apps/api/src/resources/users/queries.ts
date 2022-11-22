@@ -5,7 +5,7 @@ import { AccessLogRow, User } from './users.js';
  * Retrieve a user with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getActiveUserByUuid(users, uuid: string): Promise<User> {
+export async function getActiveUserByUuid(users, uuid): Promise<User> {
     const data = await users.findOne(
         { _id: uuid, isDeleted: false },
         { projection: { identities: 0 } },
@@ -18,7 +18,7 @@ export async function getActiveUserByUuid(users, uuid: string): Promise<User> {
  * Retrieve a user with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getBasicUserDetails(users, uuid: string): Promise<User> {
+export async function getBasicUserDetails(users, uuid): Promise<User> {
     const data = await users.findOne(
         { _id: uuid, isDeleted: false },
         { projection: { firstName: 1, lastName: 1, displayName: 1 } },
@@ -75,7 +75,7 @@ export async function createUser(users, userData: User): Promise<User> {
  * Delete a user with a given ID
  * @param uuid - A valid uuid
  */
-export async function deleteUser(users, uuid: string): Promise<boolean> {
+export async function deleteUser(users, uuid): Promise<boolean> {
     const data = await users.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true, deletedOn: new Date() } },
@@ -90,14 +90,11 @@ export async function deleteUser(users, uuid: string): Promise<boolean> {
  * @param uuid - A UUID representing the user profile to be updated
  * @param data - An object representing a patch on a User profile
  */
-export async function updateUser(
-    users,
-    uuid: string,
-    userData: Partial<User>,
-): Promise<User> {
+export async function updateUser(users, uuid, userData: Partial<User>): Promise<User> {
     const data = await users.findOneAndUpdate(
         { _id: uuid },
-        { $set: { userData }, projection: { identities: 0 } },
+        { $set: { userData } },
+        { projection: { identities: 0 } },
     );
 
     return result('There was an error whilst updating the user', data);
@@ -109,14 +106,11 @@ export async function updateUser(
  * @param uuid - UUID for the user to be updated
  * @param logData - A new log record
  */
-export async function updateAccessLog(
-    users,
-    uuid: string,
-    logData: AccessLogRow,
-): Promise<User> {
+export async function updateAccessLog(users, uuid, logData: AccessLogRow): Promise<User> {
     const data = await users.findOneAndUpdate(
         { _id: uuid },
-        { $push: { accessLog: logData }, projection: { identities: 0 } },
+        { $push: { accessLog: logData } },
+        { projection: { identities: 0 } },
     );
 
     return result('There was an error whilst updating the user', data);

@@ -5,27 +5,8 @@ import { Order } from './orders.js';
  * Retrieve a order with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getActiveOrderByUuid(orders, uuid: string): Promise<Order> {
-    const data = await orders.findOne(
-        { _id: uuid, isDeleted: false },
-        { projection: { identities: 0 } },
-    );
-
-    return result('There was an error whilst fetching the order', data);
-}
-
-/**
- *
- * @param identifier
- */
-export async function getActiveOrderByIdentifier(
-    orders,
-    identifier: string,
-): Promise<Order> {
-    const data = await orders.findOne({
-        isDeleted: false,
-        'identities.hash': { $eq: identifier },
-    });
+export async function getActiveOrderByUuid(orders, uuid): Promise<Order> {
+    const data = await orders.findOne({ _id: uuid, isDeleted: false });
 
     return result('There was an error whilst fetching the order', data);
 }
@@ -42,10 +23,7 @@ export async function getActiveOrders(
     skip: number = 0,
 ): Promise<Order[]> {
     const data = await orders
-        .find(
-            { isDeleted: false, userId },
-            { projection: { identities: 0 }, skip, limit },
-        )
+        .find({ isDeleted: false, userId }, { skip, limit })
         .toArray();
 
     return result('There was an error whilst fetching orders', data);
@@ -66,7 +44,7 @@ export async function createOrder(orders, orderData: Order): Promise<Order> {
  * Delete a order with a given ID
  * @param uuid - A valid uuid
  */
-export async function deleteOrder(orders, uuid: string): Promise<boolean> {
+export async function deleteOrder(orders, uuid): Promise<boolean> {
     const data = await orders.findOneAndUpdate(
         { _id: uuid },
         { $set: { isDeleted: true, deletedOn: new Date() } },
@@ -83,13 +61,10 @@ export async function deleteOrder(orders, uuid: string): Promise<boolean> {
  */
 export async function updateOrder(
     orders,
-    uuid: string,
+    uuid,
     orderData: Partial<Order>,
 ): Promise<Order> {
-    const data = await orders.findOneAndUpdate(
-        { _id: uuid },
-        { $set: { orderData }, projection: { identities: 0 } },
-    );
+    const data = await orders.findOneAndUpdate({ _id: uuid }, { $set: { orderData } });
 
     return result('There was an error whilst updating the order', data);
 }

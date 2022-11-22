@@ -4,7 +4,7 @@ import { result } from '@benjambles/mow-server/dist/utils/db.js';
  * Retrieve a tale with a matching uuid from the database
  * @param uuid - A valid uuid
  */
-export async function getActiveTaleByUuid(tales, uuid: string): Promise<Tale.TaleData> {
+export async function getActiveTaleByUuid(tales, uuid): Promise<Tale.TaleData> {
     const data = await tales.findOne({
         uuid,
         isDeleted: false,
@@ -57,7 +57,11 @@ export async function deleteTale(tales, uuid): Promise<boolean> {
  * @param uuid - A UUID representing the tale to be updated
  * @param data - An object representing a patch on a tale
  */
-export async function updateTale(tales, uuid, taleData: Tale.TaleData): Promise<Tale.TaleData> {
+export async function updateTale(
+    tales,
+    uuid,
+    taleData: Tale.TaleData,
+): Promise<Tale.TaleData> {
     const data = await tales.findOneAndUpdate({ _id: uuid }, { $set: taleData });
 
     return result('There was an error whilst updating the tale', data);
