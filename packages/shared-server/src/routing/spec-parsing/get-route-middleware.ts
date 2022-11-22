@@ -22,6 +22,9 @@ export function getRouteMiddleware(
 ): Option<Middleware[]> {
     return maybeProp('operationId', spec)
         .flatMap((prop) => maybePropIsFn(prop, routeHandlers))
-        .map((getHandler) => getHandler(dbInstance))
-        .map((routeHandler) => [catchJoiErrors, routeHandlers.checkAccess, routeHandler]);
+        .map((getHandler) => [
+            catchJoiErrors,
+            routeHandlers.checkAccess,
+            getHandler(dbInstance),
+        ]);
 }

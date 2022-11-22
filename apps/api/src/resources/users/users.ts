@@ -3,9 +3,10 @@ import mongoDB from 'mongodb';
 import * as queries from './queries.js';
 
 export interface User {
-    deletedOn?: Date;
+    _id: string;
     accessLog: AccessLogRow[];
     createdOn: Date;
+    deletedOn?: Date;
     firstName: string;
     gameStates: {};
     identities: Identifier[];
@@ -14,7 +15,6 @@ export interface User {
     password: string;
     screenName: string;
     settings: UserSettings;
-    uuid: string;
 }
 
 export interface AccessLogRow {
@@ -31,10 +31,11 @@ interface UserSettings {
 export type UserResponse = Omit<User, 'password' | 'identities'>;
 
 export interface Identifier {
+    _id: string;
+    hash: string;
     identifier: string;
+    isDeleted: Boolean;
     type: string;
-    userId: string;
-    uuid: string;
     verified: Boolean;
 }
 
@@ -43,7 +44,7 @@ const { ObjectId } = mongoDB;
 export const model = {
     encrypted: ['email'],
     salted: ['password'],
-    readOnly: ['uuid'],
+    readOnly: ['_id'],
 };
 
 /**

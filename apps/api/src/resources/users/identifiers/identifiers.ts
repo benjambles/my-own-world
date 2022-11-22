@@ -7,7 +7,7 @@ const { ObjectId } = mongoDB;
 export const model = {
     encrypted: ['identifier'],
     hmac: ['hash'],
-    readOnly: ['uuid'],
+    readOnly: ['_id'],
 };
 
 /**

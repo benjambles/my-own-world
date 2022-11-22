@@ -14,7 +14,7 @@ interface FormatOptions {
  */
 export function getDataFormatter(
     password: string,
-    { encrypted = [], salted = [], hmac = [], readOnly = ['uuid'] }: FormatOptions,
+    { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] }: FormatOptions,
 ) {
     return async (key: string, value: string): Promise<Option<string>> => {
         if (readOnly.includes(key)) return none;
@@ -40,7 +40,9 @@ export function getDataFormatter(
  * a transformed version that that value, or none.
  * @param formatter
  */
-export function formatData(formatter: (key: string, value: string) => Promise<Option<string>>) {
+export function formatData(
+    formatter: (key: string, value: string) => Promise<Option<string>>,
+) {
     async function setKeyValues(acc, entries) {
         if (!entries.length) return acc;
 

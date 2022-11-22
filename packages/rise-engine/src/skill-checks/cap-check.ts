@@ -1,13 +1,10 @@
 import type { AttackType, CapValues } from '../types/game/actions.js';
+import { RollResult } from './dice.js';
 
 interface CapResult {
     isSuccess: boolean;
     isCritical: boolean;
     passesBarrier: boolean;
-}
-
-interface RollResult {
-    total: number;
 }
 
 export function capCheck(

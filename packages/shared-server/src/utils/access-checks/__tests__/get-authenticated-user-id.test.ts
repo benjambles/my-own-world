@@ -6,7 +6,7 @@ test('getAuthenticatedUserId', () => {
     const data: unknown = {
         state: {
             user: {
-                uuid,
+                _id: uuid,
             },
         },
     };

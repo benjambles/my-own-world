@@ -2,7 +2,7 @@ import { createMockContext } from '@shopify/jest-koa-mocks';
 import { isUser } from '../is-user.js';
 
 test('isUser', () => {
-    expect(isUser(createMockContext({ state: { user: { uuid: 'some-key' } } }))).toEqual(
+    expect(isUser(createMockContext({ state: { user: { _id: 'some-key' } } }))).toEqual(
         true,
     );
     expect(isUser(createMockContext({ state: {} }))).toEqual(false);

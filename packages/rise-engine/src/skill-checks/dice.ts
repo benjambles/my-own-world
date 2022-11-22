@@ -1,6 +1,6 @@
 import { clamp, sum } from '../utils/math.js';
 
-interface RollResult {
+export interface RollResult {
     rolls: number[];
     total: number;
     modifiedTotal: number;
@@ -15,7 +15,10 @@ export class Dice {
     readonly diceTypes: number[];
     #getRandom: () => number;
 
-    constructor(diceTypes: number[] = Dice.baseDiceTypes, randomFn: () => number = Math.random) {
+    constructor(
+        diceTypes: number[] = Dice.baseDiceTypes,
+        randomFn: () => number = Math.random,
+    ) {
         this.diceTypes = diceTypes;
         this.#getRandom = randomFn;
     }
@@ -44,7 +47,11 @@ export class Dice {
         const [count, diceType] = this.getDice(dicePool);
         return `${count}d${
             this.diceTypes[
-                clamp(0, this.diceTypes.length - 1, this.diceTypes.indexOf(diceType) + steps)
+                clamp(
+                    0,
+                    this.diceTypes.length - 1,
+                    this.diceTypes.indexOf(diceType) + steps,
+                )
             ]
         }`;
     }

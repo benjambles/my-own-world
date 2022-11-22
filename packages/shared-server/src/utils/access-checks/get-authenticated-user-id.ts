@@ -5,5 +5,5 @@ import { KoaContext } from '../../index.js';
  * @param ctx
  */
 export function getAuthenticatedUserId(ctx: KoaContext): string | undefined {
-    return ctx.state?.user?.uuid;
+    return ctx.state?.user?._id;
 }

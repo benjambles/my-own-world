@@ -53,7 +53,7 @@ export function createUser(dbInstance): Middleware {
             dbInstance,
             formatData(getDataFormatter(ctx.env.ENC_TYPE, identifiers.model)),
             ctx.env.ENC_TYPE,
-            userData.uuid,
+            userData._id,
             identifier,
         );
 

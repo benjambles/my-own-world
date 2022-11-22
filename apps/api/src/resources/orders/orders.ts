@@ -4,11 +4,11 @@ import * as queries from './queries.js';
 const { ObjectId } = mongoDB;
 
 export const model = {
-    readOnly: ['uuid'],
+    readOnly: ['_id'],
 };
 
 export interface Order {
-    uuid: string;
+    _id: string;
     customerId: string;
     paymentId: string;
     items: OrderProduct[];
@@ -23,7 +23,7 @@ interface Status {
 }
 
 export interface OrderProduct {
-    uuid: string;
+    _id: string;
     name: string;
     price: number;
     discount: number;
@@ -33,7 +33,7 @@ export interface OrderProduct {
 }
 
 export interface Payment {
-    uuid: string;
+    _id: string;
     userId: string;
     status: string;
     provider_reference: string;

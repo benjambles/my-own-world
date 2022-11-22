@@ -27,7 +27,7 @@ test('getAccessChecker', async () => {
     // Passed roles and state data matches map
     const ctxPass: unknown = {
         throw: err,
-        state: { accessRoles: ['role:user', 'role:owner'], user: { uuid: 'some-key' } },
+        state: { accessRoles: ['role:user', 'role:owner'], user: { _id: 'some-key' } },
     };
     await expect(
         checkerWithMap(ctxPass as Koa.Context, async () => {}),

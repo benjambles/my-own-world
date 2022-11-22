@@ -4,7 +4,7 @@ import * as queries from './queries.js';
 const { ObjectId } = mongoDB;
 
 export const model = {
-    readOnly: ['uuid'],
+    readOnly: ['_id'],
 };
 
 /**

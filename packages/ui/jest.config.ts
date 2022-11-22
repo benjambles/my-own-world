@@ -2,7 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
-    coveragePathIgnorePatterns: ['fixture.*', 'stories.*', '*.css.ts'],
+    coveragePathIgnorePatterns: ['fixture.*', 'stories.*', 'css.ts'],
     displayName: {
         name: 'WEBSITE',
         color: 'blue',

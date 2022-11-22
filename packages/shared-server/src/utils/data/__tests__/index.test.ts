@@ -5,14 +5,14 @@ test('formatData', async () => {
     const model = {
         encrypted: ['email'],
         salted: ['password'],
-        readOnly: ['uuid'],
+        readOnly: ['_id'],
         hmac: ['identity'],
     };
 
     const data = {
         email: 'test@test.com',
         password: 'a-fake-password',
-        uuid: '235fwf-f34f43-3f4k3-f34fg-f34ggk',
+        _id: '235fwf-f34f43-3f4k3-f34fg-f34ggk',
         identity: 'some-token-value-that-maps',
     };
     const ENC_SECRET = 'XApHrj7g9FTPqX5hYxWiJuXHYewyygGG';
@@ -24,13 +24,13 @@ test('formatData', async () => {
     );
     expect(result.email).toMatch(/aes-256-cbc:[a-f0-9]{32}:[a-f0-9]{32}/);
     expect(result.password).toMatch(/\$2[aby]?\$\d{1,2}\$[./A-Za-z0-9]{53}/);
-    expect(result.uuid).toBeUndefined();
+    expect(result._id).toBeUndefined();
 });
 
 test('getDataFormatter', async () => {
     const formatNoModel = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG', {});
 
-    const noModelUUID = await formatNoModel('uuid', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
+    const noModelUUID = await formatNoModel('_id', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
     expect(noModelUUID.isEmpty).toEqual(true);
 
     const noModelEmail = await formatNoModel('email', 'test@test.com');
@@ -39,7 +39,7 @@ test('getDataFormatter', async () => {
     const model = {
         encrypted: ['email'],
         salted: ['password'],
-        readOnly: ['uuid'],
+        readOnly: ['_id'],
         hmac: ['identity'],
     };
 
@@ -56,6 +56,6 @@ test('getDataFormatter', async () => {
     const hasModelSalt = await format('password', 'a-fake-password');
     expect(hasModelSalt.orNull).toMatch(/\$2[aby]?\$\d{1,2}\$[./A-Za-z0-9]{53}/);
 
-    const hasModelReadOnly = await format('uuid', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
+    const hasModelReadOnly = await format('_id', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
     expect(hasModelReadOnly.orNull).toBeNull();
 });

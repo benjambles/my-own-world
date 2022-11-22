@@ -29,5 +29,5 @@ test('getRouteMiddleware', () => {
         checkAccess: async () => {},
     };
     const result = getRouteMiddleware({ operationId: 'getUser' }, fnMap, {});
-    expect(result).toEqual(some([catchJoiErrors, _getUser, fnMap.checkAccess]));
+    expect(result).toEqual(some([catchJoiErrors, fnMap.checkAccess, _getUser]));
 });
