@@ -4,6 +4,7 @@ x-source:
   - ./apps/api/dist:/app/apps/api/dist
   - ./apps/website/dist:/app/apps/website/dist
   - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
+  - ./packages/skirmish-engine/dist:/app/packages/skirmish-engine/dist
   - ./packages/shared-server/dist:/app/packages/shared-server/dist
   - ./packages/ui/dist:/app/packages/ui/dist
 services: 
@@ -31,10 +32,11 @@ services:
     command: npm run dev --workspace=apps/website -- -L
   mow_db:
     image: mongo:latest
+    restart: always
     ports:
       - 27017:27017
     volumes:
-      - ./mongo-entrypoint:/docker-entrypoint-initdb.d
+      - ./mongo-entrypoint:/docker-entrypoint-initdb.d:ro
       - mongodb:/data/db
       - mongoconfig:/data/configdb
     environment:
