@@ -131,7 +131,7 @@
                     "responses": {},
                     "security": [
                         {
-                            "jwt": ["role:admin"]
+                            "http": ["role:admin"]
                         }
                     ]
                 },
@@ -146,7 +146,7 @@
                     "responses": {},
                     "security": [
                         {
-                            "jwt": ["role:admin"]
+                            "http": ["role:admin"]
                         }
                     ]
                 }

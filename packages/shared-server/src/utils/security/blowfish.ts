@@ -1,5 +1,5 @@
 import { compare, hash } from 'bcrypt';
-import * as createError from 'http-errors';
+import createError from 'http-errors';
 
 /**
  * Generate a blowfish based hash of a value using bcrypt
@@ -18,7 +18,7 @@ export async function compareBHash(value: string, hash: string): Promise<true> {
     const isValid = await compare(value, hash);
 
     if (!isValid) {
-        throw new createError[401]('No match found');
+        throw createError(401, 'No match found');
     }
 
     return true;

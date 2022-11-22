@@ -2,7 +2,7 @@ import { createMockContext } from '@shopify/jest-koa-mocks';
 import { setAccessRoles } from '../set-access-roles.js';
 
 test('setAccessRoles', () => {
-    const roles = ['role:user', 'role:owner'];
+    const roles = { http: ['role:user', 'role:owner'] };
     const ctx = createMockContext();
 
     ctx.state = {
@@ -11,5 +11,5 @@ test('setAccessRoles', () => {
 
     setAccessRoles(roles)(ctx, async () => {});
 
-    expect(ctx.state.accessRoles).toEqual(roles);
+    expect(ctx.state.accessRoles).toEqual(roles.http);
 });

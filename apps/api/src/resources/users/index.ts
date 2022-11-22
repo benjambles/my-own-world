@@ -10,13 +10,11 @@ import * as userRoutes from './routes.js';
  */
 export default {
     config,
-    accessMap: 
-        { 'role:owner': (ctx) => isCurrentUser(ctx) }
-    ,
+    accessMap: { 'role:owner': (ctx) => isCurrentUser(ctx) },
     routeHandlers: {
         ...userRoutes,
         ...identifierRoutes,
-    }
+    },
 };
 
 /**

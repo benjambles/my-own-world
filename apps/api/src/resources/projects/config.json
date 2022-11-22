@@ -111,7 +111,7 @@
                     "responses": {},
                     "security": [
                         {
-                            "jwt": ["role:admin", "role:user"]
+                            "http": ["role:admin", "role:user"]
                         }
                     ]
                 },
@@ -200,7 +200,7 @@
                             "responses": {},
                             "security": [
                                 {
-                                    "jwt": ["role:admin", "role:user"]
+                                    "http": ["role:admin", "role:user"]
                                 }
                             ]
                         },
@@ -225,7 +225,7 @@
                             "responses": {},
                             "security": [
                                 {
-                                    "jwt": ["role:admin", "role:user"]
+                                    "http": ["role:admin", "role:user"]
                                 }
                             ]
                         },
@@ -358,7 +358,7 @@
                                     "responses": {},
                                     "security": [
                                         {
-                                            "jwt": ["role:admin", "role:user"]
+                                            "http": ["role:admin", "role:user"]
                                         }
                                     ]
                                 },
@@ -417,7 +417,7 @@
                                             "responses": {},
                                             "security": [
                                                 {
-                                                    "jwt": ["role:admin", "role:user"]
+                                                    "http": ["role:admin", "role:user"]
                                                 }
                                             ]
                                         },
@@ -451,7 +451,7 @@
                                             "responses": {},
                                             "security": [
                                                 {
-                                                    "jwt": ["role:admin", "role:user"]
+                                                    "http": ["role:admin", "role:user"]
                                                 }
                                             ]
                                         },
@@ -538,7 +538,7 @@
                                         }
                                     ],
                                     "responses": {},
-                                    "security": [{ "jwt": ["role:admin", "role:user"] }]
+                                    "security": [{ "http": ["role:admin", "role:user"] }]
                                 },
                                 "options": {
                                     "tags": ["project", "role", "options"],
@@ -586,7 +586,7 @@
                                             "responses": {},
                                             "security": [
                                                 {
-                                                    "jwt": ["role:admin", "role:user"]
+                                                    "http": ["role:admin", "role:user"]
                                                 }
                                             ]
                                         },

@@ -13,26 +13,26 @@ test('getSecurityMiddleware', () => {
         expect(val).toEqual([]);
     });
 
-    const noJWTMapItem = getSecurityMiddleware({
-        security: [{ notJWT: ['item'] }],
+    const noHTTPMapItem = getSecurityMiddleware({
+        security: [{ notHTTP: ['item'] }],
     });
-    expect(noJWTMapItem.isDefined).toEqual(true);
+    expect(noHTTPMapItem.isDefined).toEqual(true);
 
-    noJWTMapItem.map((val) => {
+    noHTTPMapItem.map((val) => {
         expect(val).toEqual([]);
     });
 
-    const hasJWTItems = getSecurityMiddleware({
+    const hasHTTPItems = getSecurityMiddleware({
         security: [
             {
-                jwt: ['role:admin', 'role:owner'],
+                http: ['role:admin', 'role:owner'],
             },
         ],
     });
-    expect(hasJWTItems.isDefined).toEqual(true);
+    expect(hasHTTPItems.isDefined).toEqual(true);
 
     expect(Access.setAccessRoles).toHaveBeenCalledTimes(1);
-    hasJWTItems.map((val) => {
+    hasHTTPItems.map((val) => {
         expect(typeof val[0]).toEqual('function');
     });
 });

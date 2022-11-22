@@ -3,7 +3,10 @@ import { Option, some } from 'ts-option';
 import { getFilledArray, reduceEntries } from '../utils/arrays.js';
 import { maybeProp, maybePropOr } from '../utils/functional/maybe-prop.js';
 import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
-import { getRouteMiddleware, RouteHandlers } from './spec-parsing/get-route-middleware.js';
+import {
+    getRouteMiddleware,
+    RouteHandlers,
+} from './spec-parsing/get-route-middleware.js';
 import { getSecurityMiddleware } from './spec-parsing/get-security-middleware.js';
 
 /**
@@ -23,7 +26,12 @@ export function getRouteMapping(
             return getRouteMapping(
                 concatOrElse(
                     acc,
-                    mapMethods(head.route, maybeProp('verbs', head), handlers, dbInstance),
+                    mapMethods(
+                        head.route,
+                        maybeProp('verbs', head),
+                        handlers,
+                        dbInstance,
+                    ),
                 ),
                 handlers,
                 concatOrElse(some(tail), maybePropOr([], 'paths', head)),
@@ -39,12 +47,17 @@ export function getRouteMapping(
  * @param verbs An object containing http verbs and the swagger/joi docs describing them
  * @param routeHandlers An object containing the handlers to map to the routes
  */
-function mapMethods(path: string, verbs, routeHandlers: RouteHandlers, dbInstance): Option<any> {
+function mapMethods(
+    path: string,
+    verbs,
+    routeHandlers: RouteHandlers,
+    dbInstance,
+): Option<any> {
     return verbs.flatMap(
         reduceEntries((configs, [method, spec]) => {
             const routeConfig = concatOrElse(
-                getRouteMiddleware(spec, routeHandlers, dbInstance),
                 getSecurityMiddleware(spec),
+                getRouteMiddleware(spec, routeHandlers, dbInstance),
             ).map((handler) => {
                 const { Joi } = router;
                 const { summary, description } = spec;

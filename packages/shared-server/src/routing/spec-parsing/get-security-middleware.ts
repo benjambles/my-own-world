@@ -10,6 +10,6 @@ import { maybePropOr } from '../../utils/functional/maybe-prop.js';
  */
 export function getSecurityMiddleware(spec): Option<Koa.Middleware[]> {
     return maybePropOr([], 'security', spec).map((items) => {
-        return items.filter((item) => item.jwt).map(setAccessRoles);
+        return items.filter((item) => item.http).map(setAccessRoles);
     });
 }
