@@ -53,5 +53,5 @@ function getConnectionString({ url, user, password }): string {
 
     const userStr = [user, password].filter(Boolean).join(':');
 
-    return `${userStr}@${url}`;
+    return url.replace('://', `://${userStr}@`);
 }
