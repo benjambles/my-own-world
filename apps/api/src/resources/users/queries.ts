@@ -75,10 +75,13 @@ export async function createUser(users, userData: User): Promise<User> {
  * Delete a user with a given ID
  * @param uuid - A valid uuid
  */
-export async function deleteUser(users, uuid): Promise<boolean> {
+export async function deleteUser(users, uuid, logData: AccessLogRow): Promise<boolean> {
     const data = await users.findOneAndUpdate(
         { _id: uuid },
-        { $set: { isDeleted: true, deletedOn: new Date() } },
+        {
+            $set: { isDeleted: true, deletedOn: new Date() },
+            $push: { accessLog: logData },
+        },
         { projection: { isDeleted: 1 } },
     );
 
@@ -90,26 +93,15 @@ export async function deleteUser(users, uuid): Promise<boolean> {
  * @param uuid - A UUID representing the user profile to be updated
  * @param data - An object representing a patch on a User profile
  */
-export async function updateUser(users, uuid, userData: Partial<User>): Promise<User> {
+export async function updateUser(
+    users,
+    uuid,
+    userData: Partial<User>,
+    logData: AccessLogRow,
+): Promise<User> {
     const data = await users.findOneAndUpdate(
         { _id: uuid },
-        { $set: { userData } },
-        { projection: { identities: 0 } },
-    );
-
-    return result('There was an error whilst updating the user', data);
-}
-
-/**
- * Push a new login to the users access log.
- * @param users - Mongo collection for user data
- * @param uuid - UUID for the user to be updated
- * @param logData - A new log record
- */
-export async function updateAccessLog(users, uuid, logData: AccessLogRow): Promise<User> {
-    const data = await users.findOneAndUpdate(
-        { _id: uuid },
-        { $push: { accessLog: logData } },
+        { $set: { userData }, $push: { accessLog: logData } },
         { projection: { identities: 0 } },
     );
 

@@ -6,6 +6,7 @@ export interface User {
     _id: string;
     accessLog: AccessLogRow[];
     createdOn: Date;
+    lastLoggedIn: Date;
     deletedOn?: Date;
     firstName: string;
     gameStates: {};
@@ -20,6 +21,7 @@ export interface User {
 export interface AccessLogRow {
     date: Date;
     ip: string;
+    action: string;
 }
 
 interface UserSettings {
@@ -55,6 +57,8 @@ export const model = {
 export function cleanResponse(user: User): UserResponse {
     delete user.password;
     delete user.identities;
+    delete user.settings;
+    delete user.accessLog;
 
     return user;
 }
@@ -110,6 +114,7 @@ export async function create(dbInstance, formatter, data: User): Promise<UserRes
         ...cleanData,
         accessLog: [],
         createdOn: new Date(),
+        lastLoggedIn: new Date(),
         settings: defaultUserSettings,
     });
 
@@ -126,10 +131,15 @@ export async function update(
     formatter,
     uuid: string,
     data: Partial<User>,
+    ip: string,
 ): Promise<UserResponse> {
     const cleanData = await formatter(data);
     const users = dbInstance.collection('Users');
-    const user = await queries.updateUser(users, new ObjectId(uuid), cleanData);
+    const user = await queries.updateUser(users, new ObjectId(uuid), cleanData, {
+        action: 'update record',
+        date: new Date(),
+        ip,
+    });
 
     return cleanResponse(user);
 }
@@ -138,10 +148,14 @@ export async function update(
  * Mark a user as inactive
  * @param uuid - The UUID of the user
  */
-export async function remove(dbInstance, uuid: string): Promise<boolean> {
+export async function remove(dbInstance, uuid: string, ip: string): Promise<boolean> {
     const users = dbInstance.collection('Users');
 
-    return await queries.deleteUser(users, new ObjectId(uuid));
+    return await queries.deleteUser(users, new ObjectId(uuid), {
+        action: 'delete record',
+        date: new Date(),
+        ip,
+    });
 }
 
 /**
@@ -157,9 +171,35 @@ export async function authenticate(
 ): Promise<UserResponse> {
     const users = dbInstance.collection('Users');
     const user = await queries.getActiveUserByIdentifier(users, identifier);
-    await compareBHash(password, user.password);
+    const accessDate = new Date();
 
-    queries.updateAccessLog(users, identifier, { date: new Date(), ip });
+    try {
+        await compareBHash(password, user.password);
+
+        queries.updateUser(
+            users,
+            identifier,
+            { lastLoggedIn: accessDate },
+            {
+                action: 'authenticated',
+                date: accessDate,
+                ip,
+            },
+        );
+    } catch (e) {
+        queries.updateUser(
+            users,
+            identifier,
+            {},
+            {
+                action: 'failed log in',
+                date: accessDate,
+                ip,
+            },
+        );
+
+        throw e;
+    }
 
     return cleanResponse(user);
 }

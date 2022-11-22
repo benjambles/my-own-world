@@ -93,6 +93,7 @@ export function updateUserById(dbInstance): Middleware {
             formatData(getDataFormatter(ctx.env.ENC_TYPE, users.model)),
             ctx.request.params.userId,
             ctx.request.body as users.UserResponse,
+            ctx.request.ip,
         );
 
         return userUpdated;
@@ -110,7 +111,11 @@ export function deleteUserById(dbInstance): Middleware {
     };
 
     return getPartsMiddleware(defaultError, async (ctx) => {
-        const userDeleted = await users.remove(dbInstance, ctx.request.params.userId);
+        const userDeleted = await users.remove(
+            dbInstance,
+            ctx.request.params.userId,
+            ctx.request.ip,
+        );
         return userDeleted;
     });
 }
