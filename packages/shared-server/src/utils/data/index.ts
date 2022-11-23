@@ -2,11 +2,11 @@ import { none, Option, some } from 'ts-option';
 import { bHash } from '../security/blowfish.js';
 import { encryptValue, hmac as getHmac } from '../security/encryption.js';
 
-interface FormatOptions {
-    encrypted?: string[];
-    salted?: string[];
-    hmac?: string[];
-    readOnly?: string[];
+export interface ModelOptions {
+    encrypted: string[];
+    salted: string[];
+    hmac: string[];
+    readOnly: string[];
 }
 
 /**
@@ -14,7 +14,7 @@ interface FormatOptions {
  */
 export function getDataFormatter(
     password: string,
-    { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] }: FormatOptions,
+    { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] },
 ) {
     return async (key: string, value: string): Promise<Option<string>> => {
         if (readOnly.includes(key)) return none;

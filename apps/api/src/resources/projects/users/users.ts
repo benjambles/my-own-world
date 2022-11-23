@@ -14,11 +14,11 @@ const { ObjectId } = mongoDB;
 export async function get(dbInstance, projectId: string): Promise<any[]> {
     const projects = dbInstance.collection('Projects');
     const users = dbInstance.collection('Users');
-    const projectUsers = await getActiveProjectUsers(projects, new ObjectId(projectId));
+    const projectUsers = await getActiveProjectUsers(projects, projectId);
 
     return Promise.all(
         projectUsers.map(async ({ id, role }) => {
-            const user = await getBasicUserDetails(users, new ObjectId(id));
+            const user = await getBasicUserDetails(users, id);
             return { user: cleanResponse(user), role };
         }),
     );

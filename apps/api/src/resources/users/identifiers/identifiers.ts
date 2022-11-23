@@ -1,8 +1,7 @@
 import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
-import mongoDB from 'mongodb';
-import { Identifier } from '../users.js';
+import { Db } from 'mongodb';
+import { Identifier, User } from '../queries.js';
 import * as queries from './queries.js';
-const { ObjectId } = mongoDB;
 
 export const model = {
     encrypted: ['identifier'],
@@ -16,12 +15,12 @@ export const model = {
  * @param props
  */
 export async function getByUserId(
-    dbInstance,
+    dbInstance: Db,
     password: string,
     userId: string,
 ): Promise<Identifier[]> {
-    const users = dbInstance.collection('Users');
-    const { identities } = await queries.getByUserId(users, new ObjectId(userId));
+    const users = dbInstance.collection<User>('Users');
+    const { identities } = await queries.getByUserId(users, userId);
 
     return identities.map((identity) => respond(password, identity));
 }
@@ -32,15 +31,15 @@ export async function getByUserId(
  * @param data
  */
 export async function create(
-    dbInstance,
+    dbInstance: Db,
     formatter,
     password: string,
     userId: string,
     data: any,
 ): Promise<Identifier> {
     const cleanData = await formatter(data);
-    const users = dbInstance.collection('Users');
-    const identity = await queries.create(users, new ObjectId(userId), cleanData);
+    const users = dbInstance.collection<User>('Users');
+    const identity = await queries.create(users, userId, cleanData);
 
     return respond(password, identity);
 }
@@ -50,10 +49,14 @@ export async function create(
  * @param userId
  * @param hash
  */
-export async function remove(dbInstance, userId: string, hash: string): Promise<boolean> {
-    const users = dbInstance.collection('Users');
+export async function remove(
+    dbInstance: Db,
+    userId: string,
+    hash: string,
+): Promise<boolean> {
+    const users = dbInstance.collection<User>('Users');
 
-    return await queries.remove(users, new ObjectId(userId), hash);
+    return await queries.remove(users, userId, hash);
 }
 
 /**

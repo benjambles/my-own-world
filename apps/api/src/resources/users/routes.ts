@@ -7,6 +7,7 @@ import { getPartsMiddleware } from '@benjambles/mow-server/dist/utils/routes/res
 import { hmac } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import { getToken } from '@benjambles/mow-server/dist/utils/security/jwt.js';
 import { Middleware } from 'koa';
+import { Db } from 'mongodb';
 import * as identifiers from './identifiers/identifiers.js';
 import * as users from './users.js';
 
@@ -14,7 +15,7 @@ import * as users from './users.js';
  * Get users, optionally filtered by parameters
  * @route [GET] /users
  */
-export function getUsers(dbInstance): Middleware {
+export function getUsers(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst fetching users.',
         status: 400,
@@ -36,7 +37,7 @@ export function getUsers(dbInstance): Middleware {
  * Create a new user
  * @route [POST] /users
  */
-export function createUser(dbInstance): Middleware {
+export function createUser(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst saving the user',
         status: 400,
@@ -53,7 +54,7 @@ export function createUser(dbInstance): Middleware {
             dbInstance,
             formatData(getDataFormatter(ctx.env.ENC_TYPE, identifiers.model)),
             ctx.env.ENC_TYPE,
-            userData._id,
+            userData._id.toString(),
             identifier,
         );
 
@@ -65,7 +66,7 @@ export function createUser(dbInstance): Middleware {
  * Get a user and return it's data object
  * @route [GET] /users/:userId
  */
-export function getUserById(dbInstance): Middleware {
+export function getUserById(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst fetching the user.',
         status: 400,
@@ -81,7 +82,7 @@ export function getUserById(dbInstance): Middleware {
  * Update a user and return the updated data
  * @route [PUT] /users/:userId
  */
-export function updateUserById(dbInstance): Middleware {
+export function updateUserById(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst updating the user.',
         status: 400,
@@ -104,7 +105,7 @@ export function updateUserById(dbInstance): Middleware {
  * Mark a user as deleted
  * @route [DELETE] /users/:userId
  */
-export function deleteUserById(dbInstance): Middleware {
+export function deleteUserById(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst deleting the user.',
         status: 400,
@@ -124,7 +125,7 @@ export function deleteUserById(dbInstance): Middleware {
  * fetch related user and if found test their password
  * @route [POST] /users/authentication
  */
-export function authenticateUser(dbInstance): Middleware {
+export function authenticateUser(dbInstance: Db): Middleware {
     const defaultError = {
         message: 'There was an error whilst authenticating the user.',
         status: 400,

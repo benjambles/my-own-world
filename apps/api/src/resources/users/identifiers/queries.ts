@@ -1,13 +1,17 @@
 import { result } from '@benjambles/mow-server/dist/utils/db.js';
-import { Identifier, User } from '../users.js';
+import { Collection, ObjectId } from 'mongodb';
+import { Identifier, User } from '../queries.js';
 /**
  *
  * @param userId
  * @param props
  */
-export async function getByUserId(users, userId): Promise<User> {
+export async function getByUserId(
+    users: Collection<User>,
+    userId: string,
+): Promise<User> {
     const data = await users.findOne(
-        { _id: userId, isDeleted: false },
+        { _id: new ObjectId(userId), isDeleted: false },
         { projection: { identities: 1 } },
     );
 
@@ -18,20 +22,25 @@ export async function getByUserId(users, userId): Promise<User> {
  *
  * @param data
  */
-export async function create(users, userId, identityData): Promise<Identifier> {
-    const {
-        identities: [identitiy],
-    } = await users.findOneAndUpdate(
-        { _id: userId },
+export async function create(
+    users: Collection<User>,
+    userId: string,
+    identityData,
+): Promise<Identifier> {
+    const user = await users.findOneAndUpdate(
+        { _id: new ObjectId(userId) },
         {
             $push: {
                 identities: identityData,
             },
         },
-        { projection: { identities: { $slice: -1 } }, returnNewDocument: true },
+        { projection: { identities: { $slice: -1 } } },
     );
 
-    return result('There was an error whilst creating the identitiy', identitiy);
+    return result(
+        'There was an error whilst creating the identity',
+        user.value?.identities?.[0] || null,
+    );
 }
 
 /**
@@ -39,9 +48,13 @@ export async function create(users, userId, identityData): Promise<Identifier> {
  * @param hash
  * @param uuid
  */
-export async function remove(users, userId, hash: string): Promise<boolean> {
+export async function remove(
+    users: Collection<User>,
+    userId: string,
+    hash: string,
+): Promise<boolean> {
     const { matchedCount, modifiedCount } = await users.updateOne(
-        { _id: userId, 'identities.hash': hash },
+        { _id: new ObjectId(userId), 'identities.hash': hash },
         { $set: { 'identities.$.isDeleted': true } },
     );
 

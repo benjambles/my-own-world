@@ -1,67 +1,23 @@
+import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
-import mongoDB from 'mongodb';
+
+import { ModelOptions } from '@benjambles/mow-server/src/utils/data/index.js';
+import { Db } from 'mongodb';
 import * as queries from './queries.js';
 
-export interface User {
-    _id: string;
-    accessLog: AccessLogRow[];
-    createdOn: Date;
-    lastLoggedIn: Date;
-    deletedOn?: Date;
-    firstName: string;
-    gameStates: {};
-    identities: Identifier[];
-    isDeleted: Boolean;
-    lastName: string;
-    password: string;
-    screenName: string;
-    settings: UserSettings;
-}
-
-export interface AccessLogRow {
-    date: Date;
-    ip: string;
-    action: string;
-}
-
-interface UserSettings {
-    dateFormat: string;
-    locale: string;
-    timeFormat: string;
-}
-
-export type UserResponse = Omit<User, 'password' | 'identities'>;
-
-export interface Identifier {
-    _id: string;
-    hash: string;
-    identifier: string;
-    isDeleted: Boolean;
-    type: string;
-    verified: Boolean;
-}
-
-const { ObjectId } = mongoDB;
-
-export const model = {
+export const model: ModelOptions = {
     encrypted: ['email'],
     salted: ['password'],
     readOnly: ['_id'],
+    hmac: [],
 };
 
-/**
- * Removes an fields that should never be made public by the response,
- * but are still returned in the query for logic purposes.
- * @param data - Object representing a user model
- */
-export function cleanResponse(user: User): UserResponse {
-    delete user.password;
-    delete user.identities;
-    delete user.settings;
-    delete user.accessLog;
+const restrictedKeys = ['password', 'identities', 'settings', 'accessLog'] as const;
+type RestrictedKeys = typeof restrictedKeys[number];
 
-    return user;
-}
+export type NewUser = Omit<queries.User, 'id'>;
+export type UserResponse = Omit<queries.User, RestrictedKeys>;
+export const cleanResponse = omit<queries.User, RestrictedKeys>(...restrictedKeys);
 
 /**
  * Get a list of active users
@@ -70,11 +26,11 @@ export function cleanResponse(user: User): UserResponse {
  * @param offset - The number of records to skip
  */
 export async function get(
-    dbInstance,
+    dbInstance: Db,
     limit: number = 10,
     offset: number = 0,
 ): Promise<UserResponse[]> {
-    const users = dbInstance.collection('Users');
+    const users = dbInstance.collection<queries.User>('Users');
     const userProfiles = await queries.getActiveUsers(users, limit, offset);
 
     return userProfiles.map(cleanResponse);
@@ -85,9 +41,9 @@ export async function get(
  * @param dbInstance - The MongoDB instance with the collection
  * @param uuid - The UUID related to the record to fetch
  */
-export async function getOne(dbInstance, uuid: string): Promise<UserResponse> {
-    const users = dbInstance.collection('Users');
-    const user = await queries.getActiveUserByUuid(users, new ObjectId(uuid));
+export async function getOne(dbInstance: Db, uuid: string): Promise<UserResponse> {
+    const users = dbInstance.collection<queries.User>('Users');
+    const user = await queries.getActiveUserByUuid(users, uuid);
 
     return cleanResponse(user);
 }
@@ -96,8 +52,11 @@ export async function getOne(dbInstance, uuid: string): Promise<UserResponse> {
  * Fetches a user record from the database using the email address as the search value
  * @param email - A valid email address
  */
-export async function getByEmail(dbInstance, identifier: string): Promise<UserResponse> {
-    const users = dbInstance.collection('Users');
+export async function getByEmail(
+    dbInstance: Db,
+    identifier: string,
+): Promise<UserResponse> {
+    const users = dbInstance.collection<queries.User>('Users');
     const user = await queries.getActiveUserByIdentifier(users, identifier);
 
     return user;
@@ -107,15 +66,19 @@ export async function getByEmail(dbInstance, identifier: string): Promise<UserRe
  * Creates a new user record in the database
  * @param data - The fields required to create a new user record
  */
-export async function create(dbInstance, formatter, data: User): Promise<UserResponse> {
+export async function create(
+    dbInstance: Db,
+    formatter,
+    data: NewUser,
+): Promise<UserResponse> {
     const cleanData = await formatter(data);
-    const users = dbInstance.collection('Users');
+    const users = dbInstance.collection<queries.User>('Users');
     const user = await queries.createUser(users, {
         ...cleanData,
         accessLog: [],
         createdOn: new Date(),
         lastLoggedIn: new Date(),
-        settings: defaultUserSettings,
+        settings: queries.defaultUserSettings,
     });
 
     return cleanResponse(user);
@@ -127,15 +90,15 @@ export async function create(dbInstance, formatter, data: User): Promise<UserRes
  * @param data - An object representing a portion of a user object
  */
 export async function update(
-    dbInstance,
+    dbInstance: Db,
     formatter,
     uuid: string,
-    data: Partial<User>,
+    data: Partial<queries.User>,
     ip: string,
 ): Promise<UserResponse> {
     const cleanData = await formatter(data);
-    const users = dbInstance.collection('Users');
-    const user = await queries.updateUser(users, new ObjectId(uuid), cleanData, {
+    const users = dbInstance.collection<queries.User>('Users');
+    const user = await queries.updateUser(users, uuid, cleanData, {
         action: 'update record',
         date: new Date(),
         ip,
@@ -148,10 +111,10 @@ export async function update(
  * Mark a user as inactive
  * @param uuid - The UUID of the user
  */
-export async function remove(dbInstance, uuid: string, ip: string): Promise<boolean> {
-    const users = dbInstance.collection('Users');
+export async function remove(dbInstance: Db, uuid: string, ip: string): Promise<boolean> {
+    const users = dbInstance.collection<queries.User>('Users');
 
-    return await queries.deleteUser(users, new ObjectId(uuid), {
+    return await queries.deleteUser(users, uuid, {
         action: 'delete record',
         date: new Date(),
         ip,
@@ -164,14 +127,20 @@ export async function remove(dbInstance, uuid: string, ip: string): Promise<bool
  * @param password - A plain text password
  */
 export async function authenticate(
-    dbInstance,
+    dbInstance: Db,
     identifier: string,
     password: string,
     ip: string,
 ): Promise<UserResponse> {
-    const users = dbInstance.collection('Users');
+    const users = dbInstance.collection<queries.User>('Users');
     const user = await queries.getActiveUserByIdentifier(users, identifier);
     const accessDate = new Date();
+
+    const acessLogEntry: queries.AccessLogRow = {
+        action: 'authenticated',
+        date: accessDate,
+        ip,
+    };
 
     try {
         await compareBHash(password, user.password);
@@ -180,11 +149,7 @@ export async function authenticate(
             users,
             identifier,
             { lastLoggedIn: accessDate },
-            {
-                action: 'authenticated',
-                date: accessDate,
-                ip,
-            },
+            acessLogEntry,
         );
     } catch (e) {
         queries.updateUser(
@@ -192,9 +157,8 @@ export async function authenticate(
             identifier,
             {},
             {
+                ...acessLogEntry,
                 action: 'failed log in',
-                date: accessDate,
-                ip,
             },
         );
 
@@ -211,9 +175,3 @@ export async function authenticate(
 export async function sendMagicLink(): Promise<boolean> {
     return true;
 }
-
-const defaultUserSettings: UserSettings = {
-    dateFormat: 'YYYY-MM-DD',
-    locale: 'en-GB',
-    timeFormat: '24hr',
-};

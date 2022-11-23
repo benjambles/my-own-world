@@ -1,9 +1,10 @@
 import { Middleware } from 'koa';
+import { Collection } from 'mongodb';
 import { Option } from 'ts-option';
 import { catchJoiErrors } from '../../koa/middleware/catch-joi-errors.js';
 import { maybeProp, maybePropIsFn } from '../../utils/functional/maybe-prop.js';
 export interface RouteHandler {
-    (collection): Middleware;
+    (collection: Collection): Middleware;
 }
 
 export interface RouteHandlers {
