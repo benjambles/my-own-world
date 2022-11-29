@@ -9,7 +9,7 @@ export interface User {
     firstName: string;
     gameStates: {};
     identities: Identifier[];
-    isDeleted: Boolean;
+    isDeleted: boolean;
     lastName: string;
     password: string;
     screenName: string;
@@ -31,9 +31,9 @@ export interface Identifier {
     _id: string;
     hash: string;
     identifier: string;
-    isDeleted: Boolean;
+    isDeleted: boolean;
     type: string;
-    verified: Boolean;
+    verified: boolean;
 }
 
 export const defaultUserSettings: UserSettings = {
@@ -64,12 +64,16 @@ export async function getActiveUserByUuid(
  */
 export async function getBasicUserDetails(
     users: Collection<User>,
-    uuid: string,
-): Promise<User> {
-    const data = await users.findOne(
-        { _id: new ObjectId(uuid), isDeleted: false },
-        { projection: { firstName: 1, lastName: 1, displayName: 1 } },
-    );
+    uuids: string[],
+    limit: number = 1,
+    skip: number = 0,
+): Promise<User[]> {
+    const data = await users
+        .find(
+            { _id: { $in: uuids.map((_id) => new ObjectId(_id)), isDeleted: false } },
+            { projection: { firstName: 1, lastName: 1, displayName: 1 }, limit, skip },
+        )
+        .toArray();
 
     return result('There was an error whilst fetching the user', data);
 }

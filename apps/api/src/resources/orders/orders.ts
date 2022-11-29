@@ -47,7 +47,7 @@ export interface Payment {
             month: number;
             year: number;
         };
-        cvvVerified: Boolean;
+        cvvVerified: boolean;
     };
     statusLog: Status[];
 }

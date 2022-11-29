@@ -7,3 +7,24 @@ import { KoaContext } from '../../index.js';
 export function getAuthenticatedUserId(ctx: KoaContext): string | undefined {
     return ctx.state?.user?._id;
 }
+
+/**
+ * Checks to see if the user making the request is the target of the request
+ * @param ctx - A Koa context object
+ */
+export function isCurrentUser(ctx: KoaContext): boolean {
+    const requestUuid = getRequestedUser(ctx);
+    if (!requestUuid) return true; // No user was needed
+
+    const uuid = getAuthenticatedUserId(ctx);
+
+    return uuid ? uuid === requestUuid : false; // No logged in user
+}
+
+/**
+ * Grab the user UUID from the URL
+ * @param ctx
+ */
+export function getRequestedUser(ctx: KoaContext): string {
+    return ctx.request.params.userId;
+}
