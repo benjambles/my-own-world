@@ -1,4 +1,4 @@
-import type { HeroData } from '@benjambles/rise-engine/dist/types/game/hero.js';
+import { HeroData } from '@benjambles/rise-engine/dist/types/game/hero.js';
 import { html } from 'lit';
 import styles from './hero-card.css.js';
 

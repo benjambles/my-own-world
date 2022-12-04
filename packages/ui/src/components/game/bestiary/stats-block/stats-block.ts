@@ -1,4 +1,4 @@
-import type { Stats } from '@benjambles/rise-engine/dist/types/game/npc.js';
+import { Stats } from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './stats-block.css.js';
@@ -27,8 +27,12 @@ export function statsBlock({ name, variant, stats }: StatsData) {
             <span class="${styles.health}">
                 <b>HP:</b> <span>${stats.hp.current}/${stats.hp.max}</span>
             </span>
-            <span class="${styles.toughness}"> <b>Toughness:</b> ${stats.toughness} </span>
-            <span class="${styles.resistance}"> <b>Resistance:</b> ${stats.resistance} </span>
+            <span class="${styles.toughness}">
+                <b>Toughness:</b> ${stats.toughness}
+            </span>
+            <span class="${styles.resistance}">
+                <b>Resistance:</b> ${stats.resistance}
+            </span>
             <span> <b>Rank:</b> ${stats.rank} </span>
             <span> <b>Type:</b> ${stats.type} </span>
             <span> <b>Flow:</b> ${stats.flow} </span>

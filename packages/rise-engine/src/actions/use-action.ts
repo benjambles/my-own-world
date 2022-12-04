@@ -2,8 +2,8 @@ import {
     getCurrentActionPoints,
     setCurrentActionPoints,
 } from '../actors/hero/actions.js';
-import type { ActionSpeeds, CombatAction } from '../types/game/actions.js';
-import type { HeroData } from '../types/game/hero.js';
+import { ActionSpeeds, CombatAction } from '../types/game/actions.js';
+import { HeroData } from '../types/game/hero.js';
 
 /**
  *

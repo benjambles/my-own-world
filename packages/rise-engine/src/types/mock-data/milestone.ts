@@ -1,4 +1,4 @@
-import type { Milestone } from '../game/milestone.js';
+import { Milestone } from '../game/milestone.js';
 
 export const milestoneMock: Milestone = {
     author: 'Ben Allen',

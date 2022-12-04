@@ -1,4 +1,4 @@
-import type { AttackType, CapValues } from '../types/game/actions.js';
+import { AttackType, CapValues } from '../types/game/actions.js';
 import { RollResult } from './dice.js';
 
 interface CapResult {

@@ -1,4 +1,4 @@
-import type { ActionSpeeds, CapValues } from './actions.js';
+import { ActionSpeeds, CapValues } from './actions.js';
 
 export type UseTypes = 'combat' | 'crossroad' | 'custom' | 'role-playing' | 'encounter';
 export type UseLimits = 'combat' | 'campaign' | 'milestone' | 'times';
@@ -39,11 +39,9 @@ type DefenseTypes = AttackTypes | 'dodge';
 type OffsetTypes = DefenseTypes | 'willpower';
 
 export interface Armour extends EqupimentBase {
-    offsets: Partial<
-        {
-            [key in DefenseTypes]: number;
-        }
-    >;
+    offsets: Partial<{
+        [key in DefenseTypes]: number;
+    }>;
 }
 
 export interface Weapon extends EqupimentBase {
@@ -57,11 +55,9 @@ export interface Weapon extends EqupimentBase {
 }
 
 export interface OffhandWeapon extends EqupimentBase {
-    offsets: Partial<
-        {
-            [key in OffsetTypes | 'damage']: number;
-        }
-    >;
+    offsets: Partial<{
+        [key in OffsetTypes | 'damage']: number;
+    }>;
     additional_effect: string;
     affect_handler?: Function;
 }

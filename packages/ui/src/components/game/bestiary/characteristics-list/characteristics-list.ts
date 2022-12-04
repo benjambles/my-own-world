@@ -1,4 +1,4 @@
-import type {
+import {
     CharacteristicGroup,
     Characteristics,
 } from '@benjambles/rise-engine/dist/types/game/npc.js';
@@ -15,7 +15,8 @@ export function characteristicsList({ base, optional }: Characteristics) {
     return html`
         ${lazyStylesheet('/styles/core/bestiary/character-list/character-list.css')}
         <section class="${styles.characteristics}">
-            ${characteristicGroup(base)} ${optional ? characteristicGroup(optional) : null}
+            ${characteristicGroup(base)}
+            ${optional ? characteristicGroup(optional) : null}
         </section>
     `;
 }

@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import baseStyles from '../../global-css/base.css.js';
-import type { ButtonSizes, ButtonTypes } from './types.js';
+import { ButtonSizes, ButtonTypes } from './types.js';
 
 interface ButtonData {
     text: string;
@@ -11,7 +11,12 @@ interface ButtonData {
     size?: ButtonSizes;
 }
 
-export function secondaryButton({ text, type = 'button', action, size = 'normal' }: ButtonData) {
+export function secondaryButton({
+    text,
+    type = 'button',
+    action,
+    size = 'normal',
+}: ButtonData) {
     const cssClasses = {
         [baseStyles.button]: true,
         [baseStyles.buttonLarge]: size === 'large',
@@ -19,7 +24,11 @@ export function secondaryButton({ text, type = 'button', action, size = 'normal'
     };
 
     return html`
-        <button type="${type}" class="${classMap(cssClasses)}" data-action="${ifDefined(action)}">
+        <button
+            type="${type}"
+            class="${classMap(cssClasses)}"
+            data-action="${ifDefined(action)}"
+        >
             ${text}
         </button>
     `;

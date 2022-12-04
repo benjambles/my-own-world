@@ -1,4 +1,4 @@
-import type { ClassAction, ClassTrait, TideTurner } from './actions.js';
+import { ClassAction, ClassTrait, TideTurner } from './actions.js';
 
 export interface PlayerClass {
     name: string;

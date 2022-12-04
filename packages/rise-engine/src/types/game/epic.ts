@@ -1,4 +1,4 @@
-import type { Milestone } from './milestone.js';
+import { Milestone } from './milestone.js';
 
 export interface Epic {
     id: string;

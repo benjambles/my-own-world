@@ -1,4 +1,8 @@
-import type { Action, ActionGroup, Actions } from '@benjambles/rise-engine/dist/types/game/npc.js';
+import {
+    Action,
+    ActionGroup,
+    Actions,
+} from '@benjambles/rise-engine/dist/types/game/npc.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
@@ -60,7 +64,9 @@ function actionGroup({ actions, title, limit, className }: ActionGroupData) {
             <tr>
                 <th colspan="${titleCols}">${title}</th>
                 ${limit
-                    ? html`<th colspan="1">[Storyteller only] Actions per Turn: ${limit}</th>`
+                    ? html`<th colspan="1">
+                          [Storyteller only] Actions per Turn: ${limit}
+                      </th>`
                     : null}
             </tr>
             ${Object.values(actions).map((action) => actionRow(action))}

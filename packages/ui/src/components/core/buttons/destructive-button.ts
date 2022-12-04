@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import baseStyles from '../../global-css/base.css.js';
-import type { ButtonSizes, ButtonTypes } from './types.js';
+import { ButtonSizes, ButtonTypes } from './types.js';
 
 export interface ButtonData {
     text: string;

@@ -1,11 +1,5 @@
-import type {
-    ActionTypes,
-    ClassAction,
-    ClassTrait,
-    Maneuver,
-    TideTurner,
-} from './actions.js';
-import type { Anchor, Armour, Item, Keepsake, OffhandWeapon, Weapon } from './items.js';
+import { ActionTypes, ClassAction, ClassTrait, Maneuver, TideTurner } from './actions.js';
+import { Anchor, Armour, Item, Keepsake, OffhandWeapon, Weapon } from './items.js';
 
 export interface HeroData {
     name: string;

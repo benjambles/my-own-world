@@ -4,7 +4,7 @@ import { maybeProp } from '../utils/functional/maybe-prop.js';
 import { attachDefaultHandlers } from './attach-default-handlers.js';
 import { createRoute } from './create-route.js';
 import { getRouteMapping } from './get-route-mapping.js';
-import type { Router } from 'koa-joi-router';
+import { Router } from 'koa-joi-router';
 
 /**
  * Load resources in `root` directory.
