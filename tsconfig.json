@@ -8,6 +8,12 @@
             "path": "./apps/website"
         },
         {
+            "path": "./packages/lib"
+        },
+        {
+            "path": "./packages/skirmish-engine"
+        },
+        {
             "path": "./packages/rise-engine"
         },
         {
