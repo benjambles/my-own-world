@@ -2,8 +2,8 @@ import {
     formatData,
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
-import { paramToNumber } from '@benjambles/mow-server/src/utils/data/param-to-number';
-import { getPartsMiddleware } from '@benjambles/mow-server/src/utils/routes/responses';
+import { paramToNumber } from '@benjambles/mow-server/dist/utils/data/param-to-number.js';
+import { getPartsMiddleware } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { Middleware } from 'koa';
 import * as orders from './orders.js';
 

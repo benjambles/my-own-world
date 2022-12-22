@@ -1,5 +1,5 @@
-import { result } from '@benjambles/mow-server/dist/utils/db.js';
-import { Collection, ObjectId } from 'mongodb';
+import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
+import { Collection } from 'mongodb';
 import { Identifier, User } from '../queries.js';
 /**
  *
@@ -11,7 +11,7 @@ export async function getByUserId(
     userId: string,
 ): Promise<User> {
     const data = await users.findOne(
-        { _id: new ObjectId(userId), isDeleted: false },
+        { _id: getObjectId(userId), isDeleted: false },
         { projection: { identities: 1 } },
     );
 
@@ -28,7 +28,7 @@ export async function create(
     identityData,
 ): Promise<Identifier> {
     const user = await users.findOneAndUpdate(
-        { _id: new ObjectId(userId) },
+        { _id: getObjectId(userId) },
         {
             $push: {
                 identities: identityData,
@@ -54,7 +54,7 @@ export async function remove(
     hash: string,
 ): Promise<boolean> {
     const { matchedCount, modifiedCount } = await users.updateOne(
-        { _id: new ObjectId(userId), 'identities.hash': hash },
+        { _id: getObjectId(userId), 'identities.hash': hash },
         { $set: { 'identities.$.isDeleted': true } },
     );
 

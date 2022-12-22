@@ -1,4 +1,4 @@
-import MongoDB from 'mongodb';
+import MongoDB, { ObjectId } from 'mongodb';
 
 let client;
 
@@ -56,4 +56,10 @@ function getConnectionString({ url, user, password }): string {
     const userStr = [user, password].filter(Boolean).join(':');
 
     return url.replace('://', `://${userStr}@`);
+}
+
+export function getObjectId(uuid: string): ObjectId {
+    if (!uuid) throw new Error('Invalid UUID passed');
+
+    return new MongoDB.ObjectId(uuid);
 }

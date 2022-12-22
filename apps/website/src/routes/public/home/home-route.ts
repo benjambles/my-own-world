@@ -1,20 +1,8 @@
-import { streamTemplate } from '../../../utils/stream-template.js';
-import { RouteMethods, RouteConfig } from '../../routes-config.js';
+import { getMockData } from '../../../data/get-mock-data.js';
+import { RouteParams } from '../../../utils/get-route-handler.js';
 
-export function homeRoute(getData): RouteConfig {
-    return {
-        method: RouteMethods.Get,
-        path: '/',
-        handler: async (ctx) => {
-            const data = getData();
-
-            await streamTemplate({
-                ctx,
-                data,
-                importUrl: import.meta.url,
-                renderFile: '../../../utils/render-template.js',
-                rootComponent: '@benjambles/mow-ui/dist/components/pages/public/home/home.js',
-            });
-        },
-    };
-}
+export const homeRoute: RouteParams = {
+    urlPattern: '/',
+    templatePath: '@benjambles/mow-ui/dist/components/pages/public/home/home.js',
+    dataFn: getMockData,
+};

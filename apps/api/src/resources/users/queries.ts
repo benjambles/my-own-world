@@ -1,4 +1,4 @@
-import { result } from '@benjambles/mow-server/dist/utils/db.js';
+import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
 import { Collection, ObjectId } from 'mongodb';
 export interface User {
     _id: ObjectId;
@@ -51,7 +51,7 @@ export async function getActiveUserByUuid(
     uuid: string,
 ): Promise<User> {
     const data = await users.findOne(
-        { _id: new ObjectId(uuid), isDeleted: false },
+        { _id: getObjectId(uuid), isDeleted: false },
         { projection: { identities: 0 } },
     );
 
@@ -70,7 +70,7 @@ export async function getBasicUserDetails(
 ): Promise<User[]> {
     const data = await users
         .find(
-            { _id: { $in: uuids.map((_id) => new ObjectId(_id)), isDeleted: false } },
+            { _id: { $in: uuids.map(getObjectId), isDeleted: false } },
             { projection: { firstName: 1, lastName: 1, displayName: 1 }, limit, skip },
         )
         .toArray();
@@ -132,7 +132,7 @@ export async function deleteUser(
     logData: AccessLogRow,
 ): Promise<boolean> {
     const data = await users.findOneAndUpdate(
-        { _id: new ObjectId(uuid) },
+        { _id: getObjectId(uuid) },
         {
             $set: { isDeleted: true, deletedOn: new Date() },
             $push: { accessLog: logData },
@@ -155,7 +155,7 @@ export async function updateUser(
     logData: AccessLogRow,
 ): Promise<User> {
     const data = await users.findOneAndUpdate(
-        { _id: new ObjectId(uuid) },
+        { _id: getObjectId(uuid) },
         { $set: { userData }, $push: { accessLog: logData } },
         { projection: { identities: 0 } },
     );

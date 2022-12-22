@@ -1,7 +1,7 @@
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
 
-import { ModelOptions } from '@benjambles/mow-server/src/utils/data/index.js';
+import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
 import * as queries from './queries.js';
 

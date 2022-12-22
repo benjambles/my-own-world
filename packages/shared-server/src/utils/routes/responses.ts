@@ -1,4 +1,6 @@
 import { Middleware } from 'koa';
+import { Readable } from 'stream';
+import { KoaContext } from '../../index.js';
 import { send } from './send.js';
 
 export interface DataResponse {
@@ -71,4 +73,15 @@ export function getDataMiddleware(defaultError: DefaultError, callback): Middlew
             return dataResponse(responseBody);
         });
     };
+}
+
+export function streamResponse(
+    ctx: KoaContext,
+    body: Iterable<unknown>,
+    status: number = 200,
+    type = 'text/html',
+) {
+    ctx.status = status;
+    ctx.type = type;
+    ctx.body = Readable.from(body);
 }
