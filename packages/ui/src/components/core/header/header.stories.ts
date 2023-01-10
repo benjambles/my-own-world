@@ -1,11 +1,15 @@
+import { Meta } from '@storybook/web-components';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './header.css';
 import { header } from './header.js';
 
 export default {
     title: 'Furniture/Header',
+    parameters: {
+        componentSubtitle: 'Sidewide header',
+    },
     decorators: [storyRenderer],
-};
+} as Meta;
 
 const navigationLinks = [
     { text: 'Explore', href: '/explore' },
@@ -19,7 +23,7 @@ const navigationLinksActive = [
     { text: 'Blog', href: '/blog' },
 ];
 
-export const headerLoggedOut = () => header({ navigationLinks, user: {} });
+export const headerLoggedOut = () => header({ navigationLinks });
 
 export const headerLoggedActiveLink = () =>
     header({

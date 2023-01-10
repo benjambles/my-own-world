@@ -1,3 +1,4 @@
+import { Meta } from '@storybook/web-components';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './footer.css';
 import { footer } from './footer.js';
@@ -8,7 +9,7 @@ export default {
         componentSubtitle: 'Displays the footer links and copyright information',
     },
     decorators: [storyRenderer],
-};
+} as Meta;
 
 const links = [
     { text: 'Terms', href: '/terms' },

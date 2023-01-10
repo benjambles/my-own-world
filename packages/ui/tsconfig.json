@@ -2,6 +2,7 @@
     "extends": "../../tsconfig-base.json",
     "compilerOptions": {
         "experimentalDecorators": true,
+        "useDefineForClassFields": false,
         "tsBuildInfoFile": "buildcache",
         "composite": true,
         "plugins": [

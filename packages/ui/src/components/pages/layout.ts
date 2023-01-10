@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { skiplinks } from '../core/accessibility/skiplinks.js';
 import { footer, FooterData } from '../core/footer/footer.js';
 import { header, HeaderData } from '../core/header/header.js';
@@ -17,7 +17,7 @@ const linkList = [
     { text: 'Skip to the footer', href: '#footer' },
 ];
 
-export function layout(data: Data, children?) {
+export function layout(data: Data, children?: TemplateResult<1> | TemplateResult<1>[]) {
     return html`
         ${skiplinks(linkList)}${header(data.header)} ${children} ${footer(data.footer)}
     `;

@@ -34,7 +34,7 @@ export function footer({ links }: FooterData) {
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - ${currentYear}</span>
-                <nav class="">${links.map((linkData) => link(linkData))}</nav>
+                <nav class="">${links.map(link)}</nav>
             </div>
         </footer>
     `;
