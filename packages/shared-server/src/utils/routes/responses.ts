@@ -1,6 +1,7 @@
 import { Middleware } from 'koa';
 import { Readable } from 'stream';
 import { KoaContext } from '../../index.js';
+import { ErrorValues } from '../errors.js';
 import { send } from './send.js';
 
 export interface DataResponse {
@@ -52,21 +53,19 @@ export function getResponseBody(response, status): PartsResponse | DataResponse 
     return dataResponse(response.data);
 }
 
-interface DefaultError {
-    message: string;
-    status: number;
-}
-
-export function getPartsMiddleware(defaultError: DefaultError, callback): Middleware {
+export function getPartsMiddleware(
+    defaultError: ErrorValues,
+    callback: Middleware,
+): Middleware {
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
-            const responseBody = await callback(ctx);
+            const responseBody = await callback(ctx, undefined);
             return partsResponse(responseBody);
         });
     };
 }
 
-export function getDataMiddleware(defaultError: DefaultError, callback): Middleware {
+export function getDataMiddleware(defaultError: ErrorValues, callback): Middleware {
     return async (ctx) => {
         await send(ctx, defaultError, async (ctx) => {
             const responseBody = await callback(ctx);

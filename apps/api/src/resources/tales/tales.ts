@@ -1,71 +1,74 @@
-import mongoDB from 'mongodb';
-import * as queries from './queries.js';
+import {
+    formatData,
+    getDataFormatter,
+    ModelOptions,
+} from '@benjambles/mow-server/dist/utils/data/index.js';
+import { Db } from 'mongodb';
+import { Env } from '../../schema/env-schema.js';
+import { getTalesHelpers, Tale, TaleData } from './queries.js';
 
-const { ObjectId } = mongoDB;
+export function talesModel(db: Db, { ENC_SECRET }: Env) {
+    const formatOptions: ModelOptions = {
+        encrypted: [],
+        salted: [],
+        readOnly: ['_id'],
+        hmac: [],
+    };
 
-export const model = {
-    readOnly: ['uuid'],
-};
+    const formatTaleData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
 
-/**
- * Get a list of active tales
- * @param limit - The number of records to fetch
- * @param offset - The number of records to skip
- */
-export async function get(
-    dbInstance,
-    limit: number = 10,
-    offset: number = 0,
-): Promise<Tale.TaleData[]> {
-    const tales = dbInstance.collection('Tales');
+    const taleQueries = getTalesHelpers(db);
 
-    return await queries.getActiveTales(tales, limit, offset);
-}
+    const helpers = {
+        /**
+         * Get a list of active tales
+         * @param limit - The number of records to fetch
+         * @param offset - The number of records to skip
+         */
+        get: async function getTale(
+            limit: number = 10,
+            offset: number = 0,
+        ): Promise<Tale[]> {
+            return await taleQueries.get(limit, offset);
+        },
 
-/**
- * Fetches a tale record from the database using the uuid as the search value
- * @param uuid - A valid uuid
- */
-export async function getOne(dbInstance, uuid: string): Promise<Tale.TaleData> {
-    const tales = dbInstance.collection('Tales');
+        /**
+         * Fetches a tale record from the database using the uuid as the search value
+         * @param uuid - A valid uuid
+         */
+        find: async function findTaleByUuid(uuid: string): Promise<Tale> {
+            return await taleQueries.find(uuid);
+        },
 
-    return await queries.getActiveTaleByUuid(tales, new ObjectId(uuid));
-}
+        /**
+         * Creates a new tale record in the database
+         * @param data - The fields required to create a new tale record
+         */
+        create: async function createTale(data: Tale): Promise<Tale> {
+            const cleanData = await formatTaleData(data);
 
-/**
- * Creates a new tale record in the database
- * @param data - The fields required to create a new tale record
- */
-export async function create(dbInstance, formatter, data: Tale.Request): Promise<Tale.TaleData> {
-    const tales = dbInstance.collection('Tales');
-    const cleanData = await (<Tale.TaleData>formatter(data));
+            return await taleQueries.create(cleanData);
+        },
 
-    return await queries.createTale(tales, cleanData);
-}
+        /**
+         * Updates a tales profile data in the database
+         * @param uuid - The UUID for the tale to be updated
+         * @param data - An object representing a portion of a tale object
+         */
+        update: async function updateTale(uuid: string, data: TaleData): Promise<Tale> {
+            const cleanData = await formatTaleData(data);
 
-/**
- * Updates a tales profile data in the database
- * @param uuid - The UUID for the tale to be updated
- * @param data - An object representing a portion of a tale object
- */
-export async function update(
-    dbInstance,
-    formatter,
-    uuid: string,
-    data: Tale.Request,
-): Promise<Tale.TaleData> {
-    const tales = dbInstance.collection('Tales');
-    const cleanData = await (<Tale.TaleData>formatter(data));
+            return await taleQueries.update(uuid, cleanData);
+        },
 
-    return await queries.updateTale(tales, new ObjectId(uuid), cleanData);
-}
+        /**
+         * Mark a tale as inactive
+         * @param uuid - The UUID of the tale
+         */
+        delete: async function deleteTake(uuid: string): Promise<boolean> {
+            return await taleQueries.delete(uuid);
+        },
+    };
 
-/**
- * Mark a tale as inactive
- * @param uuid - The UUID of the tale
- */
-export async function remove(dbInstance, uuid: string): Promise<boolean> {
-    const tales = dbInstance.collection('Tales');
-
-    return await queries.deleteTale(tales, new ObjectId(uuid));
+    return helpers;
 }

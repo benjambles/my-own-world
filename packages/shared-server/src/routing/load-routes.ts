@@ -12,10 +12,11 @@ import { Router } from 'koa-joi-router';
  * @param root The path within which to search for route configs
  * @api private
  */
-export function loadRoutes(resources, dbInstance, prefix: string = ''): Router[] {
+export function loadRoutes(resources, dataModel, prefix: string = ''): Router[] {
     const getPrefixedRoute = createRoute(prefix);
+
     const mappedRouters = resources.map((resource) =>
-        getRouter(getPrefixedRoute, resource, dbInstance),
+        getRouter(getPrefixedRoute, resource, dataModel),
     );
 
     return getValues(mappedRouters);
@@ -27,15 +28,12 @@ export function loadRoutes(resources, dbInstance, prefix: string = ''): Router[]
  * @param getPrefixedRoute
  * @param resource
  */
-function getRouter(getPrefixedRoute, resource, dbInstance): Option<Router> {
-    const { config, routeHandlers, accessMap } = resource;
+function getRouter(getPrefixedRoute, resource, dataModel): Option<Router> {
+    const { config, routeHandlers, accessMap } = resource(dataModel);
 
     const handlers = attachDefaultHandlers(config, accessMap, routeHandlers);
 
-    return getRouteMapping(
-        some([]),
-        handlers,
-        maybeProp('paths', config),
-        dbInstance,
-    ).map(getPrefixedRoute);
+    return getRouteMapping(some([]), handlers, maybeProp('paths', config)).map(
+        getPrefixedRoute,
+    );
 }

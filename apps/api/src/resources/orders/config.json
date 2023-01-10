@@ -1,0 +1,154 @@
+{
+    "info": {
+        "name": "Orders",
+        "description": "Routes relating to the creation and management of orders for the platform."
+    },
+    "paths": [
+        {
+            "route": "/orders",
+            "verbs": {
+                "get": {
+                    "tags": ["order"],
+                    "summary": "Fetches all orders for the platform",
+                    "description": "",
+                    "operationId": "getOrders",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [
+                        {
+                            "name": "limit",
+                            "in": "query",
+                            "description": "How many records to fetch",
+                            "default": 10,
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        {
+                            "name": "offset",
+                            "in": "query",
+                            "description": "How many records to skip",
+                            "default": 0,
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    ],
+                    "responses": {},
+                    "security": []
+                },
+                "post": {
+                    "tags": ["order"],
+                    "summary": "Add a new order to the platform",
+                    "description": "",
+                    "operationId": "createOrder",
+                    "consumes": ["application/json"],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                },
+                "options": {
+                    "tags": ["order", "options"],
+                    "summary": "Check which endpoints are available for working with orders",
+                    "description": "",
+                    "operationId": "sendOptions",
+                    "consumes": [],
+                    "produces": ["application/json"],
+                    "parameters": [],
+                    "responses": {},
+                    "security": []
+                }
+            },
+            "paths": [
+                {
+                    "route": "/orders/:orderId",
+                    "verbs": {
+                        "get": {
+                            "tags": ["order"],
+                            "summary": "Fetches the order with the ID matching the url parameter",
+                            "description": "",
+                            "operationId": "getOrderById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "orderId",
+                                    "in": "path",
+                                    "description": "Unique id representing a order",
+                                    "opts": { "required": true },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [{ "jwt": ["role:order"] }]
+                        },
+                        "put": {
+                            "tags": ["order"],
+                            "summary": "Updates the order at the ID given with the values provided",
+                            "description": "",
+                            "operationId": "updateOrderById",
+                            "consumes": ["application/json"],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "orderId",
+                                    "in": "path",
+                                    "description": "Unique id representing a order",
+                                    "opts": { "required": true },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:owner"]
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "tags": ["order"],
+                            "summary": "Deletes the order with the given ID",
+                            "description": "",
+                            "operationId": "deleteOrderById",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "orderId",
+                                    "in": "path",
+                                    "description": "Unique id representing a order",
+                                    "opts": { "required": true },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": [
+                                {
+                                    "jwt": ["role:admin", "role:owner"]
+                                }
+                            ]
+                        },
+                        "options": {
+                            "tags": ["order", "options"],
+                            "summary": "Check which endpoints are available for working with an order",
+                            "description": "",
+                            "operationId": "sendOptions",
+                            "consumes": [],
+                            "produces": ["application/json"],
+                            "parameters": [
+                                {
+                                    "name": "orderId",
+                                    "in": "path",
+                                    "description": "Unique id representing a order",
+                                    "opts": { "required": true },
+                                    "type": "string"
+                                }
+                            ],
+                            "responses": {},
+                            "security": []
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

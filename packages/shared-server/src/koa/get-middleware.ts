@@ -1,4 +1,3 @@
-import { DotenvParseOutput } from 'dotenv/types';
 import Koa from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
@@ -10,7 +9,7 @@ import serve from 'koa-static';
 import { errorHandler } from './error-handler.js';
 
 interface GetMiddlewareProps {
-    env: DotenvParseOutput;
+    env: { JWT_SECRET: string };
     app: Koa;
     staticPath?: string;
     helmetConfig?: any;

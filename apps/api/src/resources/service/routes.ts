@@ -2,75 +2,75 @@ import {
     getDataMiddleware,
     getPartsMiddleware,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
-import { Middleware } from 'koa';
-import { getSystemKey } from './service.js';
+import { DataModel } from '../../app.js';
 
-/**
- * Gets the API health
- * @route [GET] /health
- */
-export function getHealth(): Middleware {
-    const defaultError = {
-        message: 'Service unavailable',
-        status: 503,
+export function serviceRoutes(dataModel: DataModel) {
+    const system = dataModel.get('system');
+
+    return {
+        /**
+         * Gets the API health
+         * @route [GET] /health
+         */
+        getHealth: getDataMiddleware(
+            {
+                message: 'Service unavailable',
+                status: 503,
+            },
+            async () => 'ok',
+        ),
+
+        /**
+         * Gets the API version
+         * @route [GET] /version
+         */
+        getVersion: getPartsMiddleware(
+            {
+                message: 'Service unavailable',
+                status: 503,
+            },
+            async () => {
+                const { key, value } = await system.find('api_version');
+                return {
+                    [key]: value,
+                };
+            },
+        ),
+
+        /**
+         * Gets metrics regarding platform health and status
+         * @route [GET] /status
+         */
+        getStatus: getDataMiddleware(
+            {
+                message: 'Service unavailable',
+                status: 503,
+            },
+            async () => 'ok',
+        ),
+
+        /**
+         * Gets metrics and API uptime and usage
+         * @route [GET] /metrics
+         */
+        getMetrics: getDataMiddleware(
+            {
+                message: 'Service unavailable',
+                status: 503,
+            },
+            async () => 'ok',
+        ),
+
+        /**
+         * Gets debug metrics for dev purposes
+         * @route [GET] /debug
+         */
+        getDebugData: getDataMiddleware(
+            {
+                message: 'Service unavailable',
+                status: 503,
+            },
+            async () => 'ok',
+        ),
     };
-
-    return getDataMiddleware(defaultError, async () => 'ok');
-}
-
-/**
- * Gets the API version
- * @route [GET] /version
- */
-export function getVersion(dbInstance): Middleware {
-    const defaultError = {
-        message: 'Service unavailable',
-        status: 503,
-    };
-
-    return getPartsMiddleware(defaultError, async () => {
-        const { key, value } = await getSystemKey(dbInstance, 'api_version');
-        return {
-            [key]: value,
-        };
-    });
-}
-
-/**
- * Gets metrics regarding platform health and status
- * @route [GET] /status
- */
-export function getStatus(): Middleware {
-    const defaultError = {
-        message: 'Service unavailable',
-        status: 503,
-    };
-
-    return getDataMiddleware(defaultError, async () => 'ok');
-}
-
-/**
- * Gets metrics and API uptime and usage
- * @route [GET] /metrics
- */
-export function getMetrics(): Middleware {
-    const defaultError = {
-        message: 'Service unavailable',
-        status: 503,
-    };
-
-    return getDataMiddleware(defaultError, async () => 'ok');
-}
-
-/**
- * Gets debug metrics for dev purposes
- * @route [GET] /debug
- */
-export function getDebugData(): Middleware {
-    const defaultError = {
-        message: 'Service unavailable',
-        status: 503,
-    };
-
-    return getDataMiddleware(defaultError, async () => 'ok');
 }

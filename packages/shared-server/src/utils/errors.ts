@@ -20,6 +20,13 @@ export function badResponseError(ctx: KoaContext) {
     };
 }
 
+type ErrorData = {
+    message: string;
+    status?: number;
+};
+
+export type ErrorValues = string | ErrorData;
+
 /**
  * Throw an error that is safe in each environment context to the errorHandler
  * @param ctx - Koa Context
@@ -28,14 +35,20 @@ export function badResponseError(ctx: KoaContext) {
  */
 export function throwSafeError(
     ctx: KoaContext,
-    error,
-    safe = { message: '', status: 400 },
+    error: Partial<ErrorData>,
+    safe: ErrorValues,
 ): void {
+    const errorData = {
+        message: 'There was an error',
+        status: 400,
+        ...(typeof safe === 'string' ? { message: safe } : safe),
+    };
+
     if (isProduction(ctx.env.nodeEnv)) {
-        ctx.throw(safe.status, safe.message);
+        ctx.throw(errorData.status, errorData.message ?? 400);
     }
 
-    const { status = safe.status, message = safe.message } = error;
+    const { status, message } = { ...errorData, ...error };
     ctx.throw(status, message);
 }
 

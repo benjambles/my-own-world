@@ -1,11 +1,11 @@
 import { Db } from 'mongodb';
-import * as queries from './queries.js';
+import { getSystemHelpers } from './queries.js';
 
-/**
- *
- */
-export async function getSystemKey(dbInstance: Db, key: string): Promise<any> {
-    const system = dbInstance.collection('System');
-
-    return await queries.getSystemKey(system, key);
+export function getServiceModel(db: Db) {
+    const systemQueries = getSystemHelpers(db);
+    return {
+        find: async function getSystemKey(key: string): Promise<any> {
+            return await systemQueries.find(key);
+        },
+    };
 }

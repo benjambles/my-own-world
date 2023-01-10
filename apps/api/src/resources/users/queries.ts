@@ -1,164 +1,118 @@
 import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
-import { Collection, ObjectId } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
+
 export interface User {
     _id: ObjectId;
-    accessLog: AccessLogRow[];
     createdOn: Date;
     lastLoggedIn: Date;
     deletedOn?: Date;
     firstName: string;
     gameStates: {};
-    identities: Identifier[];
+    identities: {
+        _id: string;
+        hash: string;
+        identifier: string;
+        isDeleted: boolean;
+        type: string;
+        verified: boolean;
+    }[];
     isDeleted: boolean;
     lastName: string;
     password: string;
     screenName: string;
-    settings: UserSettings;
+    settings: {
+        dateFormat: string;
+        locale: string;
+        timeFormat: string;
+    };
 }
 
-export interface AccessLogRow {
-    date: Date;
-    ip: string;
-    action: string;
-}
+export type UserSettings = User['settings'];
 
-interface UserSettings {
-    dateFormat: string;
-    locale: string;
-    timeFormat: string;
-}
-export interface Identifier {
-    _id: string;
-    hash: string;
-    identifier: string;
-    isDeleted: boolean;
-    type: string;
-    verified: boolean;
-}
+export type Identifier = User['identities'][number];
 
-export const defaultUserSettings: UserSettings = {
-    dateFormat: 'YYYY-MM-DD',
-    locale: 'en-GB',
-    timeFormat: '24hr',
-};
+export function getUserHelpers(db: Db) {
+    const users = db.collection<User>('Users');
 
-/**
- * Retrieve a user with a matching uuid from the database
- * @param uuid - A valid uuid
- */
-export async function getActiveUserByUuid(
-    users: Collection<User>,
-    uuid: string,
-): Promise<User> {
-    const data = await users.findOne(
-        { _id: getObjectId(uuid), isDeleted: false },
-        { projection: { identities: 0 } },
-    );
+    const defaultUserSettings: UserSettings = {
+        dateFormat: 'YYYY-MM-DD',
+        locale: 'en-GB',
+        timeFormat: '24hr',
+    };
 
-    return result('There was an error whilst fetching the user', data);
-}
+    const helpers = {
+        find: async function getByUuid(uuid: string): Promise<User> {
+            const data = await users.findOne(
+                { _id: getObjectId(uuid), isDeleted: false },
+                { projection: { identities: 0 } },
+            );
 
-/**
- * Retrieve a user with a matching uuid from the database
- * @param uuid - A valid uuid
- */
-export async function getBasicUserDetails(
-    users: Collection<User>,
-    uuids: string[],
-    limit: number = 1,
-    skip: number = 0,
-): Promise<User[]> {
-    const data = await users
-        .find(
-            { _id: { $in: uuids.map(getObjectId), isDeleted: false } },
-            { projection: { firstName: 1, lastName: 1, displayName: 1 }, limit, skip },
-        )
-        .toArray();
-
-    return result('There was an error whilst fetching the user', data);
-}
-
-/**
- *
- * @param identifier
- */
-export async function getActiveUserByIdentifier(
-    users: Collection<User>,
-    identifier: string,
-): Promise<User> {
-    const data = await users.findOne({
-        isDeleted: false,
-        'identities.hash': { $eq: identifier },
-    });
-
-    return result('There was an error whilst fetching the user', data);
-}
-
-/**
- * Fetch a list of active users from the database filtered by parameters
- * @param limit - The number of records to fetch
- * @param offset - The number of records to skip
- */
-export async function getActiveUsers(
-    users: Collection<User>,
-    limit: number = 10,
-    skip: number = 0,
-): Promise<User[]> {
-    const data = await users
-        .find({ isDeleted: false }, { projection: { identities: 0 }, skip, limit })
-        .toArray();
-
-    return result('There was an error whilst fetching users', data);
-}
-
-/**
- * Create a new user from validated data
- * @param data - The formatted data ready for storage
- */
-export async function createUser(users: Collection<User>, userData: User): Promise<User> {
-    const { insertedId } = await users.insertOne(userData);
-    const data = await getActiveUserByUuid(users, insertedId.toString());
-
-    return result('There was an error whilst creating the user', data);
-}
-
-/**
- * Delete a user with a given ID
- * @param uuid - A valid uuid
- */
-export async function deleteUser(
-    users: Collection<User>,
-    uuid: string,
-    logData: AccessLogRow,
-): Promise<boolean> {
-    const data = await users.findOneAndUpdate(
-        { _id: getObjectId(uuid) },
-        {
-            $set: { isDeleted: true, deletedOn: new Date() },
-            $push: { accessLog: logData },
+            return result('There was an error whilst fetching the user', data);
         },
-        { projection: { isDeleted: 1 } },
-    );
 
-    return result('There was an error whilst updating the user', data.ok === 1);
-}
+        findByIdentifier: async function getActiveUserByIdentifier(
+            identifier: string,
+        ): Promise<User> {
+            const data = await users.findOne({
+                isDeleted: false,
+                'identities.hash': { $eq: identifier },
+            });
 
-/**
- * Updates a user record with the patch provided
- * @param uuid - A UUID representing the user profile to be updated
- * @param data - An object representing a patch on a User profile
- */
-export async function updateUser(
-    users: Collection<User>,
-    uuid: string,
-    userData: Partial<User>,
-    logData: AccessLogRow,
-): Promise<User> {
-    const data = await users.findOneAndUpdate(
-        { _id: getObjectId(uuid) },
-        { $set: { userData }, $push: { accessLog: logData } },
-        { projection: { identities: 0 } },
-    );
+            return result('There was an error whilst fetching the user', data);
+        },
 
-    return result('There was an error whilst updating the user', data.value);
+        get: async function getUsers(
+            limit: number = 10,
+            skip: number = 0,
+            projection = {},
+        ): Promise<User[]> {
+            const data = await users
+                .find(
+                    { isDeleted: false },
+                    { projection: { identities: 0, ...projection }, skip, limit },
+                )
+                .toArray();
+
+            console.log(data);
+
+            return result('There was an error whilst fetching users', data);
+        },
+
+        create: async function createUser(userData: User): Promise<User> {
+            const { insertedId } = await users.insertOne({
+                ...userData,
+                settings: defaultUserSettings,
+            });
+            const data = await helpers.find(insertedId.toString());
+
+            return result('There was an error whilst creating the user', data);
+        },
+
+        delete: async function deleteUser(uuid: string): Promise<boolean> {
+            const data = await users.findOneAndUpdate(
+                { _id: getObjectId(uuid) },
+                {
+                    $set: { isDeleted: true, deletedOn: new Date() },
+                },
+                { projection: { isDeleted: 1 } },
+            );
+
+            return result('There was an error whilst updating the user', data.ok === 1);
+        },
+
+        update: async function updateUser(
+            uuid: string,
+            userData: Partial<User>,
+        ): Promise<User> {
+            const data = await users.findOneAndUpdate(
+                { _id: getObjectId(uuid) },
+                { $set: { ...userData } },
+                { projection: { identities: 0 } },
+            );
+
+            return result('There was an error whilst updating the user', data.value);
+        },
+    };
+
+    return helpers;
 }

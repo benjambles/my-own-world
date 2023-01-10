@@ -3,10 +3,10 @@ import { streamResponse } from '@benjambles/mow-server/dist/utils/routes/respons
 import { Middleware } from 'koa';
 import { getWebsiteTemplateStream } from './get-template-stream.js';
 
-export type RouteParams = {
+export type RouteParams<T = any> = {
     urlPattern: UrlPattern;
     templatePath: string;
-    dataFn: (ctx: KoaContext) => any;
+    dataFn: (ctx: KoaContext) => T;
 };
 
 export interface RouteConfig {

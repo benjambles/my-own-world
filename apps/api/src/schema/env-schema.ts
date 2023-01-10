@@ -1,6 +1,25 @@
 import Joi from 'joi';
 
-export const envSchema: Joi.PartialSchemaMap<any> = {
+export type Env = {
+    NODE_ENV: string;
+
+    // Server parameters
+    HOST: string;
+    PORT: string;
+
+    // DB Details
+    MONGO_USER: string;
+    MONGO_DB: string;
+    MONGO_PASSWORD: string;
+    MONGO_URL: string;
+
+    // Security
+    JWT_SECRET: string;
+    UUIDV5_NS: string;
+    ENC_SECRET: string;
+};
+
+export const envSchema: Joi.PartialSchemaMap<Env> = {
     NODE_ENV: Joi.string()
         .pattern(/^development|staging|production|testing&/)
         .required(),

@@ -1,11 +1,11 @@
-import router from 'koa-joi-router';
+import router, { Spec } from 'koa-joi-router';
 
 /**
  * Return a Koa joi router route
  * @param prefix - First part of the given route.
  */
 export function createRoute(prefix: string) {
-    return (routeMap) => {
+    return (routeMap: Spec[]) => {
         return router().route(routeMap).prefix(`/${prefix}`);
     };
 }

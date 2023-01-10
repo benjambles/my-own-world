@@ -3,14 +3,14 @@ import { KoaContext } from '../index.js';
 import { getAccessChecker } from '../koa/middleware/get-access-checker.js';
 import { bindOptions } from '../utils/routes/bind-options.js';
 import { getAccessMap } from '../utils/routes/get-access-map.js';
-import { RouteHandler, RouteHandlers } from './spec-parsing/get-route-middleware.js';
+import { RouteHandlers } from './spec-parsing/get-route-middleware.js';
 
 interface AccessMap {
     [name: string]: (ctx: KoaContext) => boolean;
 }
 
 interface RouteHandlersWithDefaults extends RouteHandlers {
-    sendOptions: RouteHandler;
+    sendOptions: Middleware;
     checkAccess: Middleware;
 }
 

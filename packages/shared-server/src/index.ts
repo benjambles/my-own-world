@@ -1,4 +1,3 @@
-import { DotenvParseOutput } from 'dotenv/types';
 import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import router, { Spec } from 'koa-joi-router';
@@ -15,7 +14,7 @@ interface BootHandlerOpts {
     };
     routes?: Koa.Middleware[];
     routesConfig?: Spec[];
-    env: DotenvParseOutput;
+    env: { PORT: string; HOST: string; JWT_SECRET: string };
 }
 
 /**

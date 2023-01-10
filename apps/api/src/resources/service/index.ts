@@ -1,10 +1,15 @@
+import { DataModel } from '../../app.js';
 import config from './config.json' assert { type: 'json' };
-import * as serviceRoutes from './routes.js';
+import { serviceRoutes } from './routes.js';
 
 /**
- * Routes on /service
+ * Routes on /service and /service/*
  */
-export default {
-    config,
-    routeHandlers: serviceRoutes,
-};
+export default function service(dataModel: DataModel) {
+    return {
+        config,
+        routeHandlers: {
+            ...serviceRoutes(dataModel),
+        },
+    };
+}

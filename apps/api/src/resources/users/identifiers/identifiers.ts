@@ -1,63 +1,12 @@
 import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
+import {
+    formatData,
+    getDataFormatter,
+} from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
-import { Identifier, User } from '../queries.js';
-import * as queries from './queries.js';
-
-export const model = {
-    encrypted: ['identifier'],
-    hmac: ['hash'],
-    readOnly: ['_id'],
-};
-
-/**
- *
- * @param userId
- * @param props
- */
-export async function getByUserId(
-    dbInstance: Db,
-    password: string,
-    userId: string,
-): Promise<Identifier[]> {
-    const users = dbInstance.collection<User>('Users');
-    const { identities } = await queries.getByUserId(users, userId);
-
-    return identities.map((identity) => respond(password, identity));
-}
-
-/**
- *
- * @param userId
- * @param data
- */
-export async function create(
-    dbInstance: Db,
-    formatter,
-    password: string,
-    userId: string,
-    data: any,
-): Promise<Identifier> {
-    const cleanData = await formatter(data);
-    const users = dbInstance.collection<User>('Users');
-    const identity = await queries.create(users, userId, cleanData);
-
-    return respond(password, identity);
-}
-
-/**
- *
- * @param userId
- * @param hash
- */
-export async function remove(
-    dbInstance: Db,
-    userId: string,
-    hash: string,
-): Promise<boolean> {
-    const users = dbInstance.collection<User>('Users');
-
-    return await queries.remove(users, userId, hash);
-}
+import { Env } from '../../../schema/env-schema.js';
+import { Identifier } from '../queries.js';
+import { getIdentifierHelpers } from './queries.js';
 
 /**
  *
@@ -67,4 +16,41 @@ function respond(password: string, identity: Identifier) {
     const decryptedIdent = decryptValue(password, identity.identifier);
 
     return { ...identity, identifier: decryptedIdent };
+}
+
+export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
+    const formatOptions = {
+        salted: [],
+        encrypted: ['identifier'],
+        hmac: ['hash'],
+        readOnly: ['_id'],
+    };
+
+    const formatIdentiferData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
+    const identifierQueries = getIdentifierHelpers(db);
+
+    return {
+        formatOptions,
+        find: async function getByUserId(
+            password: string,
+            userId: string,
+        ): Promise<Identifier[]> {
+            const { identities } = await identifierQueries.find(userId);
+
+            return identities.map((identity) => respond(password, identity));
+        },
+        create: async function create(
+            password: string,
+            userId: string,
+            data: any,
+        ): Promise<Identifier> {
+            const cleanData = await formatIdentiferData(data);
+            const identity = await identifierQueries.create(userId, cleanData);
+
+            return respond(password, identity);
+        },
+        delete: async function remove(userId: string, hash: string): Promise<boolean> {
+            return await identifierQueries.delete(userId, hash);
+        },
+    };
 }

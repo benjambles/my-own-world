@@ -1,19 +1,15 @@
-// import * as actorRoutes from './actors/routes.js';
-// import * as encounterRoutes from './encounters/routes.js';
-// import * as sceneRoutes from './scenes/routes.js';
+import { DataModel } from '../../app.js';
 import config from './config.json' assert { type: 'json' };
-import * as taleRoutes from './routes.js';
-
+import { taleRoutes } from './routes.js';
 
 /**
- * Routes on /project and /project/*
+ * Routes on /tales and /tales/*
  */
-export default {
-    config,
-    routeHandlers: {
-        ...taleRoutes,
-        // ...actorRoutes,
-        // ...encounterRoutes,
-        // ...sceneRoutes,
-    }
-};
+export default function tales(dataModel: DataModel) {
+    return {
+        config,
+        routeHandlers: {
+            ...taleRoutes(dataModel),
+        },
+    };
+}

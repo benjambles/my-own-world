@@ -1,65 +1,48 @@
 import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
-import { Collection } from 'mongodb';
-import { Identifier, User } from '../queries.js';
-/**
- *
- * @param userId
- * @param props
- */
-export async function getByUserId(
-    users: Collection<User>,
-    userId: string,
-): Promise<User> {
-    const data = await users.findOne(
-        { _id: getObjectId(userId), isDeleted: false },
-        { projection: { identities: 1 } },
-    );
+import { Db } from 'mongodb';
+import { User } from '../queries.js';
 
-    return result('There was an error whilst fetching the identities for the user', data);
-}
+export function getIdentifierHelpers(db: Db) {
+    const users = db.collection<User>('users');
 
-/**
- *
- * @param data
- */
-export async function create(
-    users: Collection<User>,
-    userId: string,
-    identityData,
-): Promise<Identifier> {
-    const user = await users.findOneAndUpdate(
-        { _id: getObjectId(userId) },
-        {
-            $push: {
-                identities: identityData,
-            },
+    return {
+        find: async function getIdentifierByUserId(userId) {
+            const data = await users.findOne(
+                { _id: getObjectId(userId), isDeleted: false },
+                { projection: { identities: 1 } },
+            );
+
+            return result(
+                'There was an error whilst fetching the identities for the user',
+                data,
+            );
         },
-        { projection: { identities: { $slice: -1 } } },
-    );
+        create: async function createIdentifier(userId, identityData) {
+            const user = await users.findOneAndUpdate(
+                { _id: getObjectId(userId) },
+                {
+                    $push: {
+                        identities: identityData,
+                    },
+                },
+                { projection: { identities: { $slice: -1 } } },
+            );
 
-    return result(
-        'There was an error whilst creating the identity',
-        user.value?.identities?.[0] || null,
-    );
-}
+            return result(
+                'There was an error whilst creating the identity',
+                user.value?.identities?.[0] || null,
+            );
+        },
+        delete: async function deleteIdentifier(userId, hash) {
+            const { matchedCount, modifiedCount } = await users.updateOne(
+                { _id: getObjectId(userId), 'identities.hash': hash },
+                { $set: { 'identities.$.isDeleted': true } },
+            );
 
-/**
- *
- * @param hash
- * @param uuid
- */
-export async function remove(
-    users: Collection<User>,
-    userId: string,
-    hash: string,
-): Promise<boolean> {
-    const { matchedCount, modifiedCount } = await users.updateOne(
-        { _id: getObjectId(userId), 'identities.hash': hash },
-        { $set: { 'identities.$.isDeleted': true } },
-    );
-
-    return result(
-        `There was an error whilst deleting the identitiy with hash ${hash}`,
-        matchedCount && matchedCount === modifiedCount,
-    );
+            return result(
+                `There was an error whilst deleting the identitiy with hash ${hash}`,
+                matchedCount && matchedCount === modifiedCount,
+            );
+        },
+    };
 }

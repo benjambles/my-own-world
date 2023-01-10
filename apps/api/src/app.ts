@@ -3,55 +3,39 @@ import { configureServer } from '@benjambles/mow-server/dist/index.js';
 import { loadRoutes } from '@benjambles/mow-server/dist/routing/load-routes.js';
 import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
-import Joi from 'joi';
+import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
 import Koa from 'koa';
+import { fileURLToPath } from 'url';
+import { bindModels } from './data/bind-models.js';
 import resources from './resources/index.js';
-import { envSchema } from './schema/env-schema.js';
+import { Env, envSchema } from './schema/env-schema.js';
 
-interface AppConfig {
-    app: Koa;
-    db: (params: {
-        user: string;
-        database: string;
-        password: string;
-        url: string;
-    }) => Promise<any>;
-    envSchema: Joi.PartialSchemaMap<any>;
-    paths: {
-        base: string;
-        env: string;
-    };
-}
+const paths = {
+    base: import.meta.url,
+    env: '../.env',
+};
 
-export async function getListener({ app, db, envSchema, paths }: AppConfig) {
-    const env = parseEnvFile(envSchema, paths);
+const env: Env = parseEnvFile(envSchema, resolveImportPath(paths.base, paths.env));
 
-    const dbInstance = await db({
-        user: env.MONGO_USER,
-        database: env.MONGO_DB,
-        password: env.MONGO_PASSWORD,
-        url: env.MONGO_URL,
-    });
-    const routes = loadRoutes(resources, dbInstance, 'api').map((route) =>
-        route.middleware(),
-    );
+const dbInstance = await initConnection({
+    user: env.MONGO_USER,
+    database: env.MONGO_DB,
+    password: env.MONGO_PASSWORD,
+    url: env.MONGO_URL,
+});
 
-    return configureServer({
-        app,
-        env,
-        routes,
-        config: {
-            isApi: true,
-        },
-    });
-}
+export type DataModel = typeof dataModel;
+export const dataModel = bindModels(dbInstance, env);
 
-getListener({
-    envSchema,
+export const serve = configureServer({
     app: new Koa(),
-    db: initConnection,
-    paths: {
-        base: import.meta.url,
-        env: '../.env',
+    env,
+    routes: loadRoutes(resources, dataModel, 'api').map((route) => route.middleware()),
+    config: {
+        isApi: true,
     },
-}).then((listener) => listener());
+});
+
+if (fileURLToPath(import.meta.url) === process.argv?.[1]) {
+    serve();
+}

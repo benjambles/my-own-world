@@ -1,14 +1,14 @@
 import { Middleware } from 'koa';
 import { Collection } from 'mongodb';
-import { Option } from 'ts-option';
+import { option, Option } from 'ts-option';
 import { catchJoiErrors } from '../../koa/middleware/catch-joi-errors.js';
-import { maybeProp, maybePropIsFn } from '../../utils/functional/maybe-prop.js';
+import { maybeProp } from '../../utils/functional/maybe-prop.js';
 export interface RouteHandler {
     (collection: Collection): Middleware;
 }
 
 export interface RouteHandlers {
-    [name: string]: RouteHandler | Middleware;
+    [name: string]: Middleware;
 }
 
 /**
@@ -18,14 +18,9 @@ export interface RouteHandlers {
  */
 export function getRouteMiddleware(
     spec,
-    routeHandlers: Record<string, RouteHandler | Middleware>,
-    dbInstance,
+    routeHandlers: Record<string, Middleware>,
 ): Option<Middleware[]> {
     return maybeProp('operationId', spec)
-        .flatMap((prop) => maybePropIsFn(prop, routeHandlers))
-        .map((getHandler) => [
-            catchJoiErrors,
-            routeHandlers.checkAccess,
-            getHandler(dbInstance),
-        ]);
+        .flatMap((prop) => option(routeHandlers[prop]))
+        .map((operation) => [catchJoiErrors, routeHandlers.checkAccess, operation]);
 }

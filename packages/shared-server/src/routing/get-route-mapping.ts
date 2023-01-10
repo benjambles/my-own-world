@@ -19,23 +19,16 @@ export function getRouteMapping(
     acc: Option<any[]>,
     handlers: RouteHandlers,
     stack: Option<any[]>,
-    dbInstance,
 ) {
     return stack
         .map(([head, ...tail]) => {
             return getRouteMapping(
                 concatOrElse(
                     acc,
-                    mapMethods(
-                        head.route,
-                        maybeProp('verbs', head),
-                        handlers,
-                        dbInstance,
-                    ),
+                    mapMethods(head.route, maybeProp('verbs', head), handlers),
                 ),
                 handlers,
                 concatOrElse(some(tail), maybePropOr([], 'paths', head)),
-                dbInstance,
             );
         })
         .getOrElseValue(acc);
@@ -47,17 +40,12 @@ export function getRouteMapping(
  * @param verbs An object containing http verbs and the swagger/joi docs describing them
  * @param routeHandlers An object containing the handlers to map to the routes
  */
-function mapMethods(
-    path: string,
-    verbs,
-    routeHandlers: RouteHandlers,
-    dbInstance,
-): Option<any> {
+function mapMethods(path: string, verbs, routeHandlers: RouteHandlers): Option<any> {
     return verbs.flatMap(
         reduceEntries((configs, [method, spec]) => {
             const routeConfig = concatOrElse(
                 getSecurityMiddleware(spec),
-                getRouteMiddleware(spec, routeHandlers, dbInstance),
+                getRouteMiddleware(spec, routeHandlers),
             ).map((handler) => {
                 const { Joi } = router;
                 const { summary, description } = spec;
