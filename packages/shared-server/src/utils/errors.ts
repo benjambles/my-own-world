@@ -1,10 +1,10 @@
-import { KoaContext } from '../index.js';
+import { Context } from 'koa';
 
 /**
  *
  * @param ctx
  */
-export function throwNoAccessError(ctx: KoaContext) {
+export function throwNoAccessError(ctx: Context) {
     return () => {
         ctx.throw(401, 'Unauthorised access to endpoint');
     };
@@ -14,7 +14,7 @@ export function throwNoAccessError(ctx: KoaContext) {
  *
  * @param ctx
  */
-export function badResponseError(ctx: KoaContext) {
+export function badResponseError(ctx: Context) {
     return (msg: string) => {
         ctx.throw(400, msg);
     };
@@ -34,7 +34,7 @@ export type ErrorValues = string | ErrorData;
  * @param safe - Default error parameters for when an error isn't sent, or to hide dev errors
  */
 export function throwSafeError(
-    ctx: KoaContext,
+    ctx: Context,
     error: Partial<ErrorData>,
     safe: ErrorValues,
 ): void {

@@ -8,18 +8,17 @@ import {
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
-import { getUserHelpers, User } from './queries.js';
+import { getUserHelpers, NewUser, User } from './queries.js';
 
 const restrictedKeys = ['password', 'identities', 'settings'] as const;
 type RestrictedKeys = typeof restrictedKeys[number];
 
-export type NewUser = Omit<User, 'id'>;
 export type UserResponse = Omit<User, RestrictedKeys>;
 export const cleanResponse = omit<User, RestrictedKeys>(...restrictedKeys);
 
 export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     const formatOptions: ModelOptions = {
-        encrypted: ['email'],
+        encrypted: [],
         salted: ['password'],
         readOnly: ['_id'],
         hmac: [],
@@ -29,8 +28,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     const userQueries = getUserHelpers(db);
 
     return {
-        formatOptions,
-
+        formatUserData,
         get: async function (
             limit: number = 10,
             offset: number = 0,
@@ -51,11 +49,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 
         create: async function (data: NewUser): Promise<UserResponse> {
             const cleanData = await formatUserData(data);
-            const user = await userQueries.create({
-                ...cleanData,
-                createdOn: new Date(),
-                lastLoggedIn: new Date(),
-            });
+            const user = await userQueries.create(cleanData);
 
             return cleanResponse(user);
         },

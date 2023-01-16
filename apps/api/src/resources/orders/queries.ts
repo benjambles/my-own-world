@@ -69,12 +69,11 @@ export function getOrderHelpers(db: Db) {
          * @param offset - The number of records to skip
          */
         get: async function getActiveOrders(
-            userId: string,
             limit: number = 10,
             skip: number = 0,
         ): Promise<Order[]> {
             const data = await orders
-                .find({ isDeleted: false, userId: getObjectId(userId) }, { skip, limit })
+                .find({ isDeleted: false }, { skip, limit })
                 .toArray();
 
             return result('There was an error whilst fetching orders', data);

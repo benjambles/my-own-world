@@ -26,12 +26,11 @@ export function getOrderModel(db: Db, { ENC_SECRET }: Env) {
          * @param limit
          * @param offset
          */
-        get: async function getUserOrders(
-            userId: string,
+        get: async function getOrders(
             limit: number = 10,
             offset: number = 0,
         ): Promise<Order[]> {
-            return await orderQueries.get(userId, limit, offset);
+            return await orderQueries.get(limit, offset);
         },
 
         /**

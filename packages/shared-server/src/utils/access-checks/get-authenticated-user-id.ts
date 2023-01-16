@@ -1,10 +1,10 @@
-import { KoaContext } from '../../index.js';
+import { Context } from 'koa';
 
 /**
  * Return the user that has been granted privaledges on the API
  * @param ctx
  */
-export function getAuthenticatedUserId(ctx: KoaContext): string | undefined {
+export function getAuthenticatedUserId(ctx: Context): string | undefined {
     return ctx.state?.user?._id;
 }
 
@@ -12,7 +12,7 @@ export function getAuthenticatedUserId(ctx: KoaContext): string | undefined {
  * Checks to see if the user making the request is the target of the request
  * @param ctx - A Koa context object
  */
-export function isCurrentUser(ctx: KoaContext): boolean {
+export function isCurrentUser(ctx: Context): boolean {
     const requestUuid = getRequestedUser(ctx);
     if (!requestUuid) return true; // No user was needed
 
@@ -25,6 +25,6 @@ export function isCurrentUser(ctx: KoaContext): boolean {
  * Grab the user UUID from the URL
  * @param ctx
  */
-export function getRequestedUser(ctx: KoaContext): string {
+export function getRequestedUser(ctx: Context): string {
     return ctx.request.params.userId;
 }

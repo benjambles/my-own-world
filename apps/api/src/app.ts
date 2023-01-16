@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
-import { loadRoutes } from '@benjambles/mow-server/dist/routing/load-routes.js';
 import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
@@ -28,12 +27,12 @@ export type DataModel = typeof dataModel;
 export const dataModel = bindModels(dbInstance, env);
 
 export const serve = configureServer({
-    app: new Koa(),
     env,
-    routes: loadRoutes(resources, dataModel, 'api').map((route) => route.middleware()),
+    app: new Koa(),
     config: {
         isApi: true,
     },
+    routes: resources.map((resource) => resource(dataModel, '/api/v1').middleware()),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

@@ -18,3 +18,25 @@ export type PartialBy<T, K extends keyof T> = Merge<Omit<T, K>, Partial<T>>;
 export type Merge<F, S, M = F & S> = {
     [k in keyof M]: k extends keyof S ? S[k] : M[k];
 };
+
+export type TupleToUnion<T extends ArrayLike<any>> = T extends ArrayLike<any>
+    ? T[number]
+    : never;
+
+export type ObjectEntries<T, K extends keyof T = keyof T> = K extends K
+    ? [K, T[K] extends undefined | infer Type ? Type : undefined]
+    : never;
+
+export type UnionToTuple<T> = UnionToFnInsertion<T> extends () => infer R
+    ? [...UnionToTuple<Exclude<T, R>>, R]
+    : [];
+
+type UnionToFnInsertion<T> = (T extends any ? (arg: () => T) => any : never) extends (
+    arg: infer P,
+) => any
+    ? P
+    : never;
+
+export type Simplify<Type> = Type extends any[] | Date ? Type : Id<Type>;
+
+export type Id<T> = {} & { [P in keyof T]: T[P] };

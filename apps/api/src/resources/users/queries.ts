@@ -1,4 +1,5 @@
 import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
+import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 
 export interface User {
@@ -9,7 +10,6 @@ export interface User {
     firstName: string;
     gameStates: {};
     identities: {
-        _id: string;
         hash: string;
         identifier: string;
         isDeleted: boolean;
@@ -26,6 +26,8 @@ export interface User {
         timeFormat: string;
     };
 }
+
+export type NewUser = Pick<User, 'firstName' | 'lastName' | 'password' | 'screenName'>;
 
 export type UserSettings = User['settings'];
 
@@ -73,15 +75,19 @@ export function getUserHelpers(db: Db) {
                 )
                 .toArray();
 
-            console.log(data);
-
             return result('There was an error whilst fetching users', data);
         },
 
-        create: async function createUser(userData: User): Promise<User> {
+        create: async function createUser(userData: NewUser): Promise<User> {
             const { insertedId } = await users.insertOne({
+                _id: getObjectId(randomUUID()),
                 ...userData,
+                createdOn: new Date(),
+                lastLoggedIn: new Date(),
                 settings: defaultUserSettings,
+                isDeleted: false,
+                gameStates: {},
+                identities: [],
             });
             const data = await helpers.find(insertedId.toString());
 

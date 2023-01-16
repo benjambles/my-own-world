@@ -1,12 +1,12 @@
-import { KoaContext } from '../../index.js';
+import { Context } from 'koa';
 import { ErrorValues, throwSafeError } from '../errors.js';
 import { getResponseBody } from './responses.js';
 
 export interface Send {
-    (ctx: KoaContext, error: ErrorValues, data: DataPromise): Promise<void>;
+    (ctx: Context, error: ErrorValues, data: DataPromise): Promise<void>;
 }
 
-type DataPromise = (ctx: KoaContext) => Promise<any>;
+type DataPromise = (ctx: Context) => Promise<any>;
 
 /**
  * Sends an api response where possible, and handles sending clean errors when thrown.
@@ -15,8 +15,8 @@ type DataPromise = (ctx: KoaContext) => Promise<any>;
  * @param data - A function that generates the response data
  */
 export async function send(
-    ctx: KoaContext,
-    error: ErrorValues | string,
+    ctx: Context,
+    error: ErrorValues | string | undefined,
     data: DataPromise,
 ): Promise<void> {
     try {

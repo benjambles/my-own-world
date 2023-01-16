@@ -1,8 +1,8 @@
-import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import {
     formatData,
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
+import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import { Db } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
 import { Identifier } from '../queries.js';
@@ -23,14 +23,14 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
         salted: [],
         encrypted: ['identifier'],
         hmac: ['hash'],
-        readOnly: ['_id'],
+        readOnly: [],
     };
 
     const formatIdentiferData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
     const identifierQueries = getIdentifierHelpers(db);
 
     return {
-        formatOptions,
+        formatIdentiferData,
         find: async function getByUserId(
             password: string,
             userId: string,
@@ -40,14 +40,20 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
             return identities.map((identity) => respond(password, identity));
         },
         create: async function create(
-            password: string,
             userId: string,
-            data: any,
+            data: Pick<Identifier, 'identifier' | 'type'>,
         ): Promise<Identifier> {
-            const cleanData = await formatIdentiferData(data);
+            const identifier: Partial<Identifier> = {
+                isDeleted: false,
+                verified: false,
+                ...data,
+                hash: data.identifier,
+            };
+
+            const cleanData = await formatIdentiferData(identifier);
             const identity = await identifierQueries.create(userId, cleanData);
 
-            return respond(password, identity);
+            return respond(ENC_SECRET, identity);
         },
         delete: async function remove(userId: string, hash: string): Promise<boolean> {
             return await identifierQueries.delete(userId, hash);

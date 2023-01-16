@@ -15,7 +15,7 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "incremental": true,
-        "lib": ["es2019", "esnext.array", "dom", "ES2020.String"],
+        "lib": ["es2019", "esnext.array", "dom", "ES2020.String"]
     },
     "compileOnSave": true
 }

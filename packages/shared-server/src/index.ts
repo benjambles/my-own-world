@@ -3,8 +3,6 @@ import errorHandler from 'koa-better-error-handler';
 import router, { Spec } from 'koa-joi-router';
 import { getMiddleware } from './koa/get-middleware.js';
 
-export type KoaContext = Koa.ParameterizedContext<Koa.DefaultState, Koa.DefaultContext>;
-
 interface BootHandlerOpts {
     app: Koa;
     config: {

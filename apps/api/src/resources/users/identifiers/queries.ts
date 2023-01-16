@@ -35,7 +35,7 @@ export function getIdentifierHelpers(db: Db) {
         },
         delete: async function deleteIdentifier(userId, hash) {
             const { matchedCount, modifiedCount } = await users.updateOne(
-                { _id: getObjectId(userId), 'identities.hash': hash },
+                { _id: getObjectId(userId), 'identities.hash': { $eq: hash } },
                 { $set: { 'identities.$.isDeleted': true } },
             );
 

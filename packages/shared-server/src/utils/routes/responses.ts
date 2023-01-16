@@ -1,6 +1,5 @@
-import { Middleware } from 'koa';
+import { Context, Middleware, Next } from 'koa';
 import { Readable } from 'stream';
-import { KoaContext } from '../../index.js';
 import { ErrorValues } from '../errors.js';
 import { send } from './send.js';
 
@@ -55,27 +54,34 @@ export function getResponseBody(response, status): PartsResponse | DataResponse 
 
 export function getPartsMiddleware(
     defaultError: ErrorValues,
-    callback: Middleware,
+    callback: (ctx: Context) => any,
 ): Middleware {
-    return async (ctx) => {
+    return async (ctx: Context, next: Next) => {
         await send(ctx, defaultError, async (ctx) => {
-            const responseBody = await callback(ctx, undefined);
+            const responseBody = await callback(ctx);
             return partsResponse(responseBody);
         });
+
+        await next();
     };
 }
 
-export function getDataMiddleware(defaultError: ErrorValues, callback): Middleware {
-    return async (ctx) => {
+export function getDataMiddleware(
+    defaultError: ErrorValues,
+    callback: (ctx: Context, next: Next) => any,
+): Middleware {
+    return async (ctx: Context, next: Next) => {
         await send(ctx, defaultError, async (ctx) => {
-            const responseBody = await callback(ctx);
+            const responseBody = await callback(ctx, next);
             return dataResponse(responseBody);
         });
+
+        await next();
     };
 }
 
 export function streamResponse(
-    ctx: KoaContext,
+    ctx: Context,
     body: Iterable<unknown>,
     status: number = 200,
     type = 'text/html',

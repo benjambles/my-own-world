@@ -1,38 +1,20 @@
-import { wrap } from '../arrays.js';
+import createRouter from 'koa-joi-router';
+import { Param } from './context/request-parameters.js';
+import { MethodSchema } from './openapi-to-joi.js';
 import { swaggerToJoiType } from './swagger-to-joi-type.js';
-
-interface SwaggerParam {
-    name: string;
-    in: string;
-    description: string;
-    required: boolean;
-    type: string;
-    format: string;
-    opts?: SwaggerParamOpts;
-    values: SwaggerParam[];
-}
-
-interface SwaggerParamOpts {
-    lowercase?: boolean;
-    email?: boolean;
-    max?: number;
-    min?: number;
-}
-
-type SwaggerTypeConfig = [string, any] | null;
 
 /**
  * Creates the validate spec object required by JOI routers
  * Converts:
  * {
  *  "name": "email",
- *  "in": "body",
+ *  "in": "query",
  *  "description": "The email address of the user wishing to log in",
  *  "required": true,
- *  "type": "string".
- *  "opts": {
+ *  "schema": {
+ *      "type": "string",
  *      "lowercase": true,
- *      "email": true
+ *      "format": "email",
  *  }
  * }
  *
@@ -42,16 +24,27 @@ type SwaggerTypeConfig = [string, any] | null;
  *
  * @param config
  */
-export function buildJoiSpec(joi, { parameters, consumes }) {
-    const spec = parameters.reduce((acc, paramConf: SwaggerParam) => {
-        acc[paramConf.in] = acc[paramConf.in] || {};
-        acc[paramConf.in][paramConf.name] = buildParameter(joi, paramConf);
-        return acc;
-    }, {});
+export function buildJoiSpec(
+    joi,
+    { parameters = [], requestBody }: MethodSchema,
+): createRouter.Config['validate'] {
+    const spec: createRouter.Config['validate'] = parameters?.reduce(
+        (acc, paramConf) => {
+            const paramIn = paramConf.in === 'path' ? 'params' : paramConf.in;
 
-    if (spec.body && consumes.length) {
-        const [, consumeFormat] = consumes[0].split('/');
-        spec.type = consumeFormat;
+            acc[paramIn] = acc[paramIn] || {};
+            acc[paramIn][paramConf.name] = buildParameter(joi, paramConf);
+
+            return acc;
+        },
+        { path: undefined, params: undefined },
+    );
+
+    if (requestBody) {
+        spec.type =
+            Object.keys(requestBody.content)[0] === 'application/json'
+                ? 'json'
+                : undefined;
     }
 
     return spec;
@@ -61,23 +54,22 @@ export function buildJoiSpec(joi, { parameters, consumes }) {
  * Converts a swagger parameter definition into a Joi validation schema
  * @param paramConf Swagger parameter definition
  */
-function buildParameter(joi, { type, values, format, opts = {} }: SwaggerParam): Function {
-    const getFormatType = (format) => (format ? [swaggerToJoiType(format), true] : null);
-    const getChildValidators = (type, values) => {
-        return type === 'array' && Array.isArray(values) && values.length
-            ? ['items', values.map((value) => buildParameter(joi, value))]
-            : null;
-    };
-
+function buildParameter(joi, param: Param) {
     return [
-        [swaggerToJoiType(type), true],
-        getFormatType(format),
-        ...Object.entries(opts),
-        getChildValidators(type, values),
-    ].reduce((acc, validator: SwaggerTypeConfig) => {
+        [param.schema.type, null],
+        param.schema.format ? [param.schema.format, null] : null,
+        ...Object.entries(param.schema).filter(
+            ([key]) => !['type', 'format'].includes(key),
+        ),
+        param.required ? ['required', null] : null,
+    ].reduce((acc, validator: [string, any]) => {
         if (!validator) return acc;
 
-        const [name, value] = validator;
-        return value === true ? acc[name]() : acc[name](...wrap(value));
+        const [name, value] = toOpenAPIPair(validator);
+        return value === null ? acc[name]() : acc[name](value);
     }, joi);
+}
+
+function toOpenAPIPair([name, value]: [string, any]) {
+    return [swaggerToJoiType(name), ['required'].includes(name) ? null : value];
 }

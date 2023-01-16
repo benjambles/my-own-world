@@ -3,6 +3,7 @@ import {
     getDataFormatter,
     ModelOptions,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
+import { getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
 import { getTalesHelpers, Tale, TaleData } from './queries.js';
@@ -44,8 +45,15 @@ export function talesModel(db: Db, { ENC_SECRET }: Env) {
          * Creates a new tale record in the database
          * @param data - The fields required to create a new tale record
          */
-        create: async function createTale(data: Tale): Promise<Tale> {
-            const cleanData = await formatTaleData(data);
+        create: async function createTale(
+            data: Pick<TaleData, 'name' | 'description' | 'summary'> & {
+                ownerId: string;
+            },
+        ): Promise<Tale> {
+            const cleanData = await formatTaleData({
+                ...data,
+                ownerId: getObjectId(data.ownerId),
+            });
 
             return await taleQueries.create(cleanData);
         },
@@ -55,7 +63,10 @@ export function talesModel(db: Db, { ENC_SECRET }: Env) {
          * @param uuid - The UUID for the tale to be updated
          * @param data - An object representing a portion of a tale object
          */
-        update: async function updateTale(uuid: string, data: TaleData): Promise<Tale> {
+        update: async function updateTale(
+            uuid: string,
+            data: Partial<Pick<TaleData, 'name' | 'description' | 'summary'>>,
+        ): Promise<Tale> {
             const cleanData = await formatTaleData(data);
 
             return await taleQueries.update(uuid, cleanData);

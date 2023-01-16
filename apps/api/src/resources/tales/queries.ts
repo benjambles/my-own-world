@@ -1,4 +1,5 @@
 import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
+import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 
 export type Tale = {
@@ -48,8 +49,16 @@ export function getTalesHelpers(db: Db) {
          * Create a new tale from validated data
          * @param data - The formatted data ready for storage
          */
-        create: async function createTale(taleData: Tale): Promise<Tale> {
-            const { insertedId } = await tales.insertOne(taleData);
+        create: async function createTale(
+            taleData: Pick<TaleData, 'name' | 'description' | 'summary' | 'ownerId'>,
+        ): Promise<Tale> {
+            const { insertedId } = await tales.insertOne({
+                ...taleData,
+                _id: getObjectId(randomUUID()),
+                isDeleted: false,
+                createdOn: new Date(),
+                lastModifiedOn: new Date(),
+            });
             const data = await helpers.find(insertedId.toString());
 
             return result('There was an error whilst creating the tale', data);
