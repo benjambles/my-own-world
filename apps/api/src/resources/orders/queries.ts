@@ -1,6 +1,7 @@
 import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db, ObjectId } from 'mongodb';
 
+//#region Types
 export interface Order {
     _id: ObjectId;
     customerId: string;
@@ -45,6 +46,7 @@ export interface Payment {
     };
     statusLog: Status[];
 }
+//#endregion Types
 
 export function getOrderHelpers(db: Db) {
     const orders = db.collection<Order>('Orders');

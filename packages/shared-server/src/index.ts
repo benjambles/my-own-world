@@ -48,7 +48,7 @@ export function configureServer({
     }
 
     if (routes) {
-        routes.forEach((route: Koa.Middleware) => app.use(route));
+        routes.forEach((route) => app.use(route));
     }
 
     return () => {

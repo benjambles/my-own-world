@@ -2,6 +2,7 @@ import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 
+//#region Types
 export interface User {
     _id: ObjectId;
     createdOn: Date;
@@ -32,6 +33,7 @@ export type NewUser = Pick<User, 'firstName' | 'lastName' | 'password' | 'screen
 export type UserSettings = User['settings'];
 
 export type Identifier = User['identities'][number];
+//#endregion Types
 
 export function getUserHelpers(db: Db) {
     const users = db.collection<User>('Users');

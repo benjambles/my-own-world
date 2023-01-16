@@ -18,7 +18,7 @@ const defaultData = {
 
 //#region Types
 type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> = {
-    middleware: (prefix: string) => Router;
+    middleware: (prefix: string) => Router.IMiddleware<any, {}>;
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
         H extends (ctx: Context) => unknown,
@@ -63,7 +63,7 @@ export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
         return {
             middleware(prefix: string) {
                 const routeMap = getRouteMap(apiDoc, data);
-                return createRoute(prefix, routeMap);
+                return createRoute(prefix, routeMap).middleware();
             },
             operation(key, handler) {
                 data.operations[key] = handler;

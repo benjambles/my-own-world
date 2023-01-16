@@ -32,7 +32,7 @@ export const serve = configureServer({
     config: {
         isApi: true,
     },
-    routes: resources.map((resource) => resource(dataModel, '/api/v1').middleware()),
+    routes: resources.map((resource) => resource(dataModel, '/api/v1')),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

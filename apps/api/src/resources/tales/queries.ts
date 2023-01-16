@@ -2,6 +2,7 @@ import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 
+//#region Types
 export type Tale = {
     _id: ObjectId;
     isDeleted: boolean;
@@ -14,6 +15,7 @@ export type Tale = {
 };
 
 export type TaleData = Omit<Tale, '_id'>;
+//#endregion Types
 
 export function getTalesHelpers(db: Db) {
     const tales = db.collection<Tale>('Tales');
