@@ -1,6 +1,6 @@
-import { PartType } from '../character/character.js';
 import { Purchasable } from '../credits/value.js';
-import { GameEntity } from '../index.js';
+import { GameEntity } from '../entities/entities.js';
+import { BodyPartType } from '../team/character/body-parts.js';
 
 export interface Item extends GameEntity, Purchasable {
     requirements: {
@@ -14,5 +14,5 @@ export interface Item extends GameEntity, Purchasable {
 export interface EquipableItem extends Item {
     isEquipped: boolean;
     limit: number;
-    location: PartType;
+    location: BodyPartType;
 }

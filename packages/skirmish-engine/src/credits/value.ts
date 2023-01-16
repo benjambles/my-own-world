@@ -6,29 +6,29 @@ export interface Purchasable {
     value: number;
 }
 
-export function canAffordPurchase<T extends Transactor, R extends Purchasable>(
-    { credits }: T,
+export function canAffordPurchase<R extends Purchasable, T extends Transactor>(
     { value }: R,
+    { credits }: T,
 ): boolean {
     return credits >= value;
 }
 
-export function getRemainingCredits<T extends Transactor, R extends Purchasable>(
-    { credits }: T,
+export function getRemainingCredits<R extends Purchasable, T extends Transactor>(
     { value }: R,
+    { credits }: T,
 ): number {
     return credits - value;
 }
 
-export function changeCredits<T extends Transactor>(entitiy: T, value: number): T {
-    const newCredits = entitiy.credits + value;
+export function changeCredits<T extends Transactor>(value: number, entity: T): T {
+    const newCredits = entity.credits + value;
 
     if (newCredits < 0) {
         throw new Error('game::credits::no_negative');
     }
 
     return {
-        ...entitiy,
+        ...entity,
         credits: newCredits,
     };
 }

@@ -1,31 +1,11 @@
 import { Character } from '../character.js';
 
 export const mockCharacter: Character = {
-    givenName: 'Eva Lumier',
-    items: {},
+    name: 'Eva Lumier',
+    description: 'Dmage dealer',
+    entityId: 'char-1',
+    speciesId: 'species-01',
     factions: ['Player', 'Nomads'],
-    relationships: {
-        'faction:Player': 10,
-        'faction:Nomads': 1,
-        'individual:Bob Ross': 5,
-        'species:Charr': -2,
-    },
-    classification: 'Human',
-    traits: ['organic', 'cyborg', 'sentient'],
-    stats: {
-        combat: {
-            actions: [4, 1],
-            strength: [7, 7],
-            toughness: [9, 9],
-            willpower: [9, 3],
-        },
-        story: {
-            charisma: 5,
-            intuition: 4,
-            perception: 3,
-        },
-    },
-    actions: {},
     preventedActions: ['sneak'],
     bodyParts: [
         {
@@ -49,7 +29,15 @@ export const mockCharacter: Character = {
         sniper_rifles: 3,
         hacking: 5,
     },
-    level: 3,
     experience: 3,
     stance: 'normal',
+    items: [],
+    state: 'normal',
+    actions: [],
+    stats: {
+        combat: {},
+        story: {},
+    },
+    traits: [],
+    value: 0,
 };

@@ -1,26 +1,31 @@
-import { Character } from '../character/character.js';
-import { canAffordPurchase, Transactor } from '../credits/value.js';
-import { GameEntity } from '../index.js';
+import { Merge, PartialBy } from '@benjambles/js-lib/dist/index.js';
+import { canAffordPurchase } from '../credits/value.js';
 import { EquipableItem, Item } from '../item/item.js';
-import { Faction } from '../relationships/relationships.js';
+import { Character } from './character/character.js';
 import { addMember, CharacterGroup } from './members.js';
+import { Faction } from './relationships/relationships.js';
 import { Squad } from './squad.js';
 
 /**
  * A team represents the current state of a players available resources and relationships.
  * These are what are available when going on missions.
  */
-export interface Team extends Transactor, Faction, GameEntity, CharacterGroup {
+export interface Team extends Faction, CharacterGroup {
     equipment: (Item | EquipableItem)[];
     squads: Squad[];
 }
 
-export function createTeam(
-    name: string,
-    credits: number,
-    description: string,
-    teamNumber: number,
-): Team {
+type NewTeamInfo = Merge<
+    PartialBy<Pick<Team, 'name' | 'credits' | 'description'>, 'credits'>,
+    { teamNumber: number }
+>;
+
+export function createTeam({
+    name,
+    credits,
+    description,
+    teamNumber,
+}: NewTeamInfo): Team {
     const team = {
         entityId: `team-${teamNumber}`,
         credits,
@@ -35,10 +40,10 @@ export function createTeam(
     return team;
 }
 
-export function addTeamMember(team: Team, character: Character): Team {
-    if (!canAffordPurchase(team, character)) {
+export function addTeamMember(character: Character, team: Team): Team {
+    if (!canAffordPurchase(character, team)) {
         throw new Error('game::team::not_purchasable');
     }
 
-    return addMember(team, character);
+    return addMember(character, team);
 }
