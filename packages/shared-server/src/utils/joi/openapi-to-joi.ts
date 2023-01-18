@@ -30,6 +30,7 @@ export type MethodSchema = {
     readonly security?: ReadonlyArray<{
         readonly [type: string]: readonly string[];
     }>;
+    readonly responses?: {};
 };
 
 type OperationIdsPerPath<T extends ApiDoc> = T extends ApiDoc

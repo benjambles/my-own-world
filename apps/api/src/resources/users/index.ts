@@ -10,7 +10,7 @@ import { UserResponse } from './users.js';
  * Routes on /users and /users/*
  * Special auth routes under: /authentication
  */
-export default function users(dataModel: DataModel, prefix: string) {
+export default function users(dataModel: DataModel) {
     const users = dataModel.get('users');
     const identifiers = dataModel.get('identifiers');
 
@@ -55,5 +55,5 @@ export default function users(dataModel: DataModel, prefix: string) {
             );
         });
 
-    return resource.middleware(prefix);
+    return resource.middleware;
 }

@@ -26,36 +26,42 @@ type TextPlain = {
     };
 };
 
-type ApplicationJson = {
+export type ApplicationJson = {
     'application/json': {
         schema: ObjectSchema;
     };
 };
 
-type PropertySchemas =
+export type PropertySchemas =
     | StringSchema
     | NumberSchema
+    | BooleanSchema
     | ObjectSchema
-    | ArraySchema
-    | BooleanSchema;
+    | ArraySchema;
 
-type ObjectSchema = {
+export type ObjectSchema = {
     type: 'object';
     required?: readonly string[];
     properties: {
         [key: string]: PropertySchemas;
     };
-    default?: boolean;
+    default?: any;
 };
 
 type StringSchema = {
     type: 'string';
     default?: string;
+    format?: string;
+    maxLength?: number;
+    minLength?: number;
 };
 
 type NumberSchema = {
     type: 'integer';
     default?: number;
+    format?: string;
+    maximum?: number;
+    minimum?: number;
 };
 
 type ArraySchema = {

@@ -4,12 +4,12 @@ import Router from 'koa-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
 import { catchJoiErrors } from '../koa/middleware/catch-joi-errors.js';
 import { getAccessMiddleware } from '../koa/middleware/get-access-middleware.js';
-import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
+import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
+import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to-joi.js';
 import { getAccessMap } from '../utils/routes/get-access-map.js';
+import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
 import { getDataMiddleware } from '../utils/routes/responses.js';
 import { createRoute } from './create-route.js';
-import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to-joi.js';
-import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
 
 const defaultData = {
     operations: {},
@@ -18,7 +18,7 @@ const defaultData = {
 
 //#region Types
 type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> = {
-    middleware: (prefix: string) => Router.IMiddleware<any, {}>;
+    middleware: (prefix: string, validateOutput: boolean) => Router.IMiddleware<any, {}>;
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
         H extends (ctx: Context) => unknown,
@@ -61,8 +61,8 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     const resource = (data) => {
         return {
-            middleware(prefix: string) {
-                const routeMap = getRouteMap(apiDoc, data);
+            middleware(prefix: string = '', validateOutput: boolean = false) {
+                const routeMap = getRouteMap(apiDoc, data, validateOutput);
                 return createRoute(prefix, routeMap).middleware();
             },
             operation(key, handler) {
@@ -83,34 +83,34 @@ export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     });
 }
 
-function getRouteMap(apiDoc: ApiDoc, data: ResourceData): Spec[] {
+function getRouteMap(
+    apiDoc: ApiDoc,
+    data: ResourceData,
+    validateOutput: boolean,
+): Spec[] {
     return Object.entries(apiDoc.paths)
         .map(([path, pathConfig]) => {
             return Object.entries(pathConfig).map(([method, methodConfig]) => {
-                const handler =
-                    methodConfig.operationId === 'sendOptions'
-                        ? getSendOptions(Object.keys(pathConfig))
-                        : data.operations[methodConfig.operationId];
+                const handler = [
+                    catchJoiErrors(validateOutput),
+                    getAccessMiddleware(
+                        methodConfig.security,
+                        getAccessMap(data.accessMap),
+                    ),
+                    getDataMiddleware(
+                        undefined,
+                        methodConfig.operationId === 'sendOptions'
+                            ? getSendOptions(Object.keys(pathConfig))
+                            : data.operations[methodConfig.operationId],
+                    ),
+                ];
 
-                const spec: Spec = {
+                return {
                     method,
                     path,
-                    handler: [
-                        catchJoiErrors,
-                        getAccessMiddleware(
-                            methodConfig.security,
-                            getAccessMap(data.accessMap),
-                        ),
-                        getDataMiddleware(undefined, handler),
-                        // In non prod modes we'd want to display response validations too
-                    ],
+                    handler,
+                    validate: buildJoiSpec(JoiRouter.Joi, methodConfig, validateOutput),
                 };
-
-                if (methodConfig.parameters?.length || methodConfig.requestBody) {
-                    spec.validate = buildJoiSpec(JoiRouter.Joi, methodConfig);
-                }
-
-                return spec;
             });
         })
         .flat();

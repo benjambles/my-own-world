@@ -5,7 +5,7 @@ import config from './config.js';
 /**
  * Routes on /order and /order/*
  */
-export default function order(dataModel: DataModel, prefix: string) {
+export default function order(dataModel: DataModel) {
     const orders = dataModel.get('orders');
 
     return createResource(config)
@@ -28,6 +28,5 @@ export default function order(dataModel: DataModel, prefix: string) {
 
         .operation('deleteOrderById', async (ctx) => {
             return await orders.delete(ctx.request.params.orderId);
-        })
-        .middleware(prefix);
+        }).middleware;
 }

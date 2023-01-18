@@ -5,7 +5,7 @@ import config from './config.js';
 /**
  * Routes on /tales and /tales/*
  */
-export default function tales(dataModel: DataModel, prefix: string) {
+export default function tales(dataModel: DataModel) {
     const tales = dataModel.get('tales');
 
     return createResource(config)
@@ -24,6 +24,5 @@ export default function tales(dataModel: DataModel, prefix: string) {
         })
         .operation('deleteTaleById', async (ctx) => {
             return await tales.delete(ctx.request.params.taleId);
-        })
-        .middleware(prefix);
+        }).middleware;
 }

@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import { parseJson } from '../utils/data/json.js';
 
 /**
  * Centralised error handling logging. Additional middleware should not
@@ -21,8 +22,11 @@ export function errorHandler(app: Koa): Koa.Middleware {
             await next();
             if (ctx.status === 404) ctx.throw(404);
         } catch (err) {
+            const parsedError = parseJson(err.message).getOrElseValue(err.message);
+
             ctx.status = err.status || 500;
-            ctx.body = err.message;
+            ctx.body = parsedError;
+            ctx.type = typeof parsedError === 'string' ? 'text' : 'json';
             ctx.app.emit('error', err, ctx);
         }
     };

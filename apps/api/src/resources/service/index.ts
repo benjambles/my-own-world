@@ -5,7 +5,7 @@ import config from './config.js';
 /**
  * Routes on /service and /service/*
  */
-export default function service(dataModel: DataModel, prefix: string) {
+export default function service(dataModel: DataModel) {
     const system = dataModel.get('system');
 
     return createResource(config)
@@ -18,6 +18,5 @@ export default function service(dataModel: DataModel, prefix: string) {
         })
         .operation('getStatus', async () => 'ok')
         .operation('getMetrics', async () => 'ok')
-        .operation('getDebugData', async () => 'ok')
-        .middleware(prefix);
+        .operation('getDebugData', async () => 'ok').middleware;
 }
