@@ -37,12 +37,47 @@ export default {
                 ],
                 responses: {
                     '200': {
-                        description: 'OK,',
+                        description: 'ok',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'array',
+                                    items: {
+                                        description: 'The authenticated users data',
+                                        type: 'object',
+                                        required: [
+                                            '_id',
+                                            'createdOn',
+                                            'lastLoggedIn',
+                                            'firstName',
+                                            'lastName',
+                                            'isDeleted',
+                                            'screenName',
+                                        ],
+                                        properties: {
+                                            _id: {
+                                                type: 'string',
+                                            },
+                                            createdOn: {
+                                                type: 'string',
+                                            },
+                                            lastLoggedIn: {
+                                                type: 'string',
+                                            },
+                                            firstName: {
+                                                type: 'string',
+                                            },
+                                            lastName: {
+                                                type: 'string',
+                                            },
+                                            isDeleted: {
+                                                type: 'boolean',
+                                            },
+                                            screenName: {
+                                                type: 'string',
+                                            },
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -56,13 +91,45 @@ export default {
                 description: '',
                 operationId: 'createUser',
                 responses: {
-                    '200': {
-                        description: 'OK,',
+                    '201': {
+                        description: 'Created',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    description: 'The authenticated users data',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'createdOn',
+                                        'lastLoggedIn',
+                                        'firstName',
+                                        'lastName',
+                                        'isDeleted',
+                                        'screenName',
+                                    ],
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                        },
+                                        createdOn: {
+                                            type: 'string',
+                                        },
+                                        lastLoggedIn: {
+                                            type: 'string',
+                                        },
+                                        firstName: {
+                                            type: 'string',
+                                        },
+                                        lastName: {
+                                            type: 'string',
+                                        },
+                                        isDeleted: {
+                                            type: 'boolean',
+                                        },
+                                        screenName: {
+                                            type: 'string',
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -176,10 +243,42 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    description: 'The authenticated users data',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'createdOn',
+                                        'lastLoggedIn',
+                                        'firstName',
+                                        'lastName',
+                                        'isDeleted',
+                                        'screenName',
+                                    ],
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                        },
+                                        createdOn: {
+                                            type: 'string',
+                                        },
+                                        lastLoggedIn: {
+                                            type: 'string',
+                                        },
+                                        firstName: {
+                                            type: 'string',
+                                        },
+                                        lastName: {
+                                            type: 'string',
+                                        },
+                                        isDeleted: {
+                                            type: 'boolean',
+                                        },
+                                        screenName: {
+                                            type: 'string',
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -259,10 +358,42 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    description: 'The authenticated users data',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'createdOn',
+                                        'lastLoggedIn',
+                                        'firstName',
+                                        'lastName',
+                                        'isDeleted',
+                                        'screenName',
+                                    ],
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                        },
+                                        createdOn: {
+                                            type: 'string',
+                                        },
+                                        lastLoggedIn: {
+                                            type: 'string',
+                                        },
+                                        firstName: {
+                                            type: 'string',
+                                        },
+                                        lastName: {
+                                            type: 'string',
+                                        },
+                                        isDeleted: {
+                                            type: 'boolean',
+                                        },
+                                        screenName: {
+                                            type: 'string',
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -289,16 +420,8 @@ export default {
                     },
                 ],
                 responses: {
-                    '200': {
+                    '204': {
                         description: 'OK,',
-                        content: {
-                            'text/plain': {
-                                schema: {
-                                    type: 'string',
-                                    example: 'pong',
-                                },
-                            },
-                        },
                     },
                 },
                 security: [
@@ -366,12 +489,28 @@ export default {
                 ],
                 responses: {
                     '200': {
-                        description: 'OK,',
+                        description: 'OK',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        required: [
+                                            'hash',
+                                            'identifier',
+                                            'isDeleted',
+                                            'type',
+                                            'verified',
+                                        ],
+                                        properties: {
+                                            hash: { type: 'string' },
+                                            identifier: { type: 'string' },
+                                            isDeleted: { type: 'boolean' },
+                                            type: { type: 'string' },
+                                            verified: { type: 'boolean' },
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -423,13 +562,26 @@ export default {
                     },
                 },
                 responses: {
-                    '200': {
-                        description: 'OK,',
+                    '201': {
+                        description: 'Created',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'object',
+                                    required: [
+                                        'hash',
+                                        'identifier',
+                                        'isDeleted',
+                                        'type',
+                                        'verified',
+                                    ],
+                                    properties: {
+                                        hash: { type: 'string' },
+                                        identifier: { type: 'string' },
+                                        isDeleted: { type: 'boolean' },
+                                        type: { type: 'string' },
+                                        verified: { type: 'boolean' },
+                                    },
                                 },
                             },
                         },
@@ -495,16 +647,8 @@ export default {
                     },
                 ],
                 responses: {
-                    '200': {
+                    '204': {
                         description: 'OK,',
-                        content: {
-                            'text/plain': {
-                                schema: {
-                                    type: 'string',
-                                    example: 'pong',
-                                },
-                            },
-                        },
                     },
                 },
                 security: [
@@ -587,10 +731,54 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'object',
+                                    required: ['token', 'user'],
+                                    properties: {
+                                        token: {
+                                            description:
+                                                'JWT to be passed on each authenicated request',
+                                            type: 'string',
+                                            maxLength: 256,
+                                        },
+                                        user: {
+                                            description: 'The authenticated users data',
+                                            type: 'object',
+                                            required: [
+                                                '_id',
+                                                'createdOn',
+                                                'lastLoggedIn',
+                                                'firstName',
+                                                'lastName',
+                                                'isDeleted',
+                                                'screenName',
+                                            ],
+                                            properties: {
+                                                _id: {
+                                                    type: 'string',
+                                                },
+                                                createdOn: {
+                                                    type: 'string',
+                                                },
+                                                lastLoggedIn: {
+                                                    type: 'string',
+                                                },
+                                                firstName: {
+                                                    type: 'string',
+                                                },
+                                                lastName: {
+                                                    type: 'string',
+                                                },
+                                                isDeleted: {
+                                                    type: 'boolean',
+                                                },
+                                                screenName: {
+                                                    type: 'string',
+                                                },
+                                            },
+                                        },
+                                    },
                                 },
                             },
                         },

@@ -97,13 +97,12 @@ export function getOrderHelpers(db: Db) {
          * @param uuid - A valid uuid
          */
         delete: async function deleteOrder(uuid: string): Promise<boolean> {
-            const data = await orders.findOneAndUpdate(
+            const { acknowledged } = await orders.updateOne(
                 { _id: getObjectId(uuid) },
                 { $set: { isDeleted: true, deletedOn: new Date() } },
-                { projection: { isDeleted: 1 } },
             );
 
-            return result('There was an error whilst updating the order', data.ok !== 0);
+            return result('There was an error whilst updating the order', acknowledged);
         },
 
         /**

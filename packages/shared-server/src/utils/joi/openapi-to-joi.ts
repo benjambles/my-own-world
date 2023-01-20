@@ -1,8 +1,14 @@
 import { ObjectEntries, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import { HTTPVerbs } from '../routes/get-http-methods.js';
 import { ContextFromParams } from './context/context.js';
-import { MaybeBodyContext, RequestBody } from './context/request-body.js';
+import {
+    ApplicationJson,
+    MaybeBodyContext,
+    RequestBody,
+    TextPlain,
+} from './context/request-body.js';
 import { Param } from './context/request-parameters.js';
+import { MaybeResponseBody } from './responses/openapi-to-types.js';
 
 export type RouteHandlers<C extends ApiDoc> = UnionToTuple<
     FlatArray<AllPaths<C, ExpectedRoutes<C>>, 1>
@@ -30,7 +36,27 @@ export type MethodSchema = {
     readonly security?: ReadonlyArray<{
         readonly [type: string]: readonly string[];
     }>;
-    readonly responses?: {};
+    readonly responses?: OK | NoContent | Created;
+};
+
+export type OK = {
+    '200': {
+        description: string;
+        content: ApplicationJson | TextPlain;
+    };
+};
+
+export type Created = {
+    '201': {
+        description: string;
+        content: ApplicationJson | TextPlain;
+    };
+};
+
+export type NoContent = {
+    '204': {
+        description: string;
+    };
 };
 
 type OperationIdsPerPath<T extends ApiDoc> = T extends ApiDoc
@@ -105,9 +131,10 @@ type ToJoiRouter<T extends any[], Result extends any[] = []> = T extends [
                   handler: (
                       ctx: ContextFromParams<
                           RouteSpec[2]['parameters'],
-                          MaybeBodyContext<RouteSpec[2]['requestBody']>
+                          MaybeBodyContext<RouteSpec[2]['requestBody']>,
+                          MaybeResponseBody<RouteSpec[2]['responses']>
                       >,
-                  ) => any;
+                  ) => Promise<MaybeResponseBody<RouteSpec[2]['responses']>>;
               },
           ]
       >

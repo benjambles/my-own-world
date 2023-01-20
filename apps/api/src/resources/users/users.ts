@@ -10,11 +10,23 @@ import { Db } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
 import { getUserHelpers, NewUser, User } from './queries.js';
 
-const restrictedKeys = ['password', 'identities', 'settings'] as const;
+const restrictedKeys = ['password', 'identities', 'settings', 'gameStates'] as const;
 type RestrictedKeys = typeof restrictedKeys[number];
 
-export type UserResponse = Omit<User, RestrictedKeys>;
-export const cleanResponse = omit<User, RestrictedKeys>(...restrictedKeys);
+type ToStringKeys = '_id' | 'createdOn' | 'lastLoggedIn';
+
+type UserResponse = Omit<User, RestrictedKeys | ToStringKeys> & {
+    [key in ToStringKeys]: string;
+};
+
+export const cleanResponse = (data: User): UserResponse => {
+    return {
+        ...omit(data, ...restrictedKeys),
+        _id: data._id.toString(),
+        createdOn: data.createdOn.toISOString(),
+        lastLoggedIn: data.lastLoggedIn.toISOString(),
+    };
+};
 
 export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     const formatOptions: ModelOptions = {

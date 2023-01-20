@@ -12,11 +12,19 @@ export default {
                 summary: 'An endpoint to check the overall health of the platform',
                 description: '',
                 operationId: 'getHealth',
-                consumes: [],
-                produces: [],
                 parameters: [],
                 responses: {
-                    '200': {},
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
                     '503': {},
                 },
                 security: [],
@@ -28,7 +36,19 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },
@@ -41,7 +61,18 @@ export default {
                 operationId: 'getVersion',
                 parameters: [],
                 responses: {
-                    '200': {},
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    example: 'pong',
+                                    properties: {},
+                                },
+                            },
+                        },
+                    },
                 },
                 security: [],
             },
@@ -52,7 +83,19 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },
@@ -64,7 +107,19 @@ export default {
                 description: '',
                 operationId: 'getStatus',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
             options: {
@@ -74,7 +129,19 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },
@@ -85,7 +152,19 @@ export default {
                 description: '',
                 operationId: 'getMetrics',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
             options: {
@@ -95,7 +174,19 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },
@@ -107,7 +198,19 @@ export default {
                 description: '',
                 operationId: 'getDebugData',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [
                     {
                         http: ['role:admin'],
@@ -121,7 +224,19 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [
                     {
                         http: ['role:admin'],

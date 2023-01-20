@@ -1,80 +1,21 @@
-import { Context, Middleware, Next } from 'koa';
+import { Context, Middleware } from 'koa';
 import { Readable } from 'stream';
-import { ErrorValues } from '../errors.js';
-import { send } from './send.js';
-
-export interface DataResponse {
-    data: any;
-}
-
-export interface PartsResponse {
-    body: any;
-    meta: APIMeta;
-}
-
-interface APIMeta {
-    message?: string;
-    lastModified?: string;
-    [name: string]: any;
-}
-
-/**
- * Structure for a response that should be just sent as is
- * @param data
- */
-export function dataResponse<T>(data?: T): DataResponse {
-    return { data };
-}
-
-/**
- * Structures an API response
- * @param {object} body - The content of the response
- * @param {object} meta - Useful information pertaining to the response
- */
-export function partsResponse(body = {}, meta: APIMeta = {}): PartsResponse {
-    return {
-        body,
-        meta,
-    };
-}
-
-/**
- *
- * @param response
- */
-export function getResponseBody(response, status): PartsResponse | DataResponse {
-    if (response.meta) {
-        response.meta.status = status;
-        response.meta.message = 'success';
-        return response;
-    }
-
-    return dataResponse(response.data);
-}
-
-export function getPartsMiddleware(
-    defaultError: ErrorValues,
-    callback: (ctx: Context) => any,
-): Middleware {
-    return async (ctx: Context, next: Next) => {
-        await send(ctx, defaultError, async (ctx) => {
-            const responseBody = await callback(ctx);
-            return partsResponse(responseBody);
-        });
-
-        await next();
-    };
-}
+import { ErrorValues, throwSafeError } from '../errors.js';
 
 export function getDataMiddleware(
     defaultError: ErrorValues,
-    callback: (ctx: Context, next: Next) => any,
+    callback: Middleware,
 ): Middleware {
-    return async (ctx: Context, next: Next) => {
-        await send(ctx, defaultError, async (ctx) => {
-            const responseBody = await callback(ctx, next);
-            return dataResponse(responseBody);
-        });
+    return async (ctx: Context, next) => {
+        try {
+            const response = await callback(ctx, next);
+            const status: number = response.status || 200;
+
+            ctx.status = status;
+            ctx.body = response.data;
+        } catch (e) {
+            throwSafeError(ctx, e, defaultError);
+        }
 
         await next();
     };
@@ -89,4 +30,16 @@ export function streamResponse(
     ctx.status = status;
     ctx.type = type;
     ctx.body = Readable.from(body);
+}
+
+export function ok<D>(data: D) {
+    return { status: 200, data } as const;
+}
+
+export function created<D>(data: D) {
+    return { status: 201, data } as const;
+}
+
+export function noResponse() {
+    return { status: 204 } as const;
 }

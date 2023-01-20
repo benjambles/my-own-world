@@ -8,6 +8,22 @@ import { Db } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
 import { getTalesHelpers, Tale, TaleData } from './queries.js';
 
+type ToStringKeys = '_id' | 'createdOn' | 'lastModifiedOn' | 'ownerId';
+
+type TaleResponse = Omit<Tale, ToStringKeys> & {
+    [key in ToStringKeys]: string;
+};
+
+export const cleanResponse = (tale: Tale): TaleResponse => {
+    return {
+        ...tale,
+        _id: tale._id.toString(),
+        createdOn: tale.createdOn.toISOString(),
+        lastModifiedOn: tale.lastModifiedOn.toISOString(),
+        ownerId: tale.ownerId.toString(),
+    };
+};
+
 export function talesModel(db: Db, { ENC_SECRET }: Env) {
     const formatOptions: ModelOptions = {
         encrypted: [],
@@ -29,16 +45,18 @@ export function talesModel(db: Db, { ENC_SECRET }: Env) {
         get: async function getTale(
             limit: number = 10,
             offset: number = 0,
-        ): Promise<Tale[]> {
-            return await taleQueries.get(limit, offset);
+        ): Promise<TaleResponse[]> {
+            const response = await taleQueries.get(limit, offset);
+            return response.map(cleanResponse);
         },
 
         /**
          * Fetches a tale record from the database using the uuid as the search value
          * @param uuid - A valid uuid
          */
-        find: async function findTaleByUuid(uuid: string): Promise<Tale> {
-            return await taleQueries.find(uuid);
+        find: async function findTaleByUuid(uuid: string): Promise<TaleResponse> {
+            const response = await taleQueries.find(uuid);
+            return cleanResponse(response);
         },
 
         /**
@@ -49,13 +67,14 @@ export function talesModel(db: Db, { ENC_SECRET }: Env) {
             data: Pick<TaleData, 'name' | 'description' | 'summary'> & {
                 ownerId: string;
             },
-        ): Promise<Tale> {
+        ): Promise<TaleResponse> {
             const cleanData = await formatTaleData({
                 ...data,
                 ownerId: getObjectId(data.ownerId),
             });
 
-            return await taleQueries.create(cleanData);
+            const response = await taleQueries.create(cleanData);
+            return cleanResponse(response);
         },
 
         /**
@@ -66,10 +85,11 @@ export function talesModel(db: Db, { ENC_SECRET }: Env) {
         update: async function updateTale(
             uuid: string,
             data: Partial<Pick<TaleData, 'name' | 'description' | 'summary'>>,
-        ): Promise<Tale> {
+        ): Promise<TaleResponse> {
             const cleanData = await formatTaleData(data);
 
-            return await taleQueries.update(uuid, cleanData);
+            const response = await taleQueries.update(uuid, cleanData);
+            return cleanResponse(response);
         },
 
         /**

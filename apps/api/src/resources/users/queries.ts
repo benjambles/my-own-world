@@ -6,7 +6,7 @@ import { Db, ObjectId } from 'mongodb';
 export interface User {
     _id: ObjectId;
     createdOn: Date;
-    lastLoggedIn: Date;
+    lastLoggedIn?: Date;
     deletedOn?: Date;
     firstName: string;
     gameStates: {};
@@ -97,15 +97,14 @@ export function getUserHelpers(db: Db) {
         },
 
         delete: async function deleteUser(uuid: string): Promise<boolean> {
-            const data = await users.findOneAndUpdate(
+            const { acknowledged } = await users.updateOne(
                 { _id: getObjectId(uuid) },
                 {
                     $set: { isDeleted: true, deletedOn: new Date() },
                 },
-                { projection: { isDeleted: 1 } },
             );
 
-            return result('There was an error whilst updating the user', data.ok === 1);
+            return result('There was an error whilst updating the user', acknowledged);
         },
 
         update: async function updateUser(

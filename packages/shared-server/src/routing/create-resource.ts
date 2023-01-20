@@ -18,19 +18,16 @@ const defaultData = {
 
 //#region Types
 type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> = {
-    middleware: (prefix: string, validateOutput: boolean) => Router.IMiddleware<any, {}>;
+    get: () => {
+        getRouter: (validateOutput: boolean) => Router.IMiddleware<any, {}>;
+    };
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
         H extends (ctx: Context) => unknown,
     >(
         key: K,
-        handler: H extends (ctx: Context) => unknown
-            ? OperationHandler<A, K>[0]['handler']
-            : never,
-    ) => ResourceBinder<
-        A,
-        D & { operations: { [key in K]: OperationHandler<A, K>[0]['handler'] } }
-    >;
+        handler: H extends (ctx: Context) => unknown ? OperationHandler<A, K> : never,
+    ) => ResourceBinder<A, D & { operations: { [key in K]: OperationHandler<A, K> } }>;
     access: <K extends string, H extends (ctx: Context) => unknown>(
         key: K,
         handler: H,
@@ -49,7 +46,7 @@ type ResourceData = {
 type OperationHandler<A extends ApiDoc, K extends string> = Filter<
     RouteHandlers<A>,
     { operationId: Exclude<RequiredHandlers<A>, K> }
->;
+>[0]['handler'];
 
 type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
     ctx: infer Ctx,
@@ -58,12 +55,19 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
     : never;
 //#endregion Types
 
-export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
+export function createResource<T extends ApiDoc>(
+    apiDoc: T,
+    prefix: string = '',
+): ResourceBinder<T> {
     const resource = (data) => {
         return {
-            middleware(prefix: string = '', validateOutput: boolean = false) {
-                const routeMap = getRouteMap(apiDoc, data, validateOutput);
-                return createRoute(prefix, routeMap).middleware();
+            get() {
+                return {
+                    getRouter(validateOutput: boolean = false) {
+                        const routeMap = getRouteMap(apiDoc, data, validateOutput);
+                        return createRoute(prefix, routeMap).middleware();
+                    },
+                };
             },
             operation(key, handler) {
                 data.operations[key] = handler;

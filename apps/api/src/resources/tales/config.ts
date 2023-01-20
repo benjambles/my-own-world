@@ -5,6 +5,33 @@ export default {
         description: 'Routes relating to the tales on the platform',
         version: '1.0.0',
     },
+    components: {
+        schemas: {
+            Tale: {
+                type: 'object',
+                required: [
+                    '_id',
+                    'isDeleted',
+                    'ownerId',
+                    'name',
+                    'summary',
+                    'description',
+                    'createdOn',
+                    'lastModifiedOn',
+                ],
+                properties: {
+                    _id: { type: 'string' },
+                    isDeleted: { type: 'boolean' },
+                    ownerId: { type: 'string' },
+                    name: { type: 'string' },
+                    summary: { type: 'string' },
+                    description: { type: 'string' },
+                    createdOn: { type: 'string' },
+                    lastModifiedOn: { type: 'string' },
+                },
+            },
+        },
+    },
     paths: {
         '/tales': {
             get: {
@@ -34,7 +61,41 @@ export default {
                         },
                     },
                 ],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        required: [
+                                            '_id',
+                                            'isDeleted',
+                                            'ownerId',
+                                            'name',
+                                            'summary',
+                                            'description',
+                                            'createdOn',
+                                            'lastModifiedOn',
+                                        ],
+                                        properties: {
+                                            _id: { type: 'string' },
+                                            isDeleted: { type: 'boolean' },
+                                            ownerId: { type: 'string' },
+                                            name: { type: 'string' },
+                                            summary: { type: 'string' },
+                                            description: { type: 'string' },
+                                            createdOn: { type: 'string' },
+                                            lastModifiedOn: { type: 'string' },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
             post: {
@@ -43,13 +104,32 @@ export default {
                 description: '',
                 operationId: 'createTale',
                 responses: {
-                    '200': {
+                    '201': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'isDeleted',
+                                        'ownerId',
+                                        'name',
+                                        'summary',
+                                        'description',
+                                        'createdOn',
+                                        'lastModifiedOn',
+                                    ],
+                                    properties: {
+                                        _id: { type: 'string' },
+                                        isDeleted: { type: 'boolean' },
+                                        ownerId: { type: 'string' },
+                                        name: { type: 'string' },
+                                        summary: { type: 'string' },
+                                        description: { type: 'string' },
+                                        createdOn: { type: 'string' },
+                                        lastModifiedOn: { type: 'string' },
+                                    },
                                 },
                             },
                         },
@@ -91,10 +171,20 @@ export default {
                 summary: 'Check which endpoints are available for interacting with tales',
                 description: '',
                 operationId: 'sendOptions',
-                consumes: [],
-                produces: ['application/json'],
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },
@@ -117,10 +207,29 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'isDeleted',
+                                        'ownerId',
+                                        'name',
+                                        'summary',
+                                        'description',
+                                        'createdOn',
+                                        'lastModifiedOn',
+                                    ],
+                                    properties: {
+                                        _id: { type: 'string' },
+                                        isDeleted: { type: 'boolean' },
+                                        ownerId: { type: 'string' },
+                                        name: { type: 'string' },
+                                        summary: { type: 'string' },
+                                        description: { type: 'string' },
+                                        createdOn: { type: 'string' },
+                                        lastModifiedOn: { type: 'string' },
+                                    },
                                 },
                             },
                         },
@@ -171,10 +280,29 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'text/plain': {
+                            'application/json': {
                                 schema: {
-                                    type: 'string',
-                                    example: 'pong',
+                                    type: 'object',
+                                    required: [
+                                        '_id',
+                                        'isDeleted',
+                                        'ownerId',
+                                        'name',
+                                        'summary',
+                                        'description',
+                                        'createdOn',
+                                        'lastModifiedOn',
+                                    ],
+                                    properties: {
+                                        _id: { type: 'string' },
+                                        isDeleted: { type: 'boolean' },
+                                        ownerId: { type: 'string' },
+                                        name: { type: 'string' },
+                                        summary: { type: 'string' },
+                                        description: { type: 'string' },
+                                        createdOn: { type: 'string' },
+                                        lastModifiedOn: { type: 'string' },
+                                    },
                                 },
                             },
                         },
@@ -201,16 +329,8 @@ export default {
                     },
                 ],
                 responses: {
-                    '200': {
-                        description: 'OK,',
-                        content: {
-                            'text/plain': {
-                                schema: {
-                                    type: 'string',
-                                    example: 'pong',
-                                },
-                            },
-                        },
+                    '204': {
+                        description: 'Deleted',
                     },
                 },
                 security: [
@@ -224,10 +344,20 @@ export default {
                 summary: 'Check which endpoints are available for interacting with tales',
                 description: '',
                 operationId: 'sendOptions',
-                consumes: [],
-                produces: ['application/json'],
                 parameters: [],
-                responses: {},
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
                 security: [],
             },
         },

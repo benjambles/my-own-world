@@ -5,9 +5,10 @@ import { Param, ParamToContext } from './request-parameters.js';
 export type ContextFromParams<
     Params extends readonly any[] = readonly [],
     Result extends object = {},
+    Body = any,
 > = Params extends readonly [infer First extends Param, ...infer Rest]
-    ? ContextFromParams<Rest, Result & ParamToContext<First>>
-    : KoaContext<Id<Result>>;
+    ? ContextFromParams<Rest, Result & ParamToContext<First>, Body>
+    : KoaContext<Id<Result>, Body>;
 
 interface KoaRequest<RequestParams extends KoaRequestParams> extends Request {
     query: RequestParams['query'] extends never

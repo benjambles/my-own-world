@@ -71,13 +71,12 @@ export function getTalesHelpers(db: Db) {
          * @param uuid - A valid uuid
          */
         delete: async function deleteTale(uuid: string): Promise<boolean> {
-            const { ok } = await tales.findOneAndUpdate(
+            const { acknowledged } = await tales.updateOne(
                 { _id: getObjectId(uuid) },
                 { $set: { isDeleted: true } },
-                { projection: { isDeleted: 1 } },
             );
 
-            return result('There was an error whilst updating the tale', ok !== 0);
+            return result('There was an error whilst updating the tale', acknowledged);
         },
 
         /**
