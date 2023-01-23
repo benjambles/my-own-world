@@ -17,7 +17,7 @@
             "",
             "    return createResource(config, prefix)",
             "        .operation('get${1/^(.)(.*)/${1:/upcase}${2}/}', async (ctx, next) => '')",
-            "        .middleware();",
+            "        .get();",
             "}",
             "",
         ]

@@ -1,14 +1,10 @@
 import { ObjectEntries, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import { HTTPVerbs } from '../routes/get-http-methods.js';
 import { ContextFromParams } from './context/context.js';
-import {
-    ApplicationJson,
-    MaybeBodyContext,
-    RequestBody,
-    TextPlain,
-} from './context/request-body.js';
+import { MaybeBodyContext, RequestBody } from './context/request-body.js';
 import { Param } from './context/request-parameters.js';
-import { MaybeResponseBody } from './responses/openapi-to-types.js';
+import { PropertySchemas } from './context/schemas.js';
+import { MaybeResponseBody, ValidResponses } from './responses/openapi-to-types.js';
 
 export type RouteHandlers<C extends ApiDoc> = UnionToTuple<
     FlatArray<AllPaths<C, ExpectedRoutes<C>>, 1>
@@ -19,7 +15,10 @@ export type RequiredHandlers<Doc extends ApiDoc> = OperationIds<OperationIdsPerP
 export type ApiDoc = {
     readonly components?: {
         readonly schemas?: {
-            readonly [key: string]: any;
+            readonly [key: string]: Exclude<PropertySchemas, Ref>;
+        };
+        readonly parameters?: {
+            readonly [key: string]: Param;
         };
     };
     readonly paths: {
@@ -29,48 +28,28 @@ export type ApiDoc = {
     };
 };
 
+export type Ref = {
+    $ref: string;
+};
+
 export type MethodSchema = {
     readonly operationId: string;
-    readonly parameters?: ReadonlyArray<Param>;
+    readonly parameters?: ReadonlyArray<Param | Ref>;
     readonly requestBody?: RequestBody;
     readonly security?: ReadonlyArray<{
         readonly [type: string]: readonly string[];
     }>;
-    readonly responses?: OK | NoContent | Created;
-};
-
-export type OK = {
-    '200': {
-        description: string;
-        content: ApplicationJson | TextPlain;
-    };
-};
-
-export type Created = {
-    '201': {
-        description: string;
-        content: ApplicationJson | TextPlain;
-    };
-};
-
-export type NoContent = {
-    '204': {
-        description: string;
-    };
+    readonly responses?: ValidResponses;
 };
 
 type OperationIdsPerPath<T extends ApiDoc> = T extends ApiDoc
     ? {
-          [K in keyof T['paths']]: T['paths'][K] extends object
-              ? [
-                    T['paths'][K][keyof T['paths'][K]] extends {
-                        operationId: string;
-                    }
-                        ? T['paths'][K][keyof T['paths'][K]]['operationId']
-                        : never,
-                ]
-              : never;
+          [K in keyof T['paths']]: [MaybeOperationId<T['paths'][K][keyof T['paths'][K]]>];
       }
+    : never;
+
+type MaybeOperationId<Schema> = Schema extends MethodSchema
+    ? Schema['operationId']
     : never;
 
 type OperationIds<T extends { [key: string]: string[] }> = T extends {
@@ -81,47 +60,34 @@ type OperationIds<T extends { [key: string]: string[] }> = T extends {
         : never
     : never;
 
-// type PathHandlers<T extends ApiDoc> = T extends ApiDoc
-// ? {
-//       [K in keyof T['paths']]: T['paths'][K] extends object
-//           ? T['paths'][K][keyof T['paths'][K]]
-//           : never;
-//   }
-// : never;
-
-// export type FlatPathHandlers<T extends ApiDoc> =
-//     PathHandlers<T>[keyof PathHandlers<T>] extends object
-//         ? {
-//               [key in PathHandlers<T>[keyof PathHandlers<T>]['operationId']]: (
-//                   ctx: Context &
-//                       ContextFromParams<
-//                           PathHandlers<T>[keyof PathHandlers<T>]['parameters']
-//                       >,
-//               ) => any;
-//           }
-//         : never;
-
 type ExpectedRoutes<A extends ApiDoc> = UnionToTuple<keyof A['paths']>;
 
 type AllPaths<
     Doc extends ApiDoc,
-    P extends any[],
+    Paths extends any[],
     Result extends any[] = [],
-> = P extends [infer First extends keyof Doc['paths'], ...infer Rest]
-    ? AllPaths<Doc, Rest, [...Result, MethodsPerRoute<Doc['paths'], First>]>
+> = Paths extends [infer First extends keyof Doc['paths'], ...infer Rest]
+    ? AllPaths<
+          Doc,
+          Rest,
+          [...Result, MethodsPerRoute<Doc['paths'], First, Doc['components']>]
+      >
     : Result;
 
 type MethodsPerRoute<
     Paths extends ApiDoc['paths'],
     K extends keyof Paths = keyof Paths,
-> = ToJoiRouter<UnionToTuple<[K, ...ObjectEntries<Paths[K]>]>>;
+    Components extends {} = {},
+> = ToJoiRouter<UnionToTuple<[K, ...ObjectEntries<Paths[K]>]>, Components>;
 
-type ToJoiRouter<T extends any[], Result extends any[] = []> = T extends [
-    infer RouteSpec extends [string, string, MethodSchema],
-    ...infer Rest,
-]
+type ToJoiRouter<
+    T extends any[],
+    Components extends {},
+    Result extends any[] = [],
+> = T extends [infer RouteSpec extends [string, string, MethodSchema], ...infer Rest]
     ? ToJoiRouter<
           Rest,
+          Components,
           [
               ...Result,
               {
@@ -131,10 +97,11 @@ type ToJoiRouter<T extends any[], Result extends any[] = []> = T extends [
                   handler: (
                       ctx: ContextFromParams<
                           RouteSpec[2]['parameters'],
-                          MaybeBodyContext<RouteSpec[2]['requestBody']>,
-                          MaybeResponseBody<RouteSpec[2]['responses']>
+                          MaybeBodyContext<RouteSpec[2]['requestBody'], Components>,
+                          MaybeResponseBody<RouteSpec[2]['responses'], Components>,
+                          Components
                       >,
-                  ) => Promise<MaybeResponseBody<RouteSpec[2]['responses']>>;
+                  ) => Promise<MaybeResponseBody<RouteSpec[2]['responses'], Components>>;
               },
           ]
       >

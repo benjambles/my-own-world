@@ -31,6 +31,15 @@ export default {
                 },
             },
         },
+        parameters: {
+            TaleId: {
+                name: 'taleId',
+                in: 'path',
+                description: 'Unique id representing a tale',
+                required: true,
+                schema: { type: 'string' },
+            },
+        },
     },
     paths: {
         '/tales': {
@@ -69,27 +78,7 @@ export default {
                                 schema: {
                                     type: 'array',
                                     items: {
-                                        type: 'object',
-                                        required: [
-                                            '_id',
-                                            'isDeleted',
-                                            'ownerId',
-                                            'name',
-                                            'summary',
-                                            'description',
-                                            'createdOn',
-                                            'lastModifiedOn',
-                                        ],
-                                        properties: {
-                                            _id: { type: 'string' },
-                                            isDeleted: { type: 'boolean' },
-                                            ownerId: { type: 'string' },
-                                            name: { type: 'string' },
-                                            summary: { type: 'string' },
-                                            description: { type: 'string' },
-                                            createdOn: { type: 'string' },
-                                            lastModifiedOn: { type: 'string' },
-                                        },
+                                        $ref: '#/components/schemas/Tale',
                                     },
                                 },
                             },
@@ -109,27 +98,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'isDeleted',
-                                        'ownerId',
-                                        'name',
-                                        'summary',
-                                        'description',
-                                        'createdOn',
-                                        'lastModifiedOn',
-                                    ],
-                                    properties: {
-                                        _id: { type: 'string' },
-                                        isDeleted: { type: 'boolean' },
-                                        ownerId: { type: 'string' },
-                                        name: { type: 'string' },
-                                        summary: { type: 'string' },
-                                        description: { type: 'string' },
-                                        createdOn: { type: 'string' },
-                                        lastModifiedOn: { type: 'string' },
-                                    },
+                                    $ref: '#/components/schemas/Tale',
                                 },
                             },
                         },
@@ -194,42 +163,14 @@ export default {
                 summary: 'Fetches the tale with the ID matching the url parameter',
                 description: '',
                 operationId: 'getTaleById',
-                parameters: [
-                    {
-                        name: 'taleId',
-                        in: 'path',
-                        description: 'Unique id representing a tale',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/TaleId' }],
                 responses: {
                     '200': {
                         description: 'OK,',
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'isDeleted',
-                                        'ownerId',
-                                        'name',
-                                        'summary',
-                                        'description',
-                                        'createdOn',
-                                        'lastModifiedOn',
-                                    ],
-                                    properties: {
-                                        _id: { type: 'string' },
-                                        isDeleted: { type: 'boolean' },
-                                        ownerId: { type: 'string' },
-                                        name: { type: 'string' },
-                                        summary: { type: 'string' },
-                                        description: { type: 'string' },
-                                        createdOn: { type: 'string' },
-                                        lastModifiedOn: { type: 'string' },
-                                    },
+                                    $ref: '#/components/schemas/Tale',
                                 },
                             },
                         },
@@ -242,15 +183,7 @@ export default {
                 summary: 'Updates the tale at the ID given with the values provided',
                 description: '',
                 operationId: 'updateTaleById',
-                parameters: [
-                    {
-                        name: 'taleId',
-                        in: 'path',
-                        description: 'Unique id representing a tale',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/TaleId' }],
                 requestBody: {
                     required: true,
                     content: {
@@ -282,27 +215,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'isDeleted',
-                                        'ownerId',
-                                        'name',
-                                        'summary',
-                                        'description',
-                                        'createdOn',
-                                        'lastModifiedOn',
-                                    ],
-                                    properties: {
-                                        _id: { type: 'string' },
-                                        isDeleted: { type: 'boolean' },
-                                        ownerId: { type: 'string' },
-                                        name: { type: 'string' },
-                                        summary: { type: 'string' },
-                                        description: { type: 'string' },
-                                        createdOn: { type: 'string' },
-                                        lastModifiedOn: { type: 'string' },
-                                    },
+                                    $ref: '#/components/schemas/Tale',
                                 },
                             },
                         },
@@ -319,15 +232,7 @@ export default {
                 summary: 'Deletes the tale with the given ID',
                 description: '',
                 operationId: 'deleteTaleById',
-                parameters: [
-                    {
-                        name: 'taleId',
-                        in: 'path',
-                        description: 'Unique id representing a tale',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/TaleId' }],
                 responses: {
                     '204': {
                         description: 'Deleted',
@@ -344,7 +249,7 @@ export default {
                 summary: 'Check which endpoints are available for interacting with tales',
                 description: '',
                 operationId: 'sendOptions',
-                parameters: [],
+                parameters: [{ $ref: '#/components/parameters/TaleId' }],
                 responses: {
                     '200': {
                         description: 'OK,',

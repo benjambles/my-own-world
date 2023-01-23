@@ -1,6 +1,5 @@
 import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
-import { getOrderModel } from '../resources/orders/orders.js';
 import { getServiceModel } from '../resources/service/service.js';
 import { talesModel } from '../resources/tales/tales.js';
 import { getIdentifierModel } from '../resources/users/identifiers/identifiers.js';
@@ -45,6 +44,5 @@ export function bindModels(db: Db, env: Env) {
         .bind('users', getUserModel)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
-        .bind('orders', getOrderModel)
         .bind('tales', talesModel);
 }

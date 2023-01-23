@@ -6,6 +6,73 @@ export default {
             'Routes relating to the creation and management of users for the platform.',
         version: '1.0.0',
     },
+    components: {
+        schemas: {
+            UserResponse: {
+                description: 'The public facing user data',
+                type: 'object',
+                required: [
+                    '_id',
+                    'createdOn',
+                    'lastLoggedIn',
+                    'firstName',
+                    'lastName',
+                    'isDeleted',
+                    'screenName',
+                ],
+                properties: {
+                    _id: {
+                        type: 'string',
+                    },
+                    createdOn: {
+                        type: 'string',
+                    },
+                    lastLoggedIn: {
+                        type: 'string',
+                    },
+                    firstName: {
+                        type: 'string',
+                    },
+                    lastName: {
+                        type: 'string',
+                    },
+                    isDeleted: {
+                        type: 'boolean',
+                    },
+                    screenName: {
+                        type: 'string',
+                    },
+                },
+            },
+            IdentifierResponse: {
+                type: 'object',
+                required: ['hash', 'identifier', 'isDeleted', 'type', 'verified'],
+                properties: {
+                    hash: { type: 'string' },
+                    identifier: { type: 'string' },
+                    isDeleted: { type: 'boolean' },
+                    type: { type: 'string' },
+                    verified: { type: 'boolean' },
+                },
+            },
+        },
+        parameters: {
+            UserId: {
+                name: 'userId',
+                in: 'path',
+                description: 'Unique id representing a user',
+                required: true,
+                schema: { type: 'string' },
+            },
+            IdentifierId: {
+                name: 'hash',
+                in: 'path',
+                description: 'Unique hash of a users identifier',
+                required: true,
+                schema: { type: 'string' },
+            },
+        },
+    },
     paths: {
         '/users': {
             get: {
@@ -43,40 +110,7 @@ export default {
                                 schema: {
                                     type: 'array',
                                     items: {
-                                        description: 'The authenticated users data',
-                                        type: 'object',
-                                        required: [
-                                            '_id',
-                                            'createdOn',
-                                            'lastLoggedIn',
-                                            'firstName',
-                                            'lastName',
-                                            'isDeleted',
-                                            'screenName',
-                                        ],
-                                        properties: {
-                                            _id: {
-                                                type: 'string',
-                                            },
-                                            createdOn: {
-                                                type: 'string',
-                                            },
-                                            lastLoggedIn: {
-                                                type: 'string',
-                                            },
-                                            firstName: {
-                                                type: 'string',
-                                            },
-                                            lastName: {
-                                                type: 'string',
-                                            },
-                                            isDeleted: {
-                                                type: 'boolean',
-                                            },
-                                            screenName: {
-                                                type: 'string',
-                                            },
-                                        },
+                                        $ref: '#/components/schemas/UserResponse',
                                     },
                                 },
                             },
@@ -96,40 +130,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    description: 'The authenticated users data',
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'createdOn',
-                                        'lastLoggedIn',
-                                        'firstName',
-                                        'lastName',
-                                        'isDeleted',
-                                        'screenName',
-                                    ],
-                                    properties: {
-                                        _id: {
-                                            type: 'string',
-                                        },
-                                        createdOn: {
-                                            type: 'string',
-                                        },
-                                        lastLoggedIn: {
-                                            type: 'string',
-                                        },
-                                        firstName: {
-                                            type: 'string',
-                                        },
-                                        lastName: {
-                                            type: 'string',
-                                        },
-                                        isDeleted: {
-                                            type: 'boolean',
-                                        },
-                                        screenName: {
-                                            type: 'string',
-                                        },
-                                    },
+                                    $ref: '#/components/schemas/UserResponse',
                                 },
                             },
                         },
@@ -230,55 +231,14 @@ export default {
                 summary: 'Fetches the user with the ID matching the url parameter',
                 description: '',
                 operationId: 'getUserById',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 responses: {
                     '200': {
                         description: 'OK,',
                         content: {
                             'application/json': {
                                 schema: {
-                                    description: 'The authenticated users data',
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'createdOn',
-                                        'lastLoggedIn',
-                                        'firstName',
-                                        'lastName',
-                                        'isDeleted',
-                                        'screenName',
-                                    ],
-                                    properties: {
-                                        _id: {
-                                            type: 'string',
-                                        },
-                                        createdOn: {
-                                            type: 'string',
-                                        },
-                                        lastLoggedIn: {
-                                            type: 'string',
-                                        },
-                                        firstName: {
-                                            type: 'string',
-                                        },
-                                        lastName: {
-                                            type: 'string',
-                                        },
-                                        isDeleted: {
-                                            type: 'boolean',
-                                        },
-                                        screenName: {
-                                            type: 'string',
-                                        },
-                                    },
+                                    $ref: '#/components/schemas/UserResponse',
                                 },
                             },
                         },
@@ -291,15 +251,7 @@ export default {
                 summary: 'Updates the user at the ID given with the values provided',
                 description: '',
                 operationId: 'updateUserById',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 requestBody: {
                     required: true,
                     content: {
@@ -360,40 +312,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    description: 'The authenticated users data',
-                                    type: 'object',
-                                    required: [
-                                        '_id',
-                                        'createdOn',
-                                        'lastLoggedIn',
-                                        'firstName',
-                                        'lastName',
-                                        'isDeleted',
-                                        'screenName',
-                                    ],
-                                    properties: {
-                                        _id: {
-                                            type: 'string',
-                                        },
-                                        createdOn: {
-                                            type: 'string',
-                                        },
-                                        lastLoggedIn: {
-                                            type: 'string',
-                                        },
-                                        firstName: {
-                                            type: 'string',
-                                        },
-                                        lastName: {
-                                            type: 'string',
-                                        },
-                                        isDeleted: {
-                                            type: 'boolean',
-                                        },
-                                        screenName: {
-                                            type: 'string',
-                                        },
-                                    },
+                                    $ref: '#/components/schemas/UserResponse',
                                 },
                             },
                         },
@@ -410,15 +329,7 @@ export default {
                 summary: 'Deletes the user with the given ID',
                 description: '',
                 operationId: 'deleteUserById',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 responses: {
                     '204': {
                         description: 'OK,',
@@ -435,15 +346,7 @@ export default {
                 summary: 'Check which endpoints are valid for the authenticated user',
                 description: '',
                 operationId: 'sendOptions',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 responses: {
                     '200': {
                         description: 'OK,',
@@ -467,13 +370,7 @@ export default {
                 description: '',
                 operationId: 'getUserIdentifiers',
                 parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
+                    { $ref: '#/components/parameters/UserId' },
                     {
                         name: 'limit',
                         in: 'query',
@@ -495,21 +392,7 @@ export default {
                                 schema: {
                                     type: 'array',
                                     items: {
-                                        type: 'object',
-                                        required: [
-                                            'hash',
-                                            'identifier',
-                                            'isDeleted',
-                                            'type',
-                                            'verified',
-                                        ],
-                                        properties: {
-                                            hash: { type: 'string' },
-                                            identifier: { type: 'string' },
-                                            isDeleted: { type: 'boolean' },
-                                            type: { type: 'string' },
-                                            verified: { type: 'boolean' },
-                                        },
+                                        $ref: '#/components/schemas/IdentifierResponse',
                                     },
                                 },
                             },
@@ -527,15 +410,7 @@ export default {
                 summary: 'Store a new identifier for the user',
                 description: '',
                 operationId: 'createUserIdentifier',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 requestBody: {
                     required: true,
                     content: {
@@ -567,21 +442,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'object',
-                                    required: [
-                                        'hash',
-                                        'identifier',
-                                        'isDeleted',
-                                        'type',
-                                        'verified',
-                                    ],
-                                    properties: {
-                                        hash: { type: 'string' },
-                                        identifier: { type: 'string' },
-                                        isDeleted: { type: 'boolean' },
-                                        type: { type: 'string' },
-                                        verified: { type: 'boolean' },
-                                    },
+                                    $ref: '#/components/schemas/IdentifierResponse',
                                 },
                             },
                         },
@@ -599,15 +460,7 @@ export default {
                     'Check which endpoints are available for working with identifiers',
                 description: '',
                 operationId: 'sendOptions',
-                parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                ],
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
                 responses: {
                     '200': {
                         description: 'OK,',
@@ -631,20 +484,8 @@ export default {
                 description: '',
                 operationId: 'deleteUserIdentifier',
                 parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                    {
-                        name: 'hash',
-                        in: 'path',
-                        description: 'Unique hash of a users identifier',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
+                    { $ref: '#/components/parameters/UserId' },
+                    { $ref: '#/components/parameters/IdentifierId' },
                 ],
                 responses: {
                     '204': {
@@ -664,20 +505,8 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [
-                    {
-                        name: 'userId',
-                        in: 'path',
-                        description: 'Unique id representing a user',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
-                    {
-                        name: 'hash',
-                        in: 'path',
-                        description: 'Unique hash of a users identifier',
-                        required: true,
-                        schema: { type: 'string' },
-                    },
+                    { $ref: '#/components/parameters/UserId' },
+                    { $ref: '#/components/parameters/IdentifierId' },
                 ],
                 responses: {
                     '200': {
@@ -743,40 +572,7 @@ export default {
                                             maxLength: 256,
                                         },
                                         user: {
-                                            description: 'The authenticated users data',
-                                            type: 'object',
-                                            required: [
-                                                '_id',
-                                                'createdOn',
-                                                'lastLoggedIn',
-                                                'firstName',
-                                                'lastName',
-                                                'isDeleted',
-                                                'screenName',
-                                            ],
-                                            properties: {
-                                                _id: {
-                                                    type: 'string',
-                                                },
-                                                createdOn: {
-                                                    type: 'string',
-                                                },
-                                                lastLoggedIn: {
-                                                    type: 'string',
-                                                },
-                                                firstName: {
-                                                    type: 'string',
-                                                },
-                                                lastName: {
-                                                    type: 'string',
-                                                },
-                                                isDeleted: {
-                                                    type: 'boolean',
-                                                },
-                                                screenName: {
-                                                    type: 'string',
-                                                },
-                                            },
+                                            $ref: '#/components/schemas/UserResponse',
                                         },
                                     },
                                 },

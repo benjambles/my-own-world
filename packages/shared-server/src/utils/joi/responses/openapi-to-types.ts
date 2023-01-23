@@ -1,12 +1,37 @@
-import { ContextFromBody } from '../context/request-body.js';
-import { Created, MethodSchema, NoContent, OK } from '../openapi-to-joi.js';
+import { BodyMimes, ContextFromBody } from '../context/schemas.js';
+import { MethodSchema } from '../openapi-to-joi.js';
 
-export type MaybeResponseBody<M> = M extends MethodSchema['responses']
+export type ValidResponses = OK | Created | NoContent;
+
+export type MaybeResponseBody<
+    M,
+    Components extends {} = {},
+> = M extends MethodSchema['responses']
     ? M extends OK
-        ? { status: 200; data: ContextFromBody<M['200']['content']> }
+        ? { status: 200; body: ContextFromBody<M['200']['content'], Components> }
         : M extends Created
-        ? { status: 201; data: ContextFromBody<M['201']['content']> }
+        ? { status: 201; body: ContextFromBody<M['201']['content'], Components> }
         : M extends NoContent
         ? { status: 204 }
         : any
     : any;
+
+type OK = {
+    '200': {
+        description: string;
+        content: BodyMimes;
+    };
+};
+
+type Created = {
+    '201': {
+        description: string;
+        content: BodyMimes;
+    };
+};
+
+type NoContent = {
+    '204': {
+        description: string;
+    };
+};

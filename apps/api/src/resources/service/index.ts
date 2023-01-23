@@ -1,5 +1,5 @@
 import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
-import { ok } from '@benjambles/mow-server/src/utils/routes/responses.js';
+import { ok } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { DataModel } from '../../app.js';
 import config from './config.js';
 

@@ -3,7 +3,7 @@ import {
     created,
     noResponse,
     ok,
-} from '@benjambles/mow-server/src/utils/routes/responses.js';
+} from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { DataModel } from '../../app.js';
 import config from './config.js';
 

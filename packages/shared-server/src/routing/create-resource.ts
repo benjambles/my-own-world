@@ -23,12 +23,11 @@ type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultDat
     };
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
-        H extends (ctx: Context) => unknown,
     >(
         key: K,
-        handler: H extends (ctx: Context) => unknown ? OperationHandler<A, K> : never,
+        handler: OperationHandler<A, K>,
     ) => ResourceBinder<A, D & { operations: { [key in K]: OperationHandler<A, K> } }>;
-    access: <K extends string, H extends (ctx: Context) => unknown>(
+    access: <K extends string, H extends (ctx: Context) => boolean>(
         key: K,
         handler: H,
     ) => ResourceBinder<A, D & { accessMap: { [key in K]: CallBackSignature<H> } }>;
@@ -113,7 +112,12 @@ function getRouteMap(
                     method,
                     path,
                     handler,
-                    validate: buildJoiSpec(JoiRouter.Joi, methodConfig, validateOutput),
+                    validate: buildJoiSpec(
+                        JoiRouter.Joi,
+                        methodConfig,
+                        validateOutput,
+                        apiDoc['components'],
+                    ),
                 };
             });
         })

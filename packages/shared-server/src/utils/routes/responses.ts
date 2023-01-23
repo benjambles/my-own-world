@@ -8,16 +8,15 @@ export function getDataMiddleware(
 ): Middleware {
     return async (ctx: Context, next) => {
         try {
-            const response = await callback(ctx, next);
-            const status: number = response.status || 200;
+            const { status = 200, body } = await callback(ctx, next);
 
             ctx.status = status;
-            ctx.body = response.data;
+            ctx.body = body;
+
+            await next();
         } catch (e) {
             throwSafeError(ctx, e, defaultError);
         }
-
-        await next();
     };
 }
 
@@ -32,12 +31,12 @@ export function streamResponse(
     ctx.body = Readable.from(body);
 }
 
-export function ok<D>(data: D) {
-    return { status: 200, data } as const;
+export function ok<B>(body: B) {
+    return { status: 200, body } as const;
 }
 
-export function created<D>(data: D) {
-    return { status: 201, data } as const;
+export function created<B>(body: B) {
+    return { status: 201, body } as const;
 }
 
 export function noResponse() {
