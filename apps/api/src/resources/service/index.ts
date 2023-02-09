@@ -7,7 +7,7 @@ import config from './config.js';
  * Routes on /service and /service/*
  */
 export default function service(dataModel: DataModel) {
-    const system = dataModel.get('system');
+    const system = dataModel.getKey('system');
 
     return createResource(config)
         .operation('getHealth', async () => {

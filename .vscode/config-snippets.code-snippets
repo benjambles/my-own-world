@@ -13,7 +13,7 @@
             "* Routes on /${1:resourceName} and /${1}/*",
             "*/",
             "export default function ${1}(dataModel: DataModel, prefix: string) {",
-            "    const ${2:collectionName} = dataModel.get('${2}');",
+            "    const ${2:collectionName} = dataModel.getKey('${2}');",
             "",
             "    return createResource(config, prefix)",
             "        .operation('get${1/^(.)(.*)/${1:/upcase}${2}/}', async (ctx, next) => '')",

@@ -1,3 +1,4 @@
+import { Simplify } from '@benjambles/js-lib/src/index.js';
 import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
 import { getServiceModel } from '../resources/service/service.js';
@@ -20,8 +21,10 @@ type Binder2<T extends BinderData = {}> = {
     bind: <K extends string, V extends Model>(
         key: K extends keyof T ? never : K,
         model: V,
-    ) => Binder2<T & { [key in K]: ReturnType<V> }>;
-    get: <K extends keyof T>(key: K) => T[K];
+    ) => Binder2<Simplify<T & { [key in K]: ReturnType<V> }>>;
+    get: () => {
+        getKey: <K extends keyof T>(key: K) => T[K];
+    };
 };
 
 function withDb(db: Db, env: Env): Binder2 {
@@ -30,8 +33,13 @@ function withDb(db: Db, env: Env): Binder2 {
             bind(key, model) {
                 return binder(Object.assign(data, { [key]: model(db, env) }));
             },
-            get(key) {
-                return data[key];
+            // This looks awkward but generates a significantly smaller type signature
+            get() {
+                return {
+                    getKey(key) {
+                        return data[key];
+                    },
+                };
             },
         };
     }
@@ -44,5 +52,6 @@ export function bindModels(db: Db, env: Env) {
         .bind('users', getUserModel)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
-        .bind('tales', talesModel);
+        .bind('tales', talesModel)
+        .get();
 }

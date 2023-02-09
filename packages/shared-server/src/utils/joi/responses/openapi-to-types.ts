@@ -30,22 +30,22 @@ export type MaybeHandlerResponse<
         : any
     : any;
 
-type OK = {
+interface OK {
     '200': {
         description: string;
         content: BodyMimes;
     };
-};
+}
 
-type Created = {
+interface Created {
     '201': {
         description: string;
         content: BodyMimes;
     };
-};
+}
 
-type NoContent = {
+interface NoContent {
     '204': {
         description: string;
     };
-};
+}

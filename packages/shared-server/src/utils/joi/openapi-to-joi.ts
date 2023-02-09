@@ -7,10 +7,18 @@ import { PropertySchemas } from './context/schemas.js';
 import { MaybeResponseBody, ValidResponses } from './responses/openapi-to-types.js';
 
 export type RouteHandlers<C extends ApiDoc> = UnionToTuple<
-    FlatArray<AllPaths<C, ExpectedRoutes<C>>, 1>
+    FlatArray<AllPaths<C, UnionToTuple<keyof C['paths']>>, 1>
 >;
 
-export type RequiredHandlers<Doc extends ApiDoc> = OperationIds<OperationIdsPerPath<Doc>>;
+export type RequiredHandlers<Doc extends ApiDoc> = UnionFromProps<
+    OperationIdsPerPath<Doc>
+>;
+
+export type UnionFromProps<T extends { [key: string]: any[] }> = T extends {
+    [key: string]: any[];
+}
+    ? T[keyof T][number]
+    : never;
 
 export type ApiDoc = {
     readonly components?: {
@@ -28,11 +36,11 @@ export type ApiDoc = {
     };
 };
 
-export type Ref = {
+export interface Ref {
     $ref: string;
-};
+}
 
-export type MethodSchema = {
+export interface MethodSchema {
     readonly operationId: string;
     readonly parameters?: ReadonlyArray<Param | Ref>;
     readonly requestBody?: RequestBody;
@@ -40,27 +48,15 @@ export type MethodSchema = {
         readonly [type: string]: readonly string[];
     }>;
     readonly responses?: ValidResponses;
+}
+
+type OperationIdsPerPath<Doc extends ApiDoc> = {
+    [K in keyof Doc['paths']]: [MaybeOperationId<Doc['paths'][K][keyof Doc['paths'][K]]>];
 };
 
-type OperationIdsPerPath<T extends ApiDoc> = T extends ApiDoc
-    ? {
-          [K in keyof T['paths']]: [MaybeOperationId<T['paths'][K][keyof T['paths'][K]]>];
-      }
-    : never;
-
-type MaybeOperationId<Schema> = Schema extends MethodSchema
+type MaybeOperationId<Schema> = Schema extends { operationId: string }
     ? Schema['operationId']
     : never;
-
-type OperationIds<T extends { [key: string]: string[] }> = T extends {
-    [key: string]: string[];
-}
-    ? T[keyof T] extends string[]
-        ? T[keyof T][number]
-        : never
-    : never;
-
-type ExpectedRoutes<A extends ApiDoc> = UnionToTuple<keyof A['paths']>;
 
 type AllPaths<
     Doc extends ApiDoc,

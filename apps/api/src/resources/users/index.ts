@@ -16,8 +16,8 @@ import config from './config.js';
  */
 
 export default function users(dataModel: DataModel) {
-    const users = dataModel.get('users');
-    const identifiers = dataModel.get('identifiers');
+    const users = dataModel.getKey('users');
+    const identifiers = dataModel.getKey('identifiers');
 
     return createResource(config)
         .access('role:owner', isCurrentUser)

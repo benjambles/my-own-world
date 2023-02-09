@@ -18,7 +18,7 @@ const defaultData = {
 };
 
 //#region Types
-type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> = {
+interface ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> {
     get: () => {
         accessMap: Id<D['accessMap']>;
         operations: Id<D['operations']>;
@@ -34,16 +34,20 @@ type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultDat
         key: K,
         handler: H,
     ) => ResourceBinder<A, D & { accessMap: { [key in K]: CallBackSignature<H> } }>;
-};
+}
 
-export type ResourceData = {
+export interface ResourceData {
     operations: {
         [key: string]: (ctx: KoaContext<any, any>) => unknown;
     };
     accessMap: {
         [key: string]: (ctx: KoaContext<any, any>) => boolean;
     };
-};
+}
+
+export interface ResourceConfig extends ResourceData {
+    apiDoc: ApiDoc;
+}
 
 type OperationHandler<A extends ApiDoc, K extends string> = Filter<
     RouteHandlers<A>,
@@ -89,10 +93,7 @@ export function getRouter(resource, prefix = '', validateOutput: boolean = false
     return createRoute(prefix, routeMap).middleware();
 }
 
-function getRouteMap(
-    data: ResourceData & { apiDoc: ApiDoc },
-    validateOutput: boolean,
-): Spec[] {
+function getRouteMap(data: ResourceConfig, validateOutput: boolean): Spec[] {
     return Object.entries(data.apiDoc.paths)
         .map(([path, pathConfig]) => {
             return Object.entries(pathConfig).map(([method, methodConfig]) => {

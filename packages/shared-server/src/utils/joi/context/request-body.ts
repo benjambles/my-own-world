@@ -1,10 +1,10 @@
 import { Id } from '@benjambles/js-lib/dist/index.js';
 import { BodyMimes, ContextFromBody } from './schemas.js';
 
-export type RequestBody = {
+export interface RequestBody {
     required: boolean;
     content: BodyMimes;
-};
+}
 
 export type MaybeBodyContext<
     BodyConfig,

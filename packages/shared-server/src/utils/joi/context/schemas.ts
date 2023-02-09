@@ -9,10 +9,10 @@ import { Ref } from '../openapi-to-joi.js';
 export type ContextFromBody<
     BodyConfig,
     Components extends {} = {},
-> = BodyConfig extends BodyMimes
-    ? BodyConfig extends ApplicationJson
-        ? ParseProp<BodyConfig['application/json']['schema'], Components>
-        : string
+> = BodyConfig extends ApplicationJson
+    ? ParseProp<BodyConfig['application/json']['schema'], Components>
+    : BodyConfig extends TextPlain
+    ? string
     : never;
 
 export type BodyMimes = TextPlain | ApplicationJson;
@@ -39,47 +39,44 @@ export type PropertySchemas =
     | ArraySchema
     | Ref;
 
-export type ObjectSchema = {
+export interface ObjectSchema {
     type: 'object';
     required?: readonly string[];
     properties: {
         [key: string]: PropertySchemas;
     };
     default?: any;
-};
+}
 
-export type ArraySchema = {
+export interface ArraySchema {
     type: 'array';
     items: StringSchema | NumberSchema | ObjectSchema | ArraySchema | BooleanSchema | Ref;
     default?: boolean;
-};
+}
 
-type StringSchema = {
+interface StringSchema {
     type: 'string';
     default?: string;
     format?: string;
     maxLength?: number;
     minLength?: number;
-};
+}
 
-type NumberSchema = {
+interface NumberSchema {
     type: 'integer';
     default?: number;
     format?: string;
     maximum?: number;
     minimum?: number;
-};
+}
 
-type BooleanSchema = {
+interface BooleanSchema {
     type: 'boolean';
     default?: boolean;
-};
+}
 
 //#region Schema Parsing
-type ParseProp<
-    Prop extends PropertySchemas,
-    Components extends {} = {},
-> = Prop extends Ref
+type ParseProp<Prop extends PropertySchemas, Components> = Prop extends Ref
     ? TypeFromRefSchema<Prop, Components>
     : Prop extends StringSchema
     ? string
@@ -93,29 +90,27 @@ type ParseProp<
     ? Id<TypeFromObjectSchema<Prop, Components>>
     : never;
 
-type TypeFromObjectSchema<Schema extends ObjectSchema, Components extends {} = {}> = Id<
+type TypeFromObjectSchema<Schema extends ObjectSchema, Components> = Id<
     PartialBy<
         ParseProperties<Schema['properties'], Components>,
         GetOptionalProps<Schema, Components>
     >
 >;
 
-type ParseProperties<
-    Props extends ObjectSchema['properties'],
-    Components extends {} = {},
-> = {
+type ParseProperties<Props extends ObjectSchema['properties'], Components> = {
     -readonly [Key in keyof Props]: ParseProp<Props[Key], Components>;
 };
 
-type TypeFromArraySchema<Schema extends ArraySchema, Components extends {} = {}> = Array<
+type TypeFromArraySchema<Schema extends ArraySchema, Components> = Array<
     ParseProp<Schema['items'], Components>
 >;
 
-type TypeFromRefSchema<R extends Ref, Components extends {} = {}> = ParseProp<
-    GetPropFromRef<R, Components>
+type TypeFromRefSchema<R extends Ref, Components> = ParseProp<
+    GetPropFromRef<R, Components>,
+    Components
 >;
 
-type GetOptionalProps<Props extends ObjectSchema, Components extends {} = {}> = Exclude<
+type GetOptionalProps<Props extends ObjectSchema, Components> = Exclude<
     ObjectValues<{
         -readonly [Key in keyof Props['properties']]: PropOrRef<
             Props['properties'][Key],
@@ -131,7 +126,7 @@ type PropOrRef<P extends PropertySchemas, Components> = P extends Ref
     ? GetPropFromRef<P, Components>
     : P;
 
-type GetPropFromRef<R extends Ref, Components extends {} = {}> = Components extends {
+type GetPropFromRef<R extends Ref, Components> = Components extends {
     schemas: Record<string, PropertySchemas>;
 }
     ? R['$ref'] extends `#/components/schemas/${infer Key}`

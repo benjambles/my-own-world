@@ -11,7 +11,7 @@ import config from './config.js';
  * Routes on /tales and /tales/*
  */
 export default function tales(dataModel: DataModel) {
-    const tales = dataModel.get('tales');
+    const tales = dataModel.getKey('tales');
 
     return createResource(config)
         .operation('getTales', async (ctx) => {

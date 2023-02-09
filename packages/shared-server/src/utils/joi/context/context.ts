@@ -36,7 +36,7 @@ export interface KoaContext<RequestParams extends KoaRequestParams, ResponseBody
     body: ResponseBody;
 }
 
-export type KoaRequestParams = {
+export interface KoaRequestParams {
     params?: {
         [key: string]: string;
     };
@@ -46,4 +46,4 @@ export type KoaRequestParams = {
     body?: {
         [key: string]: unknown;
     };
-};
+}

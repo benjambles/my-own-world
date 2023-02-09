@@ -1,12 +1,12 @@
 import { Id, UnionToTuple } from '@benjambles/js-lib/src/index.js';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { URL, URLSearchParams } from 'url';
-import { ResourceData } from '../../routing/create-resource.js';
+import { ResourceConfig } from '../../routing/create-resource.js';
 import { stringifyJSON } from '../data/json.js';
 import { maybeProp } from '../functional/maybe-prop.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
-import { ApiDoc, MethodSchema } from '../joi/openapi-to-joi.js';
+import { ApiDoc, UnionFromProps, MethodSchema } from '../joi/openapi-to-joi.js';
 import {
     MaybeHandlerResponse,
     ValidResponses,
@@ -14,23 +14,21 @@ import {
 import { HTTPVerbs } from './get-http-methods.js';
 
 //#region Types
-type ResourceBinder<Config extends ResourceConfig, D extends HandlerData = {}> = {
+interface ResourceBinder<Config extends ResourceConfig, D extends HandlerData = {}> {
     get: () => Id<D>;
     operation: <K extends keyof Config['operations']>(
         operationId: K,
         hostUrl: string,
         fetchArgs: FetchHandlerArgs,
     ) => ResourceBinder<Config, D & { [key in K]: OperationConfig<Config['apiDoc'], K> }>;
-};
-
-type ResourceConfig = ResourceData & { apiDoc: ApiDoc };
+}
 
 type ClientHandlers<Data extends ResourceConfig> = {
     [Operation in keyof Data['operations']]: OperationConfig<Data['apiDoc'], Operation>;
 };
 
 type OperationConfig<T extends ApiDoc, Key> = Select<
-    UnionToTuple<Flatten<OperationIdsPerPath<T>>>,
+    UnionToTuple<UnionFromProps<OperationIdsPerPath<T>>>,
     { operationId: Key }
 >[0]['handler'];
 
@@ -40,14 +38,6 @@ type OperationIdsPerPath<T extends ApiDoc> = T extends ApiDoc
               MaybeOperation<T['paths'][K][keyof T['paths'][K]], T['components']>,
           ];
       }
-    : never;
-
-type Flatten<T extends { [key: string]: any[] }> = T extends {
-    [key: string]: any[];
-}
-    ? T[keyof T] extends any[]
-        ? T[keyof T][number]
-        : never
     : never;
 
 type MaybeOperation<
@@ -66,12 +56,15 @@ type MaybeOperation<
       }
     : never;
 
-type HandlerData = {
+interface HandlerData {
     [name: string]: (args: any) => Promise<unknown>;
-};
+}
 
-type FetchHandlerArgs = { url: string; method: HTTPVerbs; responses: ValidResponses };
-
+interface FetchHandlerArgs {
+    url: string;
+    method: HTTPVerbs;
+    responses: ValidResponses;
+}
 //#endregion Types
 
 export function getClientHandlers<T extends ResourceConfig>(
