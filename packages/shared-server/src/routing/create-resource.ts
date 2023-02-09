@@ -1,10 +1,11 @@
+import { Id } from '@benjambles/js-lib/src/index.js';
 import { Context, Next } from 'koa';
 import JoiRouter, { Spec } from 'koa-joi-router';
-import Router from 'koa-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
 import { catchJoiErrors } from '../koa/middleware/catch-joi-errors.js';
 import { getAccessMiddleware } from '../koa/middleware/get-access-middleware.js';
 import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
+import { KoaContext } from '../utils/joi/context/context.js';
 import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to-joi.js';
 import { getAccessMap } from '../utils/routes/get-access-map.js';
 import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
@@ -19,7 +20,9 @@ const defaultData = {
 //#region Types
 type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> = {
     get: () => {
-        getRouter: (validateOutput: boolean) => Router.IMiddleware<any, {}>;
+        accessMap: Id<D['accessMap']>;
+        operations: Id<D['operations']>;
+        apiDoc: A;
     };
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
@@ -33,12 +36,12 @@ type ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultDat
     ) => ResourceBinder<A, D & { accessMap: { [key in K]: CallBackSignature<H> } }>;
 };
 
-type ResourceData = {
+export type ResourceData = {
     operations: {
-        [key: string]: (ctx: Context) => unknown;
+        [key: string]: (ctx: KoaContext<any, any>) => unknown;
     };
     accessMap: {
-        [key: string]: (ctx: Context) => boolean;
+        [key: string]: (ctx: KoaContext<any, any>) => boolean;
     };
 };
 
@@ -54,18 +57,13 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
     : never;
 //#endregion Types
 
-export function createResource<T extends ApiDoc>(
-    apiDoc: T,
-    prefix: string = '',
-): ResourceBinder<T> {
+export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     const resource = (data) => {
         return {
             get() {
                 return {
-                    getRouter(validateOutput: boolean = false) {
-                        const routeMap = getRouteMap(apiDoc, data, validateOutput);
-                        return createRoute(prefix, routeMap).middleware();
-                    },
+                    ...data,
+                    apiDoc,
                 };
             },
             operation(key, handler) {
@@ -86,19 +84,23 @@ export function createResource<T extends ApiDoc>(
     });
 }
 
+export function getRouter(resource, prefix = '', validateOutput: boolean = false) {
+    const routeMap = getRouteMap(resource, validateOutput);
+    return createRoute(prefix, routeMap).middleware();
+}
+
 function getRouteMap(
-    apiDoc: ApiDoc,
-    data: ResourceData,
+    data: ResourceData & { apiDoc: ApiDoc },
     validateOutput: boolean,
 ): Spec[] {
-    return Object.entries(apiDoc.paths)
+    return Object.entries(data.apiDoc.paths)
         .map(([path, pathConfig]) => {
             return Object.entries(pathConfig).map(([method, methodConfig]) => {
                 const handler = [
                     catchJoiErrors(validateOutput),
                     getAccessMiddleware(
-                        methodConfig.security,
                         getAccessMap(data.accessMap),
+                        methodConfig.security,
                     ),
                     getDataMiddleware(
                         undefined,
@@ -116,7 +118,7 @@ function getRouteMap(
                         JoiRouter.Joi,
                         methodConfig,
                         validateOutput,
-                        apiDoc['components'],
+                        data.apiDoc['components'],
                     ),
                 };
             });

@@ -20,9 +20,11 @@ export function catchJoiErrors(validateOutput: boolean = false): Middleware {
     };
 }
 
+export type KoaError = { details: { message: string; path: string }[] } | { msg: string };
+
 function formattedThrowOnError(ctx: Context) {
     maybeProp('invalid', ctx)
-        .map((errors) => {
+        .map((errors: Record<string, KoaError>) => {
             return Object.fromEntries(
                 Object.entries(errors).map(([key, error]) => [
                     key,

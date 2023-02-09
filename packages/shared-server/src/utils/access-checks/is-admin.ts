@@ -5,5 +5,5 @@ import { Context } from 'koa';
  * @param token
  */
 export function isAdmin(ctx: Context): boolean {
-    return ctx.state?.user?.userData === true;
+    return ctx.state.user?.userData === true; // TODO: define admin users
 }

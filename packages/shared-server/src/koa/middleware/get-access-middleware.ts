@@ -9,14 +9,10 @@ import { MethodSchema } from '../../utils/joi/openapi-to-joi.js';
  * @param accessMap
  */
 export function getAccessMiddleware(
-    securityMap: MethodSchema['security'],
     accessMap?: (ctx: Context) => (role: string) => boolean,
+    securityMap: MethodSchema['security'] = [],
 ): Middleware {
-    const accessRoles =
-        securityMap?.reduce(
-            (acc, item) => (item.http ? acc.concat(item.http) : acc),
-            [],
-        ) ?? [];
+    const accessRoles = securityMap.find((item) => 'http' in item)?.http ?? [];
 
     /**
      * Throwns an error if the users system roles and access rights don't match requirements

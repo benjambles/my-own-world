@@ -40,3 +40,9 @@ type UnionToFnInsertion<T> = (T extends any ? (arg: () => T) => any : never) ext
 export type Simplify<Type> = Type extends any[] | Date ? Type : Id<Type>;
 
 export type Id<T> = {} & { [P in keyof T]: T[P] };
+
+export type Identity<T> = T extends {}
+    ? {
+          [P in keyof T]: Identity<T[P]>;
+      }
+    : T;

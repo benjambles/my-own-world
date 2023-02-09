@@ -52,6 +52,6 @@ export function throwSafeError(
     ctx.throw(status, message);
 }
 
-function isProduction(nodeEnv) {
+function isProduction(nodeEnv: string) {
     return 'production' === nodeEnv;
 }

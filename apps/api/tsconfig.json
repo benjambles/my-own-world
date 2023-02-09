@@ -3,7 +3,8 @@
     "compilerOptions": {
         "tsBuildInfoFile": "buildcache",
         "rootDir": "src",
-        "outDir": "dist"
+        "outDir": "dist",
+        "composite": true
     },
     "references": [
         {

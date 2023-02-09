@@ -1,4 +1,4 @@
-import { some, none } from 'ts-option';
+import { none, some } from 'ts-option';
 
 export function stringifyJSON(data) {
     try {

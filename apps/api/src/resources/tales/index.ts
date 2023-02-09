@@ -10,10 +10,10 @@ import config from './config.js';
 /**
  * Routes on /tales and /tales/*
  */
-export default function tales(dataModel: DataModel, prefix: string) {
+export default function tales(dataModel: DataModel) {
     const tales = dataModel.get('tales');
 
-    return createResource(config, prefix)
+    return createResource(config)
         .operation('getTales', async (ctx) => {
             const { limit, offset } = ctx.request.query;
             const data = await tales.get(limit, offset);

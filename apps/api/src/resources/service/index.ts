@@ -6,19 +6,17 @@ import config from './config.js';
 /**
  * Routes on /service and /service/*
  */
-export default function service(dataModel: DataModel, prefix: string) {
+export default function service(dataModel: DataModel) {
     const system = dataModel.get('system');
 
-    return createResource(config, prefix)
+    return createResource(config)
         .operation('getHealth', async () => {
             return ok('ok');
         })
         .operation('getVersion', async () => {
-            const { key, value } = await system.find('api_version');
+            const { value } = await system.find('api_version');
 
-            return ok({
-                [key]: value,
-            });
+            return ok(value);
         })
         .operation('getStatus', async () => {
             return ok('ok');

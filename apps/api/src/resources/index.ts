@@ -1,10 +1,20 @@
+import { getClientHandlers } from '@benjambles/mow-server/dist/utils/routes/get-client-handlers.js';
 import { DataModel } from '../app.js';
 import service from './service/index.js';
 import users from './users/index.js';
 
-export default function (dataModel: DataModel, prefix: string) {
+export default function (dataModel: DataModel) {
+    const routeHandlers = {
+        service: service(dataModel),
+        users: users(dataModel),
+    };
+
     return {
-        service: service(dataModel, prefix),
-        users: users(dataModel, prefix),
+        routeHandlers,
+        getApiHelpers: (hostUrl: string) => {
+            return {
+                users: getClientHandlers(routeHandlers['users'], hostUrl),
+            };
+        },
     };
 }

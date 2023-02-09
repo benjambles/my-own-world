@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
+import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
@@ -28,7 +29,9 @@ const dbInstance = await initConnection({
 export type DataModel = typeof dataModel;
 export const dataModel = bindModels(dbInstance, env);
 
-const resources = getResources(dataModel, prefix);
+const resources = getResources(dataModel);
+
+export const { getApiHelpers } = resources;
 
 export const serve = configureServer({
     env,
@@ -36,7 +39,9 @@ export const serve = configureServer({
     config: {
         isApi: true,
     },
-    routes: Object.values(resources).map((resource) => resource.getRouter(false)),
+    routes: Object.values(resources.routeHandlers).map((resource) =>
+        getRouter(resource, prefix, false),
+    ),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

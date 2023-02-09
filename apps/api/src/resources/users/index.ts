@@ -1,12 +1,12 @@
 import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { isCurrentUser } from '@benjambles/mow-server/dist/utils/access-checks/get-authenticated-user-id.js';
-import { hmac } from '@benjambles/mow-server/dist/utils/security/encryption.js';
-import { getToken } from '@benjambles/mow-server/dist/utils/security/jwt.js';
 import {
     created,
     noResponse,
     ok,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { hmac } from '@benjambles/mow-server/dist/utils/security/encryption.js';
+import { getToken } from '@benjambles/mow-server/dist/utils/security/jwt.js';
 import { DataModel } from '../../app.js';
 import config from './config.js';
 
@@ -14,11 +14,12 @@ import config from './config.js';
  * Routes on /users and /users/*
  * Special auth routes under: /authentication
  */
-export default function users(dataModel: DataModel, prefix: string) {
+
+export default function users(dataModel: DataModel) {
     const users = dataModel.get('users');
     const identifiers = dataModel.get('identifiers');
 
-    return createResource(config, prefix)
+    return createResource(config)
         .access('role:owner', isCurrentUser)
         .operation('authenticateUser', async (ctx) => {
             const { identifier, password } = ctx.request.body;

@@ -64,11 +64,10 @@ export default {
                     '200': {
                         description: 'OK,',
                         content: {
-                            'application/json': {
+                            'text/plain': {
                                 schema: {
-                                    type: 'object',
+                                    type: 'string',
                                     example: 'pong',
-                                    properties: {},
                                 },
                             },
                         },

@@ -1,11 +1,11 @@
-import { maybeProp } from '../functional/maybe-prop.js';
+import { KoaError } from '../../koa/middleware/catch-joi-errors.js';
 
 /**
  *
  * @param error
  */
-export function getErrorMessage(error) {
-    return maybeProp('details', error)
-        .map((details) => details.map(({ message, path }) => ({ message, path })))
-        .getOrElseValue(error.msg);
+export function getErrorMessage(error: KoaError) {
+    return 'details' in error
+        ? error.details.map(({ message, path }) => ({ message, path }))
+        : error.msg;
 }

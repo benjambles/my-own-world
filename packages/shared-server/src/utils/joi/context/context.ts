@@ -1,4 +1,4 @@
-import { Id, Simplify } from '@benjambles/js-lib/dist/index.js';
+import { Identity } from '@benjambles/js-lib/dist/index.js';
 import { Context, Request } from 'koa';
 import { Ref } from '../openapi-to-joi.js';
 import { Param, ParseParam } from './request-parameters.js';
@@ -10,7 +10,15 @@ export type ContextFromParams<
     Components extends {} = {},
 > = Params extends readonly [infer First extends Param | Ref, ...infer Rest]
     ? ContextFromParams<Rest, Result & ParseParam<First, Components>, Body, Components>
-    : KoaContext<Id<Result>, Simplify<Body>>;
+    : KoaContext<Identity<Result>, Identity<Body>>;
+
+export type HandlerArgs<
+    Params extends readonly any[] = readonly [],
+    Result extends object = {},
+    Components extends {} = {},
+> = Params extends readonly [infer First extends Param | Ref, ...infer Rest]
+    ? HandlerArgs<Rest, Result & ParseParam<First, Components>, Components>
+    : Identity<Result>;
 
 interface KoaRequest<RequestParams extends KoaRequestParams> extends Request {
     query: RequestParams['query'] extends never
@@ -22,13 +30,13 @@ interface KoaRequest<RequestParams extends KoaRequestParams> extends Request {
     body: RequestParams['body'] extends never ? Request['body'] : RequestParams['body'];
 }
 
-interface KoaContext<RequestParams extends KoaRequestParams, ResponseBody = any>
+export interface KoaContext<RequestParams extends KoaRequestParams, ResponseBody = any>
     extends Context {
     request: KoaRequest<RequestParams>;
     body: ResponseBody;
 }
 
-type KoaRequestParams = {
+export type KoaRequestParams = {
     params?: {
         [key: string]: string;
     };

@@ -15,7 +15,7 @@ interface MongoConfig {
  */
 export async function initConnection(config: MongoConfig) {
     const connectionString = getConnectionString(config);
-    const client = await new MongoDB.MongoClient(connectionString);
+    client = client || new MongoDB.MongoClient(connectionString);
 
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();

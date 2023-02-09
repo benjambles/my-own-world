@@ -1,9 +1,10 @@
 import { Context } from 'koa';
+import { getAuthenticatedUserId } from './get-authenticated-user-id.js';
 
 /**
  *
  * @param token
  */
 export function isUser(ctx: Context): boolean {
-    return Object.keys(ctx.state?.user ?? {}).length > 0;
+    return getAuthenticatedUserId(ctx) !== undefined;
 }
