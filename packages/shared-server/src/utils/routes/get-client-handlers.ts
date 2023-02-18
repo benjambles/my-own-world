@@ -1,4 +1,4 @@
-import { Id, UnionToTuple } from '@benjambles/js-lib/src/index.js';
+import { Id, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { URL, URLSearchParams } from 'url';
 import { ResourceConfig } from '../../routing/create-resource.js';

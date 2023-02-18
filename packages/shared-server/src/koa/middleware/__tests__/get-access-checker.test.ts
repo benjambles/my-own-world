@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import { getAccessMap } from '../../../utils/routes/get-access-map.js';
-import { getAccessChecker } from '../get-access-checker.js';
+import { getAccessMiddleware } from '../get-access-middleware.js';
 
-test('getAccessChecker', async () => {
-    const checkerNoMap = getAccessChecker();
+test('getAccessMiddleware', async () => {
+    const checkerNoMap = getAccessMiddleware();
     const err = (code, msg) => {
         throw new Error(msg);
     };
@@ -13,7 +13,7 @@ test('getAccessChecker', async () => {
         checkerNoMap({ throw: err } as Koa.Context, async () => {}),
     ).resolves.not.toThrow();
 
-    const checkerWithMap = getAccessChecker(getAccessMap());
+    const checkerWithMap = getAccessMiddleware(getAccessMap());
 
     // Passed roles and data don't match map
     const ctxFail: unknown = {

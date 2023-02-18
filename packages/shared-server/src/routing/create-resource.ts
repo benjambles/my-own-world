@@ -1,4 +1,4 @@
-import { Id } from '@benjambles/js-lib/src/index.js';
+import { Id } from '@benjambles/js-lib/dist/index.js';
 import { Context, Next } from 'koa';
 import JoiRouter, { Spec } from 'koa-joi-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';

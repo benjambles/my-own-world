@@ -10,6 +10,6 @@ export function getProp<T, K extends keyof T>(key: K, parent: T): T[K] {
     return parent[key];
 }
 
-export function setProp<T, K extends keyof T>(key: K, value: T[K], parent: T): T {
+export function setProp<T>(key: string, value: any, parent: T): T {
     return { ...parent, [key]: value };
 }

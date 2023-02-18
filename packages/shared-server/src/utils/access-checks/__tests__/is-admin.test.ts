@@ -4,7 +4,7 @@ import { isAdmin } from '../is-admin.js';
 test('isAdmin', () => {
     const tests = [
         [true, { state: { user: { userData: true } } }],
-        [false, { user: false }],
+        [false, { state: {} }],
     ];
 
     tests.forEach(([result, data]) => {

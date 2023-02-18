@@ -2,7 +2,7 @@ import { Config } from 'jest';
 
 const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
-    coveragePathIgnorePatterns: ['fixture.*'],
+    coveragePathIgnorePatterns: ['fixture.*', '.d.ts'],
     displayName: {
         name: 'SHARED SERVER',
         color: 'blue',

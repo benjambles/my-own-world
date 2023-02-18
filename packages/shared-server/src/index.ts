@@ -34,7 +34,7 @@ export function configureServer({
 
     // Add env values to the context for use later
     // e.g. logging
-    app.context.env = env;
+    app.context.state.env = env;
 
     getMiddleware({
         app,
@@ -51,9 +51,7 @@ export function configureServer({
         routes.forEach((route) => app.use(route));
     }
 
-    return () => {
-        const { PORT, HOST } = env;
-
+    return ({ PORT, HOST } = env) => {
         return app.listen(parseInt(PORT, 10), HOST, () => {
             console.log('Listening on %s:%s', HOST, PORT);
         });

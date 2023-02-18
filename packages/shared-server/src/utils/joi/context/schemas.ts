@@ -3,7 +3,7 @@ import {
     ObjectValues,
     PartialBy,
     TupleToUnion,
-} from '@benjambles/js-lib/src/index.js';
+} from '@benjambles/js-lib/dist/index.js';
 import { Ref } from '../openapi-to-joi.js';
 
 export type ContextFromBody<

@@ -38,17 +38,17 @@ export function throwSafeError(
     error: Partial<ErrorData>,
     safe: ErrorValues,
 ): void {
-    const errorData = {
+    const safeError = {
         message: 'There was an error',
         status: 400,
         ...(typeof safe === 'string' ? { message: safe } : safe),
     };
 
-    if (isProduction(ctx.env.nodeEnv)) {
-        ctx.throw(errorData.status, errorData.message ?? 400);
+    if (isProduction(ctx.state.env.nodeEnv)) {
+        ctx.throw(safeError.status, safeError.message);
     }
 
-    const { status, message } = { ...errorData, ...error };
+    const { status, message } = { ...safeError, ...error };
     ctx.throw(status, message);
 }
 

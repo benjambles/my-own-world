@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
-import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
+import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
 import Joi from 'joi';
 import Koa from 'koa';
@@ -24,7 +24,8 @@ export const envSchema: Joi.PartialSchemaMap<any> = {
     JWT_SECRET: Joi.string().uuid().required(),
 };
 
-const env = parseEnvFile(envSchema, resolveImportPath(paths.base, paths.env));
+loadEnv(resolveImportPath(paths.base, paths.env));
+const env = validateEnv(envSchema, process.env);
 
 export const serve = configureServer({
     app: new Koa(),

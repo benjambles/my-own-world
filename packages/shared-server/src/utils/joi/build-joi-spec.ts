@@ -107,7 +107,7 @@ function parseBody(
     const _schema = getSchemaConf(schema, components);
 
     if (_schema.type === 'object') {
-        return joi.object(parseObject(joi, _schema, components)) /*.unknown()*/;
+        return joi.object(parseObject(joi, _schema, components)).unknown();
     }
 
     return buildParameter(joi, { required: false, schema: _schema }, components);
@@ -172,7 +172,7 @@ function buildParameter(
             ? [
                   ['object', parseObject(joi, param.schema, components)],
                   param.required ? ['required', null] : null,
-                  //   ['unknown', null],
+                  ['unknown', null],
               ]
             : [
                   [param.schema.type, null],

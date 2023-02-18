@@ -2,7 +2,7 @@
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
-import { parseEnvFile } from '@benjambles/mow-server/dist/utils/env.js';
+import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
@@ -17,7 +17,8 @@ const paths = {
     env: '../.env',
 };
 
-const env: Env = parseEnvFile(envSchema, resolveImportPath(paths.base, paths.env));
+loadEnv(resolveImportPath(paths.base, paths.env));
+const env: Env = validateEnv(envSchema, process.env);
 
 const dbInstance = await initConnection({
     user: env.MONGO_USER,
@@ -27,10 +28,9 @@ const dbInstance = await initConnection({
 });
 
 export type DataModel = typeof dataModel;
-export const dataModel = bindModels(dbInstance, env);
+const dataModel = bindModels(dbInstance, env);
 
 const resources = getResources(dataModel);
-
 export const { getApiHelpers } = resources;
 
 export const serve = configureServer({

@@ -1,4 +1,4 @@
-import { Identity } from '@benjambles/js-lib/src/index.js';
+import { Identity } from '@benjambles/js-lib/dist/index.js';
 import { BodyMimes, ContextFromBody } from '../context/schemas.js';
 import { MethodSchema } from '../openapi-to-joi.js';
 

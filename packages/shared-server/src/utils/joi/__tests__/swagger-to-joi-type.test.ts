@@ -2,15 +2,16 @@ import { swaggerToJoiType } from '../swagger-to-joi-type.js';
 
 test('swaggerToJoiType', () => {
     const tests = [
-        ['string', 'token'],
-        ['number', 'integer'],
-        ['integer', 'int64'],
+        ['integer', 'number'],
+        ['int64', 'integer'],
+        ['minLength', 'min'],
+        ['maxLength', 'max'],
+        ['minimum', 'min'],
+        ['maximum', 'max'],
         ['string', 'string'],
-        ['number', 'number'],
-        ['boolean', 'boolean'],
     ];
 
-    tests.forEach(([result, value]) => {
+    tests.forEach(([value, result]) => {
         expect(swaggerToJoiType(value)).toEqual(result);
     });
 });

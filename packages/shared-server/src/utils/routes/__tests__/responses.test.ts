@@ -1,22 +1,21 @@
-import { dataResponse, partsResponse } from '../responses.js';
+import * as responses from '../responses.js';
 
-test('partsResponse', () => {
-    const expectedResult = {
-        body: {
-            data: 1,
-        },
-        meta: {
-            data: 2,
-        },
-    };
-    const { body, meta } = expectedResult;
-    expect(partsResponse(body, meta)).toEqual(expectedResult);
-    expect(partsResponse()).toEqual({ body: {}, meta: {} });
+test('created', function () {
+    expect(responses.created({ id: '123' })).toEqual({
+        status: 201,
+        body: { id: '123' },
+    });
 });
 
-test('dataResponse', () => {
-    const expectedResult = {
-        data: [1, 2, 3, 4, 5],
-    };
-    expect(dataResponse(expectedResult.data)).toEqual(expectedResult);
+test('ok', function () {
+    expect(responses.ok({ id: '123' })).toEqual({
+        status: 200,
+        body: { id: '123' },
+    });
+});
+
+test('noResponse', function () {
+    expect(responses.noResponse()).toEqual({
+        status: 204,
+    });
 });

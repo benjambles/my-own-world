@@ -1,4 +1,4 @@
-import { Simplify } from '@benjambles/js-lib/src/index.js';
+import { Simplify } from '@benjambles/js-lib/dist/index.js';
 import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
 import { getServiceModel } from '../resources/service/service.js';

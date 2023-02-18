@@ -4,7 +4,9 @@ import { catchJoiErrors } from '../catch-joi-errors.js';
 test('catchJoiErrors', async () => {
     const ctxValid = {};
 
-    await expect(catchJoiErrors(ctxValid as Koa.Context, async () => {})).resolves.not.toThrow();
+    await expect(
+        catchJoiErrors(false)(ctxValid as Koa.Context, async () => {}),
+    ).resolves.not.toThrow();
 
     const ctxInvalidWithMessage = {
         invalid: {
@@ -24,6 +26,9 @@ test('catchJoiErrors', async () => {
     };
 
     await expect(
-        catchJoiErrors(ctxInvalidWithMessage as unknown as Koa.Context, async () => {}),
+        catchJoiErrors(false)(
+            ctxInvalidWithMessage as unknown as Koa.Context,
+            async () => {},
+        ),
     ).rejects.toThrow();
 });

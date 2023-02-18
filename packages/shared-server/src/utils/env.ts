@@ -1,12 +1,14 @@
 import { config } from 'dotenv';
 import Joi from 'joi';
 
-export function parseEnvFile<T>(
-    envSchema: Joi.PartialSchemaMap<T>,
-    envPath: string,
-): T | never {
-    const env = config({ path: envPath }).parsed;
+export function loadEnv(envPath: string) {
+    return config({ path: envPath });
+}
 
+export function validateEnv<T>(
+    envSchema: Joi.PartialSchemaMap<T>,
+    env: NodeJS.ProcessEnv,
+): T | never {
     const { error, value } = Joi.object<T>(envSchema).validate(env);
 
     if (error !== undefined) {

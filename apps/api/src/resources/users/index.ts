@@ -23,9 +23,9 @@ export default function users(dataModel: DataModel) {
         .access('role:owner', isCurrentUser)
         .operation('authenticateUser', async (ctx) => {
             const { identifier, password } = ctx.request.body;
-            const hashedIdentifier = hmac(ctx.env.ENC_SECRET, identifier);
+            const hashedIdentifier = hmac(ctx.state.env.ENC_SECRET, identifier);
             const userData = await users.authenticate(hashedIdentifier, password);
-            const token = await getToken(ctx.env.JWT_SECRET, userData);
+            const token = await getToken(ctx.state.env.JWT_SECRET, userData);
 
             return ok({ token, user: userData });
         })
@@ -59,7 +59,7 @@ export default function users(dataModel: DataModel) {
         })
         .operation('getUserIdentifiers', async (ctx) => {
             const data = await identifiers.find(
-                ctx.env.ENC_SECRET,
+                ctx.state.env.ENC_SECRET,
                 ctx.request.params.userId,
             );
 
