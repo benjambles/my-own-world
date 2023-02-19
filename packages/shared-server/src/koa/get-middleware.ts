@@ -6,7 +6,8 @@ import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
-import { errorHandler } from './error-handler.js';
+import { errorHandler } from './middleware/error-handler.js';
+import { setEnvOnState } from './middleware/set-env-on-state.js';
 
 interface GetMiddlewareProps {
     env: { JWT_SECRET: string };
@@ -29,6 +30,7 @@ export function getMiddleware({
     helmetConfig,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
+        setEnvOnState(env),
         logger(),
         conditionalGet(),
         etag(), // Adds eTag headers to the response

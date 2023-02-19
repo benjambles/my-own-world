@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import { parseJson } from '../utils/data/json.js';
+import { parseJson } from '../../utils/data/json.js';
 
 /**
  * Centralised error handling logging. Additional middleware should not

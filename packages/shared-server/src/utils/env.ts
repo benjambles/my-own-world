@@ -9,7 +9,7 @@ export function validateEnv<T>(
     envSchema: Joi.PartialSchemaMap<T>,
     env: NodeJS.ProcessEnv,
 ): T | never {
-    const { error, value } = Joi.object<T>(envSchema).validate(env);
+    const { error, value } = Joi.object<T>(envSchema).unknown().validate(env);
 
     if (error !== undefined) {
         throw error;

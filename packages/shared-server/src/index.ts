@@ -2,17 +2,16 @@ import Koa from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import router, { Spec } from 'koa-joi-router';
 import { getMiddleware } from './koa/get-middleware.js';
-
 interface BootHandlerOpts {
     app: Koa;
     config: {
         isApi: boolean;
         helmetConfig?: any;
         staticPath?: string;
+        env: { PORT: string; HOST: string; JWT_SECRET: string };
     };
     routes?: Koa.Middleware[];
     routesConfig?: Spec[];
-    env: { PORT: string; HOST: string; JWT_SECRET: string };
 }
 
 /**
@@ -21,20 +20,15 @@ interface BootHandlerOpts {
  */
 export function configureServer({
     app,
-    config: { staticPath, helmetConfig, isApi = false },
+    config: { staticPath, helmetConfig, isApi = false, env },
     routes,
     routesConfig,
-    env,
 }: BootHandlerOpts) {
     // override koa's undocumented error handler
     app.context.onerror = errorHandler;
 
     // specify that this is our api
     app.context.api = isApi;
-
-    // Add env values to the context for use later
-    // e.g. logging
-    app.context.state.env = env;
 
     getMiddleware({
         app,

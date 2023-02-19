@@ -28,10 +28,10 @@ loadEnv(resolveImportPath(paths.base, paths.env));
 const env = validateEnv(envSchema, process.env);
 
 export const serve = configureServer({
-    app: new Koa(),
-    env,
     routesConfig,
+    app: new Koa(),
     config: {
+        env,
         isApi: false,
         helmetConfig: {
             contentSecurityPolicy: {

@@ -34,9 +34,9 @@ const resources = getResources(dataModel);
 export const { getApiHelpers } = resources;
 
 export const serve = configureServer({
-    env,
     app: new Koa(),
     config: {
+        env,
         isApi: true,
     },
     routes: Object.values(resources.routeHandlers).map((resource) =>
