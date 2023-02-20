@@ -1,11 +1,11 @@
-const ResolveTypeScriptPlugin = require('resolve-typescript-plugin').default;
-const { resolve } = require('path');
+import { resolve } from 'path';
+import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
-module.exports = {
-    core: {
-        builder: 'webpack5',
+const config = {
+    framework: {
+        name: '@storybook/web-components-webpack5',
+        options: {},
     },
-    framework: '@storybook/web-components',
     staticDirs: ['../dist/static'],
     stories: ['../src/components/**/*.stories.ts'],
     addons: [
@@ -33,4 +33,9 @@ module.exports = {
         // Return the altered config
         return config;
     },
+    docs: {
+        autodocs: true,
+    },
 };
+
+export default config;

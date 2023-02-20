@@ -13,12 +13,14 @@ test('getAccessMiddleware', async () => {
         checkerNoMap({ throw: err } as Koa.Context, async () => {}),
     ).resolves.not.toThrow();
 
-    const checkerWithMap = getAccessMiddleware(getAccessMap());
+    const checkerWithMap = getAccessMiddleware(getAccessMap(), [
+        { http: ['role:admin', 'role:user'] },
+    ]);
 
     // Passed roles and data don't match map
     const ctxFail: unknown = {
         throw: err,
-        state: { accessRoles: ['role:admin'], user: {} },
+        state: { user: {} },
     };
     await expect(() =>
         checkerWithMap(ctxFail as Koa.Context, async () => {}),
@@ -27,7 +29,7 @@ test('getAccessMiddleware', async () => {
     // Passed roles and state data matches map
     const ctxPass: unknown = {
         throw: err,
-        state: { accessRoles: ['role:user', 'role:owner'], user: { _id: 'some-key' } },
+        state: { user: { _id: 'some-key' } },
     };
     await expect(
         checkerWithMap(ctxPass as Koa.Context, async () => {}),

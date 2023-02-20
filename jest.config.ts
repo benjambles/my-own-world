@@ -2,7 +2,8 @@ import type { Config } from 'jest';
 
 const config: Config = {
     collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
-    preset: 'ts-jest',
+    preset: 'ts-jest/presets/default-esm',
+    moduleFileExtensions: ['ts', 'js'],
     projects: [
         '<rootDir>/apps/api',
         '<rootDir>/apps/website',

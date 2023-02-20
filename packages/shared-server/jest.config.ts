@@ -8,11 +8,21 @@ const config: Config = {
         color: 'blue',
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
-    preset: 'ts-jest',
-    resolver: 'jest-ts-webcompat-resolver',
+    preset: 'ts-jest/presets/default-esm',
+    moduleNameMapper: {
+        '(.+)\\.js': '$1',
+    },
+    extensionsToTreatAsEsm: ['.ts'],
     testEnvironment: 'node',
     testRegex: '/__tests__/.*\\.test\\.ts$',
     verbose: true,
+    globals: {
+        __TS_CONFIG__: {
+            module: 'esnext',
+            allowSyntheticDefaultImports: true,
+            esModuleInterop: true,
+        },
+    },
 };
 
 export default config;

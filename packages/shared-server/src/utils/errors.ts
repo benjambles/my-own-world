@@ -44,11 +44,17 @@ export function throwSafeError(
         ...(typeof safe === 'string' ? { message: safe } : safe),
     };
 
-    if (isProduction(ctx.state.env.nodeEnv)) {
+    if (isProduction(ctx.state.env.NODE_ENV)) {
         ctx.throw(safeError.status, safeError.message);
     }
 
-    const { status, message } = { ...safeError, ...error };
+    const errorMessage =
+        error instanceof Error ? error.message : typeof error === 'string' ? error : null;
+
+    const { status, message } = {
+        ...safeError,
+        ...(errorMessage ? { message: errorMessage, status: 500 } : error),
+    };
     ctx.throw(status, message);
 }
 

@@ -1,8 +1,8 @@
 import { createMockContext } from '@shopify/jest-koa-mocks';
 import * as errors from '../errors.js';
 
-const ctx = createMockContext({ state: { env: { nodeEnv: 'development' } } });
-const prodCtx = createMockContext({ state: { env: { nodeEnv: 'production' } } });
+const ctx = createMockContext({ state: { env: { NODE_ENV: 'development' } } });
+const prodCtx = createMockContext({ state: { env: { NODE_ENV: 'production' } } });
 let throwSpy;
 let prodThrowSpy;
 

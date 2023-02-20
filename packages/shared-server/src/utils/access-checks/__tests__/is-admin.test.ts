@@ -3,7 +3,7 @@ import { isAdmin } from '../is-admin.js';
 
 test('isAdmin', () => {
     const tests = [
-        [true, { state: { user: { userData: true } } }],
+        [true, { state: { user: { isAdmin: true } } }],
         [false, { state: {} }],
     ];
 

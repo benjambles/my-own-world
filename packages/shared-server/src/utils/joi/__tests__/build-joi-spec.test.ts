@@ -35,7 +35,7 @@ test('buildJoiSpec', () => {
                 'application/json': {
                     schema: {
                         type: 'object',
-                        required: ['ownerId', 'title'],
+                        required: ['ownerId'],
                         properties: {
                             ownerId: {
                                 type: 'string',
@@ -119,6 +119,7 @@ test('buildJoiSpec', () => {
             expect(value).toEqual(data);
             expect(passes).toEqual(true);
         } catch (error) {
+            console.log(data);
             expect(error).toBeInstanceOf(Error);
             expect(passes).toEqual(false);
         }
