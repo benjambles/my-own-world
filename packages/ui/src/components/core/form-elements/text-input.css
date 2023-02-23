@@ -32,10 +32,7 @@
 .text-input::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     z-index: -1;
     margin: 0;
     border-radius: inherit;
@@ -52,15 +49,21 @@
 .text-input:focus-within::after {
     content: ' ';
     position: absolute;
-    left: 5px;
-    right: 5px;
-    top: 5px;
-    bottom: 5px;
+    inset: 5px;
     border: 1px dotted rgba(0, 0, 0, 0.5);
     border-radius: 2px;
 }
 
-.input-wrapper:hover .text-input::before,
-.input-wrapper:focus-within .text-input::before {
+.input-wrapper:has(:hover, :focus-within) .text-input::before {
     background: var(--gradient-glow-reverse);
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(15%) sepia(86%) saturate(6721%) hue-rotate(295deg) brightness(85%)
+        contrast(120%);
+}
+
+.input-wrapper:has(:hover, :focus-within) ::-webkit-calendar-picker-indicator {
+    filter: invert(7%) sepia(88%) saturate(7111%) hue-rotate(0deg) brightness(115%)
+        contrast(104%);
 }

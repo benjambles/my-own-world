@@ -33,7 +33,7 @@ export function textInput({
     type = 'text',
 }: TextInputData) {
     return html`
-        ${lazyStylesheet('/styles/core/form-elements/text-input.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/form-elements/text-input.css')}
         <label class=${styles.label} for="${id}">${label}</label>
         <div class=${styles.inputWrapper}>
             <div class=${styles.textInput}>

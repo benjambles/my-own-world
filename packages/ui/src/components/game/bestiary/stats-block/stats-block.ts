@@ -16,7 +16,7 @@ interface StatsData {
  */
 export function statsBlock({ name, variant, stats }: StatsData) {
     return html`
-        ${lazyStylesheet('/styles/core/bestiary/stats-block/stats-block.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/bestiary/stats-block/stats-block.css')}
         <section class="${styles.stats}">
             <span class="${styles.name}">
                 <b>Name:</b>

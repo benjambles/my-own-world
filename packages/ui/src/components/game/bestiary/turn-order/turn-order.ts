@@ -6,7 +6,7 @@ type TurnOrder = string[];
 
 export function turnOrder(turns: TurnOrder) {
     return html`
-        ${lazyStylesheet('/styles/core/bestiary/turn-order/turn-order.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/bestiary/turn-order/turn-order.css')}
         <section class="${styles.turnOrder}">
             <h2>Turn order</h2>
             <ol>

@@ -6,13 +6,14 @@ import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
+import mount from 'koa-mount';
 import { errorHandler } from './middleware/error-handler.js';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
 
 interface GetMiddlewareProps {
     env: { JWT_SECRET: string };
     app: Koa;
-    staticPath?: string;
+    staticPath?: Record<string, string>;
     helmetConfig?: any;
 }
 
@@ -38,6 +39,14 @@ export function getMiddleware({
         helmet(helmetConfig), // Security layer
         errorHandler(app),
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
-        staticPath ? serve(staticPath) : undefined,
+        ...serveStatic(staticPath),
     ].filter(Boolean);
+}
+
+function serveStatic(staticPaths: GetMiddlewareProps['staticPath']) {
+    if (!staticPaths) return [];
+
+    return Object.entries(staticPaths).map(([prefix, path]) =>
+        mount(`/${prefix}`, serve(path)),
+    );
 }

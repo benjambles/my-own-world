@@ -5,19 +5,21 @@ import { darkLink, DarkLinkProps } from '../links/dark-link.js';
 import { menuProfile, MenuProfileData } from '../user/menu-profile.js';
 import styles from './header.css.js';
 
-export interface HeaderData {
+interface HeaderData {
     navigationLinks: DarkLinkProps[];
     user?: MenuProfileData;
 }
 
 export function header({ navigationLinks, user }: HeaderData) {
     return html`
-        ${lazyStylesheet('/styles/core/header/header.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/header/header.css')}
         <header class="${styles.header}">
             <div class="${baseStyles.container} ${styles.header__container}">
                 <a href="/" class="logo">My Own World</a>
 
-                <nav class="${styles.nav} ${styles.primaryNav}">${linkList(navigationLinks)}</nav>
+                <nav class="${styles.nav} ${styles.primaryNav}">
+                    ${linkList(navigationLinks)}
+                </nav>
 
                 <div class="${styles.nav} ${styles.accountNav}">
                     ${user?.profile

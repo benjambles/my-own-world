@@ -1,6 +1,6 @@
+import layoutStyles from '@benjambles/mow-ui/styles/base.css.js';
 import { html } from 'lit';
-import layoutStyles from '../../global-css/base.css.js';
-import { layout } from '../layout.js';
+import { layout } from '../../../layouts/core/static-layout.js';
 
 export function terms(data) {
     const page = html`

@@ -8,7 +8,6 @@
     "type": "module",
     "scripts": {
         "build": "tsc -b -v",
-        "clean:ts": "tsc -b --clean",
         "test": "jest",
         "lint": "eslint --fix --ext .js,.ts"
     },

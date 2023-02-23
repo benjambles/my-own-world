@@ -1,14 +1,13 @@
+import baseStyles from '@benjambles/mow-ui/styles/base.css.js';
+import { link, primaryButton, textInput } from '@benjambles/mow-ui/core.js';
+import { lazyStylesheet } from '@benjambles/mow-ui/lazy-stylesheet.js';
 import { html } from 'lit';
-import { primaryButton } from '../../../../core/buttons/primary-button.js';
-import { textInput } from '../../../../core/form-elements/text-input.js';
-import { link } from '../../../../core/links/link.js';
-import baseStyles from '../../../../global-css/base.css.js';
-import { lazyStylesheet } from '../../../../utils/lazy-stylesheet.js';
-import styles from './home-intro.css.js';
+import { layout } from '../../../layouts/core/static-layout.js';
+import styles from './home.css.js';
 
-export function homeIntro() {
-    return html`
-        ${lazyStylesheet('/styles/pages/public/home/home-intro/home-intro.css')}
+export function home(data) {
+    const page = html`<main class="page--home">
+        ${lazyStylesheet('/static/styles/routes/public/home/home.css')}
         <section class="${styles.homeIntro}">
             <div class="${baseStyles.containerSlim} ${styles.homeIntroGrid}">
                 <div class="${styles.homeIntro__text}">
@@ -65,5 +64,9 @@ export function homeIntro() {
                 </form>
             </div>
         </section>
-    `;
+    </main>`;
+
+    return html`${layout(data, page)}`;
 }
+
+export default home;

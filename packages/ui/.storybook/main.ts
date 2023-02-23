@@ -6,7 +6,7 @@ const config = {
         name: '@storybook/web-components-webpack5',
         options: {},
     },
-    staticDirs: ['../dist/static'],
+    staticDirs: [{ from: '../dist/static', to: '/mow-ui' }],
     stories: ['../src/components/**/*.stories.ts'],
     addons: [
         {

@@ -7,8 +7,6 @@ interface GetTemplateStreamParams<T extends {} = {}> {
     rootComponent: string;
 }
 
-type IterableTemplatePromise = Promise<Iterable<unknown>>;
-
 /**
  * Render a template within a Node VM Context
  * and return it as an iterable stream
@@ -19,7 +17,7 @@ export async function getTemplateStream({
     data,
     rootComponent,
     renderFile,
-}: GetTemplateStreamParams): IterableTemplatePromise {
+}: GetTemplateStreamParams) {
     return await renderModule(
         renderFile, // Module to load in VM context
         import.meta.url, // Referrer URL for module
@@ -37,7 +35,7 @@ export async function getTemplateStream({
 export async function getWebsiteTemplateStream({
     data,
     rootComponent,
-}: Omit<GetTemplateStreamParams, 'renderFile'>): IterableTemplatePromise {
+}: Omit<GetTemplateStreamParams, 'renderFile'>) {
     return getTemplateStream({
         data,
         rootComponent,

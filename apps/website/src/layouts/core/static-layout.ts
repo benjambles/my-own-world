@@ -1,14 +1,12 @@
+import { footer, header, skiplinks } from '@benjambles/mow-ui/core.js';
 import { html, TemplateResult } from 'lit';
-import { skiplinks } from '../core/accessibility/skiplinks.js';
-import { footer, FooterData } from '../core/footer/footer.js';
-import { header, HeaderData } from '../core/header/header.js';
 
 interface Data {
     meta: {
         title: string;
     };
-    header: HeaderData;
-    footer: FooterData;
+    header: Parameters<typeof header>[0];
+    footer: Parameters<typeof footer>[0];
     [key: string]: any;
 }
 

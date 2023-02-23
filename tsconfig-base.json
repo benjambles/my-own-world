@@ -13,7 +13,7 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node",
+        "moduleResolution": "nodenext",
         "incremental": true,
         "lib": ["ES2022", "esnext.array", "dom", "ES2020.String"]
     },

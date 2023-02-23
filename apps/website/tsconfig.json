@@ -4,7 +4,17 @@
         "experimentalDecorators": true,
         "tsBuildInfoFile": "buildcache",
         "rootDir": "src",
-        "outDir": "dist"
+        "outDir": "dist",
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true,
+                "rules": {
+                    "no-unknown-tag-name": "off",
+                    "no-unknown-event": "warning"
+                }
+            }
+        ]
     },
     "references": [
         {

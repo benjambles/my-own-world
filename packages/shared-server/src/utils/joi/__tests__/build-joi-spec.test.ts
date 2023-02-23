@@ -119,7 +119,6 @@ test('buildJoiSpec', () => {
             expect(value).toEqual(data);
             expect(passes).toEqual(true);
         } catch (error) {
-            console.log(data);
             expect(error).toBeInstanceOf(Error);
             expect(passes).toEqual(false);
         }

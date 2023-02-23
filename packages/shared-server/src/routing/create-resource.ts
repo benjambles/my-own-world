@@ -1,5 +1,5 @@
 import { Id } from '@benjambles/js-lib/dist/index.js';
-import { Context, Next } from 'koa';
+import { Context } from 'koa';
 import JoiRouter, { Spec } from 'koa-joi-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
 import { catchJoiErrors } from '../koa/middleware/catch-joi-errors.js';
@@ -9,7 +9,7 @@ import { KoaContext } from '../utils/joi/context/context.js';
 import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to-joi.js';
 import { getAccessMap } from '../utils/routes/get-access-map.js';
 import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
-import { getDataMiddleware } from '../utils/routes/responses.js';
+import { getDataMiddleware, noResponse } from '../utils/routes/responses.js';
 import { createRoute } from './create-route.js';
 
 const defaultData = {
@@ -129,8 +129,8 @@ function getRouteMap(data: ResourceConfig, validateOutput: boolean): Spec[] {
 
 function getSendOptions(verbs: string[]) {
     // TODO: Decide if I send all possible paths/HTTP options as body
-    return async (ctx: Context, next: Next) => {
+    return async (ctx: Context) => {
         ctx.set('Allow', verbs.reduce(getHTTPMethods, []).join(', ').toUpperCase());
-        await next();
+        return noResponse();
     };
 }

@@ -7,12 +7,11 @@
     "scripts": {
         "build": "npm run ts",
         "ts": "tsc -b -v",
-        "clean:ts": "tsc -b --clean",
         "test": "jest",
         "dev": "nodemon --config nodemon.json --inspect=:9230",
         "api:generator": "node dist/generators/index.js",
         "lint": "eslint --fix --ext .js,.ts",
-        "start": "node --experimental-json-modules dist/app.js"
+        "start": "node dist/app.js"
     },
     "author": "Ben Allen",
     "license": "ISC",
@@ -28,7 +27,6 @@
         "@types/jest": "29.4.0",
         "@types/koa": "2.13.5",
         "@types/node": "18.14.0",
-        "copyfiles": "2.4.1",
         "jest": "29.4.3",
         "nodemon": "2.0.20",
         "ts-jest": "29.0.5",

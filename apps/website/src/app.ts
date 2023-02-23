@@ -7,10 +7,15 @@ import Koa from 'koa';
 import { fileURLToPath } from 'url';
 import { routesConfig } from './routes/routes-config.js';
 
+const uiStatic = await import.meta.resolve('@benjambles/mow-ui/static');
+
 const paths = {
     base: import.meta.url,
     env: '../.env',
-    static: '../../../packages/ui/dist/static',
+    static: {
+        static: resolveImportPath(import.meta.url, './static'),
+        'mow-ui': resolveImportPath(uiStatic, './static'),
+    },
 };
 
 export const envSchema: Joi.PartialSchemaMap<any> = {
@@ -42,7 +47,7 @@ export const serve = configureServer({
                 },
             },
         },
-        staticPath: resolveImportPath(paths.base, paths.static),
+        staticPath: paths.static,
     },
 });
 

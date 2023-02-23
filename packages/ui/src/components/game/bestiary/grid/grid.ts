@@ -4,7 +4,7 @@ import styles from './grid.css.js';
 
 export function actionGrid() {
     return html`
-        ${lazyStylesheet('/styles/bestiary/grid.css')}
+        ${lazyStylesheet('/mow-ui/styles/bestiary/grid.css')}
         <ol class="${styles.grid}">
             <li>
                 <div class="${styles.hex} ${styles.centre}">

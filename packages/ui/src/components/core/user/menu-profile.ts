@@ -14,7 +14,7 @@ export interface MenuProfileData {
 
 export function menuProfile({ profile }: MenuProfileData) {
     return html`
-        ${lazyStylesheet('/styles/core/user/menu-profile.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/user/menu-profile.css')}
         <details class="${styles.menuProfile}">
             <summary aria-haspopup="true" role="button">
                 <img

@@ -14,7 +14,7 @@ import styles from './actions-table.css.js';
  */
 export function actionsTable({ limit, basic, special, learnable }: Actions) {
     return html`
-        ${lazyStylesheet('/styles/game/bestiary/actions-table/actions-table.css')}
+        ${lazyStylesheet('/mow-ui/styles/game/bestiary/actions-table/actions-table.css')}
         <section class="${styles.actions}">
             <table>
                 <thead>

@@ -17,7 +17,7 @@ export function npcCard({
     actions,
 }: NPCCard) {
     return html`
-        ${lazyStylesheet('/styles/core/bestiary/npc-card.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/bestiary/npc-card.css')}
         <article class="${cardStyles.card}">
             <h1 class="${cardStyles.cardFull}">${name}</h1>
             <div class="${cardStyles.cardFull}">

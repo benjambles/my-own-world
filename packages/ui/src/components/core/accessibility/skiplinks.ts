@@ -5,7 +5,7 @@ import styles from './skiplinks.css.js';
 
 export function skiplinks(links: LinkProps[]) {
     return html`
-        ${lazyStylesheet('/styles/core/accessibility/skiplinks.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/accessibility/skiplinks.css')}
         <div class=${styles.skiplinks}>${links.map(link)}</div>
     `;
 }

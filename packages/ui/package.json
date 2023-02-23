@@ -3,7 +3,28 @@
     "version": "1.0.0",
     "description": "Design system for My Own World application",
     "exports": {
-        "./dist/*": "./dist/*"
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./styles/base.css": "./dist/static/styles/global-css/base.css",
+        "./styles/base.css.js": {
+            "import": "./dist/components/global-css/base.css.js",
+            "types": "./dist/components/global-css/base.css.d.ts"
+        },
+        "./core.js": {
+            "import": "./dist/components/core/index.js",
+            "types": "./dist/components/core/index.d.ts"
+        },
+        "./lazy-stylesheet.js": {
+            "import": "./dist/components/utils/lazy-stylesheet.js",
+            "types": "./dist/components/utils/lazy-stylesheet.d.ts"
+        },
+        "./mock-data.js": {
+            "import": "./dist/utils/mock-data.js",
+            "types": "./dist/utils/mock-data.d.ts"
+        },
+        "./static": "./dist/static"
     },
     "type": "module",
     "browserslist": [
@@ -11,8 +32,7 @@
         "not IE 11"
     ],
     "scripts": {
-        "build": "npm run css && npm run ts",
-        "postbuild": "npm run copy",
+        "build": "npm run css && npm run ts && npm run copy",
         "ts": "tsc -b -v",
         "ts:clean": "tsc -b --clean",
         "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/static/styles",
@@ -27,6 +47,7 @@
     "dependencies": {
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@lit-labs/ssr": "3.0.1",
+        "globcat": "3.0.1",
         "lit": "2.6.1"
     },
     "devDependencies": {

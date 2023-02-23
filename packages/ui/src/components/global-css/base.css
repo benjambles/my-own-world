@@ -1,7 +1,7 @@
 @import './utils/reset.css';
 @import './utils/constants.css';
 @import './utils/typography.css';
-@import './utils/buttons.css';
+@import '../core/buttons/buttons.css';
 @import './utils/links.css';
 
 .container {

@@ -5,12 +5,14 @@
     "main": "index.js",
     "type": "module",
     "workspaces": [
-        "apps/*",
-        "packages/*"
+        "packages/*",
+        "apps/*"
     ],
     "scripts": {
         "build": "npm run build --workspaces",
         "ts": "tsc -b -v",
+        "clean:ts": "tsc -b --clean",
+        "css": "npm run css --workspaces --if-present",
         "test": "jest",
         "prepare": "husky install"
     },

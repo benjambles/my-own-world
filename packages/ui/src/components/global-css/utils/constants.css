@@ -1,4 +1,9 @@
 :root {
+    /* Space hack properties */
+    --ON: initial;
+    --OFF: ;
+
+    /* Colours */
     --basic-1: #ede6f2;
     --basic-2: #d5c7e1;
     --basic-3: #b699c8;

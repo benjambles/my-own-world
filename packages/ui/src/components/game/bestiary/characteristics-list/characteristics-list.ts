@@ -13,7 +13,9 @@ import styles from './characteristics-list.css.js';
  */
 export function characteristicsList({ base, optional }: Characteristics) {
     return html`
-        ${lazyStylesheet('/styles/core/bestiary/character-list/character-list.css')}
+        ${lazyStylesheet(
+            '/mow-ui/styles/core/bestiary/character-list/character-list.css',
+        )}
         <section class="${styles.characteristics}">
             ${characteristicGroup(base)}
             ${optional ? characteristicGroup(optional) : null}

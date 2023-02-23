@@ -7,7 +7,7 @@ interface BootHandlerOpts {
     config: {
         isApi: boolean;
         helmetConfig?: any;
-        staticPath?: string;
+        staticPath?: Record<string, string>;
         env: { PORT: string; HOST: string; JWT_SECRET: string };
     };
     routes?: Koa.Middleware[];

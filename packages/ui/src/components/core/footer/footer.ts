@@ -4,7 +4,7 @@ import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
 import { link } from '../links/link.js';
 import styles from './footer.css.js';
 
-export interface FooterData {
+interface FooterData {
     links: LinkProps[];
 }
 
@@ -30,7 +30,7 @@ export function footer({ links }: FooterData) {
     const currentYear = new Date().getFullYear();
 
     return html`
-        ${lazyStylesheet('/styles/core/footer/footer.css')}
+        ${lazyStylesheet('/mow-ui/styles/core/footer/footer.css')}
         <footer>
             <div class="${baseStyles.container} ${styles.container}">
                 <span>&copy; My Own World - ${currentYear}</span>
