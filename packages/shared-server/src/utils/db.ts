@@ -1,6 +1,6 @@
 import MongoDB, { ObjectId } from 'mongodb';
 
-let client;
+let client: MongoDB.MongoClient;
 
 interface MongoConfig {
     database: string;
