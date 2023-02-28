@@ -1,12 +1,12 @@
 {
     "extends": "../../tsconfig-base.json",
     "compilerOptions": {
-        "tsBuildInfoFile": "buildcache",
         "composite": true,
+        "outDir": "dist",
         "rootDir": "src",
-        "outDir": "dist"
+        "tsBuildInfoFile": "buildcache"
     },
-    "references": [{ "path": "../lib" }],
+    "exclude": ["src/**/__tests__", "./coverage"],
     "include": ["src/**/*.ts"],
-    "exclude": ["src/**/__tests__", "./coverage"]
+    "references": [{ "path": "../lib" }]
 }

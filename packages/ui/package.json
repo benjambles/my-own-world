@@ -34,7 +34,6 @@
     "scripts": {
         "build": "npm run css && npm run ts && npm run copy",
         "ts": "tsc -b -v",
-        "ts:clean": "tsc -b --clean",
         "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/static/styles",
         "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 dist",
         "test": "jest",

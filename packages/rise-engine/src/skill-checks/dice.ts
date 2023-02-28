@@ -1,9 +1,9 @@
 import { clamp, sum } from '../utils/math.js';
 
 export interface RollResult {
+    modifiedTotal: number;
     rolls: number[];
     total: number;
-    modifiedTotal: number;
 }
 
 export interface RollFn {
@@ -19,8 +19,8 @@ export class Dice {
         diceTypes: number[] = Dice.baseDiceTypes,
         randomFn: () => number = Math.random,
     ) {
-        this.diceTypes = diceTypes;
         this.#getRandom = randomFn;
+        this.diceTypes = diceTypes;
     }
 
     roll(dicePool: string, modifier: number = 0): RollResult {

@@ -1,21 +1,21 @@
 {
+    "compileOnSave": true,
     "compilerOptions": {
-        "skipLibCheck": true,
-        "pretty": true,
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "checkJs": true,
         "declaration": true,
         "declarationMap": true,
-        "allowJs": true,
-        "checkJs": true,
-        "target": "es2020",
-        "module": "esnext",
         "forceConsistentCasingInFileNames": true,
-        "removeComments": true,
-        "sourceMap": true,
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
-        "moduleResolution": "nodenext",
         "incremental": true,
-        "lib": ["ES2022", "esnext.array", "dom", "ES2020.String"]
-    },
-    "compileOnSave": true
+        "lib": ["ES2022", "esnext.array", "dom", "ES2020.String"],
+        "module": "esnext",
+        "moduleResolution": "nodenext",
+        "pretty": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "target": "es2020"
+    }
 }

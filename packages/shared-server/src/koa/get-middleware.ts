@@ -11,10 +11,10 @@ import { errorHandler } from './middleware/error-handler.js';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
 
 interface GetMiddlewareProps {
-    env: { JWT_SECRET: string };
     app: Koa;
-    staticPath?: Record<string, string>;
+    env: { JWT_SECRET: string };
     helmetConfig?: any;
+    staticPath?: Record<string, string>;
 }
 
 /**
@@ -27,8 +27,8 @@ interface GetMiddlewareProps {
 export function getMiddleware({
     app,
     env,
-    staticPath,
     helmetConfig,
+    staticPath,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
         setEnvOnState(env),

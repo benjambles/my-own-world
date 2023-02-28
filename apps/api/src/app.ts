@@ -21,10 +21,10 @@ loadEnv(resolveImportPath(paths.base, paths.env));
 const env: Env = validateEnv(envSchema, process.env);
 
 const dbInstance = await initConnection({
-    user: env.MONGO_USER,
     database: env.MONGO_DB,
     password: env.MONGO_PASSWORD,
     url: env.MONGO_URL,
+    user: env.MONGO_USER,
 });
 
 export type DataModel = typeof dataModel;

@@ -7,22 +7,22 @@ const config: Config = {
         name: 'SHARED SERVER',
         color: 'blue',
     },
+    extensionsToTreatAsEsm: ['.ts'],
+    globals: {
+        __TS_CONFIG__: {
+            allowSyntheticDefaultImports: true,
+            esModuleInterop: true,
+            module: 'esnext',
+        },
+    },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
-    preset: 'ts-jest/presets/default-esm',
     moduleNameMapper: {
         '(.+)\\.js': '$1',
     },
-    extensionsToTreatAsEsm: ['.ts'],
+    preset: 'ts-jest/presets/default-esm',
     testEnvironment: 'node',
     testRegex: '/__tests__/.*\\.test\\.ts$',
     verbose: true,
-    globals: {
-        __TS_CONFIG__: {
-            module: 'esnext',
-            allowSyntheticDefaultImports: true,
-            esModuleInterop: true,
-        },
-    },
 };
 
 export default config;

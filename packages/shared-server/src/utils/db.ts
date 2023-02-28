@@ -4,9 +4,35 @@ let client: MongoDB.MongoClient;
 
 interface MongoConfig {
     database: string;
+    password: string;
     url: string;
     user: string;
-    password: string;
+}
+
+/**
+ * Closes the database connection
+ */
+export function closeConnection() {
+    client && client.close();
+}
+
+export function getObjectId(uuid: string): ObjectId {
+    if (!uuid) throw new Error('Invalid UUID passed');
+
+    return new MongoDB.ObjectId(uuid);
+}
+
+/**
+ * On a null query response throw an error to the response handler otherwise return
+ * @param {string} error - Error message to throw with
+ * @param {any} data - Response from query
+ */
+export function getOrThrow<T>(error: string, data: T): never | T {
+    if (data === null || data === false || data === undefined) {
+        throw new Error(error);
+    }
+
+    return data;
 }
 
 /**
@@ -27,26 +53,6 @@ export async function initConnection(config: MongoConfig) {
 }
 
 /**
- * Closes the database connection
- */
-export function closeConnection() {
-    client && client.close();
-}
-
-/**
- * On a null query response throw an error to the response handler otherwise return
- * @param {string} error - Error message to throw with
- * @param {any} data - Response from query
- */
-export function getOrThrow<T>(error: string, data: T): never | T {
-    if (data === null || data === false || data === undefined) {
-        throw new Error(error);
-    }
-
-    return data;
-}
-
-/**
  *
  * @param config
  */
@@ -56,10 +62,4 @@ function getConnectionString({ url, user, password }): string {
     const userStr = [user, password].filter(Boolean).join(':');
 
     return url.replace('://', `://${userStr}@`);
-}
-
-export function getObjectId(uuid: string): ObjectId {
-    if (!uuid) throw new Error('Invalid UUID passed');
-
-    return new MongoDB.ObjectId(uuid);
 }

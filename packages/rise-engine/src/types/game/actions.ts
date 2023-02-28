@@ -1,38 +1,37 @@
-export type ActionSpeeds = 'fast' | 'slow' | 'free';
-export type ActionTypes = 'amplify' | 'trigger' | 'sustain';
+export type ActionSpeeds = 'fast' | 'free' | 'slow';
+export type ActionTypes = 'amplify' | 'sustain' | 'trigger';
 export type ClassActionBaseType = 'general' | ActionTypes;
-export type ClassActionSecondaryType = 'spell' | 'exploit';
+export type ClassActionSecondaryType = 'exploit' | 'spell';
 export type TargetConstraints = [any, any?];
-export type AttackType = 'autoHit' | 'autoPierce' | 'autoCrit' | 'basic';
+export type AttackType = 'autoHit' | 'autoCrit' | 'autoPierce' | 'basic';
 
 export interface CapValues {
-    critical: number;
     accuracy: number;
+    critical: number;
     penetration: number;
 }
 
 export interface CombatAction {
-    name: string;
-    id: string;
-    types: 'passive' | [ClassActionBaseType, ClassActionSecondaryType];
     action_type: string;
+    effect: {
+        text: string;
+    };
+    id: string;
+    name: string;
+    range: number;
+    speed: ActionSpeeds;
     target: {
         number: number;
         type: TargetConstraints;
     };
-    range: number;
-    effect: {
-        text: string;
-    };
-    speed: ActionSpeeds;
+    types: 'passive' | [ClassActionBaseType, ClassActionSecondaryType];
+}
+export interface ClassAction extends CombatAction {
+    action_type: 'action';
 }
 
 export interface ClassTrait extends CombatAction {
     action_type: 'trait';
-}
-
-export interface ClassAction extends CombatAction {
-    action_type: 'action';
 }
 
 export interface TideTurner extends CombatAction {
@@ -40,8 +39,8 @@ export interface TideTurner extends CombatAction {
 }
 
 export interface Maneuver {
-    name: string;
     id: string;
-    text: string;
+    name: string;
     speed: ActionSpeeds;
+    text: string;
 }

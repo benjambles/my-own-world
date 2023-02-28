@@ -1,28 +1,28 @@
 {
     "extends": "../../tsconfig-base.json",
+    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"],
+    "include": ["src/**/*.ts", "src/**/*.css.json"],
     "compilerOptions": {
-        "experimentalDecorators": true,
-        "useDefineForClassFields": false,
-        "tsBuildInfoFile": "buildcache",
         "composite": true,
+        "experimentalDecorators": true,
+        "outDir": "dist",
         "plugins": [
             {
                 "name": "ts-lit-plugin",
-                "strict": true,
                 "rules": {
-                    "no-unknown-tag-name": "off",
-                    "no-unknown-event": "warning"
-                }
+                    "no-unknown-event": "warning",
+                    "no-unknown-tag-name": "off"
+                },
+                "strict": true
             }
         ],
         "rootDir": "src",
-        "outDir": "dist"
+        "tsBuildInfoFile": "buildcache",
+        "useDefineForClassFields": false
     },
     "references": [
         {
             "path": "../rise-engine"
         }
-    ],
-    "include": ["src/**/*.ts", "src/**/*.css.json"],
-    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"]
+    ]
 }

@@ -1,5 +1,5 @@
 import { Context, Middleware, Next } from 'koa';
-import { throwNoAccessError } from '../../utils/errors.js';
+import { throwNoAccess } from '../../utils/errors.js';
 import { MethodSchema } from '../../utils/joi/openapi-to-joi.js';
 
 /**
@@ -21,7 +21,7 @@ export function getAccessMiddleware(
      */
     return async (ctx: Context, next: Next) => {
         if (accessMap && accessRoles.length && !accessRoles.some(accessMap(ctx))) {
-            throwNoAccessError(ctx)();
+            throwNoAccess(ctx)();
         }
 
         await next();

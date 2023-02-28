@@ -2,14 +2,14 @@ import { ApiDoc, Ref } from '../openapi-to-joi.js';
 
 export type Param = Readonly<{
     in: 'path' | 'query';
+    description?: string;
     name: string;
+    required?: boolean;
     schema: {
         type: 'string' | 'integer';
         default?: any;
         format?: string;
     };
-    description?: string;
-    required?: boolean;
 }>;
 
 /**

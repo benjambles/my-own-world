@@ -14,7 +14,7 @@ export function getCurrentActionPoints(hero: HeroData): number {
  * @param hero
  * @param newTotal
  */
-export function setCurrentActionPoints(hero: HeroData, newTotal: number) {
+export function setCurrentActionPoints(hero: HeroData, newTotal: number): HeroData {
     return { ...hero, actionPoints: { ...hero.actionPoints, current: newTotal } };
 }
 

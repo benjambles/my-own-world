@@ -30,6 +30,6 @@ export function reduceEntries<T>(fn: (acc: T, value: any) => T, acc: T) {
  * Wraps a value in an array if it isn't already one
  * @param value
  */
-export function wrap<T>(value: T) {
+export function wrap<T>(value: T): T | T[] {
     return Array.isArray(value) ? value : [value];
 }

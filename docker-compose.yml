@@ -3,9 +3,10 @@ x-source:
   &source-code
   - ./apps/api/dist:/app/apps/api/dist
   - ./apps/website/dist:/app/apps/website/dist
+  - ./packages/lib/dist:/app/packages/lib/dist
   - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
-  - ./packages/skirmish-engine/dist:/app/packages/skirmish-engine/dist
   - ./packages/shared-server/dist:/app/packages/shared-server/dist
+  - ./packages/skirmish-engine/dist:/app/packages/skirmish-engine/dist
   - ./packages/ui/dist:/app/packages/ui/dist
 services: 
   api:
@@ -40,9 +41,9 @@ services:
       - mongodb:/data/db
       - mongoconfig:/data/configdb
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
       - MONGO_INITDB_DATABASE=${MONGO_DB}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
 volumes:
   mongodb:
   mongoconfig:

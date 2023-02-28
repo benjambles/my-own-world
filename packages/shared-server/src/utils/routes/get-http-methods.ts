@@ -8,7 +8,7 @@ type HttpVerbsFull = HTTPVerbs | 'head';
  * @param key
  */
 export function getHTTPMethods(acc: HttpVerbsFull[], key: HTTPVerbs): HttpVerbsFull[] {
-    if (key === 'options') return acc;
     if (key === 'get') return acc.concat('get', 'head');
+    if (key === 'options') return acc;
     return acc.concat(key);
 }

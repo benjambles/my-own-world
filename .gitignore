@@ -1,12 +1,12 @@
-.cache
 *.log
 **/.env
-buildcache
-dist
-node_modules
 **/*.css.ts
-coverage
+.cache
 .vscode/*
 !.vscode/launch.json
 !.vscode/settings.json
 !.vscode/config-snippets.code-snippets
+buildcache
+coverage
+dist
+node_modules

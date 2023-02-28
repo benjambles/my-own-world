@@ -6,10 +6,12 @@ import { createCipheriv, createDecipheriv, createHmac, randomBytes } from 'crypt
  */
 export function decryptValue(password: string, value: string): string {
     const [type, iv, ...data] = value.split(':');
-    const ivBuffer = Buffer.from(iv, 'hex');
-    const encryptedText = Buffer.from(data.join(':'), 'hex');
-    const decipher = createDecipheriv(type, Buffer.from(password), ivBuffer);
-    const decrypted = decipher.update(encryptedText);
+    const decipher = createDecipheriv(
+        type,
+        Buffer.from(password),
+        Buffer.from(iv, 'hex'),
+    );
+    const decrypted = decipher.update(Buffer.from(data.join(':'), 'hex'));
 
     return Buffer.concat([decrypted, decipher.final()]).toString();
 }
@@ -35,7 +37,5 @@ export function encryptValue(password: string, value: string): string {
  * @param value
  */
 export function hmac(password: string, value: string): string {
-    const hmac = createHmac('sha256', password);
-    hmac.update(value);
-    return hmac.digest('hex');
+    return createHmac('sha256', password).update(value).digest('hex');
 }

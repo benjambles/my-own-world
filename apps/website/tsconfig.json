@@ -2,32 +2,29 @@
     "extends": "../../tsconfig-base.json",
     "compilerOptions": {
         "experimentalDecorators": true,
-        "tsBuildInfoFile": "buildcache",
-        "rootDir": "src",
         "outDir": "dist",
         "plugins": [
             {
                 "name": "ts-lit-plugin",
-                "strict": true,
                 "rules": {
-                    "no-unknown-tag-name": "off",
-                    "no-unknown-event": "warning"
-                }
+                    "no-unknown-event": "warning",
+                    "no-unknown-tag-name": "off"
+                },
+                "strict": true
             }
-        ]
+        ],
+        "rootDir": "src",
+        "tsBuildInfoFile": "buildcache"
     },
     "references": [
         {
-            "path": "../../packages/rise-engine"
+            "path": "../api"
         },
         {
             "path": "../../packages/shared-server"
         },
         {
             "path": "../../packages/ui"
-        },
-        {
-            "path": "../api"
         }
     ],
     "include": ["src/**/*.ts"],

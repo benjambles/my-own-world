@@ -2,13 +2,10 @@ import { resolve } from 'path';
 import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
 const config = {
-    framework: {
-        name: '@storybook/web-components-webpack5',
-        options: {},
-    },
-    staticDirs: [{ from: '../dist/static', to: '/mow-ui' }],
-    stories: ['../src/components/**/*.stories.ts'],
     addons: [
+        '@storybook/addon-a11y',
+        '@storybook/addon-essentials',
+        '@storybook/addon-links',
         {
             name: '@storybook/addon-postcss',
             options: {
@@ -20,10 +17,13 @@ const config = {
                 },
             },
         },
-        '@storybook/addon-links',
-        '@storybook/addon-a11y',
-        '@storybook/addon-essentials',
     ],
+    framework: {
+        name: '@storybook/web-components-webpack5',
+        options: {},
+    },
+    staticDirs: [{ from: '../dist/static', to: '/mow-ui' }],
+    stories: ['../src/components/**/*.stories.ts'],
     webpackFinal: async (config) => {
         config.resolve = {
             ...config.resolve,

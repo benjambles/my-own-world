@@ -11,8 +11,8 @@ import { HeroData } from '../types/game/hero.js';
  * @param hero
  * @returns
  */
-export function useAction(action: CombatAction, hero: HeroData): HeroData {
-    const { result, remainingPoints } = canAffordAction(action, hero);
+export function useAction(action: CombatAction, hero: HeroData) {
+    const { remainingPoints, result } = canAffordAction(action, hero);
 
     if (result) {
         /* TODO: Run Action event - Ben Allen */
@@ -21,16 +21,7 @@ export function useAction(action: CombatAction, hero: HeroData): HeroData {
     return setCurrentActionPoints(hero, remainingPoints);
 }
 
-interface ActionPointResult {
-    result: boolean;
-    usedPoints: number;
-    remainingPoints: number;
-}
-
-export function canAffordAction(
-    { speed }: CombatAction,
-    hero: HeroData,
-): ActionPointResult {
+export function canAffordAction({ speed }: CombatAction, hero: HeroData) {
     const points: Record<ActionSpeeds, number> = {
         free: 0,
         fast: 1,

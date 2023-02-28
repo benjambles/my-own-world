@@ -32,12 +32,18 @@ type ApplicationJson = {
 };
 
 export type PropertySchemas =
-    | StringSchema
-    | NumberSchema
-    | BooleanSchema
-    | ObjectSchema
     | ArraySchema
-    | Ref;
+    | BooleanSchema
+    | NumberSchema
+    | ObjectSchema
+    | Ref
+    | StringSchema;
+
+export interface ArraySchema {
+    type: 'array';
+    items: PropertySchemas;
+    default?: boolean;
+}
 
 export interface ObjectSchema {
     type: 'object';
@@ -48,18 +54,9 @@ export interface ObjectSchema {
     default?: any;
 }
 
-export interface ArraySchema {
-    type: 'array';
-    items: StringSchema | NumberSchema | ObjectSchema | ArraySchema | BooleanSchema | Ref;
+interface BooleanSchema {
+    type: 'boolean';
     default?: boolean;
-}
-
-interface StringSchema {
-    type: 'string';
-    default?: string;
-    format?: string;
-    maxLength?: number;
-    minLength?: number;
 }
 
 interface NumberSchema {
@@ -69,25 +66,27 @@ interface NumberSchema {
     maximum?: number;
     minimum?: number;
 }
-
-interface BooleanSchema {
-    type: 'boolean';
-    default?: boolean;
+interface StringSchema {
+    type: 'string';
+    default?: string;
+    format?: string;
+    maxLength?: number;
+    minLength?: number;
 }
 
 //#region Schema Parsing
-type ParseProp<Prop extends PropertySchemas, Components> = Prop extends Ref
-    ? TypeFromRefSchema<Prop, Components>
-    : Prop extends StringSchema
-    ? string
-    : Prop extends NumberSchema
-    ? number
-    : Prop extends ArraySchema
+type ParseProp<Prop extends PropertySchemas, Components> = Prop extends ArraySchema
     ? TypeFromArraySchema<Prop, Components>
     : Prop extends BooleanSchema
     ? boolean
+    : Prop extends NumberSchema
+    ? number
     : Prop extends ObjectSchema
     ? Id<TypeFromObjectSchema<Prop, Components>>
+    : Prop extends Ref
+    ? TypeFromRefSchema<Prop, Components>
+    : Prop extends StringSchema
+    ? string
     : never;
 
 type TypeFromObjectSchema<Schema extends ObjectSchema, Components> = Id<

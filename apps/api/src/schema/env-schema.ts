@@ -8,15 +8,15 @@ export type Env = {
     PORT: string;
 
     // DB Details
-    MONGO_USER: string;
     MONGO_DB: string;
     MONGO_PASSWORD: string;
     MONGO_URL: string;
+    MONGO_USER: string;
 
     // Security
+    ENC_SECRET: string;
     JWT_SECRET: string;
     UUIDV5_NS: string;
-    ENC_SECRET: string;
 };
 
 export const envSchema: Joi.PartialSchemaMap<Env> = {
@@ -31,7 +31,6 @@ export const envSchema: Joi.PartialSchemaMap<Env> = {
     PORT: Joi.number().port().required(),
 
     // DB Details
-    MONGO_USER: Joi.string().default(''),
     MONGO_DB: Joi.string().required(),
     MONGO_PASSWORD: Joi.string().default(''),
     MONGO_URL: Joi.string()
@@ -39,9 +38,10 @@ export const envSchema: Joi.PartialSchemaMap<Env> = {
             scheme: ['mongodb'],
         })
         .required(),
+    MONGO_USER: Joi.string().default(''),
 
     // Security
+    ENC_SECRET: Joi.string().required(),
     JWT_SECRET: Joi.string().uuid().required(),
     UUIDV5_NS: Joi.string().uuid().required(),
-    ENC_SECRET: Joi.string().required(),
 };

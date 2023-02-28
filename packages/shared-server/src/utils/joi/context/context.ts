@@ -21,29 +21,29 @@ export type HandlerArgs<
     : Identity<Result>;
 
 interface KoaRequest<RequestParams extends KoaRequestParams> extends Request {
-    query: RequestParams['query'] extends never
-        ? Request['query']
-        : RequestParams['query'];
+    body: RequestParams['body'] extends never ? Request['body'] : RequestParams['body'];
     params: RequestParams['params'] extends never
         ? Request['params']
         : RequestParams['params'];
-    body: RequestParams['body'] extends never ? Request['body'] : RequestParams['body'];
+    query: RequestParams['query'] extends never
+        ? Request['query']
+        : RequestParams['query'];
 }
 
 export interface KoaContext<RequestParams extends KoaRequestParams, ResponseBody = any>
     extends Context {
-    request: KoaRequest<RequestParams>;
     body: ResponseBody;
+    request: KoaRequest<RequestParams>;
 }
 
 export interface KoaRequestParams {
+    body?: {
+        [key: string]: unknown;
+    };
     params?: {
         [key: string]: string;
     };
     query?: {
         [key: string]: string | string[];
-    };
-    body?: {
-        [key: string]: unknown;
     };
 }

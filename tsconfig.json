@@ -11,13 +11,13 @@
             "path": "./packages/lib"
         },
         {
-            "path": "./packages/skirmish-engine"
-        },
-        {
             "path": "./packages/rise-engine"
         },
         {
             "path": "./packages/shared-server"
+        },
+        {
+            "path": "./packages/skirmish-engine"
         },
         {
             "path": "./packages/ui"

@@ -1,6 +1,6 @@
 import { Context, Middleware, Next } from 'koa';
 import { stringifyJSON } from '../../utils/data/json.js';
-import { badResponseError } from '../../utils/errors.js';
+import { throwBadResponse } from '../../utils/errors.js';
 import { maybeProp } from '../../utils/functional/maybe-prop.js';
 import { getErrorMessage } from '../../utils/joi/get-error-message.js';
 
@@ -33,5 +33,5 @@ function formattedThrowOnError(ctx: Context) {
             ),
         )
         .flatMap(stringifyJSON)
-        .map(badResponseError(ctx));
+        .map(throwBadResponse(ctx));
 }

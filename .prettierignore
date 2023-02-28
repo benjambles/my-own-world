@@ -1,9 +1,9 @@
+**/*.md
+.gitignore
 .package-lock.json
 .prettierignore
 .prettierrc
-.gitignore
 .vscode
-**/*.md
 buildcache
 dist
 node_modules

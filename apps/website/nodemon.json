@@ -1,14 +1,9 @@
 {
-    "verbose": false,
-    "watch": [
-        "./dist",
-        "../../packages/ui/dist",
-        "../../packages/shared-server/dist",
-        "../../packages/rise-engine/dist"
-    ],
     "delay": "1000",
-    "exec": "npm run start",
     "events": {
         "start": "cls || clear"
-    }
+    },
+    "exec": "npm run start",
+    "verbose": false,
+    "watch": ["./dist", "../../packages/shared-server/dist", "../../packages/ui/dist"]
 }

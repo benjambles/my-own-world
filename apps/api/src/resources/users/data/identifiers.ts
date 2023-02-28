@@ -24,10 +24,10 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
     const users = db.collection<User>('users');
 
     const formatOptions = {
-        salted: [],
         encrypted: ['identifier'],
         hmac: ['hash'],
         readOnly: [],
+        salted: [],
     };
 
     const formatIdentiferData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
@@ -52,14 +52,12 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
             userId: string,
             data: Pick<Identifier, 'identifier' | 'type'>,
         ): Promise<Identifier> {
-            const identifier: Identifier = {
-                isDeleted: false,
-                verified: false,
+            const identityData = await formatIdentiferData({
                 ...data,
+                isDeleted: false,
                 hash: data.identifier,
-            };
-
-            const identityData = await formatIdentiferData(identifier);
+                verified: false,
+            });
 
             const dbResult = await users.findOneAndUpdate(
                 { _id: getObjectId(userId) },

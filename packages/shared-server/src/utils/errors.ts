@@ -4,9 +4,9 @@ import { Context } from 'koa';
  *
  * @param ctx
  */
-export function throwNoAccessError(ctx: Context) {
-    return () => {
-        ctx.throw(401, 'Unauthorised access to endpoint');
+export function throwBadResponse(ctx: Context) {
+    return (msg: string) => {
+        ctx.throw(400, msg);
     };
 }
 
@@ -14,9 +14,9 @@ export function throwNoAccessError(ctx: Context) {
  *
  * @param ctx
  */
-export function badResponseError(ctx: Context) {
-    return (msg: string) => {
-        ctx.throw(400, msg);
+export function throwNoAccess(ctx: Context) {
+    return () => {
+        ctx.throw(401, 'Unauthorised access to endpoint');
     };
 }
 

@@ -37,7 +37,6 @@ export const serve = configureServer({
     app: new Koa(),
     config: {
         env,
-        isApi: false,
         helmetConfig: {
             contentSecurityPolicy: {
                 directives: {
@@ -47,6 +46,7 @@ export const serve = configureServer({
                 },
             },
         },
+        isApi: false,
         staticPath: paths.static,
     },
 });

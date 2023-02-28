@@ -8,42 +8,6 @@ export default {
     },
     components: {
         schemas: {
-            UserResponse: {
-                description: 'The public facing user data',
-                type: 'object',
-                required: [
-                    '_id',
-                    'createdOn',
-                    'lastLoggedIn',
-                    'firstName',
-                    'lastName',
-                    'isDeleted',
-                    'screenName',
-                ],
-                properties: {
-                    _id: {
-                        type: 'string',
-                    },
-                    createdOn: {
-                        type: 'string',
-                    },
-                    lastLoggedIn: {
-                        type: 'string',
-                    },
-                    firstName: {
-                        type: 'string',
-                    },
-                    lastName: {
-                        type: 'string',
-                    },
-                    isDeleted: {
-                        type: 'boolean',
-                    },
-                    screenName: {
-                        type: 'string',
-                    },
-                },
-            },
             IdentifierResponse: {
                 type: 'object',
                 required: ['hash', 'identifier', 'isDeleted', 'type', 'verified'],
@@ -55,19 +19,55 @@ export default {
                     verified: { type: 'boolean' },
                 },
             },
+            UserResponse: {
+                description: 'The public facing user data',
+                type: 'object',
+                required: [
+                    '_id',
+                    'createdOn',
+                    'firstName',
+                    'isDeleted',
+                    'lastName',
+                    'lastLoggedIn',
+                    'screenName',
+                ],
+                properties: {
+                    _id: {
+                        type: 'string',
+                    },
+                    createdOn: {
+                        type: 'string',
+                    },
+                    firstName: {
+                        type: 'string',
+                    },
+                    isDeleted: {
+                        type: 'boolean',
+                    },
+                    lastLoggedIn: {
+                        type: 'string',
+                    },
+                    lastName: {
+                        type: 'string',
+                    },
+                    screenName: {
+                        type: 'string',
+                    },
+                },
+            },
         },
         parameters: {
-            UserId: {
-                name: 'userId',
-                in: 'path',
-                description: 'Unique id representing a user',
-                required: true,
-                schema: { type: 'string' },
-            },
             IdentifierId: {
                 name: 'hash',
                 in: 'path',
                 description: 'Unique hash of a users identifier',
+                required: true,
+                schema: { type: 'string' },
+            },
+            UserId: {
+                name: 'userId',
+                in: 'path',
+                description: 'Unique id representing a user',
                 required: true,
                 schema: { type: 'string' },
             },
@@ -142,7 +142,7 @@ export default {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: ['user', 'identifier'],
+                                required: ['identifier', 'user'],
                                 properties: {
                                     identifier: {
                                         type: 'object',

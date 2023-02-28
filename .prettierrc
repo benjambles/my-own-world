@@ -1,9 +1,4 @@
 {
-    "printWidth": 90,
-    "tabWidth": 4,
-    "useTabs": false,
-    "trailingComma": "all",
-    "singleQuote": true,
     "overrides": [
         {
             "files": "{.prettierrc,.huskyrc,.lintstagedrc}",
@@ -11,5 +6,10 @@
                 "parser": "json"
             }
         }
-    ]
+    ],
+    "printWidth": 90,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": false
 }

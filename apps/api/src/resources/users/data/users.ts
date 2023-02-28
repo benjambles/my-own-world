@@ -69,9 +69,9 @@ export const cleanResponse = (data: User): UserResponse => {
 export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     const formatOptions: ModelOptions = {
         encrypted: [],
-        salted: ['password'],
-        readOnly: ['_id'],
         hmac: [],
+        readOnly: ['_id'],
+        salted: ['password'],
     };
 
     const formatUserData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
@@ -86,7 +86,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const dbResult = await users
                 .find(
                     { isDeleted: false },
-                    { projection: { identities: 0 }, skip, limit },
+                    { limit, projection: { identities: 0 }, skip },
                 )
                 .toArray();
 
@@ -108,8 +108,8 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 
         findByIdentifier: async function (identifier: string): Promise<User> {
             const dbResult = await users.findOne({
-                isDeleted: false,
                 'identities.hash': { $eq: identifier },
+                isDeleted: false,
             });
 
             return getOrThrow('There was an error whilst fetching the user', dbResult);
@@ -119,14 +119,14 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const cleanData = await formatUserData(data);
 
             const { insertedId } = await users.insertOne({
-                _id: getObjectId(randomUUID()),
                 ...cleanData,
+                _id: getObjectId(randomUUID()),
                 createdOn: new Date(),
-                lastLoggedIn: new Date(),
-                settings: defaultUserSettings,
-                isDeleted: false,
                 gameStates: {},
                 identities: [],
+                isDeleted: false,
+                lastLoggedIn: new Date(),
+                settings: defaultUserSettings,
             });
 
             return await model.find(
@@ -145,7 +145,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 
             const dbResult = await users.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
-                { $set: { ...cleanData } },
+                { $set: cleanData },
                 { projection: { identities: 0 } },
             );
 
@@ -158,7 +158,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { acknowledged } = await users.updateOne(
                 { _id: getObjectId(uuid) },
                 {
-                    $set: { isDeleted: true, deletedOn: new Date() },
+                    $set: { deletedOn: new Date(), isDeleted: true },
                 },
             );
 
@@ -177,11 +177,9 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             password: string,
         ): Promise<UserResponse> {
             const user = await model.findByIdentifier(identifier);
-            const accessDate = new Date();
-
             await compareBHash(password, user.password);
 
-            return model.update(user._id.toString(), { lastLoggedIn: accessDate });
+            return model.update(user._id.toString(), { lastLoggedIn: new Date() });
         },
     };
 

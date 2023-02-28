@@ -4,12 +4,12 @@
  */
 export function swaggerToJoiType(type: string): string {
     const typesMap = {
-        integer: 'number',
         int64: 'integer',
-        minLength: 'min',
+        integer: 'number',
+        maximum: 'max',
         maxLength: 'max',
         minimum: 'min',
-        maximum: 'max',
+        minLength: 'min',
     };
 
     return typesMap[type] ?? type;

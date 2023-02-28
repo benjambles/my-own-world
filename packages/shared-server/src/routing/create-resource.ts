@@ -12,16 +12,20 @@ import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
 import { getDataMiddleware, noResponse } from '../utils/routes/responses.js';
 
 const defaultData = {
-    operations: {},
     accessMap: {},
+    operations: {},
 };
 
 //#region Types
 interface ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defaultData> {
+    access: <K extends string, H extends (ctx: Context) => boolean>(
+        key: K,
+        handler: H,
+    ) => ResourceBinder<A, D & { accessMap: { [key in K]: CallBackSignature<H> } }>;
     get: () => {
         accessMap: Id<D['accessMap']>;
-        operations: Id<D['operations']>;
         apiDoc: A;
+        operations: Id<D['operations']>;
     };
     operation: <
         K extends Exclude<RequiredHandlers<A>, 'sendOptions' | keyof D['operations']>,
@@ -29,18 +33,14 @@ interface ResourceBinder<A extends ApiDoc, D extends ResourceData = typeof defau
         key: K,
         handler: OperationHandler<A, K>,
     ) => ResourceBinder<A, D & { operations: { [key in K]: OperationHandler<A, K> } }>;
-    access: <K extends string, H extends (ctx: Context) => boolean>(
-        key: K,
-        handler: H,
-    ) => ResourceBinder<A, D & { accessMap: { [key in K]: CallBackSignature<H> } }>;
 }
 
 export interface ResourceData {
-    operations: {
-        [key: string]: (ctx: KoaContext<any, any>) => unknown;
-    };
     accessMap: {
         [key: string]: (ctx: KoaContext<any, any>) => boolean;
+    };
+    operations: {
+        [key: string]: (ctx: KoaContext<any, any>) => unknown;
     };
 }
 
@@ -63,6 +63,11 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     const resource = (data) => {
         return {
+            access(tag, handler) {
+                data.accessMap[tag] = handler;
+
+                return resource(data);
+            },
             get() {
                 return {
                     ...data,
@@ -73,17 +78,12 @@ export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
                 data.operations[key] = handler;
                 return resource(data);
             },
-            access(tag, handler) {
-                data.accessMap[tag] = handler;
-
-                return resource(data);
-            },
         };
     };
 
     return resource({
-        operations: {},
         accessMap: {},
+        operations: {},
     });
 }
 
@@ -110,9 +110,9 @@ export function getRouter(
                 ];
 
                 return {
+                    handler,
                     method,
                     path,
-                    handler,
                     validate: buildJoiSpec(
                         router.Joi,
                         methodConfig,

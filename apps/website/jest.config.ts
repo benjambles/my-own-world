@@ -4,16 +4,15 @@ const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns: ['fixture.*'],
     displayName: {
-        name: 'WEBSITE',
         color: 'blue',
+        name: 'WEBSITE',
     },
+    extensionsToTreatAsEsm: ['.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    preset: 'ts-jest/presets/default-esm',
-
     moduleNameMapper: {
         '(.+)\\.js': '$1',
     },
-    extensionsToTreatAsEsm: ['.ts'],
+    preset: 'ts-jest/presets/default-esm',
     testRegex: '/__tests__/.*\\.test\\.tsx?$',
     verbose: true,
 };

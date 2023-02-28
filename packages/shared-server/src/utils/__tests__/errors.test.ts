@@ -16,12 +16,12 @@ afterEach(() => {
 });
 
 test('throwNoAccessError', function () {
-    errors.throwNoAccessError(ctx)();
+    errors.throwNoAccess(ctx)();
     expect(throwSpy).toHaveBeenCalledWith(401, 'Unauthorised access to endpoint');
 });
 
 test('badResponseError', function () {
-    errors.badResponseError(ctx)('could not load page');
+    errors.throwBadResponse(ctx)('could not load page');
     expect(throwSpy).toHaveBeenCalledWith(400, 'could not load page');
 });
 

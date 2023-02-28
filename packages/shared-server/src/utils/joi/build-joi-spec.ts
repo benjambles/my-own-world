@@ -66,12 +66,12 @@ export function buildJoiSpec(
         output: getResponseValidator(joi, responses, validateOutput, components),
         ...(isJsonRequest
             ? {
-                  type: 'json',
                   body: parseBody(
                       joi,
                       requestBody.content['application/json'].schema,
                       components,
                   ),
+                  type: 'json',
               }
             : {}),
         ...parseParameters(joi, parameters, components),

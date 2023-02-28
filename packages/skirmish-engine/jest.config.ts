@@ -4,16 +4,15 @@ const config: Config = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns: ['fixture.*'],
     displayName: {
-        name: 'SKIRMISH ENGINE',
         color: 'blue',
+        name: 'SKIRMISH ENGINE',
     },
+    extensionsToTreatAsEsm: ['.ts'],
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
-    preset: 'ts-jest/presets/default-esm',
-
     moduleNameMapper: {
         '(.+)\\.js': '$1',
     },
-    extensionsToTreatAsEsm: ['.ts'],
+    preset: 'ts-jest/presets/default-esm',
     testEnvironment: 'node',
     testRegex: '/__tests__/.*\\.test\\.ts$',
     verbose: true,

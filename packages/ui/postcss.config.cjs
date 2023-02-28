@@ -12,14 +12,17 @@ module.exports = (ctx) => {
     return {
         map: ctx.env !== 'production',
         plugins: {
-            'postcss-import': {},
+            'postcss-import': {}, // Must be first plugin
             'postcss-modules': {
-                globalModulePaths: [/\/src\/components\/global-css/],
-                localsConvention: 'dashesOnly',
                 getJSON: function (cssFileName, json) {
                     const jsonFileName = path.resolve(cssFileName + '.ts');
-                    fs.writeFileSync(jsonFileName, 'export default ' + JSON.stringify(json));
+                    fs.writeFileSync(
+                        jsonFileName,
+                        `export default ${JSON.stringify(json)};`,
+                    );
                 },
+                globalModulePaths: [/\/src\/components\/global-css/],
+                localsConvention: 'dashesOnly',
             },
             cssnano,
         },

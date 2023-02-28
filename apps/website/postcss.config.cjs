@@ -16,15 +16,15 @@ module.exports = (ctx) => {
                 path: ['../../node_modules'],
             },
             'postcss-modules': {
-                globalModulePaths: [/\/src\/layouts/],
-                localsConvention: 'dashesOnly',
                 getJSON: function (cssFileName, json) {
                     const jsonFileName = path.resolve(cssFileName + '.ts');
                     fs.writeFileSync(
                         jsonFileName,
-                        'export default ' + JSON.stringify(json),
+                        `export default ${JSON.stringify(json)};`,
                     );
                 },
+                globalModulePaths: [/\/src\/layouts/],
+                localsConvention: 'dashesOnly',
             },
             cssnano,
         },

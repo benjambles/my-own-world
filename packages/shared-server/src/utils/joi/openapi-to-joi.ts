@@ -22,11 +22,11 @@ export type UnionFromProps<T extends { [key: string]: any[] }> = T extends {
 
 export type ApiDoc = {
     readonly components?: {
-        readonly schemas?: {
-            readonly [key: string]: Exclude<PropertySchemas, Ref>;
-        };
         readonly parameters?: {
             readonly [key: string]: Param;
+        };
+        readonly schemas?: {
+            readonly [key: string]: Exclude<PropertySchemas, Ref>;
         };
     };
     readonly paths: {
@@ -44,10 +44,10 @@ export interface MethodSchema {
     readonly operationId: string;
     readonly parameters?: ReadonlyArray<Param | Ref>;
     readonly requestBody?: RequestBody;
+    readonly responses?: ValidResponses;
     readonly security?: ReadonlyArray<{
         readonly [type: string]: readonly string[];
     }>;
-    readonly responses?: ValidResponses;
 }
 
 type OperationIdsPerPath<Doc extends ApiDoc> = {
@@ -87,9 +87,7 @@ type ToJoiRouter<
           [
               ...Result,
               {
-                  path: RouteSpec[0];
                   method: RouteSpec[1];
-                  operationId: RouteSpec[2]['operationId'];
                   handler: (
                       ctx: ContextFromParams<
                           RouteSpec[2]['parameters'],
@@ -98,6 +96,8 @@ type ToJoiRouter<
                           Components
                       >,
                   ) => Promise<MaybeResponseBody<RouteSpec[2]['responses'], Components>>;
+                  operationId: RouteSpec[2]['operationId'];
+                  path: RouteSpec[0];
               },
           ]
       >

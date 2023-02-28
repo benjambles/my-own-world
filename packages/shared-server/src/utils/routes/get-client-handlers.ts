@@ -6,7 +6,7 @@ import { stringifyJSON } from '../data/json.js';
 import { maybeProp } from '../functional/maybe-prop.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
-import { ApiDoc, UnionFromProps, MethodSchema } from '../joi/openapi-to-joi.js';
+import { ApiDoc, MethodSchema, UnionFromProps } from '../joi/openapi-to-joi.js';
 import {
     MaybeHandlerResponse,
     ValidResponses,
@@ -14,7 +14,12 @@ import {
 import { HTTPVerbs } from './get-http-methods.js';
 
 //#region Types
-interface ResourceBinder<Config extends ResourceConfig, D extends HandlerData = {}> {
+interface ResourceBinder<
+    Config extends ResourceConfig,
+    D extends {
+        [name: string]: (args: any) => Promise<unknown>;
+    } = {},
+> {
     get: () => Id<D>;
     operation: <K extends keyof Config['operations']>(
         operationId: K,
@@ -56,14 +61,10 @@ type MaybeOperation<
       }
     : never;
 
-interface HandlerData {
-    [name: string]: (args: any) => Promise<unknown>;
-}
-
 interface FetchHandlerArgs {
-    url: string;
     method: HTTPVerbs;
     responses: ValidResponses;
+    url: string;
 }
 //#endregion Types
 
@@ -105,8 +106,8 @@ function extractParams<Doc extends ApiDoc>(doc: Doc): Record<string, FetchHandle
             return Object.entries(config).reduce(
                 (acc, [method, methodConfig]: [HTTPVerbs, MethodSchema]) => {
                     acc[methodConfig.operationId] = {
-                        path,
                         method,
+                        path,
                         responses: methodConfig.responses,
                     };
 
@@ -120,37 +121,40 @@ function extractParams<Doc extends ApiDoc>(doc: Doc): Record<string, FetchHandle
 
 function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
     hostUrl: string,
-    { url, method, responses }: FetchHandlerArgs,
+    { method, responses, url }: FetchHandlerArgs,
 ) {
     return async (args: Params): Promise<Result> => {
-        const data: RequestInit = { method };
+        const data: RequestInit = {
+            method,
+            body: stringifyJSON(args.body).getOrElseValue(undefined),
+        };
+
         const populatedUrl = new URL(
             maybeProp('params', args)
                 .map(Object.entries)
-                .map((params) =>
-                    params.reduce(
+                .map((params) => {
+                    return params.reduce(
                         (acc, [key, value]) => acc.replace(`:${key}`, value),
                         url,
-                    ),
-                )
+                    );
+                })
                 .getOrElseValue(url),
             hostUrl,
         );
 
-        const urlParams = new URLSearchParams(
+        populatedUrl.search += new URLSearchParams(
             maybeProp('query', args).getOrElseValue(''),
-        );
-        populatedUrl.search += urlParams.toString();
-
-        data.body = stringifyJSON(args.body).getOrElseValue(undefined);
+        ).toString();
 
         const resp = await fetch(populatedUrl, data);
-        const [response] = Object.values(responses);
+        const [response] = Object.values(responses) as [ValidResponses];
 
-        return response['content']
-            ? Object.keys(response['content'])[0] === 'text/plain'
-                ? resp.text()
-                : resp.json()
-            : undefined;
+        if (!('content' in response)) {
+            return undefined;
+        }
+
+        return Object.keys(response.content)[0] === 'text/plain'
+            ? resp.text()
+            : resp.json();
     };
 }

@@ -1,9 +1,13 @@
 export const mockData = {
-    meta: {
-        title: 'Home: My Own World',
-    },
     content: {
         title: 'My Own World',
+    },
+    footer: {
+        links: [
+            { text: 'Terms', href: '/terms' },
+            { text: 'Privacy', href: '/privacy' },
+            { text: 'Accessibility', href: '/accessibility' },
+        ],
     },
     header: {
         navigationLinks: [
@@ -12,11 +16,7 @@ export const mockData = {
         ],
         user: {},
     },
-    footer: {
-        links: [
-            { text: 'Terms', href: '/terms' },
-            { text: 'Privacy', href: '/privacy' },
-            { text: 'Accessibility', href: '/accessibility' },
-        ],
+    meta: {
+        title: 'Home: My Own World',
     },
 };

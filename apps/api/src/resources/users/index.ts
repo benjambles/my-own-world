@@ -16,18 +16,18 @@ import config from './config.js';
  */
 
 export default function users(dataModel: DataModel) {
-    const users = dataModel.getKey('users');
     const identifiers = dataModel.getKey('identifiers');
+    const users = dataModel.getKey('users');
 
     return createResource(config)
         .access('role:owner', isCurrentUser)
         .operation('authenticateUser', async (ctx) => {
             const { identifier, password } = ctx.request.body;
             const hashedIdentifier = hmac(ctx.state.env.ENC_SECRET, identifier);
-            const userData = await users.authenticate(hashedIdentifier, password);
-            const token = await getToken(ctx.state.env.JWT_SECRET, userData);
+            const user = await users.authenticate(hashedIdentifier, password);
+            const token = await getToken(ctx.state.env.JWT_SECRET, user);
 
-            return ok({ token, user: userData });
+            return ok({ token, user });
         })
         .operation('getUsers', async (ctx) => {
             const { limit, offset } = ctx.request.query;
@@ -46,7 +46,7 @@ export default function users(dataModel: DataModel) {
             return noResponse();
         })
         .operation('createUser', async (ctx) => {
-            const { user, identifier } = ctx.request.body;
+            const { identifier, user } = ctx.request.body;
             const userData = await users.create(user);
             await identifiers.create(userData._id.toString(), identifier);
 

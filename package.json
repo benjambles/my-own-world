@@ -10,11 +10,11 @@
     ],
     "scripts": {
         "build": "npm run build --workspaces",
-        "ts": "tsc -b -v",
-        "clean:ts": "tsc -b --clean",
         "css": "npm run css --workspaces --if-present",
+        "prepare": "husky install",
         "test": "jest",
-        "prepare": "husky install"
+        "ts": "tsc -b -v",
+        "ts:clean": "tsc -b --clean"
     },
     "author": "Ben Allen",
     "license": "ISC",
