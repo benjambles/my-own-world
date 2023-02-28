@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit';
-import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
+import { storyRenderer } from '../../../../utils/storybook/story-renderer.js';
 import './text-input.css.js';
 import { textInput, TextInputData } from './text-input.js';
 

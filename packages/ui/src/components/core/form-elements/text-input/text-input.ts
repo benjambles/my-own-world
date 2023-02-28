@@ -1,13 +1,11 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { lazyStylesheet } from '../../utils/lazy-stylesheet.js';
+import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
+import { InputProps } from '../form-input-props.js';
 import styles from './text-input.css.js';
 
-export interface TextInputData {
-    id: string;
-    label: string;
+export interface TextInputData extends InputProps {
     defaultText?: string;
-    name?: string;
     placeholder?: string;
     type?:
         | 'text'
@@ -25,10 +23,12 @@ export interface TextInputData {
 }
 
 export function textInput({
+    disabled,
     id,
     label,
     placeholder,
     name,
+    required,
     defaultText = '',
     type = 'text',
 }: TextInputData) {
@@ -38,11 +38,13 @@ export function textInput({
         <div class=${styles.inputWrapper}>
             <div class=${styles.textInput}>
                 <input
-                    type="${type}"
-                    value="${defaultText}"
-                    placeholder="${ifDefined(placeholder)}"
-                    name="${name ? name : id}"
                     id="${id}"
+                    name="${name ?? id}"
+                    placeholder="${ifDefined(placeholder)}"
+                    type="${type}"
+                    ?disabled=${disabled}
+                    ?required=${required}
+                    .value="${defaultText}"
                 />
             </div>
         </div>
