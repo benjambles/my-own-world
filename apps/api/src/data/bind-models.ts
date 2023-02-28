@@ -3,8 +3,8 @@ import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
 import { getServiceModel } from '../resources/service/service.js';
 import { talesModel } from '../resources/tales/tales.js';
-import { getIdentifierModel } from '../resources/users/identifiers/identifiers.js';
-import { getUserModel } from '../resources/users/users.js';
+import { getIdentifierModel } from '../resources/users/data/identifiers.js';
+import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
 
 type Model = (db: Db, env: any) => ModelReturn;

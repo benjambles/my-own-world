@@ -1,4 +1,4 @@
-import { maybeProp, maybePropIsFn, maybePropOr } from '../maybe-prop.js';
+import { maybeProp, maybePropOr } from '../maybe-prop.js';
 
 test('maybeProp', () => {
     const obj = {
@@ -22,13 +22,4 @@ test('maybePropOr', () => {
 
     expect(maybePropOr('default', 'prop1', obj).orNull).toEqual('expected');
     expect(maybePropOr('default', 'prop2', obj).orNull).toEqual('default');
-});
-
-test('maybePropIsFn', () => {
-    const obj = {
-        prop2: () => {},
-    };
-
-    expect(maybePropIsFn('prop1', obj).isEmpty).toEqual(true);
-    expect(maybePropIsFn('prop2', obj).isDefined).toEqual(true);
 });

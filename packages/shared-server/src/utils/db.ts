@@ -38,7 +38,7 @@ export function closeConnection() {
  * @param {string} error - Error message to throw with
  * @param {any} data - Response from query
  */
-export function result<T>(error: string, data: T): never | T {
+export function getOrThrow<T>(error: string, data: T): never | T {
     if (data === null || data === false || data === undefined) {
         throw new Error(error);
     }

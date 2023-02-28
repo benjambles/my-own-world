@@ -24,14 +24,14 @@ export type KoaError = { details: { message: string; path: string }[] } | { msg:
 
 function formattedThrowOnError(ctx: Context) {
     maybeProp('invalid', ctx)
-        .map((errors: Record<string, KoaError>) => {
-            return Object.fromEntries(
+        .map((errors: Record<string, KoaError>) =>
+            Object.fromEntries(
                 Object.entries(errors).map(([key, error]) => [
                     key,
                     getErrorMessage(error),
                 ]),
-            );
-        })
+            ),
+        )
         .flatMap(stringifyJSON)
         .map(badResponseError(ctx));
 }

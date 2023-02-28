@@ -1,6 +1,6 @@
 import { Id } from '@benjambles/js-lib/dist/index.js';
 import { Context } from 'koa';
-import JoiRouter, { Spec } from 'koa-joi-router';
+import router from 'koa-joi-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
 import { catchJoiErrors } from '../koa/middleware/catch-joi-errors.js';
 import { getAccessMiddleware } from '../koa/middleware/get-access-middleware.js';
@@ -10,7 +10,6 @@ import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to
 import { getAccessMap } from '../utils/routes/get-access-map.js';
 import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
 import { getDataMiddleware, noResponse } from '../utils/routes/responses.js';
-import { createRoute } from './create-route.js';
 
 const defaultData = {
     operations: {},
@@ -88,26 +87,25 @@ export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     });
 }
 
-export function getRouter(resource, prefix = '', validateOutput: boolean = false) {
-    const routeMap = getRouteMap(resource, validateOutput);
-    return createRoute(prefix, routeMap).middleware();
-}
-
-function getRouteMap(data: ResourceConfig, validateOutput: boolean): Spec[] {
-    return Object.entries(data.apiDoc.paths)
+export function getRouter(
+    resource: ResourceConfig,
+    prefix = '',
+    validateOutput: boolean = false,
+) {
+    const routeMap = Object.entries(resource.apiDoc.paths)
         .map(([path, pathConfig]) => {
             return Object.entries(pathConfig).map(([method, methodConfig]) => {
                 const handler = [
                     catchJoiErrors(validateOutput),
                     getAccessMiddleware(
-                        getAccessMap(data.accessMap),
+                        getAccessMap(resource.accessMap),
                         methodConfig.security,
                     ),
                     getDataMiddleware(
                         undefined,
                         methodConfig.operationId === 'sendOptions'
                             ? getSendOptions(Object.keys(pathConfig))
-                            : data.operations[methodConfig.operationId],
+                            : resource.operations[methodConfig.operationId],
                     ),
                 ];
 
@@ -116,15 +114,17 @@ function getRouteMap(data: ResourceConfig, validateOutput: boolean): Spec[] {
                     path,
                     handler,
                     validate: buildJoiSpec(
-                        JoiRouter.Joi,
+                        router.Joi,
                         methodConfig,
                         validateOutput,
-                        data.apiDoc['components'],
+                        resource.apiDoc['components'],
                     ),
                 };
             });
         })
         .flat();
+
+    return router().route(routeMap).prefix(prefix).middleware();
 }
 
 function getSendOptions(verbs: string[]) {

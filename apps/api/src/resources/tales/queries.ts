@@ -1,4 +1,4 @@
-import { getObjectId, result } from '@benjambles/mow-server/dist/utils/db.js';
+import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 
@@ -30,7 +30,7 @@ export function getTalesHelpers(db: Db) {
                 _id: getObjectId(uuid),
                 isDeleted: false,
             });
-            return result('There was an error whilst fetching the tale', data);
+            return getOrThrow('There was an error whilst fetching the tale', data);
         },
 
         /**
@@ -44,7 +44,7 @@ export function getTalesHelpers(db: Db) {
         ): Promise<Tale[]> {
             const data = tales.find({ isDeleted: false }, { limit, skip }).toArray();
 
-            return result('There was an error whilst fetching tales', data);
+            return getOrThrow('There was an error whilst fetching tales', data);
         },
 
         /**
@@ -63,7 +63,7 @@ export function getTalesHelpers(db: Db) {
             });
             const data = await helpers.find(insertedId.toString());
 
-            return result('There was an error whilst creating the tale', data);
+            return getOrThrow('There was an error whilst creating the tale', data);
         },
 
         /**
@@ -76,7 +76,10 @@ export function getTalesHelpers(db: Db) {
                 { $set: { isDeleted: true } },
             );
 
-            return result('There was an error whilst updating the tale', acknowledged);
+            return getOrThrow(
+                'There was an error whilst updating the tale',
+                acknowledged,
+            );
         },
 
         /**
@@ -93,7 +96,7 @@ export function getTalesHelpers(db: Db) {
                 { $set: taleData },
             );
 
-            return result('There was an error whilst updating the tale', value);
+            return getOrThrow('There was an error whilst updating the tale', value);
         },
     };
 
