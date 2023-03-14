@@ -16,7 +16,7 @@ export function throwBadResponse(ctx: Context) {
  */
 export function throwNoAccess(ctx: Context) {
     return () => {
-        ctx.throw(401, 'Unauthorised access to endpoint');
+        ctx.throw(401, ctx.state?.jwtOriginalError ?? 'Unauthorised access to endpoint');
     };
 }
 

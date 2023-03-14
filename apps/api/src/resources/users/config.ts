@@ -7,55 +7,6 @@ export default {
         version: '1.0.0',
     },
     components: {
-        schemas: {
-            IdentifierResponse: {
-                type: 'object',
-                required: ['hash', 'identifier', 'isDeleted', 'type', 'verified'],
-                properties: {
-                    hash: { type: 'string' },
-                    identifier: { type: 'string' },
-                    isDeleted: { type: 'boolean' },
-                    type: { type: 'string' },
-                    verified: { type: 'boolean' },
-                },
-            },
-            UserResponse: {
-                description: 'The public facing user data',
-                type: 'object',
-                required: [
-                    '_id',
-                    'createdOn',
-                    'firstName',
-                    'isDeleted',
-                    'lastName',
-                    'lastLoggedIn',
-                    'screenName',
-                ],
-                properties: {
-                    _id: {
-                        type: 'string',
-                    },
-                    createdOn: {
-                        type: 'string',
-                    },
-                    firstName: {
-                        type: 'string',
-                    },
-                    isDeleted: {
-                        type: 'boolean',
-                    },
-                    lastLoggedIn: {
-                        type: 'string',
-                    },
-                    lastName: {
-                        type: 'string',
-                    },
-                    screenName: {
-                        type: 'string',
-                    },
-                },
-            },
-        },
         parameters: {
             IdentifierId: {
                 name: 'hash',
@@ -70,6 +21,57 @@ export default {
                 description: 'Unique id representing a user',
                 required: true,
                 schema: { type: 'string' },
+            },
+            Fingerprint: {
+                name: 'fingerprint',
+                in: 'path',
+                description: 'A fingerprint string for deleteing a token pair',
+                required: true,
+                schema: { type: 'string' },
+            },
+        },
+        schemas: {
+            IdentifierResponse: {
+                type: 'object',
+                required: ['hash', 'identifier', 'type', 'verified'],
+                properties: {
+                    hash: { type: 'string' },
+                    identifier: { type: 'string' },
+                    type: { type: 'string' },
+                    verified: { type: 'boolean' },
+                },
+            },
+            UserResponse: {
+                description: 'The public facing user data',
+                type: 'object',
+                required: [
+                    '_id',
+                    'createdOn',
+                    'firstName',
+                    'lastName',
+                    'lastLoggedIn',
+                    'screenName',
+                ],
+                properties: {
+                    _id: {
+                        type: 'string',
+                    },
+                    createdOn: {
+                        type: 'string',
+                    },
+                    firstName: {
+                        type: 'string',
+                    },
+                    lastLoggedIn: {
+                        type: 'string',
+                    },
+                    lastName: {
+                        type: 'string',
+                    },
+                    screenName: {
+                        type: 'string',
+                    },
+                },
             },
         },
     },
@@ -282,24 +284,6 @@ export default {
                                             'The name that will be shown for the user on the site',
                                         type: 'string',
                                         maxLength: 256,
-                                    },
-                                    settings: {
-                                        type: 'object',
-                                        required: ['dateFormat', 'locale', 'timeFormat'],
-                                        properties: {
-                                            dateFormat: {
-                                                type: 'string',
-                                                maxLength: 10,
-                                            },
-                                            locale: {
-                                                type: 'string',
-                                                maxLength: 5,
-                                            },
-                                            timeFormat: {
-                                                type: 'string',
-                                                maxLength: 10,
-                                            },
-                                        },
                                     },
                                 },
                             },
@@ -524,6 +508,112 @@ export default {
                 security: [],
             },
         },
+        '/users/:userId/tokens': {
+            get: {
+                tags: ['user', 'authentication', 'jwt'],
+                summary: '',
+                description: '',
+                operationId: 'getTokens',
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
+                responses: {
+                    200: {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        required: [
+                                            'fingerprint',
+                                            'refreshToken',
+                                            'accessToken',
+                                        ],
+                                        properties: {
+                                            fingerprint: { type: 'string' },
+                                            refreshToken: { type: 'string' },
+                                            accessToken: { type: 'string' },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [{ http: ['role:admin', 'role:owner'] }],
+            },
+            delete: {
+                tags: ['user', 'authentication'],
+                summary: 'Removes the users active tokens',
+                description: '',
+                operationId: 'deleteTokens',
+                parameters: [{ $ref: '#/components/parameters/UserId' }],
+                responses: {
+                    '204': {
+                        description: 'OK,',
+                    },
+                },
+                security: [{ http: ['role:admin', 'role:owner'] }],
+            },
+            options: {
+                tags: ['user', 'options'],
+                summary: 'Check which endpoints are valid for authenticating a user',
+                description: '',
+                operationId: 'sendOptions',
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        '/users/:userId/tokens/:fingerprint': {
+            delete: {
+                tags: ['users', 'authentication', 'tokens'],
+                summary: '',
+                description: '',
+                operationId: 'deleteToken',
+                parameters: [
+                    { $ref: '#/components/parameters/UserId' },
+                    { $ref: '#/components/parameters/Fingerprint' },
+                ],
+                responses: {
+                    '204': {
+                        description: 'OK,',
+                    },
+                },
+                security: [{ http: ['role:admin', 'role:owner'] }],
+            },
+            options: {
+                tags: ['user', 'options'],
+                summary: 'Check which endpoints are valid for authenticating a user',
+                description: '',
+                operationId: 'sendOptions',
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
         '/authenticate': {
             post: {
                 tags: ['user', 'authentication'],
@@ -565,7 +655,13 @@ export default {
                                     type: 'object',
                                     required: ['token', 'user'],
                                     properties: {
-                                        token: {
+                                        accessToken: {
+                                            description:
+                                                'JWT to be passed on each authenicated request',
+                                            type: 'string',
+                                            maxLength: 256,
+                                        },
+                                        refreshToken: {
                                             description:
                                                 'JWT to be passed on each authenicated request',
                                             type: 'string',
@@ -585,6 +681,84 @@ export default {
             options: {
                 tags: ['user', 'options'],
                 summary: 'Check which endpoints are valid for authenticating a user',
+                description: '',
+                operationId: 'sendOptions',
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        '/refreshToken': {
+            post: {
+                tags: ['user', 'authentication'],
+                summary:
+                    'Use a fingerprint and refresh token to generate a new access token',
+                description: '',
+                operationId: 'refreshToken',
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['refreshToken'],
+                                properties: {
+                                    refreshToken: {
+                                        description:
+                                            'A refresh token currently stored against the user, with a matching finger print included',
+                                        type: 'string',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    required: ['token', 'user'],
+                                    properties: {
+                                        accessToken: {
+                                            description:
+                                                'JWT to be passed on each authenicated request',
+                                            type: 'string',
+                                            maxLength: 256,
+                                        },
+                                        refreshToken: {
+                                            description:
+                                                'JWT to be passed on each authenicated request',
+                                            type: 'string',
+                                            maxLength: 256,
+                                        },
+                                        user: {
+                                            $ref: '#/components/schemas/UserResponse',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+            options: {
+                tags: ['user', 'options'],
+                summary: 'Check which endpoints are valid for refreshing a user token',
                 description: '',
                 operationId: 'sendOptions',
                 responses: {

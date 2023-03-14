@@ -50,7 +50,8 @@ export function formatData(
         const maybeValue = await formatter(key, value);
         const newAcc = maybeValue
             .map((val) => {
-                return { ...acc, [key]: val };
+                acc[key] = val;
+                return acc;
             })
             .getOrElseValue(acc);
 
