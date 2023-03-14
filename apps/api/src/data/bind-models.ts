@@ -1,8 +1,8 @@
 import { Simplify } from '@benjambles/js-lib/dist/index.js';
 import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
+import { getWeaponModel } from '../resources/items/weapons/weapons.js';
 import { getServiceModel } from '../resources/service/service.js';
-import { talesModel } from '../resources/tales/tales.js';
 import { getIdentifierModel } from '../resources/users/data/identifiers.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
@@ -51,7 +51,7 @@ export function bindModels(db: Db, env: Env) {
     return withDb(db, env)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
-        .bind('tales', talesModel)
         .bind('users', getUserModel)
+        .bind('weapons', getWeaponModel)
         .get();
 }
