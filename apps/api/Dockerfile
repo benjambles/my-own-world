@@ -15,7 +15,7 @@ COPY ["../../packages",  "./packages"]
 
 RUN npm run build
 
-FROM node:16-alpine
+FROM node:19.7.0-bullseye-slim
 
 EXPOSE 3001
 

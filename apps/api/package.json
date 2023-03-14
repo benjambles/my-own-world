@@ -17,6 +17,7 @@
     "license": "ISC",
     "dependencies": {
         "@benjambles/mow-server": "../../packages/shared-server",
+        "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
         "joi": "17.8.1",
         "koa": "2.14.1",
         "mongodb": "5.1.0"

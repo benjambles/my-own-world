@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:19-alpine
+FROM node:19.7.0-bullseye-slim
 
 WORKDIR /app
 
@@ -23,4 +23,4 @@ COPY ["./packages/skirmish-engine/package.json", "./packages/skirmish-engine/"]
 COPY ["./packages/ui/package.json", "./packages/ui/"]
 
 RUN npm pkg delete scripts.prepare
-RUN npm ci --omit=dev
+RUN npm ci --only=production
