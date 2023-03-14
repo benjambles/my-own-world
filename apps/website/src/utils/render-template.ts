@@ -2,7 +2,7 @@ import { render, RenderResult } from '@lit-labs/ssr';
 
 export async function renderTemplate(data, componentPath: string) {
     const rootComponent = await import(componentPath);
-    return iterateTemplateParts(data, rootComponent.default);
+    return iterateTemplateParts(data, rootComponent);
 }
 
 type PageData = {
@@ -13,7 +13,13 @@ type PageData = {
 
 function* iterateTemplateParts<T extends PageData>(
     data: T,
-    rootComponent: (data: T) => RenderResult,
+    rootComponent: {
+        assets: {
+            styles: { href: string; lazy: boolean }[];
+            scripts: { src: string; async: boolean; defer: boolean }[];
+        };
+        render: (data: T) => RenderResult;
+    },
 ) {
     yield `<!DOCTYPE html>
         <html lang="en">
@@ -22,8 +28,21 @@ function* iterateTemplateParts<T extends PageData>(
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${data.meta.title}</title>
                 <link href="/mow-ui/styles/global-css/base.css" rel="stylesheet" />
+                ${rootComponent.assets?.styles
+                    ?.map(({ href, lazy }) => {
+                        return lazy ? lazyStyle(href) : style(href);
+                    })
+                    .join('')}
     `;
     yield `</head><body>`;
-    yield* render(rootComponent(data));
+    yield* render(rootComponent.render(data));
     yield `</body></html>`;
+}
+
+function lazyStyle(href: string) {
+    return `<link rel="preload" href="${href}" as="style" onload="this.rel='stylesheet'" />`;
+}
+
+function style(href: string) {
+    return `<link rel="stylesheet" href="${href}" />`;
 }
