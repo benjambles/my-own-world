@@ -22,6 +22,7 @@ import { cleanResponse } from './data/users.js';
 
 export default function users(dataModel: DataModel) {
     const identifiers = dataModel.getKey('identifiers');
+    const tokens = dataModel.getKey('tokens');
     const users = dataModel.getKey('users');
 
     return createResource(config)
@@ -30,7 +31,7 @@ export default function users(dataModel: DataModel) {
             const { identifier, password } = ctx.request.body;
             const hashedIdentifier = hmac(ctx.state.env.ENC_SECRET, identifier);
 
-            const user = await users.authenticate(hashedIdentifier, password);
+            const user = await identifiers.authenticate(hashedIdentifier, password);
 
             const { accessToken, fingerprint, refreshToken } = getAuthTokens(
                 ctx.state.env,
@@ -40,7 +41,7 @@ export default function users(dataModel: DataModel) {
                 randomUUID(),
             );
 
-            const updatedUser = await users.createToken(user._id.toString(), {
+            const updatedUser = await tokens.create(user._id.toString(), {
                 tokenData: {
                     accessToken,
                     refreshToken,
@@ -70,7 +71,10 @@ export default function users(dataModel: DataModel) {
             );
 
             // Fetch the users tokens
-            const matchedToken = users.findToken(parsedRefreshToken.sub, oldRefreshToken);
+            const [matchedToken] = await tokens.find(
+                parsedRefreshToken.sub,
+                oldRefreshToken,
+            );
 
             if (!matchedToken) {
                 throw new Error('Expired Refresh token');
@@ -86,7 +90,7 @@ export default function users(dataModel: DataModel) {
             );
 
             // Replace the tokens on the user object
-            const updatedUser = await users.updateToken(
+            const updatedUser = await tokens.update(
                 parsedRefreshToken.sub,
                 refreshToken,
                 accessToken,
@@ -151,9 +155,9 @@ export default function users(dataModel: DataModel) {
             return noResponse();
         })
         .operation('getTokens', async (ctx) => {
-            const tokens = await users.getTokens(ctx.request.params.userId);
+            const userTokens = await tokens.get(ctx.request.params.userId);
 
-            return ok(tokens);
+            return ok(userTokens);
         })
         .operation('deleteTokens', async (ctx) => {
             await users.update(ctx.request.params.userId, {
@@ -164,7 +168,7 @@ export default function users(dataModel: DataModel) {
         })
         .operation('deleteToken', async (ctx) => {
             const { fingerprint, userId } = ctx.request.params;
-            await users.deleteToken(fingerprint, userId);
+            await tokens.delete(fingerprint, userId);
 
             return noResponse();
         })

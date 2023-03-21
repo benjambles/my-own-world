@@ -3,6 +3,7 @@ import {
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
+import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
 import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import { Db } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
@@ -15,9 +16,10 @@ export type Identifier = User['identities'][number];
  * @param data
  */
 function respond(password: string, identity: Identifier) {
-    const decryptedIdent = decryptValue(password, identity.identifier);
-
-    return { ...identity, identifier: decryptedIdent };
+    return {
+        ...identity,
+        identifier: decryptValue(password, identity.identifier),
+    };
 }
 
 export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
@@ -87,6 +89,24 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
                 `There was an error whilst deleting the identitiy with hash ${hash}`,
                 matchedCount && matchedCount === modifiedCount,
             );
+        },
+        authenticate: async function (
+            identifier: string,
+            password: string,
+        ): Promise<User> {
+            const dbResult = await users.findOne({
+                'identities.hash': { $eq: identifier },
+                isDeleted: false,
+            });
+
+            const user = getOrThrow(
+                'There was an error whilst fetching the user',
+                dbResult,
+            );
+
+            await compareBHash(password, user.password);
+
+            return user;
         },
     };
 

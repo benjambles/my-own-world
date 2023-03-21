@@ -4,6 +4,7 @@ import { Db } from 'mongodb';
 import { getWeaponModel } from '../resources/items/weapons/weapons.js';
 import { getServiceModel } from '../resources/service/service.js';
 import { getIdentifierModel } from '../resources/users/data/identifiers.js';
+import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
 
@@ -51,6 +52,7 @@ export function bindModels(db: Db, env: Env) {
     return withDb(db, env)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
+        .bind('tokens', getTokenModel)
         .bind('users', getUserModel)
         .bind('weapons', getWeaponModel)
         .get();
