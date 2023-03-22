@@ -1,20 +1,19 @@
-import Koa from 'koa';
+import Koa, { Middleware } from 'koa';
 import compress from 'koa-compress';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
+import mount from 'koa-mount';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
-import mount from 'koa-mount';
-import { errorHandler } from './middleware/error-handler.js';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
 
 interface GetMiddlewareProps {
-    app: Koa;
     env: { JWT_SECRET: string };
     helmetConfig?: any;
     staticPath?: Record<string, string>;
+    customErrorHandler: Middleware;
 }
 
 /**
@@ -25,10 +24,10 @@ interface GetMiddlewareProps {
  * @returns
  */
 export function getMiddleware({
-    app,
     env,
     helmetConfig,
     staticPath,
+    customErrorHandler,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
         setEnvOnState(env),
@@ -37,7 +36,7 @@ export function getMiddleware({
         etag(), // Adds eTag headers to the response
         compress(), // ctx.compress = false to disable compression
         helmet(helmetConfig), // Security layer
-        errorHandler(app),
+        customErrorHandler,
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
         ...serveStatic(staticPath),
     ].filter(Boolean);

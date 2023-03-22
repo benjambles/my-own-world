@@ -1,6 +1,6 @@
 import { none, some } from 'ts-option';
 
-export function stringifyJSON(data) {
+export function stringifyJson(data) {
     try {
         return some(JSON.stringify(data));
     } catch (e) {
@@ -10,7 +10,7 @@ export function stringifyJSON(data) {
 
 export function parseJson(data: string) {
     try {
-        return some(JSON.parse(data));
+        return some(JSON.parse(data) as unknown);
     } catch (e) {
         return none;
     }

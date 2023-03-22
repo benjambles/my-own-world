@@ -14,7 +14,6 @@ export const mockData = {
             { text: 'Learn', href: '/learn' },
             { text: 'Blog', href: '/blog' },
         ],
-        user: {},
     },
     meta: {
         title: 'Home: My Own World',

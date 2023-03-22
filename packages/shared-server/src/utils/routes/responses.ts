@@ -1,11 +1,8 @@
 import { Context, Middleware } from 'koa';
 import { Readable } from 'stream';
-import { ErrorValues, throwSafeError } from '../errors.js';
+import { throwSafeError } from '../errors.js';
 
-export function getDataMiddleware(
-    defaultError: ErrorValues,
-    callback: Middleware,
-): Middleware {
+export function getDataMiddleware(callback: Middleware): Middleware {
     return async (ctx: Context, next) => {
         try {
             const { status = 200, body } = await callback(ctx, next);
@@ -15,7 +12,7 @@ export function getDataMiddleware(
 
             await next();
         } catch (e) {
-            throwSafeError(ctx, e, defaultError);
+            throwSafeError(ctx, e, undefined);
         }
     };
 }

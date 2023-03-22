@@ -1,4 +1,4 @@
-import Koa from 'koa';
+import Koa, { Middleware } from 'koa';
 import errorHandler from 'koa-better-error-handler';
 import router, { Spec } from 'koa-joi-router';
 import { getMiddleware } from './koa/get-middleware.js';
@@ -12,6 +12,7 @@ interface BootHandlerOpts {
     };
     routes?: Koa.Middleware[];
     routesConfig?: Spec[];
+    customErrorHandler: Middleware;
 }
 
 /**
@@ -23,6 +24,7 @@ export function configureServer({
     config: { env, helmetConfig, isApi = false, staticPath },
     routes,
     routesConfig,
+    customErrorHandler,
 }: BootHandlerOpts) {
     // specify that this is our api
     app.context.api = isApi;
@@ -31,10 +33,10 @@ export function configureServer({
     app.context.onerror = errorHandler;
 
     getMiddleware({
-        app,
         env,
         helmetConfig,
         staticPath,
+        customErrorHandler,
     }).forEach((middleware: Koa.Middleware) => app.use(middleware));
 
     if (routesConfig) {

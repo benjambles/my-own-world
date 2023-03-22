@@ -1,12 +1,12 @@
 import Koa from 'koa';
-import { parseJson } from '../../utils/data/json.js';
+import { parseJson } from '../../../utils/data/json.js';
 
 /**
  * Centralised error handling logging. Additional middleware should not
  * try/catch on its own, unless it is rethrowing a modified error,
  * everything should be caught by this middleware.
  */
-export function errorHandler(app: Koa): Koa.Middleware {
+export function apiErrorHandler(app: Koa): Koa.Middleware {
     app.on('error', (err: Error, ctx: Koa.Context) => {
         /* centralized error handling:
          *   console.log error

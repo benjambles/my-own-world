@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
+import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/web-error-handler.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
-import Joi from 'joi';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
+import { getMockData } from './data/get-mock-data.js';
 import { routesConfig } from './routes/routes-config.js';
+import { envSchema } from './schema/env-schema.js';
+import { getWebsiteTemplateStream } from './utils/get-template-stream.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/static');
 
@@ -18,23 +21,12 @@ const paths = {
     },
 };
 
-export const envSchema: Joi.PartialSchemaMap<any> = {
-    NODE_ENV: Joi.string()
-        .pattern(/^development|staging|production|testing&/)
-        .required(),
-    HOST: Joi.string()
-        .ip({ version: ['ipv4', 'ipv6'] })
-        .required(),
-    PORT: Joi.number().port().required(),
-    JWT_SECRET: Joi.string().uuid().required(),
-};
-
 loadEnv(resolveImportPath(paths.base, paths.env));
 const env = validateEnv(envSchema, process.env);
+const app = new Koa();
 
 export const serve = configureServer({
-    routesConfig,
-    app: new Koa(),
+    app,
     config: {
         env,
         helmetConfig: {
@@ -49,6 +41,18 @@ export const serve = configureServer({
         isApi: false,
         staticPath: paths.static,
     },
+    routesConfig,
+    customErrorHandler: webErrorHandler(
+        app,
+        {
+            401: resolveImportPath(import.meta.url, './routes/errors/404.js'),
+            403: resolveImportPath(import.meta.url, './routes/errors/404.js'),
+            404: resolveImportPath(import.meta.url, './routes/errors/404.js'),
+            500: resolveImportPath(import.meta.url, './routes/errors/404.js'),
+        },
+        getWebsiteTemplateStream,
+        getMockData,
+    ),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

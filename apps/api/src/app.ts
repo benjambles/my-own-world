@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
+import { apiErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/api-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
@@ -33,8 +34,10 @@ const dataModel = bindModels(dbInstance, env);
 const resources = getResources(dataModel);
 export const { getApiHelpers } = resources;
 
+const app = new Koa();
+
 export const serve = configureServer({
-    app: new Koa(),
+    app,
     config: {
         env,
         isApi: true,
@@ -42,6 +45,7 @@ export const serve = configureServer({
     routes: Object.values(resources.routeHandlers).map((resource) =>
         getRouter(resource, prefix, false),
     ),
+    customErrorHandler: apiErrorHandler(app),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

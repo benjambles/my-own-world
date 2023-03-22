@@ -24,6 +24,8 @@ export function getAccessMiddleware(
             throwNoAccess(ctx)();
         }
 
+        ctx.state.accessRoles = securityMap;
+
         await next();
     };
 }

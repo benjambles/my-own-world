@@ -2,7 +2,7 @@ import { Id } from '@benjambles/js-lib/dist/index.js';
 import { Context } from 'koa';
 import router from 'koa-joi-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
-import { catchJoiErrors } from '../koa/middleware/catch-joi-errors.js';
+import { catchJoiErrors } from '../koa/middleware/errors/catch-joi-errors.js';
 import { getAccessMiddleware } from '../koa/middleware/get-access-middleware.js';
 import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
 import { KoaContext } from '../utils/joi/context/context.js';
@@ -102,7 +102,6 @@ export function getRouter(
                         methodConfig.security,
                     ),
                     getDataMiddleware(
-                        undefined,
                         methodConfig.operationId === 'sendOptions'
                             ? getSendOptions(Object.keys(pathConfig))
                             : resource.operations[methodConfig.operationId],

@@ -2,7 +2,7 @@ import { render, RenderResult } from '@lit-labs/ssr';
 
 export async function renderTemplate(data, componentPath: string) {
     const rootComponent = await import(componentPath);
-    return iterateTemplateParts(data, rootComponent);
+    return iterateTemplateParts(data, rootComponent.default);
 }
 
 type PageData = {

@@ -2,7 +2,7 @@ import { Id, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { URL, URLSearchParams } from 'url';
 import { ResourceConfig } from '../../routing/create-resource.js';
-import { stringifyJSON } from '../data/json.js';
+import { stringifyJson } from '../data/json.js';
 import { maybeProp } from '../functional/maybe-prop.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
@@ -126,7 +126,7 @@ function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
     return async (args: Params): Promise<Result> => {
         const data: RequestInit = {
             method,
-            body: stringifyJSON(args.body).getOrElseValue(undefined),
+            body: stringifyJson(args.body).getOrElseValue(undefined),
         };
 
         const populatedUrl = new URL(
