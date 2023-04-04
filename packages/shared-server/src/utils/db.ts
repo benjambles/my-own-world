@@ -2,6 +2,8 @@ import MongoDB, { ObjectId } from 'mongodb';
 
 let client: MongoDB.MongoClient;
 
+export type ModelResult<T> = Promise<{ ok: boolean; value: T }>;
+
 interface MongoConfig {
     database: string;
     password: string;
@@ -20,19 +22,6 @@ export function getObjectId(uuid: string): ObjectId {
     if (!uuid) throw new Error('Invalid UUID passed');
 
     return new MongoDB.ObjectId(uuid);
-}
-
-/**
- * On a null query response throw an error to the response handler otherwise return
- * @param {string} error - Error message to throw with
- * @param {any} data - Response from query
- */
-export function getOrThrow<T>(error: string, data: T): never | T {
-    if (data === null || data === false || data === undefined) {
-        throw new Error(error);
-    }
-
-    return data;
 }
 
 /**

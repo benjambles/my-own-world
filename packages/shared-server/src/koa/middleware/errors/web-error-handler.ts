@@ -1,5 +1,4 @@
 import Koa, { Context } from 'koa';
-import { parseJson } from '../../../utils/data/json.js';
 import { streamResponse } from '../../../utils/routes/responses.js';
 
 type ErrorCodes = '401' | '403' | '404' | '500';
@@ -39,9 +38,18 @@ export function webErrorHandler(
             const status = err.status || 500;
             const data = await staticData?.(ctx);
 
+            let parsedError;
+
+            try {
+                // Ugly but safe for when a non-JOI error is thrown
+                parsedError = JSON.parse(err.message);
+            } catch (e) {
+                parsedError = err.message;
+            }
+
             const renderData = {
                 ...data,
-                error: parseJson(err.message).getOrElseValue(err.message),
+                error: parsedError,
                 status,
             };
 

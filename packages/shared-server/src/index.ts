@@ -1,5 +1,4 @@
 import Koa, { Middleware } from 'koa';
-import errorHandler from 'koa-better-error-handler';
 import router, { Spec } from 'koa-joi-router';
 import { getMiddleware } from './koa/get-middleware.js';
 interface BootHandlerOpts {
@@ -29,9 +28,6 @@ export function configureServer({
     // specify that this is our api
     app.context.api = isApi;
 
-    // override koa's undocumented error handler
-    app.context.onerror = errorHandler;
-
     getMiddleware({
         env,
         helmetConfig,
@@ -43,9 +39,7 @@ export function configureServer({
         app.use(router().route(routesConfig).middleware());
     }
 
-    if (routes) {
-        routes.forEach((route) => app.use(route));
-    }
+    routes?.forEach((route) => app.use(route));
 
     return ({ HOST, PORT } = env) => {
         return app.listen(parseInt(PORT, 10), HOST, () => {

@@ -2,8 +2,7 @@ import {
     formatData,
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
-import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
-import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
+import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import { Db } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
@@ -34,26 +33,25 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
 
     const formatIdentiferData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
 
-    const model = {
+    return {
         formatIdentiferData,
-        find: async function getByUserId(
-            password: string,
-            userId: string,
-        ): Promise<Identifier[]> {
+        find: async function getByUserId(userId: string): ModelResult<Identifier[]> {
             const dbResult = await users.findOne(
                 { _id: getObjectId(userId), isDeleted: false },
                 { projection: { identities: 1 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst fetching the identities for the user',
-                dbResult,
-            ).identities.map((identity) => respond(password, identity));
+            return {
+                ok: !!dbResult,
+                value: dbResult?.identities.map((identity) =>
+                    respond(ENC_SECRET, identity),
+                ),
+            };
         },
         create: async function create(
             userId: string,
             data: Pick<Identifier, 'identifier' | 'type'>,
-        ): Promise<Identifier> {
+        ): ModelResult<Identifier> {
             const identityData = await formatIdentiferData({
                 ...data,
                 isDeleted: false,
@@ -61,7 +59,7 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
                 verified: false,
             });
 
-            const dbResult = await users.findOneAndUpdate(
+            const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(userId) },
                 {
                     $push: {
@@ -71,44 +69,28 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
                 { projection: { identities: { $slice: -1 } } },
             );
 
-            return respond(
-                ENC_SECRET,
-                getOrThrow(
-                    'There was an error whilst creating the identity',
-                    dbResult.value?.identities?.[0] || null,
-                ),
-            );
+            return { ok: !!ok, value: value.identities[0] };
         },
-        delete: async function remove(userId: string, hash: string): Promise<boolean> {
+        delete: async function remove(userId: string, hash: string): ModelResult<number> {
             const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(userId), 'identities.hash': { $eq: hash } },
                 { $set: { 'identities.$.isDeleted': true } },
             );
 
-            return getOrThrow(
-                `There was an error whilst deleting the identitiy with hash ${hash}`,
-                matchedCount && matchedCount === modifiedCount,
-            );
+            return {
+                ok: !!matchedCount && matchedCount === modifiedCount,
+                value: matchedCount,
+            };
         },
-        authenticate: async function (
+        getUserByIdentifier: async function getUserByIdentifier(
             identifier: string,
-            password: string,
-        ): Promise<User> {
-            const dbResult = await users.findOne({
+        ): ModelResult<User> {
+            const value = await users.findOne({
                 'identities.hash': { $eq: identifier },
                 isDeleted: false,
             });
 
-            const user = getOrThrow(
-                'There was an error whilst fetching the user',
-                dbResult,
-            );
-
-            await compareBHash(password, user.password);
-
-            return user;
+            return { ok: !!value, value };
         },
     };
-
-    return model;
 }

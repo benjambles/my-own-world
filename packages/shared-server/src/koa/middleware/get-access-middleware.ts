@@ -21,7 +21,7 @@ export function getAccessMiddleware(
      */
     return async (ctx: Context, next: Next) => {
         if (accessMap && accessRoles.length && !accessRoles.some(accessMap(ctx))) {
-            throwNoAccess(ctx)();
+            throwNoAccess(ctx);
         }
 
         ctx.state.accessRoles = securityMap;

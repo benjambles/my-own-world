@@ -10,7 +10,7 @@ test('getAccessMiddleware', async () => {
 
     // No authorization needed
     await expect(
-        checkerNoMap({ throw: err } as Koa.Context, async () => {}),
+        checkerNoMap({ throw: err, state: {} } as Koa.Context, async () => {}),
     ).resolves.not.toThrow();
 
     const checkerWithMap = getAccessMiddleware(getAccessMap(), [

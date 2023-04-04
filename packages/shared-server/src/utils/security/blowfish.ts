@@ -1,5 +1,5 @@
-import { compare, hash } from 'bcrypt';
-import createError from 'http-errors';
+import { hash } from 'bcrypt';
+export { compare as compareBHash } from 'bcrypt';
 
 /**
  * Generate a blowfish based hash of a value using bcrypt
@@ -7,19 +7,4 @@ import createError from 'http-errors';
  */
 export async function bHash(value: string): Promise<string> {
     return await hash(value, 10);
-}
-
-/**
- * Compare a bcrypt blowfish based hash and a string
- * @param value The string to be tested
- * @param hash  A bcrypted hash to compare against
- */
-export async function compareBHash(value: string, hash: string): Promise<true> {
-    const isValid = await compare(value, hash);
-
-    if (!isValid) {
-        throw createError(401, 'No match found');
-    }
-
-    return true;
 }

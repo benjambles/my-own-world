@@ -21,7 +21,6 @@
         "joi": "17.8.1",
         "jsonwebtoken": "9.0.0",
         "koa": "2.14.1",
-        "koa-better-error-handler": "11.0.4",
         "koa-compress": "5.1.0",
         "koa-conditional-get": "3.0.0",
         "koa-etag": "4.0.0",
@@ -32,7 +31,6 @@
         "koa-pino-logger": "4.0.0",
         "koa-static": "5.0.0",
         "mongodb": "5.1.0",
-        "ts-option": "2.1.0",
         "uuid": "9.0.0"
     },
     "devDependencies": {

@@ -5,12 +5,14 @@ import {
     noResponse,
     ok,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
 import { hmac } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import {
     getAuthTokens,
     verifyRefreshToken,
 } from '@benjambles/mow-server/dist/utils/security/jwt.js';
 import { randomUUID } from 'crypto';
+import createError from 'http-errors';
 import { DataModel } from '../../app.js';
 import config from './config.js';
 import { cleanResponse } from './data/users.js';
@@ -31,17 +33,27 @@ export default function users(dataModel: DataModel) {
             const { identifier, password } = ctx.request.body;
             const hashedIdentifier = hmac(ctx.state.env.ENC_SECRET, identifier);
 
-            const user = await identifiers.authenticate(hashedIdentifier, password);
+            const userResult = await identifiers.getUserByIdentifier(hashedIdentifier);
+
+            if (!userResult.ok) {
+                throw createError(401, 'Not Authorised');
+            }
+
+            const isMatch = await compareBHash(password, userResult.value.password);
+
+            if (!isMatch) {
+                throw createError(401, 'Not Authorised');
+            }
 
             const { accessToken, fingerprint, refreshToken } = getAuthTokens(
                 ctx.state.env,
                 {
-                    sub: user._id,
+                    sub: userResult.value._id,
                 },
                 randomUUID(),
             );
 
-            const updatedUser = await tokens.create(user._id.toString(), {
+            const tokenResult = await tokens.create(userResult.value._id.toString(), {
                 tokenData: {
                     accessToken,
                     refreshToken,
@@ -50,13 +62,17 @@ export default function users(dataModel: DataModel) {
                 lastLoggedIn: new Date(),
             });
 
+            if (!tokenResult.ok) {
+                throw createError(500, 'There was an error whilst generating the token');
+            }
+
             ctx.cookies.set('fingerprint', fingerprint);
             ctx.cookies.set('refreshtoken', refreshToken);
 
             return ok({
                 accessToken,
                 refreshToken,
-                user: cleanResponse(updatedUser),
+                user: cleanResponse(tokenResult.value),
             });
         })
         .operation('refreshToken', async (ctx) => {
@@ -71,13 +87,13 @@ export default function users(dataModel: DataModel) {
             );
 
             // Fetch the users tokens
-            const [matchedToken] = await tokens.find(
+            const tokenResult = await tokens.find(
                 parsedRefreshToken.sub,
                 oldRefreshToken,
             );
 
-            if (!matchedToken) {
-                throw new Error('Expired Refresh token');
+            if (!tokenResult.ok) {
+                throw createError(500, 'Expired Refresh token');
             }
 
             // Generate new tokens
@@ -90,11 +106,15 @@ export default function users(dataModel: DataModel) {
             );
 
             // Replace the tokens on the user object
-            const updatedUser = await tokens.update(
+            const userResult = await tokens.update(
                 parsedRefreshToken.sub,
                 refreshToken,
                 accessToken,
             );
+
+            if (!userResult.ok) {
+                throw createError(500, 'There was an error whilst creating the tokens');
+            }
 
             ctx.cookies.set('fingerprint', fingerprint);
             ctx.cookies.set('refreshtoken', refreshToken);
@@ -102,73 +122,128 @@ export default function users(dataModel: DataModel) {
             return ok({
                 accessToken,
                 refreshToken,
-                user: cleanResponse(updatedUser),
+                user: cleanResponse(userResult.value),
             });
         })
         .operation('getUsers', async (ctx) => {
             const { limit, offset } = ctx.request.query;
-            const data = await users.get(limit, offset);
+            const userResult = await users.get(limit, offset);
 
-            return ok(data.map(cleanResponse));
+            return ok(userResult.value.map(cleanResponse));
         })
         .operation('getUserById', async (ctx) => {
-            const data = await users.find(ctx.request.params.userId);
+            const userResult = await users.find(ctx.request.params.userId);
 
-            return ok(cleanResponse(data));
+            if (!userResult.ok) {
+                throw createError(404, 'There was an error whilst getting the user');
+            }
+
+            return ok(cleanResponse(userResult.value));
         })
         .operation('deleteUserById', async (ctx) => {
-            await users.delete(ctx.request.params.userId);
+            const userResult = await users.delete(ctx.request.params.userId);
+
+            if (!userResult.ok) {
+                throw createError(400, 'There was an error whilst deleting the user');
+            }
 
             return noResponse();
         })
         .operation('createUser', async (ctx) => {
             const { identifier, user } = ctx.request.body;
-            const userData = await users.create(user);
-            await identifiers.create(userData._id.toString(), identifier);
+            const userResult = await users.create(user);
 
-            return created(cleanResponse(userData));
-        })
-        .operation('updateUserById', async (ctx) => {
-            const data = await users.update(ctx.request.params.userId, ctx.request.body);
+            if (!userResult.ok) {
+                throw createError(500, 'There was an error creating the user');
+            }
 
-            return ok(cleanResponse(data));
-        })
-        .operation('getUserIdentifiers', async (ctx) => {
-            const data = await identifiers.find(
-                ctx.state.env.ENC_SECRET,
-                ctx.request.params.userId,
+            const idResult = await identifiers.create(
+                userResult.value._id.toString(),
+                identifier,
             );
 
-            return ok(data);
+            if (!idResult.ok) {
+                throw createError(400, 'There was an error whilst creating the user');
+                // TODO log + rollback user?
+            }
+
+            return created(cleanResponse(userResult.value));
         })
-        .operation('createUserIdentifier', async (ctx) => {
-            const data = await identifiers.create(
+        .operation('updateUserById', async (ctx) => {
+            const userResult = await users.update(
                 ctx.request.params.userId,
                 ctx.request.body,
             );
 
-            return created(data);
+            if (!userResult.ok) {
+                throw createError(400, 'There was an error updating the user');
+            }
+
+            return ok(cleanResponse(userResult.value));
+        })
+        .operation('getUserIdentifiers', async (ctx) => {
+            const identitiesResult = await identifiers.find(ctx.request.params.userId);
+
+            if (!identitiesResult.ok) {
+                throw createError(404, 'No matching identities found');
+            }
+
+            return ok(identitiesResult.value);
+        })
+        .operation('createUserIdentifier', async (ctx) => {
+            const { ok, value } = await identifiers.create(
+                ctx.request.params.userId,
+                ctx.request.body,
+            );
+
+            if (!ok) {
+                throw createError(400, `There was an error whilst saving the identifier`);
+            }
+
+            return created(value);
         })
         .operation('deleteUserIdentifier', async (ctx) => {
-            await identifiers.delete(ctx.request.params.userId, ctx.request.params.hash);
+            const { ok } = await identifiers.delete(
+                ctx.request.params.userId,
+                ctx.request.params.hash,
+            );
+
+            if (!ok) {
+                throw createError(
+                    400,
+                    'There was an error whilst deleting the identifier',
+                );
+            }
 
             return noResponse();
         })
         .operation('getTokens', async (ctx) => {
-            const userTokens = await tokens.get(ctx.request.params.userId);
+            const tokensResult = await tokens.get(ctx.request.params.userId);
 
-            return ok(userTokens);
+            if (!tokensResult.ok) {
+                throw createError(400, 'There was an error whilst fetching the tokens');
+            }
+
+            return ok(tokensResult.value);
         })
         .operation('deleteTokens', async (ctx) => {
-            await users.update(ctx.request.params.userId, {
+            const deleteResult = await users.update(ctx.request.params.userId, {
                 accessTokens: [],
             });
+
+            if (!deleteResult.ok) {
+                throw createError(400, 'There was an error whilst deleting the tokens');
+            }
 
             return noResponse();
         })
         .operation('deleteToken', async (ctx) => {
             const { fingerprint, userId } = ctx.request.params;
-            await tokens.delete(fingerprint, userId);
+            const tokenResult = await tokens.delete(fingerprint, userId);
+
+            if (!tokenResult.ok) {
+                throw createError(400, 'There was an error whilst deleting the token');
+            }
 
             return noResponse();
         })

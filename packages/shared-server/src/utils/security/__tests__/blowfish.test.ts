@@ -18,5 +18,5 @@ test('compareBHash', async () => {
             'this is not my value',
             '$2b$10$NByGLHmirFZGuUgMfO0QWu2.p7EV2KWBoQ68I.KVTi2l/v95FLkFS',
         ),
-    ).rejects.toThrow();
+    ).resolves.toBeFalsy();
 });

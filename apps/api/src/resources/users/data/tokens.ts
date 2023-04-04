@@ -1,4 +1,4 @@
-import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
+import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db } from 'mongodb';
 import { User } from './users.js';
 
@@ -17,8 +17,8 @@ export function getTokenModel(db: Db) {
                 tokenData,
                 lastLoggedIn,
             }: { tokenData: User['accessTokens'][number]; lastLoggedIn: Date },
-        ): Promise<User> {
-            const dbResult = await users.findOneAndUpdate(
+        ): ModelResult<User> {
+            const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 {
                     $push: { accessTokens: tokenData },
@@ -27,15 +27,12 @@ export function getTokenModel(db: Db) {
                 { projection: { _id: 1, accessTokens: 1 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst updating the user',
-                dbResult.value,
-            );
+            return { ok: !!ok, value };
         },
         find: async function (
             userId: string,
             refreshToken: string,
-        ): Promise<User['accessTokens']> {
+        ): ModelResult<User['accessTokens'][number]> {
             const dbResult = await users.findOne(
                 {
                     _id: getObjectId(userId),
@@ -44,12 +41,9 @@ export function getTokenModel(db: Db) {
                 { projection: { accessTokens: 1 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst fetching the user token',
-                dbResult.accessTokens,
-            );
+            return { ok: !!dbResult, value: dbResult?.accessTokens[0] };
         },
-        get: async function (userId: string): Promise<User['accessTokens']> {
+        get: async function (userId: string): ModelResult<User['accessTokens']> {
             const dbResult = await users.findOne(
                 {
                     _id: getObjectId(userId),
@@ -57,28 +51,28 @@ export function getTokenModel(db: Db) {
                 { projection: { accessTokens: 1 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst fetching the user token',
-                dbResult.accessTokens,
-            );
+            return { ok: !!dbResult, value: dbResult?.accessTokens };
         },
-        delete: async function (userId: string, refreshToken: string): Promise<Boolean> {
+        delete: async function (
+            userId: string,
+            refreshToken: string,
+        ): ModelResult<number> {
             const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(userId) },
                 { $pull: { accessTokens: { refreshToken: refreshToken } } },
             );
 
-            return getOrThrow(
-                `There was an error whilst deleting the token with value ${refreshToken}`,
-                matchedCount && matchedCount === modifiedCount,
-            );
+            return {
+                ok: !!matchedCount && matchedCount === modifiedCount,
+                value: matchedCount,
+            };
         },
         update: async function (
             userId: string,
             refreshToken: string,
             accessToken: string,
-        ): Promise<User> {
-            const dbResult = await users.findOneAndUpdate(
+        ): ModelResult<User> {
+            const { ok, value } = await users.findOneAndUpdate(
                 {
                     _id: getObjectId(userId),
                     'accessTokens.refreshToken': { $eq: refreshToken },
@@ -92,10 +86,7 @@ export function getTokenModel(db: Db) {
                 { projection: { identities: 0, accessTokens: 0 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst updating the user',
-                dbResult.value,
-            );
+            return { ok: !!ok, value };
         },
     };
 

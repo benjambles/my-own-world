@@ -2,8 +2,6 @@ import { Id, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { URL, URLSearchParams } from 'url';
 import { ResourceConfig } from '../../routing/create-resource.js';
-import { stringifyJson } from '../data/json.js';
-import { maybeProp } from '../functional/maybe-prop.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
 import { ApiDoc, MethodSchema, UnionFromProps } from '../joi/openapi-to-joi.js';
@@ -88,10 +86,8 @@ function getClientBinder<T extends ResourceConfig>(): ResourceBinder<T> {
                 return data;
             },
             operation(operationId: keyof T['operations'], hostUrl: string, fetchArgs) {
-                return clientBinder({
-                    ...data,
-                    [operationId]: getFetchHandler(hostUrl, fetchArgs),
-                });
+                data[operationId] = getFetchHandler(hostUrl, fetchArgs);
+                return clientBinder(data);
             },
         };
     };
@@ -124,29 +120,21 @@ function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
     { method, responses, url }: FetchHandlerArgs,
 ) {
     return async (args: Params): Promise<Result> => {
-        const data: RequestInit = {
-            method,
-            body: stringifyJson(args.body).getOrElseValue(undefined),
-        };
-
         const populatedUrl = new URL(
-            maybeProp('params', args)
-                .map(Object.entries)
-                .map((params) => {
-                    return params.reduce(
-                        (acc, [key, value]) => acc.replace(`:${key}`, value),
-                        url,
-                    );
-                })
-                .getOrElseValue(url),
+            Object.entries(args.params ?? {}).reduce(
+                (acc, [key, value]) => acc.replace(`:${key}`, value),
+                url,
+            ),
             hostUrl,
         );
 
-        populatedUrl.search += new URLSearchParams(
-            maybeProp('query', args).getOrElseValue(''),
-        ).toString();
+        populatedUrl.search += new URLSearchParams(args.query ?? '').toString();
 
-        const resp = await fetch(populatedUrl, data);
+        const resp = await fetch(populatedUrl, {
+            method,
+            body: args.body ? JSON.stringify(args.body) : undefined,
+        });
+
         const [response] = Object.values(responses) as [ValidResponses];
 
         if (!('content' in response)) {

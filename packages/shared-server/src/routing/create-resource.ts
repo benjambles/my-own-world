@@ -61,7 +61,7 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
 //#endregion Types
 
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
-    const resource = (data) => {
+    function resource(data) {
         return {
             access(tag, handler) {
                 data.accessMap[tag] = handler;
@@ -69,19 +69,17 @@ export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
                 return resource(data);
             },
             get() {
-                return {
-                    ...data,
-                    apiDoc,
-                };
+                return data;
             },
             operation(key, handler) {
                 data.operations[key] = handler;
                 return resource(data);
             },
         };
-    };
+    }
 
     return resource({
+        apiDoc,
         accessMap: {},
         operations: {},
     });
@@ -94,24 +92,24 @@ export function getRouter(
 ) {
     const routeMap = Object.entries(resource.apiDoc.paths)
         .map(([path, pathConfig]) => {
-            return Object.entries(pathConfig).map(([method, methodConfig]) => {
-                const handler = [
-                    catchJoiErrors(validateOutput),
-                    getAccessMiddleware(
-                        getAccessMap(resource.accessMap),
-                        methodConfig.security,
-                    ),
-                    getDataMiddleware(
-                        methodConfig.operationId === 'sendOptions'
-                            ? getSendOptions(Object.keys(pathConfig))
-                            : resource.operations[methodConfig.operationId],
-                    ),
-                ];
+            const sendOptions = getSendOptions(Object.keys(pathConfig));
 
+            return Object.entries(pathConfig).map(([method, methodConfig]) => {
                 return {
-                    handler,
                     method,
                     path,
+                    handler: [
+                        catchJoiErrors(validateOutput),
+                        getAccessMiddleware(
+                            getAccessMap(resource.accessMap),
+                            methodConfig.security,
+                        ),
+                        getDataMiddleware(
+                            methodConfig.operationId === 'sendOptions'
+                                ? sendOptions
+                                : resource.operations[methodConfig.operationId],
+                        ),
+                    ],
                     validate: buildJoiSpec(
                         router.Joi,
                         methodConfig,

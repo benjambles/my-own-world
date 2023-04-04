@@ -1,4 +1,3 @@
-import { none, Option, some } from 'ts-option';
 import { bHash } from '../security/blowfish.js';
 import { encryptValue, hmac as getHmac } from '../security/encryption.js';
 
@@ -14,24 +13,24 @@ export interface ModelOptions {
  */
 export function getDataFormatter(
     password: string,
-    { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] },
+    { encrypted, salted, hmac, readOnly = ['_id'] },
 ) {
-    return async (key: string, value: string): Promise<Option<string>> => {
-        if (readOnly.includes(key)) return none;
+    return async (key: string, value: string): Promise<string | null> => {
+        if (readOnly.includes(key)) return null;
 
         if (encrypted.includes(key)) {
-            return some(encryptValue(password, value));
+            return encryptValue(password, value);
         }
 
         if (salted.includes(key)) {
-            return some(await bHash(value));
+            return await bHash(value);
         }
 
         if (hmac.includes(key)) {
-            return some(getHmac(password, value));
+            return getHmac(password, value);
         }
 
-        return some(value);
+        return value;
     };
 }
 
@@ -41,22 +40,26 @@ export function getDataFormatter(
  * @param formatter
  */
 export function formatData(
-    formatter: (key: string, value: string) => Promise<Option<string>>,
+    formatter: (key: string, value: string) => Promise<string | null>,
 ) {
-    async function setKeyValues(acc, entries) {
-        if (!entries.length) return acc;
+    return async <T>(data: T): Promise<T> => {
+        return await setKeyValues(formatter, {}, Object.entries(data));
+    };
+}
 
-        const [[key, value], ...tail] = entries;
-        const maybeValue = await formatter(key, value);
-        const newAcc = maybeValue
-            .map((val) => {
-                acc[key] = val;
-                return acc;
-            })
-            .getOrElseValue(acc);
+async function setKeyValues(
+    formatter: (key: string, value: string) => Promise<string | null>,
+    acc: Record<string, string>,
+    entries: [string, any][],
+) {
+    if (!entries.length) return acc;
 
-        return await setKeyValues(newAcc, tail);
+    const [[key, value], ...tail] = entries;
+    const maybeValue = await formatter(key, value);
+
+    if (maybeValue !== null) {
+        acc[key] = maybeValue;
     }
 
-    return async <T>(data: T): Promise<T> => await setKeyValues({}, Object.entries(data));
+    return await setKeyValues(formatter, acc, tail);
 }

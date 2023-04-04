@@ -1,11 +1,14 @@
+import { ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db } from 'mongodb';
-import { getSystemHelpers } from './queries.js';
 
 export function getServiceModel(db: Db) {
-    const systemQueries = getSystemHelpers(db);
+    const system = db.collection('System');
+
     return {
-        find: async function getSystemKey(key: string): Promise<any> {
-            return await systemQueries.find(key);
+        find: async function getSystemKey(key: string): ModelResult<any> {
+            const { ok, value } = await system.findOne({ key });
+
+            return { ok, value };
         },
     };
 }

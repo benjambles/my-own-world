@@ -5,7 +5,7 @@ import {
     getDataFormatter,
     ModelOptions,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
-import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
+import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
@@ -66,7 +66,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 
     const model = {
         formatUserData,
-        get: async function (limit: number = 10, skip: number = 0): Promise<User[]> {
+        get: async function (limit: number = 10, skip: number = 0): ModelResult<User[]> {
             const dbResult = await users
                 .find(
                     { isDeleted: false },
@@ -74,17 +74,17 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
                 )
                 .toArray();
 
-            return getOrThrow('There was an error whilst fetching users', dbResult);
+            return { ok: true, value: dbResult };
         },
-        find: async function (uuid: string): Promise<User> {
-            const dbResult = await users.findOne(
+        find: async function (uuid: string): ModelResult<User> {
+            const userResult = await users.findOne(
                 { _id: getObjectId(uuid), isDeleted: false },
                 { projection: { identities: 0, accessTokens: 0 } },
             );
 
-            return getOrThrow('There was an error whilst fetching the user', dbResult);
+            return { ok: !!userResult, value: userResult };
         },
-        create: async function (data: NewUser): Promise<User> {
+        create: async function (data: NewUser): ModelResult<User> {
             const cleanData = await formatUserData(data);
 
             const { insertedId } = await users.insertOne({
@@ -98,39 +98,34 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
                 accessTokens: [],
             });
 
-            return await model.find(
-                getOrThrow(
-                    'There was an error whilst creating the user',
-                    insertedId,
-                ).toString(),
-            );
+            return await model.find(insertedId.toString());
         },
-        update: async function (uuid: string, userData: Partial<User>): Promise<User> {
+        update: async function (
+            uuid: string,
+            userData: Partial<User>,
+        ): ModelResult<User> {
             const cleanData = await formatUserData(userData);
 
-            const dbResult = await users.findOneAndUpdate(
+            const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 { $set: cleanData },
                 { projection: { identities: 0, accessTokens: 0 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst updating the user',
-                dbResult.value,
-            );
+            return { ok: !!ok, value };
         },
-        delete: async function (uuid: string): Promise<boolean> {
-            const { acknowledged } = await users.updateOne(
+        delete: async function (uuid: string): ModelResult<number> {
+            const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(uuid) },
                 {
                     $set: { deletedOn: new Date(), isDeleted: true },
                 },
             );
 
-            return getOrThrow(
-                'There was an error whilst updating the user',
-                acknowledged,
-            );
+            return {
+                ok: !!matchedCount && matchedCount === modifiedCount,
+                value: matchedCount,
+            };
         },
         sendMagicLink: async function (): Promise<boolean> {
             return true;

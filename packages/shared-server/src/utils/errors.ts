@@ -4,10 +4,8 @@ import { Context } from 'koa';
  *
  * @param ctx
  */
-export function throwBadResponse(ctx: Context) {
-    return (msg: string) => {
-        ctx.throw(400, msg);
-    };
+export function throwBadResponse(ctx: Context, msg: string) {
+    ctx.throw(400, msg);
 }
 
 /**
@@ -15,9 +13,7 @@ export function throwBadResponse(ctx: Context) {
  * @param ctx
  */
 export function throwNoAccess(ctx: Context) {
-    return () => {
-        ctx.throw(401, ctx.state?.jwtOriginalError ?? 'Unauthorised access to endpoint');
-    };
+    ctx.throw(401, ctx.state?.jwtOriginalError ?? 'Unauthorised access to endpoint');
 }
 
 type ErrorData = {
@@ -33,31 +29,8 @@ export type ErrorValues = string | ErrorData;
  * @param error - A JS, or http-errors error object
  * @param safe - Default error parameters for when an error isn't sent, or to hide dev errors
  */
-export function throwSafeError(
-    ctx: Context,
-    error: Partial<ErrorData>,
-    safe: ErrorValues,
-): void {
-    const safeError = {
-        message: 'There was an error',
-        status: 400,
-        ...(typeof safe === 'string' ? { message: safe } : safe),
-    };
-
-    if (isProduction(ctx.state.env.NODE_ENV)) {
-        ctx.throw(safeError.status, safeError.message);
-    }
-
-    const errorMessage =
-        error instanceof Error ? error.message : typeof error === 'string' ? error : null;
-
-    const { status, message } = {
-        ...safeError,
-        ...(errorMessage ? { message: errorMessage, status: 500 } : error),
-    };
-    ctx.throw(status, message);
-}
-
-function isProduction(nodeEnv: string) {
-    return 'production' === nodeEnv;
+export function throwSafeError(ctx: Context, error: Partial<ErrorData>): void {
+    const errorMessage = error instanceof Error ? error.message : error;
+    const status = 'status' in error ? error.status : 500;
+    ctx.throw(status, errorMessage);
 }

@@ -12,7 +12,7 @@ export function getDataMiddleware(callback: Middleware): Middleware {
 
             await next();
         } catch (e) {
-            throwSafeError(ctx, e, undefined);
+            throwSafeError(ctx, e);
         }
     };
 }

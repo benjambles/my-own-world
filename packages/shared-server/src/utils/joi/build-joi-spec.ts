@@ -120,14 +120,13 @@ function parseObject(
 ) {
     return Object.fromEntries(
         Object.entries(properties).map(([key, spec]) => {
-            const _spec = getSchemaConf(spec, components);
             return [
                 key,
                 buildParameter(
                     joi,
                     {
                         required: required?.includes(key),
-                        schema: _spec,
+                        schema: getSchemaConf(spec, components),
                     },
                     components,
                 ),

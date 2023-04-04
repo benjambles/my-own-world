@@ -5,7 +5,7 @@ import {
     ModelOptions,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
-import { getObjectId, getOrThrow } from '@benjambles/mow-server/dist/utils/db.js';
+import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { Weapon } from '@benjambles/skirmish-engine/dist/item/weapons/weapons.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
@@ -43,29 +43,30 @@ export function getWeaponModel(db: Db, { ENC_SECRET }: Env) {
 
     const model = {
         dataFormatter,
-        get: async function (limit: number = 10, skip: number = 0) {
+        get: async function (
+            limit: number = 10,
+            skip: number = 0,
+        ): ModelResult<GameWeapon[]> {
             const dbResult = await items
                 .find({ isDeleted: false }, { projection: {}, skip, limit })
                 .toArray();
 
-            return getOrThrow(
-                'There was an error whilst fetching the plural',
-                dbResult,
-            ).map(cleanResponse);
+            return { ok: true, value: dbResult };
         },
 
-        find: async function (uuid: string) {
-            const data = await items.findOne(
+        find: async function (uuid: string): ModelResult<GameWeapon> {
+            const dbResult = await items.findOne(
                 { _id: getObjectId(uuid), isDeleted: false },
                 { projection: { identities: 0 } },
             );
 
-            return cleanResponse(
-                getOrThrow('There was an error whilst fetching the Weapon', data),
-            );
+            return {
+                ok: !!dbResult,
+                value: dbResult,
+            };
         },
 
-        create: async function (data: any) {
+        create: async function (data: any): ModelResult<GameWeapon> {
             const cleanData = await dataFormatter(data);
             const { insertedId } = await items.insertOne({
                 _id: getObjectId(randomUUID()),
@@ -73,50 +74,42 @@ export function getWeaponModel(db: Db, { ENC_SECRET }: Env) {
                 isDeleted: false,
             });
 
-            return await model.find(
-                getOrThrow(
-                    'There was an error whilst creating the Weapon',
-                    insertedId,
-                ).toString(),
-            );
+            return await model.find(insertedId.toString());
         },
 
-        update: async function (uuid: string, data: DeepPartial<GameWeapon>) {
+        update: async function (
+            uuid: string,
+            data: DeepPartial<GameWeapon>,
+        ): ModelResult<GameWeapon> {
             const cleanData = await dataFormatter(data);
-            const dbResult = await items.findOneAndUpdate(
+            const { ok, value } = await items.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 { set: cleanData },
                 { projection: {} },
             );
 
-            return cleanResponse(
-                getOrThrow(
-                    'There was an error whilst updating the Weapon',
-                    dbResult.value,
-                ),
-            );
+            return { ok: !!ok, value };
         },
 
-        delete: async function (uuid: string) {
-            const data = await items.findOneAndUpdate(
+        delete: async function (uuid: string): ModelResult<number> {
+            const { matchedCount, modifiedCount } = await items.updateOne(
                 { _id: getObjectId(uuid) },
                 {
                     set: { isDeleted: true, deletedOn: new Date() },
                 },
-                { projection: { isDeleted: 1 } },
             );
 
-            return getOrThrow(
-                'There was an error whilst updating the Weapon',
-                data.ok === 1,
-            );
+            return {
+                ok: !!matchedCount && matchedCount === modifiedCount,
+                value: matchedCount,
+            };
         },
     };
 
     return model;
 }
 
-function cleanResponse(data: GameWeapon): WeaponResponse {
+export function cleanResponse(data: GameWeapon): WeaponResponse {
     return {
         ...omit(data, ...restrictedKeys),
         _id: data._id.toString(),

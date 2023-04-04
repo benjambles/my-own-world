@@ -1,5 +1,4 @@
 import { Context, Middleware, Next } from 'koa';
-import { stringifyJson } from '../../../utils/data/json.js';
 import { throwBadResponse } from '../../../utils/errors.js';
 
 /**
@@ -21,16 +20,22 @@ export function catchJoiErrors(validateOutput: boolean = false): Middleware {
 function formattedThrowOnError(ctx: Context): void | never {
     if (!ctx.invalid) return;
 
-    const errors = stringifyJson(
-        Object.fromEntries(
-            Object.entries(ctx.invalid).map(([key, error]) => [
-                key,
-                getErrorMessage(error),
-            ]),
-        ),
-    ).getOrElseValue('There was an error.');
+    let errors = 'There was an error.';
 
-    throwBadResponse(ctx)(errors);
+    try {
+        errors = JSON.stringify(
+            Object.fromEntries(
+                Object.entries(ctx.invalid).map(([key, error]) => [
+                    key,
+                    getErrorMessage(error),
+                ]),
+            ),
+        );
+    } catch (e) {
+        ctx.log(e);
+    }
+
+    throwBadResponse(ctx, errors);
 }
 
 type KoaError = { details: { message: string; path: string }[] } | { msg: string };
