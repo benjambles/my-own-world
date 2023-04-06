@@ -93,6 +93,7 @@ type ToJoiRouter<
                           RouteSpec[2]['parameters'],
                           MaybeBodyContext<RouteSpec[2]['requestBody'], Components>,
                           MaybeResponseBody<RouteSpec[2]['responses'], Components>,
+                          { method: RouteSpec[1]; path: RouteSpec[0] },
                           Components
                       >,
                   ) => Promise<MaybeResponseBody<RouteSpec[2]['responses'], Components>>;

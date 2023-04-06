@@ -1,9 +1,5 @@
-import { render, RenderResult } from '@lit-labs/ssr';
-
-export async function renderTemplate(data, componentPath: string) {
-    const rootComponent = await import(componentPath);
-    return iterateTemplateParts(data, rootComponent.default);
-}
+import { render } from '@lit-labs/ssr';
+import { TemplateResult } from 'lit';
 
 type PageData = {
     meta: {
@@ -11,14 +7,14 @@ type PageData = {
     };
 };
 
-function* iterateTemplateParts<T extends PageData>(
+export function* iterateTemplateParts<T extends PageData>(
     data: T,
     rootComponent: {
         assets: {
-            styles: { href: string; lazy: boolean }[];
-            scripts: { src: string; async: boolean; defer: boolean }[];
+            styles: { href: string; lazy?: boolean }[];
+            scripts: { src: string; async?: boolean; defer?: boolean }[];
         };
-        render: (data: T) => RenderResult;
+        render: (data: T) => TemplateResult;
     },
 ) {
     yield `<!DOCTYPE html>

@@ -1,4 +1,5 @@
 export * from './accessibility/skiplinks.js';
+export * from './accessibility/time.js';
 export * from './buttons/destructive-button.js';
 export * from './buttons/outline-button.js';
 export * from './buttons/primary-button.js';

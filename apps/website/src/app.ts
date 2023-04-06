@@ -6,9 +6,10 @@ import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
 import { getMockData } from './data/get-mock-data.js';
-import { routesConfig } from './routes/routes-config.js';
+import { resources } from './routes/routes-config.js';
 import { envSchema } from './schema/env-schema.js';
 import { getWebsiteTemplateStream } from './utils/get-template-stream.js';
+import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/static');
 
@@ -41,7 +42,7 @@ export const serve = configureServer({
         isApi: false,
         staticPath: paths.static,
     },
-    routesConfig,
+    routes: resources.map((resource) => getRouter(resource(), '', false)),
     customErrorHandler: webErrorHandler(
         app,
         {

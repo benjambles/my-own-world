@@ -1,12 +1,33 @@
-import { RouteParams } from '../../utils/get-route-handler.js';
-import { accessibilityRoute } from './accessibility/accessibility-route.js';
-import { homeRoute } from './home/route.js';
-import { privacyRoute } from './privacy/privacy-route.js';
-import { termsRoute } from './terms/terms-route.js';
+import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
+import { ok } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { getMockData } from '../../data/get-mock-data.js';
+import { iterateTemplateParts } from '../../utils/render-template.js';
+import terms from '../public/terms/terms.js';
+import config from './config.js';
+import home from './home/home.js';
 
-export const publicRoutes: RouteParams[] = [
-    homeRoute,
-    termsRoute,
-    privacyRoute,
-    accessibilityRoute,
-];
+export default function () {
+    return createResource(config)
+        .operation('getHome', async (ctx) => {
+            const data = await getMockData(ctx);
+            const tpl = iterateTemplateParts(data, home);
+
+            return ok(tpl);
+        })
+        .operation('getAccessibilityPolicy', async (ctx) => {
+            const data = await getMockData(ctx);
+            const tpl = iterateTemplateParts(data, terms);
+            return ok(tpl);
+        })
+        .operation('getPrivacyPolicy', async (ctx) => {
+            const data = await getMockData(ctx);
+            const tpl = iterateTemplateParts(data, terms);
+            return ok(tpl);
+        })
+        .operation('getTerms', async (ctx) => {
+            const data = await getMockData(ctx);
+            const tpl = iterateTemplateParts(data, terms);
+            return ok(tpl);
+        })
+        .get();
+}

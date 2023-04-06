@@ -13,12 +13,22 @@ export type ContextFromBody<
     ? ParseProp<BodyConfig['application/json']['schema'], Components>
     : BodyConfig extends TextPlain
     ? string
+    : BodyConfig extends TextHtml
+    ? Generator | string
     : never;
 
-export type BodyMimes = TextPlain | ApplicationJson;
+export type BodyMimes = TextPlain | TextHtml | ApplicationJson;
 
 type TextPlain = {
     'text/plain': {
+        schema: {
+            type: 'string';
+        };
+    };
+};
+
+type TextHtml = {
+    'text/html': {
         schema: {
             type: 'string';
         };

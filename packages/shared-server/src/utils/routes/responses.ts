@@ -5,10 +5,17 @@ import { throwSafeError } from '../errors.js';
 export function getDataMiddleware(callback: Middleware): Middleware {
     return async (ctx: Context, next) => {
         try {
-            const { status = 200, body } = await callback(ctx, next);
+            const { status = 200, body, redirectUrl } = await callback(ctx, next);
 
             ctx.status = status;
-            ctx.body = body;
+
+            if (redirectUrl) {
+                ctx.redirect(redirectUrl);
+            }
+
+            ctx.body = isIterable(body) ? Readable.from(body) : body;
+
+            ctx.type = ctx.api === true ? 'application/json' : 'text/html';
 
             await next();
         } catch (e) {
@@ -38,4 +45,18 @@ export function created<B>(body: B) {
 
 export function noResponse() {
     return { status: 204 } as const;
+}
+
+export function redirectAction(redirectUrl) {
+    return { status: 303, redirectUrl } as const;
+}
+
+function isIterable(input) {
+    if (input === null || input === undefined) {
+        return false;
+    }
+
+    return (
+        typeof input[Symbol.iterator] === 'function' && typeof input.next === 'function'
+    );
 }

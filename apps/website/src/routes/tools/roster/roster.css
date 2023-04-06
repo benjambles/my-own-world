@@ -1,0 +1,46 @@
+main {
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
+
+.slide-panel {
+}
+
+.panel {
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-group > * {
+    min-width: 140px;
+    flex: 1 1 100%;
+}
+
+[class^='_button-'] {
+    text-align: center;
+    border: 1px solid red;
+}
+
+.button-outline {
+}
+
+.button-destructive {
+}
+
+.card-list {
+    list-style: none;
+    padding: 0;
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+    gap: 30px;
+    grid-auto-rows: minmax(100px, auto);
+}

@@ -7,10 +7,17 @@ export type ContextFromParams<
     Params extends readonly any[] = readonly [],
     Result extends object = {},
     Body = any,
+    State extends { method: string; path: string } = { method: 'get'; path: '' },
     Components extends {} = {},
 > = Params extends readonly [infer First extends Param | Ref, ...infer Rest]
-    ? ContextFromParams<Rest, Result & ParseParam<First, Components>, Body, Components>
-    : KoaContext<Identity<Result>, Identity<Body>>;
+    ? ContextFromParams<
+          Rest,
+          Result & ParseParam<First, Components>,
+          Body,
+          State,
+          Components
+      >
+    : KoaContext<Identity<Result>, State, Identity<Body>>;
 
 export type HandlerArgs<
     Params extends readonly any[] = readonly [],
@@ -30,10 +37,14 @@ interface KoaRequest<RequestParams extends KoaRequestParams> extends Request {
         : RequestParams['query'];
 }
 
-export interface KoaContext<RequestParams extends KoaRequestParams, ResponseBody = any>
-    extends Context {
+export interface KoaContext<
+    RequestParams extends KoaRequestParams,
+    State,
+    ResponseBody = any,
+> extends Context {
     body: ResponseBody;
     request: KoaRequest<RequestParams>;
+    state: State & Context['state'];
 }
 
 export interface KoaRequestParams {
