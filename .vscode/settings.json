@@ -4,6 +4,7 @@
         "**/buildcache": true,
         "**/coverage": true,
         "**/node_modules": true,
+        "**/dist":true,
     },
     "search.exclude": {
         "**/coverage": true,
