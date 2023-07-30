@@ -14,9 +14,9 @@
     "author": "Ben Allen",
     "license": "ISC",
     "devDependencies": {
-        "@types/jest": "29.4.0",
-        "jest": "29.4.3",
-        "ts-jest": "29.0.5",
-        "typescript": "5.0.3"
+        "@types/jest": "29.5.2",
+        "jest": "29.5.0",
+        "ts-jest": "29.1.0",
+        "typescript": "5.1.3"
     }
 }
