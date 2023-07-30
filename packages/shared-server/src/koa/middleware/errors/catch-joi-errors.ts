@@ -1,4 +1,4 @@
-import { Context, Middleware, Next } from 'koa';
+import { Context, Next } from 'koa';
 import { throwBadResponse } from '../../../utils/errors.js';
 
 /**
@@ -6,15 +6,12 @@ import { throwBadResponse } from '../../../utils/errors.js';
  * @param ctx Koa context
  * @param next Next middleware to call if validation passes
  */
-export function catchJoiErrors(validateOutput: boolean = false): Middleware {
-    return async (ctx: Context, next: Next) => {
-        formattedThrowOnError(ctx);
-        await next();
+export async function catchJoiErrors(ctx: Context, next: Next) {
+    formattedThrowOnError(ctx);
 
-        if (validateOutput) {
-            formattedThrowOnError(ctx);
-        }
-    };
+    await next();
+
+    formattedThrowOnError(ctx);
 }
 
 function formattedThrowOnError(ctx: Context): void | never {
@@ -41,7 +38,9 @@ function formattedThrowOnError(ctx: Context): void | never {
 type KoaError = { details: { message: string; path: string }[] } | { msg: string };
 
 function getErrorMessage(error: KoaError) {
-    return 'details' in error
-        ? error.details.map(({ message, path }) => ({ message, path }))
-        : error.msg;
+    if ('details' in error) {
+        return error.details.map(({ message, path }) => ({ message, path }));
+    }
+
+    return error.msg;
 }

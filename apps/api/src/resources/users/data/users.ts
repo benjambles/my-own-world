@@ -20,7 +20,7 @@ const restrictedKeys = [
 ] as const;
 
 //#region Types
-type RestrictedKeys = typeof restrictedKeys[number];
+type RestrictedKeys = (typeof restrictedKeys)[number];
 
 type ToStringKeys = '_id' | 'createdOn' | 'lastLoggedIn';
 
@@ -51,6 +51,10 @@ export interface User {
 
 type NewUser = Pick<User, 'firstName' | 'lastName' | 'password' | 'screenName'>;
 
+export function getUserCollection(db: Db) {
+    return db.collection<User>('Users');
+}
+
 //#endregion Types
 
 export function getUserModel(db: Db, { ENC_SECRET }: Env) {
@@ -62,7 +66,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     };
 
     const formatUserData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
-    const users = db.collection<User>('Users');
+    const users = getUserCollection(db);
 
     const model = {
         formatUserData,
@@ -87,16 +91,17 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
         create: async function (data: NewUser): ModelResult<User> {
             const cleanData = await formatUserData(data);
 
-            const { insertedId } = await users.insertOne({
-                ...cleanData,
-                _id: getObjectId(randomUUID()),
-                createdOn: new Date(),
-                gameStates: {},
-                identities: [],
-                isDeleted: false,
-                lastLoggedIn: new Date(),
-                accessTokens: [],
-            });
+            const { insertedId } = await users.insertOne(
+                Object.assign(cleanData, {
+                    _id: getObjectId(randomUUID()),
+                    createdOn: new Date(),
+                    gameStates: {},
+                    identities: [],
+                    isDeleted: false,
+                    lastLoggedIn: new Date(),
+                    accessTokens: [],
+                }),
+            );
 
             return await model.find(insertedId.toString());
         },
@@ -136,10 +141,9 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 }
 
 export function cleanResponse(data: User): UserResponse {
-    return {
-        ...omit(data, ...restrictedKeys),
+    return Object.assign(omit(data, restrictedKeys), {
         _id: data._id.toString(),
         createdOn: data.createdOn.toISOString(),
         lastLoggedIn: data.lastLoggedIn.toISOString(),
-    };
+    });
 }

@@ -11,7 +11,6 @@ export function apiErrorHandler(app: Koa): Koa.Middleware {
          *   console.log error
          *   write error to log file
          *   save error and request information to database if ctx.request match condition
-         *   ...
          */
         ctx.log.error(err);
     });

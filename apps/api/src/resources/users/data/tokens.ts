@@ -1,6 +1,6 @@
 import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db } from 'mongodb';
-import { User } from './users.js';
+import { getUserCollection, User } from './users.js';
 
 /**
  *
@@ -8,7 +8,7 @@ import { User } from './users.js';
  */
 
 export function getTokenModel(db: Db) {
-    const users = db.collection<User>('users');
+    const users = getUserCollection(db);
 
     const model = {
         create: async function (

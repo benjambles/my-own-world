@@ -2,11 +2,11 @@ import {
     formatData,
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
-import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
+import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { decryptValue } from '@benjambles/mow-server/dist/utils/security/encryption.js';
 import { Db } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
-import { User } from './users.js';
+import { User, getUserCollection } from './users.js';
 
 export type Identifier = User['identities'][number];
 
@@ -15,14 +15,12 @@ export type Identifier = User['identities'][number];
  * @param data
  */
 function respond(password: string, identity: Identifier) {
-    return {
-        ...identity,
-        identifier: decryptValue(password, identity.identifier),
-    };
+    identity.identifier = decryptValue(password, identity.identifier);
+    return identity;
 }
 
 export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
-    const users = db.collection<User>('users');
+    const users = getUserCollection(db);
 
     const formatOptions = {
         encrypted: ['identifier'],
@@ -52,12 +50,13 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
             userId: string,
             data: Pick<Identifier, 'identifier' | 'type'>,
         ): ModelResult<Identifier> {
-            const identityData = await formatIdentiferData({
-                ...data,
-                isDeleted: false,
-                hash: data.identifier,
-                verified: false,
-            });
+            const identityData = await formatIdentiferData(
+                Object.assign(data, {
+                    isDeleted: false,
+                    hash: data.identifier,
+                    verified: false,
+                }),
+            );
 
             const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(userId) },
@@ -83,10 +82,10 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
             };
         },
         getUserByIdentifier: async function getUserByIdentifier(
-            identifier: string,
+            hash: string,
         ): ModelResult<User> {
             const value = await users.findOne({
-                'identities.hash': { $eq: identifier },
+                'identities.hash': { $eq: hash },
                 isDeleted: false,
             });
 

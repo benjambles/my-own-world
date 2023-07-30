@@ -61,6 +61,11 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
 //#endregion Types
 
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
+    /*
+     *   This is somewhat of an antipattern due to the self reference preventing GC
+     *   However the memory footprint is small enough due to the limited number of
+     *   resources for it to not be an issue for now.
+     */
     function resource(data) {
         return {
             access(tag, handler) {
@@ -99,7 +104,7 @@ export function getRouter(
                     method,
                     path,
                     handler: [
-                        catchJoiErrors(validateOutput),
+                        catchJoiErrors,
                         getAccessMiddleware(
                             getAccessMap(resource.accessMap),
                             methodConfig.security,

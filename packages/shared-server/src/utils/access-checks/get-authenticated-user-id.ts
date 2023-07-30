@@ -17,7 +17,7 @@ export function isCurrentUser(ctx: Context): boolean {
  * Grab the user UUID from the URL
  * @param ctx
  */
-export function getRequestedUser(ctx: Context): string {
+export function getRequestedUser(ctx: Context): string | undefined {
     return ctx.request.params.userId;
 }
 
@@ -26,5 +26,5 @@ export function getRequestedUser(ctx: Context): string {
  * @param ctx
  */
 export function getAuthenticatedUserId(ctx: Context): string | undefined {
-    return ctx.state?.user?._id;
+    return ctx.state?.user?.sub;
 }

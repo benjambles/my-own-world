@@ -72,7 +72,7 @@ export default function users(dataModel: DataModel) {
             return ok({
                 accessToken,
                 refreshToken,
-                user: cleanResponse(tokenResult.value),
+                user: cleanResponse(userResult.value),
             });
         })
         .operation('refreshToken', async (ctx) => {
