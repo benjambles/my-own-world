@@ -1,4 +1,6 @@
+import { RenderResult } from '@lit-labs/ssr';
 import Koa, { Context } from 'koa';
+import { TemplateResult } from 'lit';
 import { streamResponse } from '../../../utils/routes/responses.js';
 
 type ErrorCodes = '401' | '403' | '404' | '500';
@@ -6,8 +8,6 @@ type ErrorCodes = '401' | '403' | '404' | '500';
 type TemplatePaths = {
     [key in ErrorCodes]: string;
 };
-
-type Renderer = (data: any, rootComponent: string) => Promise<any>;
 
 /**
  * Centralised error handling logging. Additional middleware should not
@@ -17,7 +17,16 @@ type Renderer = (data: any, rootComponent: string) => Promise<any>;
 export function webErrorHandler(
     app: Koa,
     templatePaths: TemplatePaths,
-    renderer: Renderer,
+    renderer: (
+        data: any,
+        rootComponent: {
+            assets: {
+                styles: { href: string; lazy?: boolean }[];
+                scripts: { src: string; async?: boolean; defer?: boolean }[];
+            };
+            render: (data: any) => TemplateResult;
+        },
+    ) => Generator<string | Promise<RenderResult>, void, undefined>,
     staticData?: (ctx: Context) => Promise<any>,
 ): Koa.Middleware {
     app.on('error', (err: Error, ctx: Koa.Context) => {
@@ -25,7 +34,6 @@ export function webErrorHandler(
          *   console.log error
          *   write error to log file
          *   save error and request information to database if ctx.request match condition
-         *   ...
          */
         ctx.log.error(err);
     });
@@ -47,13 +55,10 @@ export function webErrorHandler(
                 parsedError = err.message;
             }
 
-            const renderData = {
-                ...data,
-                error: parsedError,
-                status,
-            };
+            data.error = parsedError;
+            data.status = status;
 
-            const page = await renderer(renderData, templatePaths[ctx.status]);
+            const page = await renderer(data, templatePaths[ctx.status]);
             streamResponse(ctx, page, status);
 
             ctx.app.emit('error', err, ctx);

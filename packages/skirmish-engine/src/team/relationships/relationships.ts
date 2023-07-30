@@ -38,10 +38,9 @@ export function modifyStanding<T extends Faction>(
     standingChange: number,
 ): T {
     const relationship = getRelationship(team, targetFaction);
-    return setRelationship(team, targetFaction, {
-        ...relationship,
-        standing: relationship.standing + standingChange,
-    });
+    relationship.standing += standingChange;
+
+    return team;
 }
 
 export function setRelationship<T extends Faction>(
@@ -49,11 +48,6 @@ export function setRelationship<T extends Faction>(
     targetFaction: Faction,
     relationship: Relationship,
 ): T {
-    return {
-        ...team,
-        relationships: {
-            ...team.relationships,
-            [targetFaction.entityId]: relationship,
-        },
-    };
+    team.relationships[targetFaction.entityId] = relationship;
+    return team;
 }

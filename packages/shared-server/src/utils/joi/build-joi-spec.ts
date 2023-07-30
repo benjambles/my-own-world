@@ -61,21 +61,24 @@ export function buildJoiSpec(
     const isJsonRequest =
         requestBody && Object.keys(requestBody.content)[0] === 'application/json';
 
-    return {
+    const spec = {
         continueOnError: true,
         output: getResponseValidator(joi, responses, validateOutput, components),
-        ...(isJsonRequest
-            ? {
-                  body: parseBody(
-                      joi,
-                      requestBody.content['application/json'].schema,
-                      components,
-                  ),
-                  type: 'json',
-              }
-            : {}),
         ...parseParameters(joi, parameters, components),
+        body: undefined,
+        type: undefined,
     };
+
+    if (isJsonRequest) {
+        spec.body = parseBody(
+            joi,
+            requestBody.content['application/json'].schema,
+            components,
+        );
+        spec.type = 'json';
+    }
+
+    return spec;
 }
 
 function getResponseValidator(

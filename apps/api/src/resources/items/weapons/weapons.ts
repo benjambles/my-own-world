@@ -23,7 +23,7 @@ export type NewWeapon = Omit<GameWeapon, '_id' | 'isDeleted' | 'isEquipped' | 'e
 
 type ToStringKeys = '_id';
 
-type RestrictedKeys = typeof restrictedKeys[number];
+type RestrictedKeys = (typeof restrictedKeys)[number];
 
 type WeaponResponse = Omit<GameWeapon, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
@@ -68,11 +68,10 @@ export function getWeaponModel(db: Db, { ENC_SECRET }: Env) {
 
         create: async function (data: any): ModelResult<GameWeapon> {
             const cleanData = await dataFormatter(data);
-            const { insertedId } = await items.insertOne({
-                _id: getObjectId(randomUUID()),
-                ...cleanData,
-                isDeleted: false,
-            });
+            cleanData._id = getObjectId(randomUUID());
+            cleanData.isDeleted = false;
+
+            const { insertedId } = await items.insertOne(cleanData);
 
             return await model.find(insertedId.toString());
         },
@@ -110,8 +109,5 @@ export function getWeaponModel(db: Db, { ENC_SECRET }: Env) {
 }
 
 export function cleanResponse(data: GameWeapon): WeaponResponse {
-    return {
-        ...omit(data, ...restrictedKeys),
-        _id: data._id.toString(),
-    };
+    return Object.assign(omit(data, restrictedKeys), { _id: data._id.toString() });
 }

@@ -12,7 +12,7 @@ import { setEnvOnState } from './middleware/set-env-on-state.js';
 interface GetMiddlewareProps {
     env: { JWT_SECRET: string };
     helmetConfig?: any;
-    staticPath?: Record<string, string>;
+    staticPaths?: Record<string, string>;
     customErrorHandler: Middleware;
 }
 
@@ -26,26 +26,24 @@ interface GetMiddlewareProps {
 export function getMiddleware({
     env,
     helmetConfig,
-    staticPath,
+    staticPaths,
     customErrorHandler,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
-        setEnvOnState(env),
         logger(),
         conditionalGet(),
         etag(), // Adds eTag headers to the response
         compress(), // ctx.compress = false to disable compression
+        setEnvOnState(env),
         helmet(helmetConfig), // Security layer
         customErrorHandler,
         koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
-        ...serveStatic(staticPath),
+        ...serveStatic(staticPaths),
     ].filter(Boolean);
 }
 
-function serveStatic(staticPaths: GetMiddlewareProps['staticPath']) {
-    if (!staticPaths) return [];
-
-    return Object.entries(staticPaths).map(([prefix, path]) =>
-        mount(`/${prefix}`, serve(path)),
-    );
+function serveStatic(staticPaths: GetMiddlewareProps['staticPaths'] = {}) {
+    return Object.entries(staticPaths).map(([prefix, path]) => {
+        return mount(`/${prefix}`, serve(path));
+    });
 }

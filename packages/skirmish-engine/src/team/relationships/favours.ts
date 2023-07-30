@@ -1,7 +1,6 @@
-import { append } from '@benjambles/js-lib/dist/arrays/array.js';
 import { ToUnion } from '@benjambles/js-lib/dist/index.js';
 import { eqProps } from '@benjambles/js-lib/dist/objects/props.js';
-import { Faction, getRelationship, setRelationship } from './relationships.js';
+import { Faction, getRelationship } from './relationships.js';
 
 const severity = ['trivial', 'small', 'medium', 'large'] as const;
 type Severity = ToUnion<typeof severity>;
@@ -32,9 +31,10 @@ export function addFavour<T extends Faction>(
     targetFaction: Faction,
     favour: Favour,
 ): T {
-    const favours = append(getFavours(team, targetFaction), favour);
+    const favours = getFavours(team, targetFaction);
+    favours.push(favour);
 
-    return setFavours(team, targetFaction, favours);
+    return team;
 }
 
 export function removeFavour<T extends Faction>(
@@ -64,7 +64,8 @@ function setFavours<T extends Faction>(
     targetFaction: Faction,
     favours: Favour[],
 ): T {
-    const relationship = { ...getRelationship(team, targetFaction), favours };
+    const relationship = getRelationship(team, targetFaction);
+    relationship.favours = favours;
 
-    return setRelationship(team, targetFaction, relationship);
+    return team;
 }

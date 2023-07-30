@@ -6,7 +6,7 @@ interface BootHandlerOpts {
         env: { HOST: string; JWT_SECRET: string; PORT: string };
         isApi: boolean;
         helmetConfig?: any;
-        staticPath?: Record<string, string>;
+        staticPaths?: Record<string, string>;
     };
     routes?: Koa.Middleware[];
     customErrorHandler: Middleware;
@@ -18,17 +18,20 @@ interface BootHandlerOpts {
  */
 export function configureServer({
     app,
-    config: { env, helmetConfig, isApi = false, staticPath },
+    config: { env, helmetConfig, isApi = false, staticPaths },
     routes,
     customErrorHandler,
 }: BootHandlerOpts) {
     // specify that this is our api
     app.context.api = isApi;
 
+    // Set the env on the base context object for later use
+    app.context.env = env;
+
     getMiddleware({
         env,
         helmetConfig,
-        staticPath,
+        staticPaths,
         customErrorHandler,
     }).forEach((middleware: Koa.Middleware) => app.use(middleware));
 

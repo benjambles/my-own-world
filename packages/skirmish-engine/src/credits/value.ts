@@ -27,8 +27,6 @@ export function changeCredits<T extends Transactor>(value: number, entity: T): T
         throw new Error('game::credits::no_negative');
     }
 
-    return {
-        ...entity,
-        credits: newCredits,
-    };
+    entity.credits = newCredits;
+    return entity;
 }
