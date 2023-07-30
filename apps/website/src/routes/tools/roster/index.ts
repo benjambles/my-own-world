@@ -10,6 +10,8 @@ import create from './create.js';
 import edit from './edit.js';
 import list from './list.js';
 
+export const urlPattern = '/roster';
+
 export default function () {
     return createResource(config)
         .operation('getRosters', async (ctx) => {
