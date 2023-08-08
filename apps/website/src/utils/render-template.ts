@@ -7,7 +7,7 @@ type PageData = {
     };
 };
 
-export function* iterateTemplateParts<T extends PageData>(
+export function* renderTemplate<T extends PageData>(
     data: T,
     rootComponent: {
         assets: {

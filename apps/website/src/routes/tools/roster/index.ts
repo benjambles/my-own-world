@@ -4,7 +4,7 @@ import {
     redirectAction,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { getMockData } from '../../../data/get-mock-data.js';
-import { iterateTemplateParts } from '../../../utils/render-template.js';
+import { renderTemplate } from '../../../utils/render-template.js';
 import config from './config.js';
 import create from './create.js';
 import edit from './edit.js';
@@ -16,25 +16,25 @@ export default function () {
     return createResource(config)
         .operation('getRosters', async (ctx) => {
             const data = await getRosterData(ctx);
-            const tpl = iterateTemplateParts(data, list);
+            const tpl = renderTemplate(data, list);
 
             return ok(tpl);
         })
         .operation('getNewCampaign', async (ctx) => {
             const data = await getRosterData(ctx);
-            const tpl = iterateTemplateParts(data, create);
+            const tpl = renderTemplate(data, create);
 
             return ok(tpl);
         })
         .operation('getNewSkirmish', async (ctx) => {
             const data = await getRosterData(ctx);
-            const tpl = iterateTemplateParts(data, create);
+            const tpl = renderTemplate(data, create);
 
             return ok(tpl);
         })
         .operation('getRosterById', async (ctx) => {
             const data = await getRosterData(ctx);
-            const tpl = iterateTemplateParts(data, edit);
+            const tpl = renderTemplate(data, edit);
 
             return ok(tpl);
         })
@@ -46,7 +46,7 @@ export default function () {
         })
         .operation('updateRosterById', async (ctx) => {
             const data = await getRosterData(ctx);
-            const tpl = iterateTemplateParts(data, edit);
+            const tpl = renderTemplate(data, edit);
 
             return ok(tpl);
         })

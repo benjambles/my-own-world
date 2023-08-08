@@ -5,8 +5,16 @@ import { streamResponse } from '../../../utils/routes/responses.js';
 
 type ErrorCodes = '401' | '403' | '404' | '500';
 
-type TemplatePaths = {
-    [key in ErrorCodes]: string;
+type TemplateParams = {
+    assets: {
+        styles: { href: string; lazy?: boolean }[];
+        scripts: { src: string; async?: boolean; defer?: boolean }[];
+    };
+    render: (data: any) => TemplateResult;
+};
+
+type ErrorTemplates = {
+    [key in ErrorCodes]: TemplateParams;
 };
 
 /**
@@ -16,16 +24,10 @@ type TemplatePaths = {
  */
 export function webErrorHandler(
     app: Koa,
-    templatePaths: TemplatePaths,
+    templatePaths: ErrorTemplates,
     renderer: (
         data: any,
-        rootComponent: {
-            assets: {
-                styles: { href: string; lazy?: boolean }[];
-                scripts: { src: string; async?: boolean; defer?: boolean }[];
-            };
-            render: (data: any) => TemplateResult;
-        },
+        rootComponent: TemplateParams,
     ) => Generator<string | Promise<RenderResult>, void, undefined>,
     staticData?: (ctx: Context) => Promise<any>,
 ): Koa.Middleware {

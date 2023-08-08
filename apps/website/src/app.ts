@@ -9,7 +9,8 @@ import { fileURLToPath } from 'url';
 import { getMockData } from './data/get-mock-data.js';
 import { resources } from './routes/routes-config.js';
 import { envSchema } from './schema/env-schema.js';
-import { iterateTemplateParts } from './utils/render-template.js';
+import { renderTemplate } from './utils/render-template.js';
+import errorTemplates from './routes/errors/errors.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/static');
 
@@ -25,8 +26,6 @@ const paths = {
 loadEnv(resolveImportPath(paths.base, paths.env));
 const env = validateEnv(envSchema, process.env);
 const app = new Koa();
-
-const errorTemplateDir = './routes/errors';
 
 export const serve = configureServer({
     app,
@@ -45,17 +44,7 @@ export const serve = configureServer({
         staticPaths: paths.static,
     },
     routes: resources.map((resource) => getRouter(resource(), '', false)),
-    customErrorHandler: webErrorHandler(
-        app,
-        {
-            401: resolveImportPath(import.meta.url, errorTemplateDir, '404.js'),
-            403: resolveImportPath(import.meta.url, errorTemplateDir, '404.js'),
-            404: resolveImportPath(import.meta.url, errorTemplateDir, '404.js'),
-            500: resolveImportPath(import.meta.url, errorTemplateDir, '404.js'),
-        },
-        iterateTemplateParts,
-        getMockData,
-    ),
+    customErrorHandler: webErrorHandler(app, errorTemplates, renderTemplate, getMockData),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

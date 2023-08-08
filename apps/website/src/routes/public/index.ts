@@ -1,7 +1,7 @@
 import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { ok } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { getMockData } from '../../data/get-mock-data.js';
-import { iterateTemplateParts } from '../../utils/render-template.js';
+import { renderTemplate } from '../../utils/render-template.js';
 import terms from '../public/terms/terms.js';
 import config from './config.js';
 import home from './home/home.js';
@@ -10,23 +10,23 @@ export default function () {
     return createResource(config)
         .operation('getHome', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = iterateTemplateParts(data, home);
+            const tpl = renderTemplate(data, home);
 
             return ok(tpl);
         })
         .operation('getAccessibilityPolicy', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = iterateTemplateParts(data, terms);
+            const tpl = renderTemplate(data, terms);
             return ok(tpl);
         })
         .operation('getPrivacyPolicy', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = iterateTemplateParts(data, terms);
+            const tpl = renderTemplate(data, terms);
             return ok(tpl);
         })
         .operation('getTerms', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = iterateTemplateParts(data, terms);
+            const tpl = renderTemplate(data, terms);
             return ok(tpl);
         })
         .get();
