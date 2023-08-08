@@ -45,9 +45,9 @@
     "license": "ISC",
     "dependencies": {
         "@benjambles/rise-engine": "../../packages/rise-engine",
-        "@lit-labs/ssr": "3.1.4",
+        "@lit-labs/ssr": "3.1.5",
         "globcat": "3.0.1",
-        "lit": "2.7.5"
+        "lit": "^3.0.0-pre.0"
     },
     "devDependencies": {
         "@babel/core": "7.22.5",
