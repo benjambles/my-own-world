@@ -33,6 +33,7 @@ export function configureServer({
         helmetConfig,
         staticPaths,
         customErrorHandler,
+        isApi,
     }).forEach((middleware: Koa.Middleware) => app.use(middleware));
 
     routes?.forEach((route) => app.use(route));

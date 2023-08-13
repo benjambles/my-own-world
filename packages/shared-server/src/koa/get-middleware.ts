@@ -10,10 +10,11 @@ import serve from 'koa-static';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
 
 interface GetMiddlewareProps {
+    customErrorHandler: Middleware;
     env: { JWT_SECRET: string };
+    isApi: boolean;
     helmetConfig?: any;
     staticPaths?: Record<string, string>;
-    customErrorHandler: Middleware;
 }
 
 /**
@@ -24,10 +25,11 @@ interface GetMiddlewareProps {
  * @returns
  */
 export function getMiddleware({
+    customErrorHandler,
     env,
+    isApi,
     helmetConfig,
     staticPaths,
-    customErrorHandler,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
         logger(),
@@ -37,7 +39,11 @@ export function getMiddleware({
         setEnvOnState(env),
         helmet(helmetConfig), // Security layer
         customErrorHandler,
-        koaJWT({ secret: env.JWT_SECRET, passthrough: true }),
+        koaJWT({
+            secret: env.JWT_SECRET,
+            passthrough: true,
+            cookie: isApi ? undefined : 'mow_auth',
+        }),
         ...serveStatic(staticPaths),
     ].filter(Boolean);
 }

@@ -123,7 +123,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(uuid) },
                 {
-                    $set: { deletedOn: new Date(), isDeleted: true },
+                    $set: { deletedOn: new Date(), isDeleted: true, accessTokens: [] },
                 },
             );
 

@@ -55,11 +55,11 @@ export function getTokenModel(db: Db) {
         },
         delete: async function (
             userId: string,
-            refreshToken: string,
+            fingerprint: string,
         ): ModelResult<number> {
             const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(userId) },
-                { $pull: { accessTokens: { refreshToken: refreshToken } } },
+                { $pull: { accessTokens: { fingerprint } } },
             );
 
             return {
@@ -67,15 +67,21 @@ export function getTokenModel(db: Db) {
                 value: matchedCount,
             };
         },
-        update: async function (
-            userId: string,
-            refreshToken: string,
-            accessToken: string,
-        ): ModelResult<User> {
+        update: async function ({
+            accessToken,
+            expiredRefreshToken,
+            refreshToken,
+            userId,
+        }: {
+            accessToken: string;
+            expiredRefreshToken: string;
+            refreshToken: string;
+            userId: string;
+        }): ModelResult<User> {
             const { ok, value } = await users.findOneAndUpdate(
                 {
                     _id: getObjectId(userId),
-                    'accessTokens.refreshToken': { $eq: refreshToken },
+                    'accessTokens.refreshToken': { $eq: expiredRefreshToken },
                 },
                 {
                     $set: {

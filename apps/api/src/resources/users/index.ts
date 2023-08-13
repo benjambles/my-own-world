@@ -66,8 +66,8 @@ export default function users(dataModel: DataModel) {
                 throw createError(500, 'There was an error whilst generating the token');
             }
 
-            ctx.cookies.set('fingerprint', fingerprint);
-            ctx.cookies.set('refreshtoken', refreshToken);
+            ctx.cookies.set('mow-fingerprint', fingerprint);
+            ctx.cookies.set('mow-refreshtoken', refreshToken);
 
             return ok({
                 accessToken,
@@ -76,20 +76,20 @@ export default function users(dataModel: DataModel) {
             });
         })
         .operation('refreshToken', async (ctx) => {
-            const fingerprint = ctx.cookies.get('fingerprint');
-            const oldRefreshToken = ctx.request.body.refreshToken;
+            const fingerprint = ctx.cookies.get('mow-fingerprint');
+            const expiredRefreshToken = ctx.request.body.refreshToken;
 
             // Ensure refresh token + fingerprint are valid
             const parsedRefreshToken = verifyRefreshToken(
                 ctx.state.env,
-                oldRefreshToken,
+                expiredRefreshToken,
                 fingerprint,
             );
 
             // Fetch the users tokens
             const tokenResult = await tokens.find(
                 parsedRefreshToken.sub,
-                oldRefreshToken,
+                expiredRefreshToken,
             );
 
             if (!tokenResult.ok) {
@@ -102,22 +102,23 @@ export default function users(dataModel: DataModel) {
                 {
                     sub: parsedRefreshToken.sub,
                 },
-                randomUUID(),
+                fingerprint,
             );
 
             // Replace the tokens on the user object
-            const userResult = await tokens.update(
-                parsedRefreshToken.sub,
-                refreshToken,
+            const userResult = await tokens.update({
                 accessToken,
-            );
+                expiredRefreshToken,
+                refreshToken,
+                userId: parsedRefreshToken.sub,
+            });
 
             if (!userResult.ok) {
                 throw createError(500, 'There was an error whilst creating the tokens');
             }
 
-            ctx.cookies.set('fingerprint', fingerprint);
-            ctx.cookies.set('refreshtoken', refreshToken);
+            ctx.cookies.set('mow-fingerprint', fingerprint);
+            ctx.cookies.set('mow-refreshtoken', refreshToken);
 
             return ok({
                 accessToken,
@@ -239,7 +240,7 @@ export default function users(dataModel: DataModel) {
         })
         .operation('deleteToken', async (ctx) => {
             const { fingerprint, userId } = ctx.request.params;
-            const tokenResult = await tokens.delete(fingerprint, userId);
+            const tokenResult = await tokens.delete(userId, fingerprint);
 
             if (!tokenResult.ok) {
                 throw createError(400, 'There was an error whilst deleting the token');

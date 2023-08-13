@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { hmac } from './encryption.js';
 
 /**
@@ -23,7 +23,6 @@ export function getAuthTokens(
     fingerprint: string,
 ) {
     const hashedId = hmac(ENC_SECRET, fingerprint);
-
     const refreshToken = getRefreshToken(JWT_SECRET, data, hashedId);
     const accessToken = getToken(JWT_SECRET, data, hashedId);
 
@@ -39,17 +38,7 @@ export function verifyRefreshToken(
     refreshToken: string,
     fingerprint: string,
 ) {
-    const parsedToken = parseToken(JWT_SECRET, refreshToken);
-
-    if (typeof parsedToken === 'string') {
-        throw new Error('Invalid JWT payload');
-    }
-
     const hashedId = hmac(ENC_SECRET, fingerprint);
 
-    if (parsedToken.fingerprint !== hashedId) {
-        throw new Error('The fingerprint does not match expected value');
-    }
-
-    return parsedToken;
+    return jwt.verify(refreshToken, JWT_SECRET, { jwtid: hashedId }) as JwtPayload;
 }
