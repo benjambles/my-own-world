@@ -1,9 +1,10 @@
 {
-    "delay": "1000",
+    "delay": "2000",
     "events": {
-        "start": "cls || clear"
+        "start": "clear"
     },
     "exec": "npm run start",
+    "ext": "js,css",
     "verbose": false,
     "watch": ["./dist", "../../packages/shared-server/dist", "../../packages/ui/dist"]
 }

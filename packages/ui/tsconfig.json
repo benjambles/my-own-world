@@ -4,7 +4,6 @@
     "include": ["src/**/*.ts", "src/**/*.css.json"],
     "compilerOptions": {
         "composite": true,
-        "experimentalDecorators": true,
         "outDir": "dist",
         "plugins": [
             {
@@ -17,8 +16,7 @@
             }
         ],
         "rootDir": "src",
-        "tsBuildInfoFile": "buildcache",
-        "useDefineForClassFields": false
+        "tsBuildInfoFile": "buildcache"
     },
     "references": [
         {

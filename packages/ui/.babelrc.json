@@ -1,16 +1,19 @@
 {
-  "sourceType": "unambiguous",
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "chrome": 100
-        }
-      }
+    "sourceType": "unambiguous",
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "chrome": 100
+                }
+            }
+        ],
+        "@babel/preset-typescript",
+        "@babel/preset-react"
     ],
-    "@babel/preset-typescript",
-    "@babel/preset-react"
-  ],
-  "plugins": []
+    "plugins": [
+        ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }]
+    ]
 }
