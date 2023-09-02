@@ -7,7 +7,7 @@
             "import": "./dist/index.js",
             "types": "./dist/index.d.ts"
         },
-        "./styles/base.css": "./dist/static/styles/global-css/base.css",
+        "./styles/base.css": "./dist/client/styles/global-css/base.css",
         "./styles/base.css.js": {
             "import": "./dist/components/global-css/base.css.js",
             "types": "./dist/components/global-css/base.css.d.ts"
@@ -24,7 +24,8 @@
             "import": "./dist/utils/mock-data.js",
             "types": "./dist/utils/mock-data.d.ts"
         },
-        "./static": "./dist/static"
+        "./client": "./dist/client",
+        "./client/*": "./dist/client/*"
     },
     "type": "module",
     "browserslist": [
@@ -34,8 +35,8 @@
     "scripts": {
         "build": "npm run css && npm run ts && npm run copy",
         "ts": "tsc -b -v",
-        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/static/styles",
-        "copy": "copyfiles -u 1 src/static/fonts/**/*.woff2 dist",
+        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/client/styles",
+        "copy": "copyfiles -u 1 src/client/fonts/**/*.woff2 dist",
         "test": "jest",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",

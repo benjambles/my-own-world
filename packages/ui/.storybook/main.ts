@@ -23,7 +23,7 @@ const config: StorybookConfig = {
         name: '@storybook/web-components-webpack5',
         options: {},
     },
-    staticDirs: [{ from: '../dist/static', to: '/mow-ui' }],
+    staticDirs: [{ from: '../dist/client', to: '/mow-ui' }],
     stories: ['../src/components/**/*.stories.ts'],
     webpackFinal: async (config) => {
         config.resolve = {
