@@ -71,12 +71,13 @@ export default function users(dataModel: DataModel) {
 
             return ok({
                 accessToken,
+                fingerprint,
                 refreshToken,
                 user: cleanResponse(userResult.value),
             });
         })
         .operation('refreshToken', async (ctx) => {
-            const fingerprint = ctx.cookies.get('mow-fingerprint');
+            const { fingerprint } = ctx.request.body;
             const expiredRefreshToken = ctx.request.body.refreshToken;
 
             // Ensure refresh token + fingerprint are valid
@@ -93,7 +94,7 @@ export default function users(dataModel: DataModel) {
             );
 
             if (!tokenResult.ok) {
-                throw createError(500, 'Expired Refresh token');
+                throw createError(403, 'Expired Refresh token');
             }
 
             // Generate new tokens
@@ -122,6 +123,7 @@ export default function users(dataModel: DataModel) {
 
             return ok({
                 accessToken,
+                fingerprint,
                 refreshToken,
                 user: cleanResponse(userResult.value),
             });

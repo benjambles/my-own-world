@@ -3,6 +3,7 @@ import { getMiddleware } from './koa/get-middleware.js';
 interface BootHandlerOpts {
     app: Koa;
     config: {
+        corsConfig?: { origin: string };
         env: { HOST: string; JWT_SECRET: string; PORT: string };
         isApi: boolean;
         helmetConfig?: any;
@@ -18,7 +19,7 @@ interface BootHandlerOpts {
  */
 export function configureServer({
     app,
-    config: { env, helmetConfig, isApi = false, staticPaths },
+    config: { env, helmetConfig, isApi = false, staticPaths, corsConfig },
     routes,
     customErrorHandler,
 }: BootHandlerOpts) {
@@ -29,6 +30,7 @@ export function configureServer({
     app.context.env = env;
 
     getMiddleware({
+        corsConfig,
         env,
         helmetConfig,
         staticPaths,

@@ -653,13 +653,23 @@ export default {
                             'application/json': {
                                 schema: {
                                     type: 'object',
-                                    required: ['token', 'user'],
+                                    required: [
+                                        'accessToken',
+                                        'fingerprint',
+                                        'refreshToken',
+                                        'user',
+                                    ],
                                     properties: {
                                         accessToken: {
                                             description:
                                                 'JWT to be passed on each authenicated request',
                                             type: 'string',
                                             maxLength: 256,
+                                        },
+                                        fingerprint: {
+                                            description:
+                                                'A refresh token currently stored against the user, with a matching finger print included',
+                                            type: 'string',
                                         },
                                         refreshToken: {
                                             description:
@@ -712,8 +722,13 @@ export default {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: ['refreshToken'],
+                                required: ['fingerprint', 'refreshToken'],
                                 properties: {
+                                    fingerprint: {
+                                        description:
+                                            'A refresh token currently stored against the user, with a matching finger print included',
+                                        type: 'string',
+                                    },
                                     refreshToken: {
                                         description:
                                             'A refresh token currently stored against the user, with a matching finger print included',
@@ -731,13 +746,23 @@ export default {
                             'application/json': {
                                 schema: {
                                     type: 'object',
-                                    required: ['token', 'user'],
+                                    required: [
+                                        'accessToken',
+                                        'fingerprint',
+                                        'refreshToken',
+                                        'user',
+                                    ],
                                     properties: {
                                         accessToken: {
                                             description:
                                                 'JWT to be passed on each authenicated request',
                                             type: 'string',
                                             maxLength: 256,
+                                        },
+                                        fingerprint: {
+                                            description:
+                                                'A refresh token currently stored against the user, with a matching finger print included',
+                                            type: 'string',
                                         },
                                         refreshToken: {
                                             description:

@@ -8,9 +8,7 @@ export function isCurrentUser(ctx: Context): boolean {
     const requestUuid = getRequestedUser(ctx);
     if (!requestUuid) return true; // No user was needed
 
-    const uuid = getAuthenticatedUserId(ctx);
-
-    return uuid ? uuid === requestUuid : false; // No logged in user
+    return getAuthenticatedUserId(ctx) === requestUuid; // No logged in user
 }
 
 /**

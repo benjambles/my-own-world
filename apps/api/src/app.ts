@@ -33,6 +33,7 @@ const dataModel = bindModels(dbInstance, env);
 
 const resources = getResources(dataModel);
 export const { getApiHelpers } = resources;
+export type GetApiHelpers = ReturnType<typeof getApiHelpers>;
 
 const app = new Koa();
 
@@ -41,6 +42,7 @@ export const serve = configureServer({
     config: {
         env,
         isApi: true,
+        corsConfig: { origin: 'http://localhost:3001' },
     },
     routes: Object.values(resources.routeHandlers).map((resource) =>
         getRouter(resource, prefix, false),

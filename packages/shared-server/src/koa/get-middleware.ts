@@ -8,8 +8,10 @@ import mount from 'koa-mount';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
+import cors from '@koa/cors';
 
 interface GetMiddlewareProps {
+    corsConfig?: { origin: string };
     customErrorHandler: Middleware;
     env: { JWT_SECRET: string };
     isApi: boolean;
@@ -29,6 +31,7 @@ export function getMiddleware({
     env,
     isApi,
     helmetConfig,
+    corsConfig,
     staticPaths,
 }: GetMiddlewareProps): Koa.Middleware[] {
     return [
@@ -38,6 +41,7 @@ export function getMiddleware({
         compress(), // ctx.compress = false to disable compression
         setEnvOnState(env),
         helmet(helmetConfig), // Security layer
+        cors(corsConfig),
         customErrorHandler,
         koaJWT({
             secret: env.JWT_SECRET,
