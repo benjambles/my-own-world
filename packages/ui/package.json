@@ -16,9 +16,9 @@
             "import": "./dist/components/core/index.js",
             "types": "./dist/components/core/index.d.ts"
         },
-        "./lazy-stylesheet.js": {
-            "import": "./dist/components/utils/lazy-stylesheet.js",
-            "types": "./dist/components/utils/lazy-stylesheet.d.ts"
+        "./utils.js": {
+            "import": "./dist/utils/index.js",
+            "types": "./dist/utils/index.d.ts"
         },
         "./mock-data.js": {
             "import": "./dist/utils/mock-data.js",
