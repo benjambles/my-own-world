@@ -1,3 +1,12 @@
+const index = '/roster';
+export const paths = {
+    index,
+    delete: `${index}/delete`,
+    newCampaign: `${index}/new-campaign`,
+    newSkirmish: `${index}/new-skirmish`,
+    rosterById: `${index}/edit/:rosterId`,
+} as const;
+
 export default {
     openapi: '3.0.0',
     info: {
@@ -6,7 +15,7 @@ export default {
         version: '1.0.0',
     },
     paths: {
-        '/roster': {
+        [paths.index]: {
             get: {
                 tags: ['roster'],
                 summary: 'Display a list of all the users game sessions',
@@ -46,10 +55,10 @@ export default {
                         },
                     },
                 },
-                security: [{ http: ['role:user'] }],
+                security: [{ http: [] }],
             },
         },
-        '/roster/new-skirmish': {
+        [paths.newSkirmish]: {
             get: {
                 tags: ['roster'],
                 summary: 'Returns the page for creating a new Skirmish roster',
@@ -68,7 +77,7 @@ export default {
                         },
                     },
                 },
-                security: [{ http: ['role:user'] }],
+                security: [{ http: [] }],
             },
             post: {
                 tags: ['roster'],
@@ -95,12 +104,12 @@ export default {
                 },
                 security: [
                     {
-                        http: ['role:admin'],
+                        http: [],
                     },
                 ],
             },
         },
-        '/roster/new-campaign': {
+        [paths.newCampaign]: {
             get: {
                 tags: ['roster'],
                 summary: 'Returns the page for creating a new Campaign roster',
@@ -119,7 +128,7 @@ export default {
                         },
                     },
                 },
-                security: [{ http: ['role:user'] }],
+                security: [{ http: [] }],
             },
             post: {
                 tags: ['roster'],
@@ -146,12 +155,12 @@ export default {
                 },
                 security: [
                     {
-                        http: ['role:admin'],
+                        http: [],
                     },
                 ],
             },
         },
-        '/roster/:rosterId': {
+        [paths.rosterById]: {
             get: {
                 tags: ['roster'],
                 summary: 'Fetches the roster with the ID matching the url parameter',
@@ -180,9 +189,8 @@ export default {
                         },
                     },
                 },
-                security: [{ http: ['role:user', 'role:owner'] }],
             },
-            post: {
+            put: {
                 tags: ['roster'],
                 summary: 'Updates the roster at the ID given with the values provided',
                 description: '',

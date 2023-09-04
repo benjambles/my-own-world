@@ -1,13 +1,18 @@
 import { html } from 'lit';
-import { layout } from '../../layouts/core/static-layout.js';
+import { RenderProps } from '../../utils/render-template.js';
 
-export default {
-    assets: {
-        styles: [],
-        scripts: [],
-    },
-    render: function error404(data) {
-        const page = html`<main class="page--404">
+type ErrorData = {
+    status: string;
+    error: string | object;
+};
+
+export default function (data: ErrorData): RenderProps {
+    return {
+        assets: {
+            styles: [],
+            scripts: [],
+        },
+        template: html`<main class="page--404">
             <section>
                 <h1>${data.status} - Not Found</h1>
 
@@ -17,8 +22,6 @@ export default {
                         : JSON.stringify(data.error)}
                 </p>
             </section>
-        </main>`;
-
-        return html`${layout(data, page)}`;
-    },
-};
+        </main>`,
+    };
+}

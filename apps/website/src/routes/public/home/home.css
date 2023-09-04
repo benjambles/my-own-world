@@ -1,64 +1,179 @@
+.page-home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.panel {
+    padding: 0 6rem;
+}
+
 .home-intro {
-    background-color: #24292e;
-    color: var(--shade-1);
-    padding: 60px 20px;
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    min-height: 100vh;
+    padding: 6rem 0 3rem;
+    position: relative;
+    color: var(--shade-4);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.home-intro canvas {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    inset: 0;
 }
 
 .home-intro h1 {
+    margin: 0;
+    position: relative;
     background-image: var(--gradient-glow);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-size: 10rem;
+    line-height: 1.3;
+    z-index: 1;
 }
 
-.home-intro__text p {
+.home-intro p {
+    margin-bottom: 8rem;
+    margin-top: 0;
+    position: relative;
+    top: -2rem;
+    font-size: 1.6rem;
+    letter-spacing: 0.1em;
+}
+
+.home-intro p:not(:first-of-type) {
+    margin-bottom: 0;
     font-size: 2rem;
+    letter-spacing: 0.2em;
 }
 
-.home-intro form {
-    background-image: linear-gradient(45deg, transparent 10px, var(--shade-1) 10px),
-        linear-gradient(135deg, var(--shade-1) 0, var(--shade-1) 0),
-        linear-gradient(225deg, transparent 10px, var(--shade-1) 10px),
-        linear-gradient(315deg, var(--shade-1) 0, var(--shade-1) 0px);
-    background-position: bottom left, bottom right, top right, top left;
-    background-size: 51% 51%;
-    background-repeat: no-repeat;
-    padding: 0 20px 20px;
-    border-radius: 0;
-    color: var(--shade-4);
-    overflow: auto;
+.home-welcome h2 {
+    margin: 6rem 0 10rem;
+    font-size: 6rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.welcome-text {
+    margin: 0 0 8rem;
+}
+
+.button-group {
     display: flex;
     flex-direction: column;
+    gap: 30px;
 }
 
-.home-intro form small {
+.outline-button {
+    flex: 1 1 100%;
     display: block;
-    font-size: 1.2rem;
-    margin-top: 5px;
+    border: 1px solid var(--shade-3);
+    border-width: 1px 0;
+    padding: 2rem;
+    color: #333;
+    font-size: 2rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.home-intro form button {
-    margin: 30px 0 25px;
+.outline-button:hover,
+.outline-button:active,
+.outline-button:focus {
+    background: var(--gradient-glow);
+    border-color: transparent;
+    border-image: var(--gradient-glow);
+    color: white;
+}
+
+.explorer-panel {
+    margin-bottom: 120px;
+}
+
+.explorer-panel h2 {
+    margin: 12rem 0 8rem;
+    font-size: 6rem;
+    line-height: 1.3;
+}
+
+.explorer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 8rem 0;
+    padding: 0;
+    list-style: none;
+}
+
+.explorer-links li {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 450px;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.explorer-links li a {
+    --panel-bg: #ccc;
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 30px 20px;
+    background-image: linear-gradient(45deg, transparent 10px, var(--panel-bg) 10px),
+        linear-gradient(135deg, var(--panel-bg) 0, var(--panel-bg) 0),
+        linear-gradient(225deg, transparent 10px, var(--panel-bg) 10px),
+        linear-gradient(315deg, var(--panel-bg) 0, var(--panel-bg) 0px);
+    background-position:
+        bottom left,
+        bottom right,
+        top right,
+        top left;
+    background-size: 51% 51%;
+    background-repeat: no-repeat;
+}
+
+.explorer-links li a:hover,
+.explorer-links li a:focus {
+    color: white;
+    --panel-bg: #777;
 }
 
 @media screen and (min-width: 992px) {
-    .home-intro {
-        padding: 60px 0;
+    .home-intro h1 {
+        font-size: 12rem;
     }
 
-    .home-intro--grid {
-        display: grid;
-        grid-template-columns: repeat(12, [col-start] 1fr);
-        grid-gap: 20px;
+    .button-group,
+    .explorer-links {
+        flex-direction: row;
     }
 
-    .home-intro__text {
-        grid-column: col-start 1 / span 5;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+    .welcome-text {
+        padding-left: 60%;
     }
 
-    .home-intro form {
-        grid-column: col-start 7 / span 6;
+    .home-welcome h2 {
+        font-size: 18rem;
+    }
+
+    .panel {
+        padding-left: 6rem;
+        padding-right: 6rem;
     }
 }

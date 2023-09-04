@@ -1,44 +1,52 @@
 import { render } from '@lit-labs/ssr';
 import { TemplateResult } from 'lit';
 
-type PageData = {
+export type StylesheetParams = { href: string; lazy?: boolean };
+export type ScriptParams = { src: string; lazy?: string; module?: boolean };
+export type RenderProps = {
+    assets: {
+        styles: StylesheetParams[];
+        scripts: ScriptParams[];
+    };
+    template: TemplateResult<1> | TemplateResult<1>[];
+};
+
+type MetaData = {
     meta: {
         title: string;
     };
 };
 
-export function* renderTemplate<T extends PageData>(
-    data: T,
-    rootComponent: {
-        assets: {
-            styles: { href: string; lazy?: boolean }[];
-            scripts: { src: string; async?: boolean; defer?: boolean }[];
-        };
-        render: (data: T) => TemplateResult;
-    },
-) {
+export function* renderTemplate<T extends MetaData>(data: T, rootComponent: RenderProps) {
     yield `<!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${data.meta.title}</title>
-                <link href="/mow-ui/styles/global-css/base.css" rel="stylesheet" />
-                ${rootComponent.assets?.styles
-                    ?.map(({ href, lazy }) => {
-                        return lazy ? lazyStyle(href) : style(href);
+
+                ${rootComponent.assets.styles
+                    .map(({ href, lazy }) => {
+                        return lazy ? lazyStyleTag(href) : styleTag(href);
                     })
                     .join('')}
+                ${rootComponent.assets.scripts.map(scriptTag).join('')}
     `;
     yield `</head><body>`;
-    yield* render(rootComponent.render(data));
+    yield* render(rootComponent.template);
     yield `</body></html>`;
 }
 
-function lazyStyle(href: string) {
+export function lazyStyleTag(href: string) {
     return `<link rel="preload" href="${href}" as="style" onload="this.rel='stylesheet'" />`;
 }
 
-function style(href: string) {
+export function styleTag(href: string) {
     return `<link rel="stylesheet" href="${href}" />`;
+}
+
+export function scriptTag({ src, lazy, module }: ScriptParams) {
+    return `<script src="${src}" ${lazy ?? ''} ${
+        module ? 'type="module"' : ''
+    }></script>`;
 }

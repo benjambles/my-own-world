@@ -24,8 +24,8 @@
             "import": "./dist/utils/mock-data.js",
             "types": "./dist/utils/mock-data.d.ts"
         },
-        "./client": "./dist/client",
-        "./client/*": "./dist/client/*"
+        "./components": "./dist/components",
+        "./components/*": "./dist/components/*"
     },
     "type": "module",
     "browserslist": [

@@ -1,74 +1,69 @@
-import { link, primaryButton, textInput } from '@benjambles/mow-ui/core.js';
-import baseStyles from '@benjambles/mow-ui/styles/base.css.js';
 import { html } from 'lit';
-import { layout } from '../../../layouts/core/static-layout.js';
+import { RenderProps } from '../../../utils/render-template.js';
 import styles from './home.css.js';
 
-export default {
-    assets: {
-        styles: [{ href: '/static/styles/routes/public/home/home.css' }],
-        scripts: [],
-    },
-    render: function (data) {
-        const page = html`<main class="page--home">
-            <section class="${styles.homeIntro}">
-                <div class="${baseStyles.containerSlim} ${styles.homeIntroGrid}">
-                    <div class="${styles.homeIntro__text}">
-                        <h1>Create, Discover, Learn</h1>
-
+export default function (): RenderProps {
+    return {
+        assets: {
+            styles: [{ href: '/static/styles/routes/public/home/home.css' }],
+            scripts: [],
+        },
+        template: html`
+            <main class="${styles.pageHome}">
+                <section class="${styles.homeIntro}">
+                    <!-- <canvas id="js-starfield"></canvas> -->
+                    <div class="${styles.panel}">
+                        <h1>Kh&ocirc;ra</h1>
+                        <p>Rediscover the stars</p>
+                        <p>Free to play science fiction wargame</p>
+                    </div>
+                </section>
+                <section class="${styles.homeWelcome} ${styles.panel}">
+                    <h2>Welcome to Kh&ocirc;ra</h2>
+                    <div class="${styles.welcomeText}">
+                        <h3>What is Kh&ocirc;ra?</h3>
                         <p>
-                            My own world was built for people who love world building,
-                            story telling, exploring new worlds, and sharing experiences
-                            with friends.
+                            Kh&ocirc;ra is a free to play Sci-fi skirmish game, with
+                            modular rules that simulate well trained operatives acting in
+                            real time against each other.
                         </p>
 
                         <p>
-                            Best of all, it's open source! Add new features, or run your
-                            own copy, with a little coding knowledge there's no limits.
+                            The game can be played both narratively,
+                            <abbr title="Player vs Environment">PvE</abbr> and in one off
+                            skirmishes - in
+                            <abbr title="Player vs Environment">PvE</abbr>,
+                            <abbr title="Player vs Player">PvP</abbr> and
+                            <abbr title="Player vs Player vs Environment">PvPvE</abbr>
+                            modes.
                         </p>
                     </div>
 
-                    <form action="/signup">
-                        ${textInput({ label: 'Username', id: 'username' })}
-                        ${textInput({
-                            label: 'Email',
-                            id: 'email',
-                            type: 'email',
-                        })}
-                        ${textInput({
-                            label: 'Password',
-                            id: 'password',
-                            type: 'password',
-                        })}
-                        <small>
-                            Passwords should be secure, don't use one from another site.
-                            ${link({
-                                href: '/password-security',
-                                text: 'Learn more',
-                                display: { underlined: true },
-                            })}.
-                        </small>
+                    <div class="${styles.buttonGroup}">
+                        <a class="${styles.outlineButton}" href="/game/quick-start">
+                            Learn to play
+                        </a>
+                        <a class="${styles.outlineButton}" href="/game/rules">
+                            Read the rules
+                        </a>
+                        <a class="${styles.outlineButton}" href="/game/downloads">
+                            Downloads
+                        </a>
+                    </div>
+                </section>
+                <section class="${styles.explorerPanel} ${styles.panel}">
+                    <h2>The Universe</h2>
+                    <ul class="${styles.explorerLinks}">
+                        <li><a href="/explore/timeline">The timeline</a></li>
+                        <li><a href="/explore/factions">The factions</a></li>
+                        <li><a href="/explore/locations">The locations</a></li>
+                    </ul>
 
-                        ${primaryButton({
-                            text: 'Get Started',
-                            type: 'submit',
-                            size: 'large',
-                        })}
-
-                        <small>
-                            By clicking “Get started”, you agree to our
-                            ${link({
-                                href: '/terms',
-                                text: 'Terms of Service and Privacy Statement',
-                                display: { underlined: true },
-                            })}.
-                            We’ll occasionally send you account related emails.
-                        </small>
-                    </form>
-                </div>
-            </section>
-        </main>`;
-
-        return html`${layout(data, page)}`;
-    },
-};
+                    <a href="/explore" class="${styles.outlineButton}"
+                        >Explore the universe</a
+                    >
+                </section>
+            </main>
+        `,
+    };
+}

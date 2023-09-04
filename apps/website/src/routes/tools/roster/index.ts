@@ -4,37 +4,40 @@ import {
     redirectAction,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { getMockData } from '../../../data/get-mock-data.js';
+import siteLayout from '../../../layouts/core/site.js';
 import { renderTemplate } from '../../../utils/render-template.js';
 import config from './config.js';
 import create from './create.js';
 import edit from './edit.js';
 import list from './list.js';
 
-export const urlPattern = '/roster';
-
 export default function () {
     return createResource(config)
         .operation('getRosters', async (ctx) => {
-            const data = await getRosterData(ctx);
-            const tpl = renderTemplate(data, list);
+            const [pageData, rosterData] = await Promise.all([
+                getMockData(ctx),
+                getRosterData(),
+            ]);
+
+            const tpl = renderTemplate(pageData, siteLayout(pageData, list(rosterData)));
 
             return ok(tpl);
         })
         .operation('getNewCampaign', async (ctx) => {
-            const data = await getRosterData(ctx);
-            const tpl = renderTemplate(data, create);
+            const pageData = await getMockData(ctx);
+            const tpl = renderTemplate(pageData, siteLayout(pageData, create()));
 
             return ok(tpl);
         })
         .operation('getNewSkirmish', async (ctx) => {
-            const data = await getRosterData(ctx);
-            const tpl = renderTemplate(data, create);
+            const pageData = await getMockData(ctx);
+            const tpl = renderTemplate(pageData, siteLayout(pageData, create()));
 
             return ok(tpl);
         })
         .operation('getRosterById', async (ctx) => {
-            const data = await getRosterData(ctx);
-            const tpl = renderTemplate(data, edit);
+            const pageData = await getMockData(ctx);
+            const tpl = renderTemplate(pageData, siteLayout(pageData, edit()));
 
             return ok(tpl);
         })
@@ -45,8 +48,8 @@ export default function () {
             return redirectAction(ctx.state.path.replace('new-skirmish', 'someid'));
         })
         .operation('updateRosterById', async (ctx) => {
-            const data = await getRosterData(ctx);
-            const tpl = renderTemplate(data, edit);
+            const pageData = await getMockData(ctx);
+            const tpl = renderTemplate(pageData, siteLayout(pageData, edit()));
 
             return ok(tpl);
         })
@@ -54,10 +57,8 @@ export default function () {
 }
 
 export type RosterData = Awaited<ReturnType<typeof getRosterData>>;
-export async function getRosterData(ctx) {
-    const mockData = await getMockData(ctx);
+export async function getRosterData() {
     return {
-        ...mockData,
         content: {
             title: 'Crews',
             games: [
@@ -76,7 +77,8 @@ export async function getRosterData(ctx) {
                     createdOn: new Date(),
                     type: 'campaign',
                     credits: 2000,
-                    currentMission: 'Into the breach',
+                    difficulty: 'normal',
+                    campaignName: 'Into the breach',
                 },
             ],
         },

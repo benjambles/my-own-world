@@ -5,16 +5,29 @@ import { streamResponse } from '../../../utils/routes/responses.js';
 
 type ErrorCodes = '401' | '403' | '404' | '500';
 
-type TemplateParams = {
-    assets: {
-        styles: { href: string; lazy?: boolean }[];
-        scripts: { src: string; async?: boolean; defer?: boolean }[];
-    };
-    render: (data: any) => TemplateResult;
+type ErrorTemplates = {
+    [key in ErrorCodes]: (data: any) => RenderProps;
 };
 
-type ErrorTemplates = {
-    [key in ErrorCodes]: TemplateParams;
+export type StylesheetParams = { href: string; lazy?: boolean };
+export type ScriptParams = { src: string; lazy?: string; type?: string };
+export type RenderProps = {
+    assets: {
+        styles: StylesheetParams[];
+        scripts: ScriptParams[];
+    };
+    template: TemplateResult<1> | TemplateResult<1>[];
+};
+
+type ErrorHandlerArgs<T> = {
+    app: Koa;
+    errorTemplates: ErrorTemplates;
+    layoutComponent: (data: T, children: RenderProps) => RenderProps;
+    layoutDataProvider?: (ctx: Context) => Promise<T>;
+    renderer: (
+        data: T,
+        template: RenderProps,
+    ) => Generator<string | Promise<RenderResult>, void, undefined>;
 };
 
 /**
@@ -22,15 +35,13 @@ type ErrorTemplates = {
  * try/catch on its own, unless it is rethrowing a modified error,
  * everything should be caught by this middleware.
  */
-export function webErrorHandler(
-    app: Koa,
-    templatePaths: ErrorTemplates,
-    renderer: (
-        data: any,
-        rootComponent: TemplateParams,
-    ) => Generator<string | Promise<RenderResult>, void, undefined>,
-    staticData?: (ctx: Context) => Promise<any>,
-): Koa.Middleware {
+export function webErrorHandler<T extends object>({
+    app,
+    errorTemplates,
+    layoutComponent,
+    renderer,
+    layoutDataProvider,
+}: ErrorHandlerArgs<T>): Koa.Middleware {
     app.on('error', (err: Error, ctx: Koa.Context) => {
         /* centralized error handling:
          *   console.log error
@@ -46,7 +57,7 @@ export function webErrorHandler(
             if (ctx.status === 404) ctx.throw(404);
         } catch (err) {
             const status = err.status || 500;
-            const data = await staticData?.(ctx);
+            const data = await layoutDataProvider?.(ctx);
 
             let parsedError;
 
@@ -57,10 +68,17 @@ export function webErrorHandler(
                 parsedError = err.message;
             }
 
-            data.error = parsedError;
-            data.status = status;
+            const page = await renderer(
+                data,
+                layoutComponent(
+                    data,
+                    errorTemplates[ctx.status]({
+                        status,
+                        error: parsedError,
+                    }),
+                ),
+            );
 
-            const page = await renderer(data, templatePaths[ctx.status]);
             streamResponse(ctx, page, status);
 
             ctx.app.emit('error', err, ctx);

@@ -1,66 +1,86 @@
+import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
 import { time } from '@benjambles/mow-ui/core.js';
 import { html } from 'lit';
-import { layout } from '../../../layouts/core/static-layout.js';
-import { RosterData, urlPattern } from './index.js';
+import { RenderProps } from '../../../utils/render-template.js';
+import { paths } from './config.js';
+import { RosterData } from './index.js';
 import styles from './roster.css.js';
 
-export default {
-    assets: {
-        styles: [{ href: '/static/styles/routes/tools/roster/roster.css' }],
-        scripts: [],
-    },
-    render: function (data: RosterData) {
-        const page = html`<main class="page--roster">
-            <section>
-                <h1>${data.content.title}</h1>
-
-                <div class="filters">
-                    <a href="${urlPattern}" data-filter="">All</a>
-                    <a href="${urlPattern}?type=campaign" data-filter="campaign">
-                        Campaign
-                    </a>
-                    <a href="${urlPattern}?type=skirmish" data-filter="skirmish">
-                        Skirmish
-                    </a>
+export default function (data: RosterData): RenderProps {
+    return {
+        assets: {
+            styles: [{ href: '/static/styles/routes/tools/roster/roster.css' }],
+            scripts: [],
+        },
+        template: html`
+            <div class="${styles.sectionHeader}">
+                <div class="${styles.breadcrumb}">
+                    <a href="/tools">Tools</a> - <span>Roster</span>
                 </div>
-
-                <form action="/roster/delete">
-                    <div class="cards">
-                        <ul class="${styles.cardList}">
-                            ${data.content.games.map(gameTile)}
+                <div class="${styles.sectionSiblings}">
+                    <nav>
+                        <ul>
+                            <li><a href="/tools/scenarios">Scenario Builder</a></li>
+                            <li><a href="/tools/npcs">NPC Builder</a></li>
                         </ul>
-                    </div>
-                </form>
-
-                <div class="${styles.buttonGroup}">
-                    <a href="${urlPattern}/new-skirmish" class="${styles.buttonOutline}">
-                        Hire a crew (Skirmish)
-                    </a>
-                    <a href="${urlPattern}/new-campaign" class="${styles.buttonOutline}">
-                        Hire a crew (Campaign)
-                    </a>
+                    </nav>
                 </div>
-            </section>
-        </main>`;
+            </div>
+            <main class="${styles.pageRoster}">
+                <section class="${styles.panel}">
+                    <h1 class="${styles.title}">${data.content.title}</h1>
 
-        return html`${layout(data, page)}`;
-    },
-};
+                    <form action="${paths.delete}">
+                        <filter-bar>
+                            <filter-item href="${paths.index}?type=all" filter="all"
+                                >All</filter-item
+                            >
+                            <filter-item
+                                href="${paths.index}?type=campaign"
+                                filter="campaign"
+                                >Campaign</filter-item
+                            >
+                            <filter-item
+                                href="${paths.index}?type=skirmish"
+                                filter="skirmish"
+                                >Skirmish</filter-item
+                            >
+                        </filter-bar>
+
+                        <div class="cards">
+                            <ul class="${styles.cardList}">
+                                ${data.content.games.map(gameTile)}
+                            </ul>
+                        </div>
+                    </form>
+
+                    <div class="${styles.buttonGroup}">
+                        <a href="${paths.newSkirmish}" class="${styles.outlineButton}">
+                            Hire a crew (Skirmish)
+                        </a>
+                        <a href="${paths.newCampaign}" class="${styles.outlineButton}">
+                            Hire a crew (Campaign)
+                        </a>
+                    </div>
+                </section>
+            </main>
+        `,
+    };
+}
 
 function gameTile(data: RosterData['content']['games'][number]) {
-    return html`<li>
-        <a href="/play/${data.id}" class="${styles.slidePanel}">
+    return html`<li data-game-type="${data.type}" class="${styles.card}">
+        <a href="${paths.rosterById.replace(':rosterId', data.id)}">
             <span>${data.name}</span>
+            ${data.type === 'campaign' ? html`<span>${data.campaignName}</span>` : null}
 
-            <span> Created: ${time(data.createdOn)} </span>
-            <span>${data.type}</span>
-            <span>
-                ${data.type === 'campaign' ? data.currentMission : data.credits}
-            </span>
+            <span>Created: ${time(data.createdOn)} </span>
+            <span
+                >${data.type}:
+                ${data.type === 'skirmish'
+                    ? `${data.credits} credits`
+                    : data.difficulty}</span
+            >
         </a>
-        <div class="${styles.buttonGroup}">
-            <a href="${urlPattern}/${data.id}" class="${styles.buttonOutline}">Edit</a>
-            <button value="${data.id}" class="${styles.buttonDestructive}">Delete</button>
-        </div>
     </li>`;
 }

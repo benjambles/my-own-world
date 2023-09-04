@@ -1,0 +1,43 @@
+.join-intro {
+    background-color: #24292e;
+    color: var(--shade-1);
+    padding: 60px 20px;
+}
+
+.join-intro h1 {
+    background-image: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.join-intro__text p {
+    font-size: 2rem;
+}
+
+.join-intro--grid {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media screen and (min-width: 992px) {
+    .join-intro {
+        padding: 60px 0;
+    }
+
+    .join-intro--grid {
+        display: grid;
+        grid-template-columns: repeat(12, [col-start] 1fr);
+        grid-gap: 20px;
+    }
+
+    .join-intro__text {
+        grid-column: col-start 1 / span 5;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .join-intro join-form {
+        grid-column: col-start 7 / span 6;
+    }
+}
