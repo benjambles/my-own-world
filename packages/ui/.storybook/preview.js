@@ -1,4 +1,4 @@
-import '../src/components/global-css/base.css';
+import '../src/global-css/base.css';
 import 'lit';
 
 export const parameters = {

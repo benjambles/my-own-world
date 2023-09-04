@@ -3,27 +3,18 @@
     "version": "1.0.0",
     "description": "Design system for My Own World application",
     "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
-        },
-        "./styles/base.css": "./dist/client/styles/global-css/base.css",
-        "./styles/base.css.js": {
-            "import": "./dist/components/global-css/base.css.js",
-            "types": "./dist/components/global-css/base.css.d.ts"
-        },
         "./core.js": {
-            "import": "./dist/components/core/index.js",
-            "types": "./dist/components/core/index.d.ts"
+            "import": "./dist/templates/index.js",
+            "types": "./dist/templates/index.d.ts"
         },
         "./utils.js": {
             "import": "./dist/utils/index.js",
             "types": "./dist/utils/index.d.ts"
         },
-        "./mock-data.js": {
-            "import": "./dist/utils/mock-data.js",
-            "types": "./dist/utils/mock-data.d.ts"
-        },
+        "./fonts": "./dist/fonts",
+        "./fonts/*": "./dist/fonts/*",
+        "./templates": "./dist/templates",
+        "./templates/*": "./dist/templates/*",
         "./components": "./dist/components",
         "./components/*": "./dist/components/*"
     },
@@ -35,8 +26,8 @@
     "scripts": {
         "build": "npm run css && npm run ts && npm run copy",
         "ts": "tsc -b -v",
-        "css": "postcss src/components/**/*.css --base src/components --config src/ --dir dist/client/styles",
-        "copy": "copyfiles -u 1 src/client/fonts/**/*.woff2 dist",
+        "css": "postcss src/**/*.css --base src --dir dist/styles",
+        "copy": "copyfiles -u 1 src/fonts/**/*.woff2 dist",
         "test": "jest",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
