@@ -1,5 +1,5 @@
 import { linkStoryRenderer } from '../../../utils/storybook/story-renderer.js';
-import './glow-button.css';
+import './glow-button.css.js';
 import { glowButton } from './glow-button.js';
 
 export default {

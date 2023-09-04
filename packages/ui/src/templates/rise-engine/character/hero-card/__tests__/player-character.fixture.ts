@@ -312,7 +312,13 @@ const mockHero: HeroData = {
             {
                 name: 'Emberwind Spark',
                 type: 'keepsake',
-                useable_in: ['combat', 'crossroad', 'custom', 'role-playing', 'encounter'],
+                useable_in: [
+                    'combat',
+                    'crossroad',
+                    'custom',
+                    'role-playing',
+                    'encounter',
+                ],
                 effect: {
                     text: 'Alter 1 Roll result by +/-4',
                 },
@@ -327,7 +333,13 @@ const mockHero: HeroData = {
             {
                 name: 'Life Binder',
                 type: 'keepsake',
-                useable_in: ['combat', 'crossroad', 'custom', 'role-playing', 'encounter'],
+                useable_in: [
+                    'combat',
+                    'crossroad',
+                    'custom',
+                    'role-playing',
+                    'encounter',
+                ],
                 effect: {
                     text: 'When reduced to 0 HP for the first time, retain 1 HP instead and gain +10 to Barrier Scores until the start of your next Turn.',
                 },

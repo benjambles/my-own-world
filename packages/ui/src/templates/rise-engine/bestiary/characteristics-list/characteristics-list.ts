@@ -33,13 +33,12 @@ function characteristicGroup({ title, details }: CharacteristicGroup) {
         <h2>${title}</h2>
         <dl class="${styles.characteristics__group}">
             ${Object.entries(details).map(
-                ([name, description]) =>
-                    html`
-                        <div>
-                            <dt>${name}:</dt>
-                            <dd>${description}</dd>
-                        </div>
-                    `,
+                ([name, description]) => html`
+                    <div>
+                        <dt>${name}:</dt>
+                        <dd>${description}</dd>
+                    </div>
+                `,
             )}
         </dl>
     `;

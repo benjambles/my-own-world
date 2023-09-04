@@ -39,7 +39,10 @@ export function classCard(data: ClassCardProps) {
 
     return html`
         <class-card
-            class="${classMap({ [styles.classCard]: true, [styles.large]: data.view === 'large' })}"
+            class="${classMap({
+                [styles.classCard]: true,
+                [styles.large]: data.view === 'large',
+            })}"
         >
             <figure>
                 <img src="${thumbPortrait}" alt="" />

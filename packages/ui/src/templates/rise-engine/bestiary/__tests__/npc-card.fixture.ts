@@ -35,7 +35,8 @@ const cardData: NPCCard = {
         optional: {
             title: 'Optional modifiers',
             details: {
-                'manic movement': '2 Free Shifts at any point during Chaser Doorcrasher’s Turn.',
+                'manic movement':
+                    '2 Free Shifts at any point during Chaser Doorcrasher’s Turn.',
             },
         },
     },
