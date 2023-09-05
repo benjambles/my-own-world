@@ -2,7 +2,7 @@ import {
     CharacteristicGroup,
     Characteristics,
 } from '@benjambles/rise-engine/dist/types/game/npc.js';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './characteristics-list.css.js';
 
@@ -18,7 +18,7 @@ export function characteristicsList({ base, optional }: Characteristics) {
         )}
         <section class="${styles.characteristics}">
             ${characteristicGroup(base)}
-            ${optional ? characteristicGroup(optional) : null}
+            ${optional ? characteristicGroup(optional) : nothing}
         </section>
     `;
 }

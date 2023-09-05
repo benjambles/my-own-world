@@ -1,5 +1,5 @@
 import { Stats } from '@benjambles/rise-engine/dist/types/game/npc.js';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './stats-block.css.js';
 
@@ -22,7 +22,7 @@ export function statsBlock({ name, variant, stats }: StatsData) {
                 <b>Name:</b>
                 <span class="${styles.title}">${name}</span> ${variant
                     ? html`<span>[${variant}]</span>`
-                    : null}
+                    : nothing}
             </span>
             <span class="${styles.health}">
                 <b>HP:</b> <span>${stats.hp.current}/${stats.hp.max}</span>

@@ -3,7 +3,7 @@ import {
     ActionGroup,
     Actions,
 } from '@benjambles/rise-engine/dist/types/game/npc.js';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { lazyStylesheet } from '../../../utils/lazy-stylesheet.js';
 import styles from './actions-table.css.js';
@@ -36,14 +36,14 @@ export function actionsTable({ limit, basic, special, learnable }: Actions) {
                           title: 'Special Abilities',
                           className: styles.specialActions,
                       })
-                    : null}
+                    : nothing}
                 ${learnable
                     ? actionGroup({
                           actions: learnable,
                           title: 'Learnable Special Abilities',
                           className: styles.learnableActions,
                       })
-                    : null}
+                    : nothing}
             </table>
         </section>
     `;
@@ -67,7 +67,7 @@ function actionGroup({ actions, title, limit, className }: ActionGroupData) {
                     ? html`<th colspan="1">
                           [Storyteller only] Actions per Turn: ${limit}
                       </th>`
-                    : null}
+                    : nothing}
             </tr>
             ${Object.values(actions).map((action) => actionRow(action))}
         </tbody>
@@ -77,7 +77,7 @@ function actionGroup({ actions, title, limit, className }: ActionGroupData) {
 function actionRow({ name, autoHit, type, range, effect }: Action) {
     return html`
         <tr>
-            <td>${name}${autoHit ? html`<span>Auto Hit</span>` : null}</td>
+            <td>${name}${autoHit ? html`<span>Auto Hit</span>` : nothing}</td>
             <td>${type}</td>
             <td>${range ?? '-'}</td>
             <td>${effect}</td>
