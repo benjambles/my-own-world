@@ -1,6 +1,7 @@
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
+import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { time } from '@benjambles/mow-ui/core.js';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { RenderProps } from '../../../utils/render-template.js';
 import { paths } from './config.js';
 import { RosterData } from './index.js';
@@ -13,19 +14,11 @@ export default function (data: RosterData): RenderProps {
             scripts: [],
         },
         template: html`
-            <div class="${styles.sectionHeader}">
-                <div class="${styles.breadcrumb}">
-                    <a href="/tools">Tools</a> - <span>Roster</span>
-                </div>
-                <div class="${styles.sectionSiblings}">
-                    <nav>
-                        <ul>
-                            <li><a href="/tools/scenarios">Scenario Builder</a></li>
-                            <li><a href="/tools/npcs">NPC Builder</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            <section-header sectionname="Roster">
+                <a slot="root-link" href="/tools">Tools</a>
+                <a href="/tools/scenarios">Scenario Builder</a>
+                <a href="/tools/npcs">NPC Builder</a>
+            </section-header>
             <main class="${styles.pageRoster}">
                 <section class="${styles.panel}">
                     <h1 class="${styles.title}">${data.content.title}</h1>
@@ -72,7 +65,9 @@ function gameTile(data: RosterData['content']['games'][number]) {
     return html`<li data-game-type="${data.type}" class="${styles.card}">
         <a href="${paths.rosterById.replace(':rosterId', data.id)}">
             <span>${data.name}</span>
-            ${data.type === 'campaign' ? html`<span>${data.campaignName}</span>` : null}
+            ${data.type === 'campaign'
+                ? html`<span>${data.campaignName}</span>`
+                : nothing}
 
             <span>Created: ${time(data.createdOn)} </span>
             <span

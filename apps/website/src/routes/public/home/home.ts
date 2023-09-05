@@ -11,7 +11,6 @@ export default function (): RenderProps {
         template: html`
             <main class="${styles.pageHome}">
                 <section class="${styles.homeIntro}">
-                    <!-- <canvas id="js-starfield"></canvas> -->
                     <div class="${styles.panel}">
                         <h1>Kh&ocirc;ra</h1>
                         <p>Rediscover the stars</p>

@@ -4,40 +4,6 @@
     min-height: 100vh;
 }
 
-.section-header {
-    width: 100%;
-    height: 100px;
-    border-bottom: 1px solid var(--shade-3);
-    display: flex;
-    flex-direction: row;
-}
-
-.breadcrumb {
-    padding: 0 6rem;
-    border-right: 1px solid var(--shade-3);
-    height: 100%;
-    display: flex;
-    gap: 0 1.5rem;
-    align-items: center;
-}
-
-.section-siblings {
-    flex: 1 1 100%;
-    justify-content: flex-end;
-    display: flex;
-}
-
-.section-siblings ul {
-    display: flex;
-    list-style: none;
-    margin: 0 6rem;
-    padding: 0;
-    flex-direction: row;
-    gap: 0 2rem;
-    height: 100%;
-    align-items: center;
-}
-
 .vertical {
     writing-mode: vertical-rl;
     text-orientation: upright;
@@ -147,40 +113,6 @@
 .card a:hover span:first-child,
 .card a:focus span:first-child {
     color: rgba(255, 0, 0, 0.8);
-}
-
-.filters {
-    border: 1px solid var(--shade-3);
-    border-width: 1px 0;
-    display: flex;
-    overflow: hidden;
-}
-
-.filters a {
-    transform: skew(20deg, 0deg);
-    border: 0 solid var(--shade-3);
-    border-right-width: 1px;
-    display: block;
-    position: relative;
-    padding: 0 2rem;
-}
-
-.filters a span {
-    display: block;
-    transform: skewX(-20deg);
-    padding: 1rem 0rem;
-}
-
-.filters a:hover,
-.filters a:focus {
-    background: rgba(255, 0, 0, 0.8);
-    color: white;
-    border-color: rgba(255, 0, 0, 0.8);
-}
-
-.filters a:first-child {
-    padding-left: 30px;
-    margin-left: -10px;
 }
 
 @media screen and (min-width: 992px) {
