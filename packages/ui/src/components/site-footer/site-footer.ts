@@ -9,7 +9,8 @@ export class SiteFooter extends LitElement {
         }
 
         footer {
-            padding: 40px 20px;
+            height: 100px;
+            padding: 35px 20px;
             border-top: 1px solid var(--shade-3);
             font-size: 1.3rem;
         }

@@ -1,8 +1,9 @@
 import { buttonStyles, inputStyles, textInput } from '@benjambles/mow-ui/core.js';
 import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { speechBubbleStyles } from '../../styles/text.js';
 import { UserData, userContext } from '../contexts/user.js';
 
 @customElement('login-form')
@@ -13,10 +14,16 @@ export class LoginForm extends LitElement {
                 box-sizing: border-box;
             }
 
+            :host {
+                --_form-padding: var(--form-padding);
+                display: block;
+            }
+
             form {
                 overflow: auto;
                 display: flex;
                 flex-direction: column;
+                padding: var(--_form-padding);
             }
 
             form button {
@@ -25,11 +32,18 @@ export class LoginForm extends LitElement {
         `,
         inputStyles,
         buttonStyles,
+        speechBubbleStyles,
     ];
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
     userData: UserData;
+
+    @property({ attribute: true, type: Boolean })
+    isModal = false;
+
+    @property({ attribute: true })
+    redirectUrl = '/';
 
     @query('#email')
     private _emailField: HTMLInputElement;
@@ -49,10 +63,18 @@ export class LoginForm extends LitElement {
     }
 
     protected render(): unknown {
-        return this.userData?.status === 'logged-in'
-            ? null
+        const isLoggedIn = this.userData?.status === 'logged-in';
+
+        if (isLoggedIn && !this.isModal) {
+            window.location.replace(this.redirectUrl);
+            return;
+        }
+
+        return isLoggedIn
+            ? nothing
             : html`
                   <form action="/user/login" method="post" @submit=${this._onSubmit}>
+                      <p class="speech">Please identify yourself to proceed.</p>
                       ${textInput({
                           id: 'email',
                           label: 'Email',
@@ -65,7 +87,7 @@ export class LoginForm extends LitElement {
                           required: true,
                           type: 'password',
                       })}
-                      <button class="primary large">Get Started</button>
+                      <button class="primary large">Identify</button>
                   </form>
               `;
     }

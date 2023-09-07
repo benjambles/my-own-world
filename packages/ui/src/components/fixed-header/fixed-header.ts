@@ -20,9 +20,8 @@ export class FixedHeader extends MowDetails {
 
             height: 60px;
             width: 100%;
-            border-bottom: 1px solid var(--border-color);
             position: fixed;
-            inset: 0;
+            inset: auto 0 0 0;
             z-index: 2;
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -30,7 +29,7 @@ export class FixedHeader extends MowDetails {
 
         header {
             display: flex;
-            flex-direction: row;
+            flex-direction: row-reverse;
             align-items: center;
             gap: 0 20px;
             height: 100%;
@@ -50,8 +49,8 @@ export class FixedHeader extends MowDetails {
             align-items: center;
             justify-content: center;
             height: 60px;
-            width: 60px;
-            border-bottom: 1px solid var(--border-color);
+            width: 61px;
+            border-left: 1px solid var(--border-color);
             font-size: var(--menu-btn-font);
             cursor: pointer;
         }
@@ -72,20 +71,22 @@ export class FixedHeader extends MowDetails {
             display: flex;
             overflow: hidden;
             position: absolute;
-            inset: 60px 0 0;
+            inset: 0 0 60px;
         }
 
         details[open] .navigation-panel {
-            inset: 60px 0 calc(-100vh + 60px);
+            inset: calc(-100vh + 60px) 0px 60px;
         }
 
         @media screen and (min-width: 992px) {
             :host {
                 height: 100%;
                 width: 100px;
-                border-bottom-width: 0;
-                border-right: 1px solid var(--border-color);
                 inset: 0;
+            }
+
+            header {
+                flex-direction: row;
             }
 
             header {
@@ -93,9 +94,7 @@ export class FixedHeader extends MowDetails {
             }
 
             .account-links {
-                padding-right: 0;
-                padding-bottom: 20px;
-                writing-mode: tb;
+                width: 100%;
             }
 
             .logo {
@@ -105,8 +104,9 @@ export class FixedHeader extends MowDetails {
             }
 
             details summary {
-                height: 100px;
+                height: 101px;
                 width: 100px;
+                border-bottom: 1px solid var(--border-color);
             }
 
             details[open] .navigation-panel {
@@ -131,7 +131,7 @@ export class FixedHeader extends MowDetails {
                     </div>
                 </details>
                 <div class="logo"><slot name="logo"></slot></div>
-                <div class="account-links"><slot name="account-menu"></slot></div>
+                <slot class="account-links" name="account-button"></slot>
             </header>
         `;
     }

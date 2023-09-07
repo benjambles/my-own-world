@@ -1,6 +1,8 @@
 import { buttonStyles, inputStyles, link, textInput } from '@benjambles/mow-ui/core.js';
 import { LitElement, css, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
+import { paths as userPaths } from '../../../../routes/account/config.js';
+import { speechBubbleStyles } from '../../styles/text.js';
 
 @customElement('join-form')
 export class JoinForm extends LitElement {
@@ -10,28 +12,17 @@ export class JoinForm extends LitElement {
                 box-sizing: border-box;
             }
 
+            :host {
+                --_form-padding: var(--form-padding);
+                display: block;
+            }
+
             form {
-                background-image: linear-gradient(
-                        45deg,
-                        transparent 10px,
-                        var(--shade-1) 10px
-                    ),
-                    linear-gradient(135deg, var(--shade-1) 0, var(--shade-1) 0),
-                    linear-gradient(225deg, transparent 10px, var(--shade-1) 10px),
-                    linear-gradient(315deg, var(--shade-1) 0, var(--shade-1) 0px);
-                background-position:
-                    bottom left,
-                    bottom right,
-                    top right,
-                    top left;
-                background-size: 51% 51%;
-                background-repeat: no-repeat;
-                padding: 20px;
-                border-radius: 0;
                 color: var(--shade-4);
                 overflow: auto;
                 display: flex;
                 flex-direction: column;
+                padding: var(--_form-padding);
             }
 
             form small {
@@ -46,39 +37,97 @@ export class JoinForm extends LitElement {
         `,
         buttonStyles,
         inputStyles,
+        speechBubbleStyles,
     ];
 
-    private _onSubmit(e: SubmitEvent) {
+    private _onSubmitSignup(e: SubmitEvent) {
         e.preventDefault();
     }
 
+    private _onSubmitLogin(e: SubmitEvent) {
+        e.preventDefault();
+    }
+
+    @query('#join-screename')
+    @property({ attribute: false })
+    private _screename: HTMLInputElement;
+
+    @query('#join-email')
+    @property({ attribute: false })
+    private _email: HTMLInputElement;
+
+    @query('#join-password')
+    @property({ attribute: false })
+    private _password: HTMLInputElement;
+
     protected render(): unknown {
         return html`
-            <form action="/join" method="post" @submit=${this._onSubmit}>
-                ${textInput({ label: 'Username', id: 'username' })}
+            <form
+                action="${userPaths.signup}"
+                method="post"
+                @submit=${this._onSubmitSignup}
+            >
+                <div class="speech">
+                    <p>
+                        Oh, a new hire? Before you start on your adventures with us the
+                        agency needs a few details from you. In return you'll get access
+                        to our tools that help you manage your crews and plan your
+                        adventures.
+                    </p>
+
+                    <p>Now, what should we call you Explorer?</p>
+                </div>
+
+                ${textInput({
+                    label: 'Code name',
+                    id: 'join-screenname',
+                    name: 'screenname',
+                    required: true,
+                })}
+
+                <p class="speech">
+                    Perfect, thanks ${this._screename?.value || 'Explorer'}. Now, where
+                    should we contact you?
+                </p>
+
                 ${textInput({
                     label: 'Email',
-                    id: 'email',
+                    id: 'join-email',
+                    name: 'email',
                     type: 'email',
+                    required: true,
                 })}
+
+                <p class="speech">
+                    Got it, thanks. Finally, you're probably already familiar with this
+                    process, but we'll need a password from you so that we can prove you
+                    are who you say you are.
+                </p>
+
                 ${textInput({
-                    label: 'Password',
-                    id: 'password',
+                    label: 'Pass code',
+                    id: 'join-password',
+                    name: 'password',
                     type: 'password',
+                    required: true,
                 })}
-                <small>
-                    Passwords should be secure, don't use one from another site.
-                    ${link({
-                        href: '/password-security',
-                        text: 'Learn more',
-                        display: { underlined: true },
-                    })}.
-                </small>
 
-                <button class="primary large">Get Started</button>
+                <div class="speech">
+                    <p>
+                        Great. Infiltrators are everywhere - so keep that secure and try
+                        not to use it anywhere else.
+                    </p>
+
+                    <p>
+                        I think that's us all done - if you're happy with your answers use
+                        the confirm button below.
+                    </p>
+                </div>
+
+                <button class="primary large">Confirm</button>
 
                 <small>
-                    By clicking “Get started”, you agree to our
+                    By clicking “Confirm”, you agree to our
                     ${link({
                         href: '/terms',
                         text: 'Terms of Service and Privacy Statement',

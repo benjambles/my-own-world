@@ -20,9 +20,9 @@ const links = [
 export const base = () => html`
     <site-footer>
         <span slot="site-name">Kh&ocirc;ra</span>
-        ${links.map(({ text, href }) => {
-            return html`<a href="${href}" role="listitem">${text}</a>`;
-        })}
+        ${links.map(
+            ({ text, href }) => html`<a href="${href}" role="listitem">${text}</a>`,
+        )}
     </site-footer>
 `;
 base.storyName = 'default';
