@@ -394,7 +394,7 @@
         "description": "Creates a HTTP method body when defining OpenAPI config - for the verbs property"
     },
     // Snippets for adding UI components
-    "Add Component": {
+    "Add Template": {
         "scope": "typescript",
         "prefix": "lit",
         "body": [
@@ -415,7 +415,7 @@
         ],
         "description": "Add a LitHTML component file skeleton"
     },
-    "Add SubComponent": {
+    "Add Sub Template": {
         "scope": "typescript",
         "prefix": "litfn",
         "body": [
@@ -432,6 +432,36 @@
             "}"
         ],
         "description": "Add a LitHTML component function"
+    },
+    "Add Component":{
+        "scope": "typescript",
+        "prefix": "cust",
+        "body": [
+            "import { LitElement, css, html } from 'lit';",
+            "import { customElement } from 'lit/decorators.js';",
+            "",
+            "@customElement('${2:${TM_FILENAME_BASE}}')",
+            "export class ${1:${TM_FILENAME_BASE/^(.)|-(.)/${1:/upcase}${2:/upcase}/g}} extends LitElement {",
+            "    static styles = css`",
+            "        * {",
+            "           box-sizing: border-box;",
+            "        }",
+            "",
+            "        $0",
+            "    `;",
+            "",
+            "    protected render() {",
+            "        return html`$3`;",
+            "    }",
+            "}",
+            "",
+            "declare global {",
+            "    interface HTMLElementTagNameMap {",
+            "        '$2': $1;",
+            "    }",
+            "}"
+        ],
+        "description": "Add a skeleton for a custom element"
     },
     "Story":{
         "scope": "typescript",
