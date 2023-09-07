@@ -8,6 +8,7 @@ import Koa from 'koa';
 import { fileURLToPath } from 'url';
 import { getMockData } from './data/get-mock-data.js';
 import siteLayout from './layouts/core/site.js';
+import { paths as userPaths } from './routes/account/config.js';
 import errorTemplates from './routes/errors/errors.js';
 import { resources } from './routes/routes-config.js';
 import { envSchema } from './schema/env-schema.js';
@@ -52,6 +53,7 @@ export const serve = configureServer({
         errorTemplates,
         layoutComponent: siteLayout,
         layoutDataProvider: getMockData,
+        loginPath: userPaths.login,
         renderer: renderTemplate,
     }),
 });

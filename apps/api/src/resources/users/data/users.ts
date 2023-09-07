@@ -13,7 +13,6 @@ import { Env } from '../../../schema/env-schema.js';
 const restrictedKeys = [
     'password',
     'identities',
-    'gameStates',
     'isDeleted',
     'deletedOn',
     'accessTokens',
@@ -30,11 +29,14 @@ type UserResponse = Omit<User, RestrictedKeys | ToStringKeys> & {
 
 export interface User {
     _id: ObjectId;
+    accessTokens: {
+        accessToken: string;
+        fingerprint: string;
+        refreshToken: string;
+    }[];
     createdOn: Date;
-    lastLoggedIn?: Date;
     deletedOn?: Date;
     firstName: string;
-    gameStates: {};
     identities: {
         hash: string;
         identifier: string;
@@ -43,10 +45,10 @@ export interface User {
         verified: boolean;
     }[];
     isDeleted: boolean;
+    lastLoggedIn?: Date;
     lastName: string;
     password: string;
     screenName: string;
-    accessTokens: { accessToken: string; refreshToken: string; fingerprint: string }[];
 }
 
 type NewUser = Pick<User, 'firstName' | 'lastName' | 'password' | 'screenName'>;
@@ -95,7 +97,6 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
                 Object.assign(cleanData, {
                     _id: getObjectId(randomUUID()),
                     createdOn: new Date(),
-                    gameStates: {},
                     identities: [],
                     isDeleted: false,
                     lastLoggedIn: new Date(),

@@ -36,6 +36,9 @@ export class WithUser extends LitElement {
     @property({ type: String, reflect: false })
     fingerprintCookie = 'mow-fingerprint';
 
+    @property({ type: String, reflect: false })
+    accessCookie = 'mow-auth';
+
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
     requestManager?: MowApiInstance;
@@ -57,11 +60,6 @@ export class WithUser extends LitElement {
         if (!e.detail.identifier || !e.detail.password) {
             return false;
         }
-
-        this.userData = {
-            ...this.userData,
-            status: 'pending',
-        };
 
         try {
             const userData = await this.userApi.call('authenticateUser', {
@@ -86,11 +84,6 @@ export class WithUser extends LitElement {
         const { fingerprint, refreshToken } = this.userData;
         let userId = this.userData.user?._id;
 
-        this.userData = {
-            ...this.userData,
-            status: 'pending',
-        };
-
         if (!userId) {
             try {
                 const parsedToken = jwtDecode.default<JwtPayload>(refreshToken);
@@ -108,6 +101,8 @@ export class WithUser extends LitElement {
         this._deleteCookies();
 
         this.userData = { ...defaultUserData };
+
+        this.dispatchEvent(composedEvent('logoutsuccess', undefined));
     }
 
     async refreshTokens() {
@@ -117,11 +112,6 @@ export class WithUser extends LitElement {
         if (!refreshToken || !fingerprint) {
             return;
         }
-
-        this.userData = {
-            ...this.userData,
-            status: 'pending',
-        };
 
         try {
             const userData = await this.userApi.call('refreshToken', {
@@ -143,11 +133,13 @@ export class WithUser extends LitElement {
     private _setCookies() {
         Cookies.set(this.refreshCookie, this.userData.refreshToken); // TODO secure and time
         Cookies.set(this.fingerprintCookie, this.userData.fingerprint);
+        Cookies.set(this.accessCookie, this.userData.accessToken);
     }
 
     private _deleteCookies() {
         Cookies.remove(this.fingerprintCookie);
         Cookies.remove(this.refreshCookie);
+        Cookies.remove(this.accessCookie);
     }
 
     render() {

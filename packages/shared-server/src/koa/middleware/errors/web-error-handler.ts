@@ -24,6 +24,7 @@ type ErrorHandlerArgs<T> = {
     errorTemplates: ErrorTemplates;
     layoutComponent: (data: T, children: RenderProps) => RenderProps;
     layoutDataProvider?: (ctx: Context) => Promise<T>;
+    loginPath: string;
     renderer: (
         data: T,
         template: RenderProps,
@@ -38,9 +39,10 @@ type ErrorHandlerArgs<T> = {
 export function webErrorHandler<T extends object>({
     app,
     errorTemplates,
+    loginPath,
     layoutComponent,
-    renderer,
     layoutDataProvider,
+    renderer,
 }: ErrorHandlerArgs<T>): Koa.Middleware {
     app.on('error', (err: Error, ctx: Koa.Context) => {
         /* centralized error handling:
@@ -68,11 +70,18 @@ export function webErrorHandler<T extends object>({
                 parsedError = err.message;
             }
 
+            ctx.app.emit('error', err, ctx);
+
+            if (err.status === 401 && err.message === 'jwt must be provided') {
+                ctx.redirect(loginPath || '/');
+                return;
+            }
+
             const page = await renderer(
                 data,
                 layoutComponent(
                     data,
-                    errorTemplates[ctx.status]({
+                    errorTemplates[err.status]({
                         status,
                         error: parsedError,
                     }),
@@ -80,8 +89,6 @@ export function webErrorHandler<T extends object>({
             );
 
             streamResponse(ctx, page, status);
-
-            ctx.app.emit('error', err, ctx);
         }
     };
 }

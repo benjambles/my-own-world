@@ -46,7 +46,7 @@ export function getMiddleware({
         koaJWT({
             secret: env.JWT_SECRET,
             passthrough: true,
-            cookie: isApi ? undefined : 'mow_auth',
+            cookie: isApi ? undefined : 'mow-auth',
         }),
         ...serveStatic(staticPaths),
     ].filter(Boolean);

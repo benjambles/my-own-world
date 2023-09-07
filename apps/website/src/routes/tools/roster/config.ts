@@ -55,7 +55,7 @@ export default {
                         },
                     },
                 },
-                security: [{ http: [] }],
+                security: [{ http: ['role:user'] }],
             },
         },
         [paths.newSkirmish]: {
@@ -77,7 +77,7 @@ export default {
                         },
                     },
                 },
-                security: [{ http: [] }],
+                security: [{ http: ['role:user'] }],
             },
             post: {
                 tags: ['roster'],
@@ -102,11 +102,7 @@ export default {
                         description: 'OK,',
                     },
                 },
-                security: [
-                    {
-                        http: [],
-                    },
-                ],
+                security: [{ http: ['role:user'] }],
             },
         },
         [paths.newCampaign]: {
@@ -128,7 +124,7 @@ export default {
                         },
                     },
                 },
-                security: [{ http: [] }],
+                security: [{ http: ['role:user'] }],
             },
             post: {
                 tags: ['roster'],
@@ -153,11 +149,7 @@ export default {
                         description: 'OK,',
                     },
                 },
-                security: [
-                    {
-                        http: [],
-                    },
-                ],
+                security: [{ http: ['role:user'] }],
             },
         },
         [paths.rosterById]: {
@@ -189,6 +181,11 @@ export default {
                         },
                     },
                 },
+                security: [
+                    {
+                        http: ['role:user', 'role:owner'],
+                    },
+                ],
             },
             put: {
                 tags: ['roster'],
@@ -232,7 +229,7 @@ export default {
                 },
                 security: [
                     {
-                        http: ['role:admin', 'role:owner'],
+                        http: ['role:user', 'role:owner'],
                     },
                 ],
             },

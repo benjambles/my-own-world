@@ -4,7 +4,7 @@ export type UserData = {
     accessToken: string;
     fingerprint: string;
     refreshToken: string;
-    status: 'logged-in' | 'logged-out' | 'pending' | 'error';
+    status: 'logged-in' | 'logged-out' | 'error';
     user?: {
         _id: string;
         createdOn: string;
