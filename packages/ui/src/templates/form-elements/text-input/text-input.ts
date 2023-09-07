@@ -24,6 +24,7 @@ export const inputStyles = css`
     .input-wrapper {
         position: relative;
         z-index: 1;
+        display: flex;
     }
 
     label {
@@ -40,11 +41,9 @@ export const inputStyles = css`
         background-clip: content-box;
         border: 2px solid transparent;
         border-radius: 4px;
-        box-sizing: border-box;
         display: flex;
         justify-content: center;
         width: 100%;
-        padding: 10px;
         margin-top: 5px;
         font-size: 1.6rem;
         overflow: hidden;

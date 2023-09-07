@@ -1,7 +1,10 @@
+import '@benjambles/mow-ui/components/menu-profile/menu-profile.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { UserData, userContext } from '../contexts/user.js';
+
+import { paths as userPaths } from '../../../../routes/account/config.js';
 
 @customElement('user-menu')
 export class UserMenu extends LitElement {
@@ -10,29 +13,40 @@ export class UserMenu extends LitElement {
             box-sizing: border-box;
         }
 
-        :host div {
+        :host {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            width: 60px;
+            border-right: 1px solid rgb(68, 68, 68);
+        }
+
+        mow-action,
+        a {
+            flex: 1 0 100%;
+            color: var(--special-4);
+            height: 100%;
             display: flex;
             align-items: center;
-            flex-direction: row;
-            gap: 10px;
-            width: 100%;
-            margin: 20px 0;
-            color: white;
-        }
-
-        .hide {
-            display: none;
-        }
-
-        a {
-            text-decoration: none;
-            color: #f15d5c;
+            justify-content: center;
             transition: color 0.1s;
+            text-decoration: none;
         }
 
         a:hover,
-        a:focus {
-            color: #0fdee5;
+        a:focus-visible {
+            color: white;
+            background-color: var(--special-4);
+        }
+
+        @media screen and (min-width: 992px) {
+            :host {
+                height: 101px;
+                width: 100px;
+                border-top: 1px solid rgb(68, 68, 68);
+                border-right: 0px none;
+            }
         }
     `;
 
@@ -40,25 +54,25 @@ export class UserMenu extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    private _getMenuState(status: UserData['status'] = 'logged-out') {
-        if (status === 'pending') {
-            return html`<span>Checking...</span> `;
-        }
-
-        if (status === 'logged-in') {
-            return html`<a href="/my-account">${this.userData.user.screenName}</a>`;
-        }
-
+    private _renderLoggedIn() {
         return html`
-            <a href="/join">Join Up</a> |
+            <mow-action preventdefault eventtrigger="openusermenu">
+                <a href="${userPaths.account}" title="settings">Settings</a>
+            </mow-action>
+        `;
+    }
+
+    private _renderLoggedOut() {
+        return html`
             <mow-action preventdefault eventtrigger="openlogin">
-                <a href="/sign-in">Log In</a>
+                <a href="${userPaths.login}">Identify</a>
             </mow-action>
         `;
     }
 
     protected render() {
-        return html`<div>${this._getMenuState(this.userData?.status)}</div>`;
+        const { status } = this.userData || {};
+        return status === 'logged-in' ? this._renderLoggedIn() : this._renderLoggedOut();
     }
 }
 

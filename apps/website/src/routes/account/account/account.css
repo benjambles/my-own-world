@@ -1,0 +1,33 @@
+.account-intro {
+    padding: 60px 0;
+    display: block;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.account-intro h1 {
+    background-image: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3rem;
+    line-height: 1.3;
+    padding: 0 20px;
+}
+
+.account-intro p {
+    padding: 0 20px;
+}
+
+.account-intro account-form {
+    --form-padding: 0 20px;
+}
+
+@media screen and (min-width: 992px) {
+    .account-intro {
+        max-width: 720px;
+    }
+
+    .account-intro h1 {
+        font-size: 7rem;
+    }
+}

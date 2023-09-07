@@ -40,7 +40,7 @@ export class MowDialog extends LitElement {
         }
 
         dialog::backdrop {
-            --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.6));
+            --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.9));
             background-color: var(--overlay);
         }
 

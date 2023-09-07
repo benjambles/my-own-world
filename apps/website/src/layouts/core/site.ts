@@ -7,6 +7,7 @@ import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import '../../static/js/components/forms/login.js';
+import '../../static/js/components/forms/user.js';
 import '../../static/js/components/user-menu/user-menu.js';
 
 import { mockData } from '@benjambles/mow-ui/utils.js';
@@ -69,7 +70,7 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                                 )}
                             </mega-menu>
                             <a href="/" slot="logo">Logo</a>
-                            <user-menu slot="account-menu"></user-menu>
+                            <user-menu slot="account-button"></user-menu>
                         </fixed-header>
                         <div class="${styles.contentWrapper}">
                             <div id="content">${page.template}</div>
@@ -86,7 +87,13 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                             triggeropeneventname="openlogin"
                             triggercloseeventname="loginsuccess"
                         >
-                            <login-form></login-form>
+                            <login-form ismodal></login-form>
+                        </mow-dialog>
+                        <mow-dialog
+                            triggeropeneventname="openusermenu"
+                            triggercloseeventname="logoutsuccess"
+                        >
+                            <user-form></user-form>
                         </mow-dialog>
                     </with-user>
                 </with-api>

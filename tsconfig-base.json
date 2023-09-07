@@ -9,7 +9,7 @@
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "incremental": true,
-        "lib": ["ES2022", "esnext.array", "dom", "ES2020.String"],
+        "lib": ["ES2022", "esnext.array", "dom", "ES2020.String", "ES2020.Intl"],
         "module": "esnext",
         "moduleResolution": "nodenext",
         "pretty": true,
