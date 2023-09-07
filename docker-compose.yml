@@ -20,7 +20,7 @@ services:
       - 9230:9230
     working_dir: /app
     volumes: *source-code
-    command: npm run dev --workspace=apps/api -- -L
+    command: npm run dev --workspace=apps/api
   website:
     build:
       context: .
@@ -30,7 +30,7 @@ services:
       - 9229:9229
     working_dir: /app
     volumes: *source-code
-    command: npm run dev --workspace=apps/website -- -L
+    command: npm run dev --workspace=apps/website
   mow_db:
     image: mongo:latest
     restart: always

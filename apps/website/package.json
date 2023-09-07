@@ -14,9 +14,9 @@
         "rollup": "rollup --config",
         "ts": "tsc -b -v",
         "test": "jest",
-        "dev": "nodemon --config nodemon.json --inspect=:9229",
+        "dev": "node dist/app.js --inspect-port=9229",
         "lint": "eslint --fix --ext .js,.ts",
-        "start": "node --experimental-import-meta-resolve dist/app.js"
+        "start": "node dist/app.js"
     },
     "author": "Ben Allen",
     "license": "ISC",

@@ -14,7 +14,7 @@ COPY ["../src",  "./src/"]
 
 RUN npm run build
 
-FROM node:19.7.0-bullseye-slim
+FROM node:20.6.0-bullseye-slim
 
 EXPOSE 3001
 
