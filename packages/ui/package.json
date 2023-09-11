@@ -37,6 +37,7 @@
     "license": "ISC",
     "dependencies": {
         "@benjambles/rise-engine": "../../packages/rise-engine",
+        "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
         "lit": "2.8.0"
     },
     "devDependencies": {
