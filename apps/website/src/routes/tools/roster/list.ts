@@ -69,13 +69,11 @@ function gameTile(data: RosterData['content']['games'][number]) {
                 ? html`<span>${data.campaignName}</span>`
                 : nothing}
 
-            <span>Created: ${time(data.createdOn)} </span>
-            <span
-                >${data.type}:
-                ${data.type === 'skirmish'
-                    ? `${data.credits} credits`
-                    : data.difficulty}</span
-            >
+            <span>Created: ${time(data.createdOn)}</span>
+            <span>
+                ${data.type}:
+                ${data.type === 'skirmish' ? `${data.credits} credits` : data.difficulty}
+            </span>
         </a>
     </li>`;
 }
