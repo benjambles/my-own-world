@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { RenderProps } from '../../../utils/render-template.js';
+import { paths as rulesPaths } from '../../rules/config.js';
 import styles from './home.css.js';
 
 export default function (): RenderProps {
@@ -39,7 +40,10 @@ export default function (): RenderProps {
                     </div>
 
                     <div class="${styles.buttonGroup}">
-                        <a class="${styles.outlineButton}" href="/game/quick-start">
+                        <a
+                            class="${styles.outlineButton}"
+                            href="${rulesPaths.quickstart}"
+                        >
                             Learn to play
                         </a>
                         <a class="${styles.outlineButton}" href="/game/rules">

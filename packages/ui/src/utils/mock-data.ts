@@ -29,7 +29,7 @@ export const mockData = {
             {
                 title: 'The rules',
                 links: [
-                    { href: '/rules', title: 'Quick Start' },
+                    { href: '/rules/quick-start', title: 'Quick Start' },
                     { href: '/rules/turn-sequence', title: 'Turn sequence' },
                     { href: '/rules/operatives', title: 'Operatives' },
                     { href: '/rules/skirmishes', title: 'Skirmishes' },

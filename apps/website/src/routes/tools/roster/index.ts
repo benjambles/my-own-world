@@ -25,13 +25,22 @@ export default function () {
         })
         .operation('getNewCampaign', async (ctx) => {
             const pageData = await getMockData(ctx);
-            const tpl = renderTemplate(pageData, siteLayout(pageData, create()));
+            const gameData = await getRosterData();
+            const tpl = renderTemplate(
+                pageData,
+                siteLayout(pageData, create({ game: gameData.content.games[0] })),
+            );
 
             return ok(tpl);
         })
         .operation('getNewSkirmish', async (ctx) => {
             const pageData = await getMockData(ctx);
-            const tpl = renderTemplate(pageData, siteLayout(pageData, create()));
+
+            const gameData = await getRosterData();
+            const tpl = renderTemplate(
+                pageData,
+                siteLayout(pageData, create({ game: gameData.content.games[0] })),
+            );
 
             return ok(tpl);
         })
@@ -68,6 +77,7 @@ export async function getRosterData() {
                     description: '',
                     createdOn: new Date(),
                     type: 'skirmish',
+                    difficulty: 'normal',
                     credits: 200,
                 },
                 {
@@ -84,3 +94,26 @@ export async function getRosterData() {
         },
     };
 }
+
+export type Game = SkirmishGame | CampaignGame;
+
+type SkirmishGame = {
+    id: string;
+    name: string;
+    description: string;
+    createdOn: Date;
+    type: 'skirmish';
+    credits: number;
+    difficulty: 'normal' | 'easy' | 'hard';
+};
+
+type CampaignGame = {
+    id: string;
+    name: string;
+    description: string;
+    createdOn: Date;
+    type: 'campaign';
+    credits: number;
+    difficulty: 'normal' | 'easy' | 'hard';
+    campaignName: string;
+};
