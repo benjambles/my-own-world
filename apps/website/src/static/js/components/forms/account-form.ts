@@ -1,5 +1,6 @@
 import {
     buttonStyles,
+    callOutStyles,
     dateDiff,
     formatLargestPart,
     inputStyles,
@@ -10,7 +11,6 @@ import Cookies from 'js-cookie';
 import { LitElement, css, html, isServer, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../../routes/account/config.js';
-import { speechBubbleStyles } from '../../styles/text.js';
 import { UserData, userContext } from '../contexts/user.js';
 
 export interface User {
@@ -37,6 +37,7 @@ export interface User {
 @customElement('account-form')
 export class AccountForm extends LitElement {
     static styles = [
+        callOutStyles,
         css`
             * {
                 box-sizing: border-box;
@@ -66,24 +67,8 @@ export class AccountForm extends LitElement {
             }
 
             fieldset {
-                --background: white;
+                --co-bg-color: white;
                 border: none;
-                background-color: transparent;
-                background-image: linear-gradient(
-                        45deg,
-                        transparent 10px,
-                        var(--background) 10px
-                    ),
-                    linear-gradient(135deg, var(--background) 0px, var(--background) 0px),
-                    linear-gradient(225deg, transparent 10px, var(--background) 10px),
-                    linear-gradient(315deg, var(--background) 0px, var(--background) 0px);
-                background-position:
-                    left bottom,
-                    right bottom,
-                    right top,
-                    left top;
-                background-repeat: no-repeat;
-                background-size: 51% 51%;
                 padding: 35px 20px 30px;
                 margin-bottom: 50px;
             }
@@ -115,7 +100,6 @@ export class AccountForm extends LitElement {
         `,
         buttonStyles,
         inputStyles,
-        speechBubbleStyles,
     ];
 
     @consume({ context: userContext, subscribe: true })
@@ -158,7 +142,7 @@ export class AccountForm extends LitElement {
                       >
                   </p>
                   <form action="${userPaths.account}" method="post">
-                      <fieldset>
+                      <fieldset class="callout">
                           <legend>Your details</legend>
 
                           ${textInput({
@@ -184,12 +168,12 @@ export class AccountForm extends LitElement {
                           })}
                       </fieldset>
 
-                      <fieldset>
+                      <fieldset class="callout">
                           <legend>Your credentials</legend>
                           <ul></ul>
                       </fieldset>
 
-                      <fieldset>
+                      <fieldset class="callout">
                           <legend>Passphrase</legend>
                           ${textInput({
                               id: 'newpassword1',
@@ -212,7 +196,7 @@ export class AccountForm extends LitElement {
                           })}
                       </fieldset>
 
-                      <fieldset>
+                      <fieldset class="callout">
                           <legend>Authorisations</legend>
                       </fieldset>
                   </form>

@@ -1,4 +1,10 @@
-import { buttonStyles, inputStyles, link, textInput } from '@benjambles/mow-ui/core.js';
+import {
+    buttonStyles,
+    callOutStyles,
+    inputStyles,
+    link,
+    textInput,
+} from '@benjambles/mow-ui/core.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../../routes/account/config.js';
@@ -7,6 +13,10 @@ import { speechBubbleStyles } from '../../styles/text.js';
 @customElement('join-form')
 export class JoinForm extends LitElement {
     static styles = [
+        buttonStyles,
+        inputStyles,
+        callOutStyles,
+        speechBubbleStyles,
         css`
             * {
                 box-sizing: border-box;
@@ -35,9 +45,6 @@ export class JoinForm extends LitElement {
                 margin: 30px 0 25px;
             }
         `,
-        buttonStyles,
-        inputStyles,
-        speechBubbleStyles,
     ];
 
     private _onSubmitSignup(e: SubmitEvent) {
@@ -67,7 +74,7 @@ export class JoinForm extends LitElement {
                 method="post"
                 @submit=${this._onSubmitSignup}
             >
-                <div class="speech">
+                <div class="speech callout">
                     <p>
                         Oh, a new hire? Before you start on your adventures with us the
                         agency needs a few details from you. In return you'll get access
@@ -85,7 +92,7 @@ export class JoinForm extends LitElement {
                     required: true,
                 })}
 
-                <p class="speech">
+                <p class="speech callout">
                     Perfect, thanks ${this._screename?.value || 'Explorer'}. Now, where
                     should we contact you?
                 </p>
@@ -98,7 +105,7 @@ export class JoinForm extends LitElement {
                     required: true,
                 })}
 
-                <p class="speech">
+                <p class="speech callout">
                     Got it, thanks. Finally, you're probably already familiar with this
                     process, but we'll need a password from you so that we can prove you
                     are who you say you are.
@@ -112,7 +119,7 @@ export class JoinForm extends LitElement {
                     required: true,
                 })}
 
-                <div class="speech">
+                <div class="speech callout">
                     <p>
                         Great. Infiltrators are everywhere - so keep that secure and try
                         not to use it anywhere else.

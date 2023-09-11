@@ -1,4 +1,9 @@
-import { buttonStyles, inputStyles, textInput } from '@benjambles/mow-ui/core.js';
+import {
+    buttonStyles,
+    callOutStyles,
+    inputStyles,
+    textInput,
+} from '@benjambles/mow-ui/core.js';
 import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
@@ -9,6 +14,10 @@ import { UserData, userContext } from '../contexts/user.js';
 @customElement('login-form')
 export class LoginForm extends LitElement {
     static styles = [
+        inputStyles,
+        buttonStyles,
+        speechBubbleStyles,
+        callOutStyles,
         css`
             * {
                 box-sizing: border-box;
@@ -30,9 +39,6 @@ export class LoginForm extends LitElement {
                 margin: 30px 0 0;
             }
         `,
-        inputStyles,
-        buttonStyles,
-        speechBubbleStyles,
     ];
 
     @consume({ context: userContext, subscribe: true })
@@ -74,7 +80,7 @@ export class LoginForm extends LitElement {
             ? nothing
             : html`
                   <form action="/user/login" method="post" @submit=${this._onSubmit}>
-                      <p class="speech">Please identify yourself to proceed.</p>
+                      <p class="speech callout">Please identify yourself to proceed.</p>
                       ${textInput({
                           id: 'email',
                           label: 'Email',
