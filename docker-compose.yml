@@ -1,49 +1,58 @@
 version: '3.8'
-x-source:
-  &source-code
-  - ./apps/api/dist:/app/apps/api/dist
-  - ./apps/website/dist:/app/apps/website/dist
-  - ./packages/lib/dist:/app/packages/lib/dist
-  - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
-  - ./packages/shared-server/dist:/app/packages/shared-server/dist
-  - ./packages/skirmish-engine/dist:/app/packages/skirmish-engine/dist
-  - ./packages/ui/dist:/app/packages/ui/dist
-services: 
-  api:
-    build:
-      context: .
-    depends_on:
-      - mow_db
-    env_file: ./apps/api/.env
-    ports:
-      - 3000:3000
-      - 9230:9230
-    working_dir: /app
-    volumes: *source-code
-    command: npm run dev --workspace=apps/api
-  website:
-    build:
-      context: .
-    env_file: ./apps/website/.env
-    ports:
-      - 3001:3001
-      - 9229:9229
-    working_dir: /app
-    volumes: *source-code
-    command: npm run dev --workspace=apps/website
-  mow_db:
-    image: mongo:latest
-    restart: always
-    ports:
-      - 27017:27017
-    volumes:
-      - ./mongo-entrypoint:/docker-entrypoint-initdb.d:ro
-      - mongodb:/data/db
-      - mongoconfig:/data/configdb
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+x-source: &source-code
+    - ./apps/api/dist:/app/apps/api/dist
+    - ./apps/website/dist:/app/apps/website/dist
+    - ./packages/lib/dist:/app/packages/lib/dist
+    - ./packages/rise-engine/dist:/app/packages/rise-engine/dist
+    - ./packages/shared-server/dist:/app/packages/shared-server/dist
+    - ./packages/skirmish-engine/dist:/app/packages/skirmish-engine/dist
+    - ./packages/ui/dist:/app/packages/ui/dist
+services:
+    api:
+        build:
+            context: .
+        depends_on:
+            - mow_db
+        env_file: ./apps/api/.env
+        ports:
+            - 3000:3000
+            - 9230:9230
+        working_dir: /app
+        volumes: *source-code
+        command:
+            [
+                sh,
+                -c,
+                'cd ./apps/api && exec nodemon --config nodemon.json --inspect=:9230',
+            ]
+    website:
+        build:
+            context: .
+        env_file: ./apps/website/.env
+        ports:
+            - 3001:3001
+            - 9229:9229
+        working_dir: /app
+        volumes: *source-code
+        command:
+            [
+                sh,
+                -c,
+                'cd ./apps/website && exec nodemon --config nodemon.json --inspect=:9229',
+            ]
+    mow_db:
+        image: mongo:latest
+        restart: always
+        ports:
+            - 27017:27017
+        volumes:
+            - ./mongo-entrypoint:/docker-entrypoint-initdb.d:ro
+            - mongodb:/data/db
+            - mongoconfig:/data/configdb
+        environment:
+            - MONGO_INITDB_DATABASE=${MONGO_DB}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
 volumes:
-  mongodb:
-  mongoconfig:
+    mongodb:
+    mongoconfig:

@@ -4,6 +4,7 @@
         "start": "clear"
     },
     "exec": "npm run start",
+    "legacyWatch": true,
     "verbose": false,
     "watch": ["./dist", "../../packages/shared-server/dist"]
 }

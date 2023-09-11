@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { configureServer } from '@benjambles/mow-server/dist/index.js';
+import { cleanUp, configureServer } from '@benjambles/mow-server/dist/index.js';
 import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/web-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
@@ -20,8 +20,8 @@ const paths = {
     base: import.meta.url,
     env: '../.env',
     static: {
-        static: resolveImportPath(import.meta.url, './static'),
         'mow-ui': resolveImportPath(uiStatic, '.'),
+        static: resolveImportPath(import.meta.url, './static'),
     },
 };
 
@@ -31,6 +31,7 @@ const app = new Koa();
 
 export const serve = configureServer({
     app,
+    cleanUp,
     config: {
         env,
         helmetConfig: {
@@ -47,7 +48,6 @@ export const serve = configureServer({
         isApi: false,
         staticPaths: paths.static,
     },
-    routes: resources.map((resource) => getRouter(resource(), '', false)),
     customErrorHandler: webErrorHandler({
         app,
         errorTemplates,
@@ -56,6 +56,7 @@ export const serve = configureServer({
         loginPath: userPaths.login,
         renderer: renderTemplate,
     }),
+    routes: resources.map((resource) => getRouter(resource(), '', false)),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

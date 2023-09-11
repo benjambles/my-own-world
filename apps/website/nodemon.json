@@ -5,6 +5,7 @@
     },
     "exec": "npm run start",
     "ext": "js,css",
+    "legacyWatch": true,
     "verbose": false,
     "watch": ["./dist", "../../packages/shared-server/dist", "../../packages/ui/dist"]
 }

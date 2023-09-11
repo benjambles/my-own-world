@@ -2,7 +2,7 @@
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
 import { apiErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/api-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
-import { initConnection } from '@benjambles/mow-server/dist/utils/db.js';
+import { closeConnection, initConnection } from '@benjambles/mow-server/dist/utils/db.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
 import Koa from 'koa';
@@ -41,13 +41,18 @@ export const serve = configureServer({
     app,
     config: {
         env,
-        isApi: true,
         corsConfig: { origin: 'http://localhost:3001' },
+        isApi: true,
     },
+    cleanUp: async (abortController: AbortController) => {
+        console.log('Closing...');
+        await closeConnection();
+        abortController.abort();
+    },
+    customErrorHandler: apiErrorHandler(app),
     routes: Object.values(resources.routeHandlers).map((resource) =>
         getRouter(resource, prefix, false),
     ),
-    customErrorHandler: apiErrorHandler(app),
 });
 
 if (fileURLToPath(import.meta.url) === process.argv?.[1]) {

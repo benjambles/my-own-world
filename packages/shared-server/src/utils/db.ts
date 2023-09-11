@@ -14,8 +14,10 @@ interface MongoConfig {
 /**
  * Closes the database connection
  */
-export function closeConnection() {
-    client && client.close();
+export async function closeConnection() {
+    if (!client) return;
+
+    await client.close();
 }
 
 export function getObjectId(uuid: string): ObjectId {
@@ -45,7 +47,7 @@ export async function initConnection(config: MongoConfig) {
  *
  * @param config
  */
-function getConnectionString({ url, user, password }): string {
+function getConnectionString({ password, url, user }): string {
     if (!user) return url;
 
     const userStr = [user, password].filter(Boolean).join(':');
