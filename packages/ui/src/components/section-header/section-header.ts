@@ -9,12 +9,16 @@ export class SectionHeader extends LitElement {
         }
 
         :host {
+            display: block;
             --border-color: var(--sh-border-color, var(--shade-3));
             --link-color: var(--sh-link-color, var(--special-4));
             --hover-color: var(--sh-hover-color, rgba(0, 191, 255, 0.8));
+        }
 
+        header {
             display: flex;
             flex-direction: row;
+            justify-content: space-between;
             width: 100%;
             height: 101px;
             border-bottom: 1px solid var(--border-color);
@@ -22,15 +26,6 @@ export class SectionHeader extends LitElement {
 
         ::slotted(a) {
             color: var(--link-color) !important;
-        }
-
-        ::slotted(a)::before {
-            content: ' ';
-            border-bottom: 1px solid var(--link-underline);
-            width: 100%;
-            height: 1px;
-            position: absolute;
-            bottom: 0;
         }
 
         ::slotted(a:is(:hover, :focus-visible)) {
@@ -44,18 +39,18 @@ export class SectionHeader extends LitElement {
             height: 100%;
             padding: 0 60px;
             border-right: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
         aside {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: flex-end;
             gap: 0 10px;
-            flex: 1 1 100%;
             height: 100%;
             margin: 0 6rem;
             padding: 0;
+            white-space: nowrap;
         }
 
         aside ::slotted(a:not(:last-of-type))::after {
@@ -70,13 +65,15 @@ export class SectionHeader extends LitElement {
 
     protected render() {
         return html`
-            <nav class="breadcrumb">
-                <slot name="root-link"><a href="/">Site Root</a></slot> -
-                <span>${this.sectionName}</span>
-            </nav>
-            <aside>
-                <slot></slot>
-            </aside>
+            <header>
+                <nav class="breadcrumb">
+                    <slot name="root-link"><a href="/">Site Root</a></slot> -
+                    <span>${this.sectionName}</span>
+                </nav>
+                <aside>
+                    <slot></slot>
+                </aside>
+            </header>
         `;
     }
 }
