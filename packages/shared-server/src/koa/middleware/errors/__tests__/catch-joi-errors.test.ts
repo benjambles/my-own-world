@@ -5,7 +5,7 @@ test('catchJoiErrors', async () => {
     const ctxValid = {};
 
     await expect(
-        catchJoiErrors(false)(ctxValid as Koa.Context, async () => {}),
+        catchJoiErrors(ctxValid as Koa.Context, async () => {}),
     ).resolves.not.toThrow();
 
     const ctxInvalidWithMessage = {
@@ -26,9 +26,6 @@ test('catchJoiErrors', async () => {
     };
 
     await expect(
-        catchJoiErrors(false)(
-            ctxInvalidWithMessage as unknown as Koa.Context,
-            async () => {},
-        ),
+        catchJoiErrors(ctxInvalidWithMessage as unknown as Koa.Context, async () => {}),
     ).rejects.toThrow();
 });

@@ -1,6 +1,7 @@
-import { Config } from 'jest';
+import type { JestConfigWithTsJest } from 'ts-jest';
+import { defaultsESM as tsjPreset } from 'ts-jest/presets';
 
-const config: Config = {
+const config: JestConfigWithTsJest = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns: ['fixture.*', 'stories.*', 'css.ts'],
     displayName: {
@@ -8,11 +9,21 @@ const config: Config = {
         name: 'WEBSITE',
     },
     extensionsToTreatAsEsm: ['.ts'],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    moduleFileExtensions: ['ts', 'js', 'json'],
     moduleNameMapper: {
         '(.+)\\.js': '$1',
     },
-    preset: 'ts-jest/presets/default-esm',
+    transform: {
+        ...tsjPreset.transform,
+        '^.+\\.[tj]sx?$': [
+            'ts-jest',
+            {
+                allowSyntheticDefaultImports: true,
+                esModuleInterop: true,
+                module: 'esnext',
+            },
+        ],
+    },
     testRegex: '/__tests__/.*\\.test\\.tsx?$',
     verbose: true,
 };

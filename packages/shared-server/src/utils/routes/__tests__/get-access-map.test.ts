@@ -9,7 +9,7 @@ test('getAccessMap', () => {
     ];
 
     const ctx = createMockContext();
-    ctx.state = { user: { _id: true, isAdmin: true }, userData: true };
+    ctx.state = { user: { sub: true, isAdmin: true }, userData: true };
 
     const accessMap = getAccessMap()(ctx);
 

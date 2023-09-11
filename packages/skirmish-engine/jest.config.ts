@@ -8,7 +8,7 @@ const config: Config = {
         name: 'SKIRMISH ENGINE',
     },
     extensionsToTreatAsEsm: ['.ts'],
-    moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+    moduleFileExtensions: ['ts', 'js', 'json'],
     moduleNameMapper: {
         '(.+)\\.js': '$1',
     },

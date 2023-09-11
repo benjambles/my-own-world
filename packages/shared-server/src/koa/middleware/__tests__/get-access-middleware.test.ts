@@ -29,7 +29,7 @@ test('getAccessMiddleware', async () => {
     // Passed roles and state data matches map
     const ctxPass: unknown = {
         throw: err,
-        state: { user: { _id: 'some-key' } },
+        state: { user: { sub: 'some-key' } },
     };
     await expect(
         checkerWithMap(ctxPass as Koa.Context, async () => {}),

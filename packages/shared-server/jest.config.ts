@@ -9,10 +9,12 @@ const config: Config = {
     },
     extensionsToTreatAsEsm: ['.ts'],
     globals: {
-        __TS_CONFIG__: {
-            allowSyntheticDefaultImports: true,
-            esModuleInterop: true,
-            module: 'esnext',
+        'ts-jest': {
+            tsconfig: {
+                allowSyntheticDefaultImports: true,
+                esModuleInterop: true,
+                module: 'esnext',
+            },
         },
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
