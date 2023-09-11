@@ -1,10 +1,14 @@
 import { css, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { InputProps } from '../form-input-props.js';
 
-export interface TextInputData extends InputProps {
+export interface TextInputData {
     defaultText?: string;
+    disabled?: boolean;
+    id: string;
+    label: string;
+    name?: string;
     placeholder?: string;
+    required?: boolean;
     type?:
         | 'text'
         | 'search'
@@ -18,6 +22,7 @@ export interface TextInputData extends InputProps {
         | 'time'
         | 'datetime-local'
         | 'number';
+    value?: string;
 }
 
 export const inputStyles = css`

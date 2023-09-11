@@ -1,8 +1,10 @@
 import {
-    buttonStyles,
-    callOutStyles,
     dateDiff,
     formatLargestPart,
+} from '@benjambes/js-lib/dist/time/relative-time.js';
+import {
+    buttonStyles,
+    callOutStyles,
     inputStyles,
     textInput,
 } from '@benjambles/mow-ui/core.js';

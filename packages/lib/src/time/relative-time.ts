@@ -1,17 +1,3 @@
-import { html } from 'lit';
-
-/**
- *
- * @param props - Display data
- */
-export function time(dateTime: Date, options?: Intl.DateTimeFormatOptions) {
-    return html`
-        <time datetime="${dateTime.toISOString()}">
-            ${dateTime.toLocaleDateString('en-GB', options)}
-        </time>
-    `;
-}
-
 type TimeSections = {
     years: number;
     months: number;
@@ -22,10 +8,14 @@ export function formatLargestPart(timeSections: TimeSections): string {
     const keys: Intl.RelativeTimeFormatUnit[] = ['years', 'months', 'days'];
     const largestPart = keys.find((key) => timeSections[key] > 0);
 
-    const rtf1 = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    if (!largestPart) return '0 days';
+
+    const rtf1 = new Intl.RelativeTimeFormat('en', { numeric: 'always' });
     const parts = rtf1.formatToParts(timeSections[largestPart], largestPart);
 
-    return `${parts[1].value} ${parts[2].value}`;
+    console.log(parts, largestPart);
+
+    return `${parts[1].value}${parts[2].value}`;
 }
 
 export function dateDiff(startingDate: Date, endingDate: Date): TimeSections {
