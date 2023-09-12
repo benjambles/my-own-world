@@ -12,6 +12,8 @@
     font-size: 3rem;
     line-height: 1.3;
     background-image: var(--gradient-glow);
+    background-clip: text;
+    color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

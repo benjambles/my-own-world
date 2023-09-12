@@ -193,6 +193,7 @@ export class OpposedCheck extends LitElement {
         const rollTargets = getOpposedRollTargets(this.actorValue, this.targetValue);
         const baseRollTargets = getOpposedRollTargets(6, 6);
         const result = getRollState(rollTargets, this.roll);
+        const modifier = this.actorValue - this.targetValue;
 
         return html`<div class="callout opposed-check">
             <p><slot></slot></p>
@@ -202,39 +203,28 @@ export class OpposedCheck extends LitElement {
                 -
                 <span>${this.targetText} <b>${this.targetValue}</b></span>
                 =
-                <span>Modifier <b>${this.actorValue - this.targetValue}</b></span>
+                <span>Modifier <b>${modifier >= 0 ? '+' : ''}${modifier}</b></span>
             </div>
 
             <div class="breakdown results roll-${result}">
-                <span class="dice-display">Roll <b>${this.roll}</b></span>
+                <span>Roll <b>${this.roll}</b></span>
+                <span class="dice-display">Modified <b>${this.roll + modifier}</b></span>
                 <span>
                     Fail
-                    <b
-                        class="${result === 'fail' ? 'result' : ''} wide"
-                        title="Base: ${cappedMin(1, baseRollTargets.fail)}"
-                    >
-                        ${cappedMin(1, rollTargets.fail)}
+                    <b class="${result === 'fail' ? 'result' : ''} wide">
+                        ${cappedMin(1, baseRollTargets.fail)}
                     </b>
                 </span>
                 <span>
                     Success
-                    <b
-                        class="${result === 'success' ? 'result' : ''} wide"
-                        title="Base: ${cappedMax(
-                            baseRollTargets.success,
-                            baseRollTargets.critical,
-                        )}"
-                    >
-                        ${cappedMax(rollTargets.success, rollTargets.critical)}
+                    <b class="${result === 'success' ? 'result' : ''} wide">
+                        ${cappedMax(baseRollTargets.success, baseRollTargets.critical)}
                     </b>
                 </span>
                 <span>
                     Critical
-                    <b
-                        class="${result === 'critical' ? 'result' : ''} wide"
-                        title="Base: ${cappedMax(baseRollTargets.critical, 13)}"
-                    >
-                        ${cappedMax(rollTargets.critical, 13)}
+                    <b class="${result === 'critical' ? 'result' : ''} wide">
+                        ${cappedMax(baseRollTargets.critical, 13)}
                     </b>
                 </span>
             </div>

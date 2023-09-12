@@ -32,6 +32,18 @@ export const standardCheckFail = () => html`
     </dice-check>
 `;
 
+export const opposedNoModifier = () => html`
+    <opposed-check
+        actortext="Stub Pistol"
+        actorValue="4"
+        targettext="Armoured vest"
+        targetvalue="4"
+        roll="9"
+    >
+        An example of a shooting with no modifier
+    </opposed-check>
+`;
+
 export const opposedCheckSuccess = () => html`
     <opposed-check
         actortext="Shotgun"

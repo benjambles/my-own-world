@@ -7,6 +7,8 @@
 
 .account-intro h1 {
     background-image: var(--gradient-glow);
+    background-clip: text;
+    color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 3rem;

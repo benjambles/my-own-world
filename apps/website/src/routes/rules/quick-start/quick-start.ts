@@ -170,14 +170,19 @@ export default function (): RenderProps {
                     </p>
 
                     <p>
-                        A successful attack is determined by comparing the roll against a
-                        range of values determined by the strength of the weapon and the
-                        targets armour. For the demo we have provided the ranges needed
-                        for each character to make shooting attacks.
+                        Before rolling to attack you must determine the modifier for your
+                        roll. This is calculated by taking the strength of the weapon and
+                        subtracting the armour value of the target. This value is then
+                        added to the value you roll on a D12.
                     </p>
 
                     <p>Insert Recon attack</p>
                     <p>Insert Armoured attack</p>
+
+                    <p>
+                        A result of 4 or less is a fail, a result of 12 or more is a
+                        critical success, all other values are a success.
+                    </p>
 
                     <p>
                         If an attack is successful reduce the targets <i>Health</i> by 1.
