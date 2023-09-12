@@ -17,10 +17,10 @@ export class SkipLinks extends LitElement {
             overflow: hidden;
             position: fixed;
             top: 0;
-            z-index: 100;
             clip: rect(1px, 1px, 1px, 1px);
             clip-path: inset(50%);
             transition: top 0.5s;
+            z-index: 100;
         }
 
         ::slotted(a:focus),

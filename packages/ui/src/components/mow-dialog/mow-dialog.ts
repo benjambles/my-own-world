@@ -19,10 +19,10 @@ export class MowDialog extends LitElement {
             }
 
             dialog {
-                border: 0 none;
-                outline: 0 none;
                 min-width: 300px;
                 padding: 25px 20px 35px;
+                border: 0 none;
+                outline: 0 none;
                 filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.1));
             }
 

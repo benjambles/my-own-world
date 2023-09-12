@@ -37,8 +37,8 @@ export class FilterItem extends LitElement {
 
         a {
             display: block;
-            border-right: 1px solid var(--border-color);
             padding: 0 2rem;
+            border-right: 1px solid var(--border-color);
             color: var(--highlight-color);
             text-decoration: none;
             transform: skew(20deg, 0deg);
@@ -58,11 +58,11 @@ export class FilterItem extends LitElement {
         }
     `;
 
-    @property()
-    href;
-
-    @property()
+    @property({ attribute: true })
     filter;
+
+    @property({ attribute: true })
+    href;
 
     protected render() {
         return html`

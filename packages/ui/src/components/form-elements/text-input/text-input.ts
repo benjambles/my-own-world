@@ -10,18 +10,18 @@ export interface TextInputData {
     placeholder?: string;
     required?: boolean;
     type?:
-        | 'text'
+        | 'date'
+        | 'datetime-local'
+        | 'email'
+        | 'month'
+        | 'number'
+        | 'password'
         | 'search'
         | 'tel'
-        | 'url'
-        | 'email'
-        | 'password'
-        | 'date'
-        | 'month'
-        | 'week'
+        | 'text'
         | 'time'
-        | 'datetime-local'
-        | 'number';
+        | 'url'
+        | 'week';
     value?: string;
 }
 

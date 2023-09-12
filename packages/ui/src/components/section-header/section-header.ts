@@ -9,18 +9,19 @@ export class SectionHeader extends LitElement {
         }
 
         :host {
-            display: block;
             --border-color: var(--sh-border-color, var(--shade-3));
             --link-color: var(--sh-link-color, var(--special-4));
             --hover-color: var(--sh-hover-color, rgba(0, 191, 255, 0.8));
+
+            display: block;
         }
 
         header {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            width: 100%;
             height: 101px;
+            width: 100%;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -44,8 +45,8 @@ export class SectionHeader extends LitElement {
 
         aside {
             display: flex;
-            flex-direction: row;
             align-items: center;
+            flex-direction: row;
             gap: 0 10px;
             height: 100%;
             margin: 0 6rem;

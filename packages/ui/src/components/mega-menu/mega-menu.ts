@@ -9,18 +9,18 @@ export class MegaMenu extends LitElement {
         }
 
         :host {
-            width: 100%;
             --menu-bg: var(--mega-menu-bg, #111);
             --text-color: var(--mega-menu-text, #eee);
+            width: 100%;
         }
 
         nav {
+            flex: 1 1 100%;
             display: flex;
             flex-direction: column;
             gap: 30px;
-            width: 100%;
             height: 100%;
-            flex: 1 1 100%;
+            width: 100%;
             padding: 4rem 6rem;
             overflow: auto;
             background-color: var(--menu-bg);
@@ -37,9 +37,9 @@ export class MegaMenu extends LitElement {
         }
 
         nav ::slotted(labelled-list) {
+            flex: 1 1 100%;
             margin: 0 0 2rem;
             padding: 0 0 2rem;
-            flex: 1 1 100%;
             border-bottom: 1px solid var(--shade-3);
         }
 
@@ -59,11 +59,7 @@ export class MegaMenu extends LitElement {
     `;
 
     protected render(): unknown {
-        return html`
-            <nav>
-                <slot></slot>
-            </nav>
-        `;
+        return html`<nav><slot></slot></nav>`;
     }
 }
 

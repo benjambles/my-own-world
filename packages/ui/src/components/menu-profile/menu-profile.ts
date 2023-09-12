@@ -19,15 +19,15 @@ export class MenuProfile extends MowDetails {
         }
 
         img {
-            border: 2px solid white;
-            border-radius: 5px;
             display: inline-block;
             height: 32px;
+            border: 2px solid white;
+            border-radius: 5px;
         }
 
         a {
-            text-decoration: none;
             color: var(--shade-4);
+            text-decoration: none;
             transition: color 0.1s;
         }
 
@@ -40,12 +40,12 @@ export class MenuProfile extends MowDetails {
         }
 
         .bar-link {
+            flex-grow: 1;
             display: block;
             padding: 5px 15px;
             transition:
                 background-color 0.1s,
                 color 0.1s;
-            flex-grow: 1;
         }
 
         .bar-link:hover,
@@ -71,8 +71,8 @@ export class MenuProfile extends MowDetails {
         }
 
         details > summary::-webkit-details-marker {
-            width: 0.5em;
             height: 0.5em;
+            width: 0.5em;
             margin-inline-end: 0.1em;
             position: relative;
             top: -6px;
@@ -90,48 +90,47 @@ export class MenuProfile extends MowDetails {
         }
 
         .dropdown-menu {
-            background: white;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            width: 180px;
+            padding: 5px 0;
+            border: 1px solid rgba(27, 31, 35, 0.15);
+            border-radius: 5px;
             position: absolute;
             right: 0;
-            padding: 5px 0;
-            border-radius: 5px;
+            background: white;
             background-clip: padding-box;
-            border: 1px solid rgba(27, 31, 35, 0.15);
             box-shadow:
                 0 12px 28px 0 rgba(0, 0, 0, 0.2),
                 0 2px 4px 0 rgba(0, 0, 0, 0.1),
                 inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-            width: 180px;
             font-size: 1.4rem;
-            display: flex;
-            flex-direction: column;
         }
 
         .user-label {
-            padding: 0 15px;
             display: block;
+            padding: 0 15px;
         }
 
         hr {
-            margin: 5px 0;
             height: 1px;
+            margin: 5px 0;
             border: none;
-            color: #ccc;
             background-color: #ccc;
+            color: #ccc;
         }
     `;
 
     public toggleEventName = 'usermenutoggle';
 
-    @property()
+    @property({ attribute: true })
+    imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
+
+    @property({ attribute: true })
     name;
 
-    @property()
+    @property({ attribute: true })
     username;
-
-    @property()
-    imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
 
     render() {
         return html`

@@ -105,38 +105,38 @@ export class OpposedCheck extends LitElement {
 
             .callout {
                 --co-bg-color: #333;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
                 padding: 20px;
                 color: white;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
             }
 
             .breakdown {
                 display: flex;
                 flex-direction: row;
-                gap: 20px;
                 align-items: flex-start;
                 justify-content: center;
+                gap: 20px;
             }
 
             .breakdown span {
                 display: flex;
-                flex-direction: column-reverse;
                 align-items: center;
+                flex-direction: column-reverse;
             }
 
             b {
-                display: inline-block;
-                padding: 10px;
-                background: #444;
-                aspect-ratio: 1;
-                line-height: 1;
-                text-align: center;
                 flex: 0 1 0%;
+                display: inline-block;
+                aspect-ratio: 1;
                 height: 40px;
+                padding: 10px;
                 border: 1px solid var(--border-color, #444);
                 color: var(--text-color, white);
+                background: #444;
+                line-height: 1;
+                text-align: center;
             }
 
             b.wide {
@@ -163,13 +163,13 @@ export class OpposedCheck extends LitElement {
             }
 
             .results {
-                align-items: center;
                 margin-top: 30px;
+                align-items: center;
             }
 
             .dice-display {
-                border-right: 1px solid #666;
                 padding-right: 20px;
+                border-right: 1px solid #666;
             }
         `,
     ];
@@ -195,40 +195,47 @@ export class OpposedCheck extends LitElement {
         const result = getRollState(rollTargets, this.roll);
         const modifier = this.actorValue - this.targetValue;
 
-        return html`<div class="callout opposed-check">
-            <p><slot></slot></p>
+        return html`
+            <div class="callout opposed-check">
+                <p><slot></slot></p>
 
-            <div class="breakdown">
-                <span>${this.actorText} <b>${this.actorValue}</b></span>
-                -
-                <span>${this.targetText} <b>${this.targetValue}</b></span>
-                =
-                <span>Modifier <b>${modifier >= 0 ? '+' : ''}${modifier}</b></span>
-            </div>
+                <div class="breakdown">
+                    <span>${this.actorText} <b>${this.actorValue}</b></span>
+                    -
+                    <span>${this.targetText} <b>${this.targetValue}</b></span>
+                    =
+                    <span>Modifier <b>${modifier >= 0 ? '+' : ''}${modifier}</b></span>
+                </div>
 
-            <div class="breakdown results roll-${result}">
-                <span>Roll <b>${this.roll}</b></span>
-                <span class="dice-display">Modified <b>${this.roll + modifier}</b></span>
-                <span>
-                    Fail
-                    <b class="${result === 'fail' ? 'result' : ''} wide">
-                        ${cappedMin(1, baseRollTargets.fail)}
-                    </b>
-                </span>
-                <span>
-                    Success
-                    <b class="${result === 'success' ? 'result' : ''} wide">
-                        ${cappedMax(baseRollTargets.success, baseRollTargets.critical)}
-                    </b>
-                </span>
-                <span>
-                    Critical
-                    <b class="${result === 'critical' ? 'result' : ''} wide">
-                        ${cappedMax(baseRollTargets.critical, 13)}
-                    </b>
-                </span>
+                <div class="breakdown results roll-${result}">
+                    <span>Roll <b>${this.roll}</b></span>
+                    <span class="dice-display"
+                        >Modified <b>${this.roll + modifier}</b></span
+                    >
+                    <span>
+                        Fail
+                        <b class="${result === 'fail' ? 'result' : ''} wide">
+                            ${cappedMin(1, baseRollTargets.fail)}
+                        </b>
+                    </span>
+                    <span>
+                        Success
+                        <b class="${result === 'success' ? 'result' : ''} wide">
+                            ${cappedMax(
+                                baseRollTargets.success,
+                                baseRollTargets.critical,
+                            )}
+                        </b>
+                    </span>
+                    <span>
+                        Critical
+                        <b class="${result === 'critical' ? 'result' : ''} wide">
+                            ${cappedMax(baseRollTargets.critical, 13)}
+                        </b>
+                    </span>
+                </div>
             </div>
-        </div>`;
+        `;
     }
 }
 
@@ -242,14 +249,13 @@ declare global {
 function cappedMin(min: number, max: number) {
     if (isNaN(max)) return '-';
     if (min === max) return `${min}`;
+
     return `1 - ${max}`;
 }
 
 function cappedMax(min: number, nextMin: number) {
     if (isNaN(min)) return '-';
-
     if (min === nextMin - 1) return `${min}`;
-
     if (isNaN(nextMin)) return `${min} - 12`;
 
     return `${min} - ${nextMin - 1}`;

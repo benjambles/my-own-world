@@ -14,8 +14,8 @@ export class LabelledList extends LitElement {
         p {
             margin-bottom: 3rem;
             font-size: 1.8rem;
-            text-transform: uppercase;
             letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
 
         ::slotted(labelled-list-item) {
@@ -40,8 +40,8 @@ export class LabelledList extends LitElement {
             }
 
             .secondary ::slotted(labelled-list-item) {
-                font-size: 3.2rem;
                 margin-bottom: 1.5rem;
+                font-size: 3.2rem;
             }
         }
     `;
@@ -80,8 +80,8 @@ export class LabelledListItem extends LitElement {
         }
 
         a {
-            text-decoration: none;
             color: var(--shade-0);
+            text-decoration: none;
         }
 
         a:hover,

@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
+import { composedEvent } from '../../utils/events.js';
 
 @customElement('mow-details')
 export class MowDetails extends LitElement {
@@ -28,13 +29,7 @@ export class MowDetails extends LitElement {
     }
 
     public handleToggle() {
-        const toggleEvent = new CustomEvent(this.toggleEventName, {
-            detail: this.menuElement.open,
-            composed: true,
-            bubbles: true,
-        });
-
-        this.dispatchEvent(toggleEvent);
+        this.dispatchEvent(composedEvent(this.toggleEventName, this.menuElement.open));
     }
 
     public handleKeydown = ({ key }: KeyboardEvent) => {

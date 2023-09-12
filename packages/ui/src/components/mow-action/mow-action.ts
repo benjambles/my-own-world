@@ -1,13 +1,14 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { composedEvent } from '../../utils/events.js';
 
 @customElement('mow-action')
 export class MowAction extends LitElement {
     @property()
-    eventTrigger = '';
+    eventData = '';
 
     @property()
-    eventData = '';
+    eventTrigger = '';
 
     @property({ type: Boolean })
     preventDefault = false;
@@ -24,13 +25,7 @@ export class MowAction extends LitElement {
                 event.preventDefault();
             }
 
-            this.dispatchEvent(
-                new CustomEvent(this.eventTrigger, {
-                    detail: this.eventData,
-                    bubbles: true,
-                    composed: true,
-                }),
-            );
+            this.dispatchEvent(composedEvent(this.eventTrigger, this.eventData));
         });
     }
 
