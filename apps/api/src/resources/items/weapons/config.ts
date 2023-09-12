@@ -1,3 +1,5 @@
+import { limit, offset } from '../../../schema/shared-params.js';
+
 export default {
     openapi: '3.0.0',
     info: {
@@ -8,6 +10,8 @@ export default {
     },
     components: {
         parameters: {
+            Limit: limit,
+            Offset: offset,
             WeaponId: {
                 name: 'weaponId',
                 in: 'path',
@@ -22,11 +26,11 @@ export default {
                 required: [
                     '_id',
                     'description',
-                    'hands',
                     'limit',
                     'location',
                     'name',
                     'requirements',
+                    'stats',
                     'type',
                     'value',
                 ],
@@ -58,12 +62,12 @@ export default {
                     },
                     stats: {
                         type: 'object',
-                        required: ['hands', 'range', 'dice', 'bonus'],
+                        required: ['dice', 'hands', 'modifier', 'range'],
                         properties: {
-                            hands: { type: 'integer' },
-                            range: { type: 'string' },
                             dice: { type: 'string' },
+                            hands: { type: 'integer' },
                             modifier: { type: 'integer' },
+                            range: { type: 'string' },
                         },
                     },
                     type: { type: 'string' },
@@ -80,26 +84,8 @@ export default {
                 description: '',
                 operationId: 'getWeapons',
                 parameters: [
-                    {
-                        name: 'limit',
-                        in: 'query',
-                        description: 'How many records to fetch',
-                        schema: {
-                            default: 10,
-                            format: 'int64',
-                            type: 'integer',
-                        },
-                    },
-                    {
-                        name: 'offset',
-                        in: 'query',
-                        description: 'How many records to skip',
-                        schema: {
-                            default: 0,
-                            format: 'int64',
-                            type: 'integer',
-                        },
-                    },
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
                 ],
                 responses: {
                     '200': {

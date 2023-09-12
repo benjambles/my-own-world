@@ -1,3 +1,5 @@
+import { limit, offset } from '../../schema/shared-params.js';
+
 export default {
     openapi: '3.0.0',
     info: {
@@ -8,24 +10,26 @@ export default {
     },
     components: {
         parameters: {
-            IdentifierId: {
+            Fingerprint: {
+                name: 'fingerprint',
+                in: 'path',
+                description: 'A fingerprint string for deleteing a token pair',
+                required: true,
+                schema: { type: 'string' },
+            },
+            Hash: {
                 name: 'hash',
                 in: 'path',
                 description: 'Unique hash of a users identifier',
                 required: true,
                 schema: { type: 'string' },
             },
+            Limit: limit,
+            Offset: offset,
             UserId: {
                 name: 'userId',
                 in: 'path',
                 description: 'Unique id representing a user',
-                required: true,
-                schema: { type: 'string' },
-            },
-            Fingerprint: {
-                name: 'fingerprint',
-                in: 'path',
-                description: 'A fingerprint string for deleteing a token pair',
                 required: true,
                 schema: { type: 'string' },
             },
@@ -48,8 +52,8 @@ export default {
                     '_id',
                     'createdOn',
                     'firstName',
-                    'lastName',
                     'lastLoggedIn',
+                    'lastName',
                     'screenName',
                 ],
                 properties: {
@@ -83,26 +87,8 @@ export default {
                 description: '',
                 operationId: 'getUsers',
                 parameters: [
-                    {
-                        name: 'limit',
-                        in: 'query',
-                        description: 'How many records to fetch',
-                        schema: {
-                            default: 10,
-                            type: 'integer',
-                            format: 'int64',
-                        },
-                    },
-                    {
-                        name: 'offset',
-                        in: 'query',
-                        description: 'How many records to skip',
-                        schema: {
-                            default: 0,
-                            type: 'integer',
-                            format: 'int64',
-                        },
-                    },
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
                 ],
                 responses: {
                     '200': {
@@ -354,19 +340,9 @@ export default {
                 description: '',
                 operationId: 'getUserIdentifiers',
                 parameters: [
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
                     { $ref: '#/components/parameters/UserId' },
-                    {
-                        name: 'limit',
-                        in: 'query',
-                        description: 'How many records to fetch',
-                        schema: { default: 10, type: 'integer', format: 'int64' },
-                    },
-                    {
-                        name: 'offset',
-                        in: 'query',
-                        description: 'How many records to skip',
-                        schema: { default: 0, type: 'integer', format: 'int64' },
-                    },
                 ],
                 responses: {
                     '200': {
@@ -468,8 +444,8 @@ export default {
                 description: '',
                 operationId: 'deleteUserIdentifier',
                 parameters: [
+                    { $ref: '#/components/parameters/Hash' },
                     { $ref: '#/components/parameters/UserId' },
-                    { $ref: '#/components/parameters/IdentifierId' },
                 ],
                 responses: {
                     '204': {
@@ -489,8 +465,8 @@ export default {
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [
+                    { $ref: '#/components/parameters/Hash' },
                     { $ref: '#/components/parameters/UserId' },
-                    { $ref: '#/components/parameters/IdentifierId' },
                 ],
                 responses: {
                     '200': {
@@ -525,14 +501,14 @@ export default {
                                     items: {
                                         type: 'object',
                                         required: [
+                                            'accessToken',
                                             'fingerprint',
                                             'refreshToken',
-                                            'accessToken',
                                         ],
                                         properties: {
+                                            accessToken: { type: 'string' },
                                             fingerprint: { type: 'string' },
                                             refreshToken: { type: 'string' },
-                                            accessToken: { type: 'string' },
                                         },
                                     },
                                 },
@@ -583,8 +559,8 @@ export default {
                 description: '',
                 operationId: 'deleteToken',
                 parameters: [
-                    { $ref: '#/components/parameters/UserId' },
                     { $ref: '#/components/parameters/Fingerprint' },
+                    { $ref: '#/components/parameters/UserId' },
                 ],
                 responses: {
                     '204': {
@@ -598,6 +574,10 @@ export default {
                 summary: 'Check which endpoints are valid for authenticating a user',
                 description: '',
                 operationId: 'sendOptions',
+                parameters: [
+                    { $ref: '#/components/parameters/Fingerprint' },
+                    { $ref: '#/components/parameters/UserId' },
+                ],
                 responses: {
                     '200': {
                         description: 'OK,',
@@ -618,8 +598,7 @@ export default {
             post: {
                 tags: ['user', 'authentication'],
                 summary: 'Validate user authentication details',
-                description:
-                    'Valid combinations are: [email], [email, password], [screenName, password], [identifier]. Passing an email address without a password will trigger the magic link login flow. Passing and email or screenName with a password will trigger the normal login process and passing a social identifier will trigger the normal login process.',
+                description: '',
                 operationId: 'authenticateUser',
                 requestBody: {
                     required: true,
@@ -630,8 +609,7 @@ export default {
                                 required: ['identifier', 'password'],
                                 properties: {
                                     identifier: {
-                                        description:
-                                            'An identifier of type email, social token or screen name',
+                                        description: 'An identifier of type email',
                                         type: 'string',
                                         maxLength: 256,
                                     },

@@ -1,3 +1,5 @@
+import { limit, offset } from '../../../schema/shared-params.js';
+
 export default {
     openapi: '3.0.0',
     info: {
@@ -15,6 +17,8 @@ export default {
                 required: true,
                 schema: { type: 'string' },
             },
+            Limit: limit,
+            Offset: offset,
         },
         schemas: {
             ConsumableResponse: {
@@ -60,26 +64,8 @@ export default {
                 description: '',
                 operationId: 'getConsumables',
                 parameters: [
-                    {
-                        name: 'limit',
-                        in: 'query',
-                        description: 'How many records to fetch',
-                        schema: {
-                            default: 10,
-                            format: 'int64',
-                            type: 'integer',
-                        },
-                    },
-                    {
-                        name: 'offset',
-                        in: 'query',
-                        description: 'How many records to skip',
-                        schema: {
-                            default: 0,
-                            format: 'int64',
-                            type: 'integer',
-                        },
-                    },
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
                 ],
                 responses: {
                     '200': {
