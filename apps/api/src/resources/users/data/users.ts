@@ -115,7 +115,10 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 { $set: cleanData },
-                { projection: { accessTokens: 0, identities: 0 } },
+                {
+                    includeResultMetadata: true,
+                    projection: { accessTokens: 0, identities: 0 },
+                },
             );
 
             return { ok: !!ok, value };

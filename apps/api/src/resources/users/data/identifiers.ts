@@ -65,7 +65,10 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
                         identities: identityData,
                     },
                 },
-                { projection: { identities: { $slice: -1 } } },
+                {
+                    includeResultMetadata: true,
+                    projection: { identities: { $slice: -1 } },
+                },
             );
 
             return { ok: !!ok, value: value.identities[0] };

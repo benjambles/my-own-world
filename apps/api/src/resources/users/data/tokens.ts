@@ -24,7 +24,7 @@ export function getTokenModel(db: Db) {
                     $push: { accessTokens: tokenData },
                     $set: { lastLoggedIn },
                 },
-                { projection: { _id: 1, accessTokens: 1 } },
+                { includeResultMetadata: true, projection: { _id: 1, accessTokens: 1 } },
             );
 
             return { ok: !!ok, value };
@@ -89,7 +89,10 @@ export function getTokenModel(db: Db) {
                         'accessTokens.$.refreshToken': refreshToken,
                     },
                 },
-                { projection: { accessTokens: 0, identities: 0 } },
+                {
+                    includeResultMetadata: true,
+                    projection: { accessTokens: 0, identities: 0 },
+                },
             );
 
             return { ok: !!ok, value };

@@ -84,7 +84,7 @@ export function getConsumableModel(db: Db, { ENC_SECRET }: Env) {
             const { ok, value } = await items.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 { set: cleanData },
-                { projection: {} },
+                { includeResultMetadata: true, projection: {} },
             );
 
             return { ok: !!ok, value };
