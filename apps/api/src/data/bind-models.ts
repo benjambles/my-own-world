@@ -51,11 +51,11 @@ function withDb(db: Db, env: Env): Binder2 {
 
 export function bindModels(db: Db, env: Env) {
     return withDb(db, env)
+        .bind('consumables', getConsumableModel)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
         .bind('tokens', getTokenModel)
         .bind('users', getUserModel)
         .bind('weapons', getWeaponModel)
-        .bind('consumables', getConsumableModel)
         .get();
 }

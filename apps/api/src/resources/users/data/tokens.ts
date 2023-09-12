@@ -85,11 +85,11 @@ export function getTokenModel(db: Db) {
                 },
                 {
                     $set: {
-                        'accessTokens.$.refreshToken': refreshToken,
                         'accessTokens.$.accessToken': accessToken,
+                        'accessTokens.$.refreshToken': refreshToken,
                     },
                 },
-                { projection: { identities: 0, accessTokens: 0 } },
+                { projection: { accessTokens: 0, identities: 0 } },
             );
 
             return { ok: !!ok, value };

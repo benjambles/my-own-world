@@ -33,9 +33,9 @@ type ConsumableResponse = Omit<GameConsumable, RestrictedKeys | ToStringKeys> & 
 export function getConsumableModel(db: Db, { ENC_SECRET }: Env) {
     const formatOptions: ModelOptions = {
         encrypted: [],
-        salted: [],
-        readOnly: ['_id'],
         hmac: [],
+        readOnly: ['_id'],
+        salted: [],
     };
 
     const dataFormatter = formatData(getDataFormatter(ENC_SECRET, formatOptions));
@@ -48,7 +48,7 @@ export function getConsumableModel(db: Db, { ENC_SECRET }: Env) {
             skip: number = 0,
         ): ModelResult<GameConsumable[]> {
             const dbResult = await items
-                .find({ isDeleted: false }, { projection: {}, skip, limit })
+                .find({ isDeleted: false }, { limit, projection: {}, skip })
                 .toArray();
 
             return { ok: true, value: dbResult };
@@ -94,7 +94,7 @@ export function getConsumableModel(db: Db, { ENC_SECRET }: Env) {
             const { matchedCount, modifiedCount } = await items.updateOne(
                 { _id: getObjectId(uuid) },
                 {
-                    set: { isDeleted: true, deletedOn: new Date() },
+                    set: { deletedOn: new Date(), isDeleted: true },
                 },
             );
 

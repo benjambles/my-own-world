@@ -11,11 +11,11 @@ import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
 
 const restrictedKeys = [
-    'password',
+    'accessTokens',
+    'deletedOn',
     'identities',
     'isDeleted',
-    'deletedOn',
-    'accessTokens',
+    'password',
 ] as const;
 
 //#region Types
@@ -76,7 +76,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const dbResult = await users
                 .find(
                     { isDeleted: false },
-                    { limit, projection: { identities: 0, accessTokens: 0 }, skip },
+                    { limit, projection: { accessTokens: 0, identities: 0 }, skip },
                 )
                 .toArray();
 
@@ -85,7 +85,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
         find: async function (uuid: string): ModelResult<User> {
             const userResult = await users.findOne(
                 { _id: getObjectId(uuid), isDeleted: false },
-                { projection: { identities: 0, accessTokens: 0 } },
+                { projection: { accessTokens: 0, identities: 0 } },
             );
 
             return { ok: !!userResult, value: userResult };
@@ -96,11 +96,11 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { insertedId } = await users.insertOne(
                 Object.assign(cleanData, {
                     _id: getObjectId(randomUUID()),
+                    accessTokens: [],
                     createdOn: new Date(),
                     identities: [],
                     isDeleted: false,
                     lastLoggedIn: new Date(),
-                    accessTokens: [],
                 }),
             );
 
@@ -115,7 +115,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { ok, value } = await users.findOneAndUpdate(
                 { _id: getObjectId(uuid) },
                 { $set: cleanData },
-                { projection: { identities: 0, accessTokens: 0 } },
+                { projection: { accessTokens: 0, identities: 0 } },
             );
 
             return { ok: !!ok, value };
@@ -124,7 +124,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
             const { matchedCount, modifiedCount } = await users.updateOne(
                 { _id: getObjectId(uuid) },
                 {
-                    $set: { deletedOn: new Date(), isDeleted: true, accessTokens: [] },
+                    $set: { accessTokens: [], deletedOn: new Date(), isDeleted: true },
                 },
             );
 

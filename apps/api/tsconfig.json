@@ -1,11 +1,13 @@
 {
-    "extends": "../../tsconfig-base.json",
     "compilerOptions": {
-        "tsBuildInfoFile": "buildcache",
-        "rootDir": "src",
+        "composite": true,
         "outDir": "dist",
-        "composite": true
+        "rootDir": "src",
+        "tsBuildInfoFile": "buildcache"
     },
+    "exclude": ["src/**/__tests__", "./coverage"],
+    "extends": "../../tsconfig-base.json",
+    "include": ["src/**/*.ts"],
     "references": [
         {
             "path": "../../packages/shared-server"
@@ -13,7 +15,5 @@
         {
             "path": "../../packages/skirmish-engine"
         }
-    ],
-    "include": ["src/**/*.ts"],
-    "exclude": ["src/**/__tests__", "./coverage"]
+    ]
 }

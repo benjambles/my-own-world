@@ -61,8 +61,8 @@ export default function users(dataModel: DataModel) {
             const tokenResult = await tokens.create(userResult.value._id.toString(), {
                 tokenData: {
                     accessToken,
-                    refreshToken,
                     fingerprint,
+                    refreshToken,
                 },
                 lastLoggedIn: new Date(),
             });
