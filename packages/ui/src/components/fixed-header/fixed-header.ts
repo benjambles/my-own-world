@@ -22,9 +22,9 @@ export class FixedHeader extends MowDetails {
             width: 100%;
             position: fixed;
             inset: auto 0 0 0;
-            z-index: 2;
             background-color: var(--bg-color);
             color: var(--text-color);
+            z-index: 2;
         }
 
         header {

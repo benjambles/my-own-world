@@ -29,7 +29,7 @@ export class ViewLock extends LitElement {
         this.isConstrained = e.detail;
     }
 
-    render() {
+    protected render() {
         return html`<slot></slot>`;
     }
 }

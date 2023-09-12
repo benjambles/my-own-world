@@ -9,6 +9,10 @@ import { customElement } from 'lit/decorators.js';
 @customElement('glow-button')
 export class GlowButton extends LitElement {
     static styles = css`
+        * {
+            box-sizing: border-box;
+        }
+
         @keyframes rotate {
             0% {
                 transform: rotate(0deg);
@@ -20,37 +24,36 @@ export class GlowButton extends LitElement {
         }
 
         button {
-            position: relative;
-            z-index: 1;
-            background: transparent;
-            border: 0 none;
             padding: 0;
+            border: 0 none;
+            position: relative;
+            background: transparent;
+            z-index: 1;
         }
 
         .glow {
+            display: flex;
             align-items: center;
-            background-color: #223344;
-            box-sizing: border-box;
-            background-clip: content-box;
+            justify-content: center;
             border: 2px solid transparent;
             border-radius: 8px;
             border-top-left-radius: 7px;
             border-bottom-right-radius: 7px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
             margin: 12px 4px;
+            padding: 2px;
             outline: none;
             overflow: hidden;
-            padding: 2px;
             position: relative;
-            transition: background-color 150ms ease-out;
-            text-transform: uppercase;
+            background-color: #223344;
+            background-clip: content-box;
+            color: white;
+            cursor: pointer;
             font-family: 'Oxanium', monospace;
             font-weight: 500;
             letter-spacing: 0.3ch;
             line-height: 1;
+            text-transform: uppercase;
+            transition: background-color 150ms ease-out;
         }
 
         .glow span {
@@ -59,15 +62,15 @@ export class GlowButton extends LitElement {
 
         .glow::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            z-index: -1;
             margin: -60px;
+            position: absolute;
             border-radius: inherit;
-            background-image: var(--gradient-glow);
-            transition: opacity 100ms ease-out;
+            inset: 0;
             animation: rotate 2s linear infinite;
             animation-play-state: paused;
+            background-image: var(--gradient-glow);
+            transition: opacity 100ms ease-out;
+            z-index: -1;
         }
 
         button:hover .glow,
@@ -83,17 +86,17 @@ export class GlowButton extends LitElement {
             animation: rotate 2s linear infinite;
         }
 
+        button:focus .glow::after {
+            content: ' ';
+            border: 1px dotted rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            position: absolute;
+            inset: 5px;
+        }
+
         button[disabled] .glow::before,
         button:active .glow::before {
             opacity: 0.5;
-        }
-
-        button:focus .glow::after {
-            content: ' ';
-            position: absolute;
-            inset: 5px;
-            border: 1px dotted rgba(255, 255, 255, 0.5);
-            border-radius: 2px;
         }
     `;
 

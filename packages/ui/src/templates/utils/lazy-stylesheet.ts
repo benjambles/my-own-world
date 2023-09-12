@@ -6,9 +6,9 @@ import { html } from 'lit';
  */
 export function lazyStylesheet(href: string) {
     return html`<link
-        rel="preload"
-        href="${href}"
         as="style"
+        href="${href}"
         onload="this.rel='stylesheet'"
+        rel="preload"
     />`;
 }

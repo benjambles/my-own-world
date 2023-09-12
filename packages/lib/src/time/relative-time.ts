@@ -4,20 +4,6 @@ type TimeSections = {
     days: number;
 };
 
-export function formatLargestPart(timeSections: TimeSections): string {
-    const keys: Intl.RelativeTimeFormatUnit[] = ['years', 'months', 'days'];
-    const largestPart = keys.find((key) => timeSections[key] > 0);
-
-    if (!largestPart) return '0 days';
-
-    const rtf1 = new Intl.RelativeTimeFormat('en', { numeric: 'always' });
-    const parts = rtf1.formatToParts(timeSections[largestPart], largestPart);
-
-    console.log(parts, largestPart);
-
-    return `${parts[1].value}${parts[2].value}`;
-}
-
 export function dateDiff(startingDate: Date, endingDate: Date): TimeSections {
     const startYear = startingDate.getFullYear();
     const february =
@@ -41,5 +27,19 @@ export function dateDiff(startingDate: Date, endingDate: Date): TimeSections {
         dayDiff += daysInMonth[startingDate.getMonth()];
     }
 
-    return { years: yearDiff, months: monthDiff, days: dayDiff };
+    return { days: dayDiff, months: monthDiff, years: yearDiff };
+}
+
+export function formatLargestPart(timeSections: TimeSections): string {
+    const keys: Intl.RelativeTimeFormatUnit[] = ['years', 'months', 'days'];
+    const largestPart = keys.find((key) => timeSections[key] > 0);
+
+    if (!largestPart) return '0 days';
+
+    const rtf1 = new Intl.RelativeTimeFormat('en', { numeric: 'always' });
+    const parts = rtf1.formatToParts(timeSections[largestPart], largestPart);
+
+    console.log(parts, largestPart);
+
+    return `${parts[1].value}${parts[2].value}`;
 }

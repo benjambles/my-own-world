@@ -27,48 +27,48 @@ export interface TextInputData {
 
 export const inputStyles = css`
     .input-wrapper {
+        display: flex;
         position: relative;
         z-index: 1;
-        display: flex;
     }
 
     label {
         display: block;
         margin-top: 20px;
-        font-size: 1.6rem;
         font-family: 'Oxanium', monospace;
-        letter-spacing: 0.2ch;
+        font-size: 1.6rem;
         font-weight: 300;
+        letter-spacing: 0.2ch;
     }
 
     .text-input {
-        align-items: center;
-        background-clip: content-box;
-        border: 2px solid transparent;
-        border-radius: 4px;
         display: flex;
+        align-items: center;
         justify-content: center;
         width: 100%;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        padding: 2px;
         margin-top: 5px;
-        font-size: 1.6rem;
         overflow: hidden;
         position: relative;
-        padding: 2px;
+        background-clip: content-box;
+        font-size: 1.6rem;
     }
 
     .text-input::before {
         content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
         margin: 0;
         border-radius: inherit;
+        position: absolute;
+        inset: 0;
         background-image: var(--gradient-glow);
+        z-index: -1;
     }
 
     .text-input input {
-        padding: 12px 20px 10px;
         width: 100%;
+        padding: 12px 20px 10px;
         border: 0 none;
         border-radius: 2px;
     }
@@ -90,12 +90,12 @@ export const inputStyles = css`
 
     .input-wrapper:focus-within:after {
         content: '◥';
-        color: #f15148;
         position: absolute;
         right: 2px;
-        z-index: 2;
         top: 0;
+        color: #f15148;
         font-size: 18px;
+        z-index: 2;
     }
 
     .input-wrapper:has(:hover, :focus-within) .text-input::before {
@@ -114,13 +114,13 @@ export const inputStyles = css`
 `;
 
 export function textInput({
+    defaultText = '',
     disabled,
     id,
     label,
     placeholder,
     name,
     required,
-    defaultText = '',
     type = 'text',
 }: TextInputData) {
     return html`
@@ -128,11 +128,11 @@ export function textInput({
         <div class="input-wrapper">
             <div class="text-input">
                 <input
+                    ?disabled=${disabled}
                     id="${id}"
                     name="${name ?? id}"
                     placeholder="${ifDefined(placeholder)}"
                     type="${type}"
-                    ?disabled=${disabled}
                     ?required=${required}
                     .value="${defaultText}"
                 />

@@ -9,9 +9,9 @@ export class FilterBar extends LitElement {
         }
 
         :host {
+            display: flex;
             border: 1px solid var(--shade-3);
             border-width: 1px 0;
-            display: flex;
             overflow: hidden;
         }
     `;
@@ -36,12 +36,12 @@ export class FilterItem extends LitElement {
         }
 
         a {
-            transform: skew(20deg, 0deg);
-            border-right: 1px solid var(--border-color);
             display: block;
+            border-right: 1px solid var(--border-color);
             padding: 0 2rem;
-            text-decoration: none;
             color: var(--highlight-color);
+            text-decoration: none;
+            transform: skew(20deg, 0deg);
         }
 
         a:hover,
@@ -53,8 +53,8 @@ export class FilterItem extends LitElement {
 
         slot {
             display: block;
-            transform: skewX(-20deg);
             padding: 1rem 0rem;
+            transform: skewX(-20deg);
         }
     `;
 

@@ -1,5 +1,13 @@
 export type Filter<T> = (testItem: T, index: number, obj: T[]) => boolean;
 
+export function append<T>(collection: T[], item: T | T[]): T[] {
+    return collection.concat(item);
+}
+
+export function dedupe<T>(collection: T[]): T[] {
+    return [...new Set(collection)];
+}
+
 export function find<T, K>(
     filterFn: (value: K) => Filter<T>,
 ): (collection: T[], value: K) => T {
@@ -16,12 +24,4 @@ export function remove<T>(
     filterFn: (value: T) => Filter<T>,
 ): (collection: T[], item: T) => T[] {
     return (collection, value) => collection.filter(filterFn(value));
-}
-
-export function append<T>(collection: T[], item: T | T[]): T[] {
-    return collection.concat(item);
-}
-
-export function dedupe<T>(collection: T[]): T[] {
-    return [...new Set(collection)];
 }

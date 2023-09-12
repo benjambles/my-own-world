@@ -1,7 +1,4 @@
 {
-    "extends": "../../tsconfig-base.json",
-    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"],
-    "include": ["src/**/*.ts", "src/**/*.css.json"],
     "compilerOptions": {
         "composite": true,
         "outDir": "dist",
@@ -18,6 +15,9 @@
         "rootDir": "src",
         "tsBuildInfoFile": "buildcache"
     },
+    "extends": "../../tsconfig-base.json",
+    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"],
+    "include": ["src/**/*.ts", "src/**/*.css.json"],
     "references": [
         {
             "path": "../rise-engine"

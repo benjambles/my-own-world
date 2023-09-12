@@ -19,6 +19,9 @@ const config: StorybookConfig = {
             },
         },
     ],
+    docs: {
+        autodocs: true,
+    },
     framework: {
         name: '@storybook/web-components-webpack5',
         options: {},
@@ -33,9 +36,6 @@ const config: StorybookConfig = {
 
         // Return the altered config
         return config;
-    },
-    docs: {
-        autodocs: true,
     },
 };
 
