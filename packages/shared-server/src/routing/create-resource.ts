@@ -1,4 +1,4 @@
-import { Id } from '@benjambles/js-lib/dist/index.js';
+import { Id, ObjectValues } from '@benjambles/js-lib/dist/index.js';
 import { Context } from 'koa';
 import router from 'koa-joi-router';
 import { Filter } from 'ts-toolbelt/out/List/Filter.js';
@@ -59,6 +59,43 @@ type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
     ? (ctx: Ctx) => R
     : never;
 //#endregion Types
+
+type RouteConfig = {
+    method: string;
+    path: string;
+    operationId: string;
+    handler: (ctx) => Promise<any>;
+};
+
+export type ClientApi<T extends ApiDoc> = ToConfig<
+    ObjectValues<{
+        [key in keyof RouteHandlers<T>]: key extends string
+            ? RouteHandlers<T>[key] extends RouteConfig
+                ? Id<GetParams<RouteHandlers<T>[key]>>
+                : never
+            : never;
+    }>
+>;
+
+type ToConfig<Ops extends { method: string; params: any[] }> = {
+    [O in Ops as Exclude<O['method'], 'sendOptions'>]: O['params'];
+};
+
+type GetParams<T extends RouteConfig> = {
+    method: T['operationId'];
+    params: [
+        T['path'],
+        T['method'],
+        Parameters<T['handler']>[0] extends KoaContext<infer Params, any, any>
+            ? Params
+            : never,
+        Parameters<T['handler']>[0] extends KoaContext<any, any, infer Resp>
+            ? Resp extends { status: number; body: infer Body }
+                ? Body
+                : void
+            : void,
+    ];
+};
 
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     /*

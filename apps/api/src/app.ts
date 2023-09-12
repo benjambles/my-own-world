@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { bindModels } from './data/bind-models.js';
 import getResources from './resources/index.js';
 import { Env, envSchema } from './schema/env-schema.js';
+export type { ClientApiTypes } from './resources/index.js';
 
 const prefix = '/api/v1';
 
@@ -33,7 +34,6 @@ const dataModel = bindModels(dbInstance, env);
 
 const resources = getResources(dataModel);
 export const { getApiHelpers } = resources;
-export type GetApiHelpers = ReturnType<typeof getApiHelpers>;
 
 const app = new Koa();
 

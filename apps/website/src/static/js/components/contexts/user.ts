@@ -18,56 +18,43 @@ export type UserData = {
 export const userSymbol = Symbol('user');
 export const userContext = createContext<UserData>(userSymbol);
 
-import { GetApiHelpers } from '@benjambles/mow-api/dist/app.js';
+import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
 import { ApiMap, MowApi } from './request.js';
 
-type UserApi = GetApiHelpers['users'];
+type UserClientTypes = ClientApiTypes['user'];
 
-type ParamsFromId<Path, Method, OpId extends keyof UserApi> = [
-    Path,
-    Method,
-    Parameters<UserApi[OpId]>[0],
-    Awaited<ReturnType<UserApi[OpId]>>,
-];
-
-type Handlers<T extends ApiMap> = {
+type Handlers<T extends ApiMap> = Partial<{
     [key in keyof T]: (args: T[key][2]) => Promise<T[key][3]>;
-};
-
-export type AuthenticationHandlers = {
-    authenticateUser: ParamsFromId<'/authenticate', 'post', 'authenticateUser'>;
-    deleteToken: ParamsFromId<'/deleteToken', 'put', 'deleteToken'>;
-    refreshToken: ParamsFromId<'/refreshToken', 'post', 'refreshToken'>;
-};
+}>;
 
 export type UserInstance = InstanceType<typeof Users>;
 
 export class Users {
     private _requestManager: InstanceType<typeof MowApi>;
 
-    public actions: Partial<Handlers<AuthenticationHandlers>> = {};
+    public actions: Handlers<UserClientTypes> = {};
 
     public addManager(requestManager: InstanceType<typeof MowApi>) {
         if (this._requestManager) return;
         this._requestManager = requestManager;
 
         this.actions.authenticateUser = this._requestManager.getRequestor<
-            AuthenticationHandlers['authenticateUser']
+            UserClientTypes['authenticateUser']
         >('/authenticate', 'post');
 
         this.actions.deleteToken = this._requestManager.getRequestor<
-            AuthenticationHandlers['deleteToken']
-        >('/deleteToken', 'put');
+            UserClientTypes['deleteToken']
+        >('/users/:userId/tokens/:fingerprint', 'delete');
 
         this.actions.refreshToken = this._requestManager.getRequestor<
-            AuthenticationHandlers['refreshToken']
+            UserClientTypes['refreshToken']
         >('/refreshToken', 'post');
     }
 
-    public async call<T extends keyof AuthenticationHandlers>(
+    public async call<T extends keyof UserClientTypes>(
         action: T,
-        params: AuthenticationHandlers[T][2],
-    ): Promise<AuthenticationHandlers[T][3]> {
+        params: UserClientTypes[T][2],
+    ): Promise<UserClientTypes[T][3]> {
         if (!this._requestManager) {
             throw new Error('No request manager to handle the request.');
         }

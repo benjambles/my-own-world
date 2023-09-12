@@ -1,7 +1,7 @@
 import { getClientHandlers } from '@benjambles/mow-server/dist/utils/routes/get-client-handlers.js';
 import { DataModel } from '../app.js';
 import service from './service/index.js';
-import users from './users/index.js';
+import users, { UserClientTypes } from './users/index.js';
 
 export default function (dataModel: DataModel) {
     const routeHandlers = {
@@ -18,3 +18,7 @@ export default function (dataModel: DataModel) {
         },
     };
 }
+
+export type ClientApiTypes = {
+    user: UserClientTypes;
+};

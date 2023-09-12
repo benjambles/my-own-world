@@ -1,4 +1,7 @@
-import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
+import {
+    ClientApi,
+    createResource,
+} from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { isCurrentUser } from '@benjambles/mow-server/dist/utils/access-checks/get-authenticated-user-id.js';
 import {
     created,
@@ -21,6 +24,8 @@ import { cleanResponse } from './data/users.js';
  * Routes on /users and /users/*
  * Special auth routes under: /authentication
  */
+
+export type UserClientTypes = ClientApi<typeof config>;
 
 export default function users(dataModel: DataModel) {
     const identifiers = dataModel.getKey('identifiers');
