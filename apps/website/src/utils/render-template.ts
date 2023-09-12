@@ -1,12 +1,12 @@
 import { render } from '@lit-labs/ssr';
 import { TemplateResult } from 'lit';
 
-export type StylesheetParams = { href: string; lazy?: boolean };
 export type ScriptParams = { src: string; lazy?: string; module?: boolean };
+export type StylesheetParams = { href: string; lazy?: boolean };
 export type RenderProps = {
     assets: {
-        styles: StylesheetParams[];
         scripts: ScriptParams[];
+        styles: StylesheetParams[];
     };
     template: TemplateResult<1> | TemplateResult<1>[];
 };
@@ -45,7 +45,7 @@ export function styleTag(href: string) {
     return `<link rel="stylesheet" href="${href}" />`;
 }
 
-export function scriptTag({ src, lazy, module }: ScriptParams) {
+export function scriptTag({ lazy, module, src }: ScriptParams) {
     return `<script src="${src}" ${lazy ?? ''} ${
         module ? 'type="module"' : ''
     }></script>`;

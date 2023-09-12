@@ -28,17 +28,17 @@ export class JoinForm extends LitElement {
             }
 
             form {
-                color: var(--shade-4);
-                overflow: auto;
                 display: flex;
                 flex-direction: column;
                 padding: var(--_form-padding);
+                overflow: auto;
+                color: var(--shade-4);
             }
 
             form small {
                 display: block;
-                font-size: 1.2rem;
                 margin-top: 5px;
+                font-size: 1.2rem;
             }
 
             form button {
@@ -48,10 +48,6 @@ export class JoinForm extends LitElement {
     ];
 
     private _onSubmitSignup(e: SubmitEvent) {
-        e.preventDefault();
-    }
-
-    private _onSubmitLogin(e: SubmitEvent) {
         e.preventDefault();
     }
 

@@ -29,7 +29,6 @@ export interface User {
         type: string;
         verified: boolean;
     }[];
-
     firstName: string;
     lastName: string;
     password: string;
@@ -51,17 +50,17 @@ export class AccountForm extends LitElement {
             }
 
             form {
-                color: var(--shade-4);
-                overflow: auto;
                 display: flex;
                 flex-direction: column;
                 padding: var(--_form-padding);
+                overflow: auto;
+                color: var(--shade-4);
             }
 
             form small {
                 display: block;
-                font-size: 1.2rem;
                 margin-top: 5px;
+                font-size: 1.2rem;
             }
 
             form button {
@@ -76,14 +75,14 @@ export class AccountForm extends LitElement {
             }
 
             legend {
-                top: 30px;
-                position: relative;
-                font-variant: small-caps;
-                font-size: 1.8rem;
-                color: #6b6b6b;
-                font-family: 'Oxanium';
                 width: 100%;
                 border-bottom: 1px solid #ddd;
+                position: relative;
+                top: 30px;
+                color: #6b6b6b;
+                font-family: 'Oxanium';
+                font-size: 1.8rem;
+                font-variant: small-caps;
             }
 
             hr {
@@ -92,8 +91,8 @@ export class AccountForm extends LitElement {
 
             p {
                 padding: var(--_form-padding);
-                font-size: 2.2rem;
                 margin: 50px 0 10px;
+                font-size: 2.2rem;
             }
 
             time {

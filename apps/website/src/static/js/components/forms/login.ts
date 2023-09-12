@@ -29,10 +29,10 @@ export class LoginForm extends LitElement {
             }
 
             form {
-                overflow: auto;
                 display: flex;
                 flex-direction: column;
                 padding: var(--_form-padding);
+                overflow: auto;
             }
 
             form button {

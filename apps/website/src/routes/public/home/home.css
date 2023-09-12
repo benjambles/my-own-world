@@ -33,14 +33,13 @@
 .home-intro h1 {
     margin: 0;
     position: relative;
+    font-size: 10rem;
+    line-height: 1.3;
     background-image: var(--gradient-glow);
     background-clip: text;
     color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 10rem;
-    line-height: 1.3;
-    z-index: 1;
 }
 
 .home-intro p {
@@ -82,11 +81,11 @@
     border: 1px solid var(--shade-3);
     border-width: 1px 0;
     padding: 2rem;
-    color: #333;
     font-size: 2rem;
     letter-spacing: 0.2em;
     text-align: center;
     text-transform: uppercase;
+    color: #333;
 }
 
 .outline-button:hover,
@@ -152,8 +151,8 @@
 
 .explorer-links li a:hover,
 .explorer-links li a:focus {
-    color: white;
     --panel-bg: #777;
+    color: white;
 }
 
 @media screen and (min-width: 992px) {

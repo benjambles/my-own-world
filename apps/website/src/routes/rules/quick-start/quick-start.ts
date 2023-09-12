@@ -7,8 +7,8 @@ import styles from './quick-start.css.js';
 export default function (): RenderProps {
     return {
         assets: {
-            styles: [{ href: '/static/styles/routes/rules/quick-start/quick-start.css' }],
             scripts: [],
+            styles: [{ href: '/static/styles/routes/rules/quick-start/quick-start.css' }],
         },
         template: html`
             <section-header sectionname="Quick Start">

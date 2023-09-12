@@ -1,9 +1,9 @@
 const index = '/user';
 export const paths = {
     account: `${index}/account`,
-    signup: `${index}/joinup`,
     login: `${index}/authenticate`,
     logout: `${index}/signoff`,
+    signup: `${index}/joinup`,
 } as const;
 
 export default {

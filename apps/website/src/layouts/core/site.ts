@@ -17,20 +17,16 @@ import { RenderProps } from '../../utils/render-template.js';
 import styles from './site.css.js';
 
 interface Data {
+    footer: typeof mockData.footer;
+    header: typeof mockData.header;
     meta: {
         title: string;
     };
-    header: typeof mockData.header;
-    footer: typeof mockData.footer;
 }
 
 export default function site(data: Data, page: RenderProps): RenderProps {
     return {
         assets: {
-            styles: [
-                { href: '/static/styles/layouts/core/site.css' },
-                ...page.assets.styles,
-            ],
             scripts: [
                 {
                     src: '/static/js/core.js',
@@ -38,6 +34,10 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                     module: true,
                 },
                 ...page.assets.scripts,
+            ],
+            styles: [
+                { href: '/static/styles/layouts/core/site.css' },
+                ...page.assets.styles,
             ],
         },
         template: html`

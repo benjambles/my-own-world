@@ -16,9 +16,9 @@ const defaultUserData: UserData = {
 };
 
 export const userEvents = {
+    loggedIn: 'loginsuccess',
     login: 'userlogin',
     logout: 'userlogout',
-    loggedIn: 'loginsuccess',
     openLoginModal: 'openlogin',
 };
 
@@ -26,22 +26,22 @@ export const userEvents = {
 export class WithUser extends LitElement {
     userApi: UserInstance;
 
-    @provide({ context: userContext })
-    @property({ attribute: false })
-    userData: UserData = defaultUserData;
-
     @property({ type: String, reflect: false })
-    refreshCookie = 'mow-refreshtoken';
+    accessCookie = 'mow-auth';
 
     @property({ type: String, reflect: false })
     fingerprintCookie = 'mow-fingerprint';
 
     @property({ type: String, reflect: false })
-    accessCookie = 'mow-auth';
+    refreshCookie = 'mow-refreshtoken';
 
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
     requestManager?: MowApiInstance;
+
+    @provide({ context: userContext })
+    @property({ attribute: false })
+    userData: UserData = defaultUserData;
 
     connectedCallback() {
         super.connectedCallback();
@@ -53,7 +53,7 @@ export class WithUser extends LitElement {
         this.userApi = new Users();
         this.userApi.addManager(this.requestManager);
 
-        this.refreshTokens(); // try auto login
+        this._refreshTokens(); // try auto login
     }
 
     private async _login(e) {
@@ -105,7 +105,7 @@ export class WithUser extends LitElement {
         this.dispatchEvent(composedEvent('logoutsuccess', undefined));
     }
 
-    async refreshTokens() {
+    private async _refreshTokens() {
         const refreshToken = Cookies.get(this.refreshCookie);
         const fingerprint = Cookies.get(this.fingerprintCookie);
 
@@ -130,16 +130,16 @@ export class WithUser extends LitElement {
         }
     }
 
-    private _setCookies() {
-        Cookies.set(this.refreshCookie, this.userData.refreshToken); // TODO secure and time
-        Cookies.set(this.fingerprintCookie, this.userData.fingerprint);
-        Cookies.set(this.accessCookie, this.userData.accessToken);
-    }
-
     private _deleteCookies() {
         Cookies.remove(this.fingerprintCookie);
         Cookies.remove(this.refreshCookie);
         Cookies.remove(this.accessCookie);
+    }
+
+    private _setCookies() {
+        Cookies.set(this.refreshCookie, this.userData.refreshToken); // TODO secure and time
+        Cookies.set(this.fingerprintCookie, this.userData.fingerprint);
+        Cookies.set(this.accessCookie, this.userData.accessToken);
     }
 
     render() {

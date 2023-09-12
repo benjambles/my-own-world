@@ -13,16 +13,6 @@ import list from './list.js';
 
 export default function () {
     return createResource(config)
-        .operation('getRosters', async (ctx) => {
-            const [pageData, rosterData] = await Promise.all([
-                getMockData(ctx),
-                getRosterData(),
-            ]);
-
-            const tpl = renderTemplate(pageData, siteLayout(pageData, list(rosterData)));
-
-            return ok(tpl);
-        })
         .operation('getNewCampaign', async (ctx) => {
             const pageData = await getMockData(ctx);
             const gameData = await getRosterData();
@@ -47,6 +37,16 @@ export default function () {
         .operation('getRosterById', async (ctx) => {
             const pageData = await getMockData(ctx);
             const tpl = renderTemplate(pageData, siteLayout(pageData, edit()));
+
+            return ok(tpl);
+        })
+        .operation('getRosters', async (ctx) => {
+            const [pageData, rosterData] = await Promise.all([
+                getMockData(ctx),
+                getRosterData(),
+            ]);
+
+            const tpl = renderTemplate(pageData, siteLayout(pageData, list(rosterData)));
 
             return ok(tpl);
         })

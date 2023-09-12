@@ -18,32 +18,31 @@ export class UserForm extends LitElement {
         }
 
         .button {
-            --_btnColor: var(--color, var(--shade-1));
             --_btnBgColor: var(--bgColor, #2b792b);
             --_btnBorderColor: var(--borderColor, var(--_btnBgColor));
-            --_btnPadding: var(--btnPadding, 20px);
+            --_btnColor: var(--color, var(--shade-1));
             --_btnFontSize: var(--btnFontSize, 1.6rem);
+            --_btnPadding: var(--btnPadding, 20px);
 
-            padding: var(--_btnPadding);
-            font-size: var(--_btnFontSize);
-            color: var(--_btnColor) !important;
-            border: 0;
+            display: block;
+            border: 1px solid var(--_btnBorderColor);
             border-radius: 5px;
-            cursor: pointer;
+            padding: var(--_btnPadding);
+            margin: 25px 0 0;
             transition:
                 background-color 0.3s,
                 color 0.3s,
                 border-color 0.3s;
-            border: 1px solid var(--_btnBorderColor);
             background-color: var(--_btnBgColor);
-            text-transform: uppercase;
-            display: block;
-            text-align: center;
-            margin: 25px 0 0;
+            color: var(--_btnColor) !important;
+            cursor: pointer;
             font-family: 'Oxanium', monospace;
+            font-size: var(--_btnFontSize);
             font-weight: 500;
             letter-spacing: 0.3ch;
             line-height: 1;
+            text-align: center;
+            text-transform: uppercase;
         }
 
         .button:hover,
@@ -57,16 +56,16 @@ export class UserForm extends LitElement {
         }
 
         hr {
-            margin: 5px 0;
             height: 1px;
+            margin: 5px 0;
             border: none;
             color: #ccc;
             background-color: #ccc;
         }
 
         a {
-            text-decoration: none;
             color: var(--shade-4);
+            text-decoration: none;
             transition: color 0.1s;
         }
 

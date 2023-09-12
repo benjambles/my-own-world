@@ -7,8 +7,8 @@ import styles from './account.css.js';
 export default function (): RenderProps {
     return {
         assets: {
-            styles: [{ href: '/static/styles/routes/account/account/account.css' }],
             scripts: [],
+            styles: [{ href: '/static/styles/routes/account/account/account.css' }],
         },
         template: html`
             <main class="page--account">

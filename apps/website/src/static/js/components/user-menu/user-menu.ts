@@ -25,13 +25,13 @@ export class UserMenu extends LitElement {
         mow-action,
         a {
             flex: 1 0 100%;
-            color: var(--special-4);
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.1s;
+            height: 100%;
+            color: var(--special-4);
             text-decoration: none;
+            transition: color 0.1s;
         }
 
         a:hover,
@@ -44,8 +44,8 @@ export class UserMenu extends LitElement {
             :host {
                 height: 101px;
                 width: 100px;
-                border-top: 1px solid rgb(68, 68, 68);
                 border-right: 0px none;
+                border-top: 1px solid rgb(68, 68, 68);
             }
         }
     `;

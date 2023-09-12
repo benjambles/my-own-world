@@ -6,8 +6,8 @@ import styles from './home.css.js';
 export default function (): RenderProps {
     return {
         assets: {
-            styles: [{ href: '/static/styles/routes/public/home/home.css' }],
             scripts: [],
+            styles: [{ href: '/static/styles/routes/public/home/home.css' }],
         },
         template: html`
             <main class="${styles.pageHome}">

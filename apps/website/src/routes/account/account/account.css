@@ -1,19 +1,19 @@
 .account-intro {
-    padding: 60px 0;
     display: block;
     max-width: 300px;
     margin: 0 auto;
+    padding: 60px 0;
 }
 
 .account-intro h1 {
+    padding: 0 20px;
+    font-size: 3rem;
+    line-height: 1.3;
     background-image: var(--gradient-glow);
     background-clip: text;
     color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 3rem;
-    line-height: 1.3;
-    padding: 0 20px;
 }
 
 .account-intro p {

@@ -15,9 +15,13 @@ export const envSchema: Joi.PartialSchemaMap<Env> = {
     NODE_ENV: Joi.string()
         .pattern(/^development|staging|production|testing&/)
         .required(),
+
+    // Server parameters
     HOST: Joi.string()
         .ip({ version: ['ipv4', 'ipv6'] })
         .required(),
     PORT: Joi.number().port().required(),
+
+    // Security
     JWT_SECRET: Joi.string().uuid().required(),
 };

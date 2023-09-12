@@ -4,8 +4,8 @@ import { RenderProps } from '../../../utils/render-template.js';
 export default function (): RenderProps {
     return {
         assets: {
-            styles: [],
             scripts: [],
+            styles: [],
         },
         template: html`
             <main class="page--terms">

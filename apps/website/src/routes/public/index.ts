@@ -9,15 +9,15 @@ import home from './home/home.js';
 
 export default function () {
     return createResource(config)
+        .operation('getAccessibilityPolicy', async (ctx) => {
+            const data = await getMockData(ctx);
+            const tpl = renderTemplate(data, siteLayout(data, terms()));
+            return ok(tpl);
+        })
         .operation('getHome', async (ctx) => {
             const data = await getMockData(ctx);
             const tpl = renderTemplate(data, siteLayout(data, home()));
 
-            return ok(tpl);
-        })
-        .operation('getAccessibilityPolicy', async (ctx) => {
-            const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, terms()));
             return ok(tpl);
         })
         .operation('getPrivacyPolicy', async (ctx) => {

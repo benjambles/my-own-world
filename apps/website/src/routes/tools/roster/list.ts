@@ -10,8 +10,8 @@ import styles from './roster.css.js';
 export default function (data: RosterData): RenderProps {
     return {
         assets: {
-            styles: [{ href: '/static/styles/routes/tools/roster/roster.css' }],
             scripts: [],
+            styles: [{ href: '/static/styles/routes/tools/roster/roster.css' }],
         },
         template: html`
             <section-header sectionname="Roster">

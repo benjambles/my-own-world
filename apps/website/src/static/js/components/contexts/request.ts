@@ -12,7 +12,7 @@ type RequestParams = {
 type RouteConfig = [string, HttpVerbs, RequestParams, any];
 
 export type ApiMap = Record<string, RouteConfig>;
-export type HttpVerbs = 'get' | 'post' | 'delete' | 'put';
+export type HttpVerbs = 'delete' | 'get' | 'post' | 'put';
 export type MowApiInstance = InstanceType<typeof MowApi>;
 
 export const requestSymbol = Symbol('request');
@@ -46,13 +46,13 @@ export class MowApi {
         populatedUrl.search += new URLSearchParams(args.query ?? '').toString();
 
         const resp: Response = await fetch(populatedUrl, {
-            method,
             body: args.body ? JSON.stringify(args.body) : '',
-            mode: 'cors',
             cache: 'default',
             headers: {
                 'Content-Type': 'application/json',
             },
+            method,
+            mode: 'cors',
         });
 
         const contentType = resp.headers.get('Content-Type');
