@@ -20,7 +20,13 @@
     "include": ["src/**/*.ts", "src/**/*.css.json"],
     "references": [
         {
+            "path": "../lib"
+        },
+        {
             "path": "../rise-engine"
+        },
+        {
+            "path": "../skirmish-engine"
         }
     ]
 }
