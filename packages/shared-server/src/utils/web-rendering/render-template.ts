@@ -1,5 +1,6 @@
 import { render } from '@lit-labs/ssr';
 import { CSSResult, TemplateResult } from 'lit';
+import { toCssString } from './styles.js';
 import {
     ScriptParams,
     StylesheetParams,
@@ -23,20 +24,24 @@ type MetaData = {
     };
 };
 
-export function* renderTemplate<T extends MetaData>(data: T, rootComponent: RenderProps) {
+export function* renderTemplate<T extends MetaData>(
+    data: T,
+    rootComponent: RenderProps,
+    nodeEnv: string = 'production',
+) {
     yield `<!DOCTYPE html>
         <html lang="en">
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>${data.meta.title}</title>
-                
-                <style>
-                ${rootComponent.assets?.inlineStyles?.reduce(
-                    (acc, cssResult) => acc + cssResult.toString(),
-                    '',
-                )}
-                </style>
+                ${
+                    rootComponent.assets?.inlineStyles
+                        ? `<style>
+                              ${toCssString(rootComponent.assets?.inlineStyles, nodeEnv)}
+                          </style>`
+                        : ''
+                }
                 ${rootComponent.assets?.stylesheets
                     ?.map(({ href, lazy }) => {
                         return lazy ? lazyStylesheetTag(href) : stylesheetTag(href);

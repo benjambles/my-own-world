@@ -2,13 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = (ctx) => {
-    const cssnano =
-        ctx.env === 'production'
-            ? {
-                  preset: 'default',
-              }
-            : false;
-
     return {
         map: ctx.env !== 'production',
         plugins: {
@@ -24,7 +17,6 @@ module.exports = (ctx) => {
                 globalModulePaths: [/\/src\/components\/global-css/],
                 localsConvention: 'dashesOnly',
             },
-            cssnano,
         },
     };
 };

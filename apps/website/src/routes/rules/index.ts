@@ -10,7 +10,11 @@ export default function () {
     return createResource(config)
         .operation('getQuickStart', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, quickStart()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, quickStart()),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })

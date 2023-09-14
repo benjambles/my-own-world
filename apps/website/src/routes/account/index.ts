@@ -11,12 +11,20 @@ export default function () {
     return createResource(config)
         .operation('getAccount', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, account()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, account()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .operation('getLogIn', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, join()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, join()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .operation('getLogOut', async (ctx) => {
@@ -25,13 +33,21 @@ export default function () {
             ctx.cookies.set('mow-fingerprint');
             ctx.cookies.set('mow-refreshtoken');
 
-            const tpl = renderTemplate(data, siteLayout(data, join()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, join()),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })
         .operation('getSignUp', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, join()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, join()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .get();

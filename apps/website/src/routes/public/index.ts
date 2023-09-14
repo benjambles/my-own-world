@@ -11,23 +11,39 @@ export default function () {
     return createResource(config)
         .operation('getAccessibilityPolicy', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, terms()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, terms()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .operation('getHome', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, home()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, home()),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })
         .operation('getPrivacyPolicy', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, terms()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, terms()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .operation('getTerms', async (ctx) => {
             const data = await getMockData(ctx);
-            const tpl = renderTemplate(data, siteLayout(data, terms()));
+            const tpl = renderTemplate(
+                data,
+                siteLayout(data, terms()),
+                ctx.state.env.NODE_ENV,
+            );
             return ok(tpl);
         })
         .get();

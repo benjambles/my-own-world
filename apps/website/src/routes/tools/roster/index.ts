@@ -19,6 +19,7 @@ export default function () {
             const tpl = renderTemplate(
                 pageData,
                 siteLayout(pageData, create({ game: gameData.content.games[0] })),
+                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
@@ -30,13 +31,18 @@ export default function () {
             const tpl = renderTemplate(
                 pageData,
                 siteLayout(pageData, create({ game: gameData.content.games[0] })),
+                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getRosterById', async (ctx) => {
             const pageData = await getMockData(ctx);
-            const tpl = renderTemplate(pageData, siteLayout(pageData, edit()));
+            const tpl = renderTemplate(
+                pageData,
+                siteLayout(pageData, edit()),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })
@@ -46,7 +52,11 @@ export default function () {
                 getRosterData(),
             ]);
 
-            const tpl = renderTemplate(pageData, siteLayout(pageData, list(rosterData)));
+            const tpl = renderTemplate(
+                pageData,
+                siteLayout(pageData, list(rosterData)),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })
@@ -58,7 +68,11 @@ export default function () {
         })
         .operation('updateRosterById', async (ctx) => {
             const pageData = await getMockData(ctx);
-            const tpl = renderTemplate(pageData, siteLayout(pageData, edit()));
+            const tpl = renderTemplate(
+                pageData,
+                siteLayout(pageData, edit()),
+                ctx.state.env.NODE_ENV,
+            );
 
             return ok(tpl);
         })
