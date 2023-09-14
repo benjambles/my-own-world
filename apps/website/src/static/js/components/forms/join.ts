@@ -1,14 +1,13 @@
+import { link, textInput } from '@benjambles/mow-ui/core.js';
 import {
     buttonStyles,
     callOutStyles,
     inputStyles,
-    link,
-    textInput,
-} from '@benjambles/mow-ui/core.js';
+    speechBubbleStyles,
+} from '@benjambles/mow-ui/styles.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../../routes/account/config.js';
-import { speechBubbleStyles } from '../../styles/text.js';
 
 @customElement('join-form')
 export class JoinForm extends LitElement {

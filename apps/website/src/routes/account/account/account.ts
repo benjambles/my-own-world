@@ -1,19 +1,18 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
 import { paths as userPaths } from '../../../routes/account/config.js';
 import '../../../static/js/components/forms/account-form.js';
-import { RenderProps } from '../../../utils/render-template.js';
-import styles from './account.css.js';
+import { accountStyles } from './account.styles.js';
 
 export default function (): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [{ href: '/static/styles/routes/account/account/account.css' }],
+            inlineStyles: accountStyles,
         },
         template: html`
             <main class="page--account">
-                <section class="${styles.accountIntro}">
-                    <h1>Welcome back Explorer</h1>
+                <section class="cont-m">
+                    <h1 class="gradient-text">Welcome back Explorer</h1>
 
                     <account-form redirecturl="${userPaths.login}"></account-form>
                 </section>

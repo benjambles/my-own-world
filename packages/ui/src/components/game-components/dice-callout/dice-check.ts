@@ -4,7 +4,7 @@ import {
 } from '@benjambles/skirmish-engine/dist/dice/dice-checks.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { callOutStyles } from '../../../global-css/callout.js';
+import { callOutStyles } from '../../../global-css/callout.styles.js';
 
 @customElement('dice-check')
 export class DiceCheck extends LitElement {

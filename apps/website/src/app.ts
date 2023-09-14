@@ -4,6 +4,7 @@ import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/erro
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
 import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
+import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
 import { getMockData } from './data/get-mock-data.js';
@@ -12,7 +13,6 @@ import { paths as userPaths } from './routes/account/config.js';
 import errorTemplates from './routes/errors/errors.js';
 import { resources } from './routes/routes-config.js';
 import { envSchema } from './schema/env-schema.js';
-import { renderTemplate } from './utils/render-template.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/fonts');
 

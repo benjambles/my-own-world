@@ -3,9 +3,9 @@ import {
     ok,
     redirectAction,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { getMockData } from '../../../data/get-mock-data.js';
 import siteLayout from '../../../layouts/core/site.js';
-import { renderTemplate } from '../../../utils/render-template.js';
 import config from './config.js';
 import create from './create.js';
 import edit from './edit.js';

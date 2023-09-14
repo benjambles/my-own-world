@@ -1,3 +1,7 @@
+import {
+    RenderProps,
+    mergeRenderAssets,
+} from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import '@benjambles/mow-ui/components/fixed-header/fixed-header.js';
 import '@benjambles/mow-ui/components/mega-menu/labelled-list.js';
 import '@benjambles/mow-ui/components/mega-menu/mega-menu.js';
@@ -6,15 +10,13 @@ import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
-import '../../static/js/components/forms/login.js';
-import '../../static/js/components/forms/user.js';
-import '../../static/js/components/user-menu/user-menu.js';
-
 import { mockData } from '@benjambles/mow-ui/utils.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RenderProps } from '../../utils/render-template.js';
-import styles from './site.css.js';
+import '../../static/js/components/forms/login.js';
+import '../../static/js/components/forms/user.js';
+import '../../static/js/components/user-menu/user-menu.js';
+import styles from './site.styles.js';
 
 interface Data {
     footer: typeof mockData.footer;
@@ -26,20 +28,19 @@ interface Data {
 
 export default function site(data: Data, page: RenderProps): RenderProps {
     return {
-        assets: {
-            scripts: [
-                {
-                    src: '/static/js/core.js',
-                    lazy: 'defer',
-                    module: true,
-                },
-                ...page.assets.scripts,
-            ],
-            styles: [
-                { href: '/static/styles/layouts/core/site.css' },
-                ...page.assets.styles,
-            ],
-        },
+        assets: mergeRenderAssets(
+            {
+                inlineStyles: [styles],
+                scripts: [
+                    {
+                        src: '/static/js/core.js',
+                        lazy: 'defer',
+                        module: true,
+                    },
+                ],
+            },
+            page.assets,
+        ),
         template: html`
             <skip-links>
                 <a href="#content">Skip to the content</a>
@@ -72,7 +73,7 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                             <a href="/" slot="logo">Logo</a>
                             <user-menu slot="account-button"></user-menu>
                         </fixed-header>
-                        <div class="${styles.contentWrapper}">
+                        <div class="content-wrapper">
                             <div id="content">${page.template}</div>
                             <site-footer>
                                 <span slot="site-name">Kh&ocirc;ra</span>

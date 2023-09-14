@@ -1,26 +1,25 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { RenderProps } from '../../../utils/render-template.js';
 import { paths as rulesPaths } from '../../rules/config.js';
-import styles from './home.css.js';
+import { homeStyles } from './home.styles.js';
 
 export default function (): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [{ href: '/static/styles/routes/public/home/home.css' }],
+            inlineStyles: homeStyles,
         },
         template: html`
-            <main class="${styles.pageHome}">
-                <section class="${styles.homeIntro}">
-                    <div class="${styles.panel}">
-                        <h1>Kh&ocirc;ra</h1>
+            <main class="page--home">
+                <section class="home-intro">
+                    <div class="panel">
+                        <h1 class="gradient-text">Kh&ocirc;ra</h1>
                         <p>Rediscover the stars</p>
                         <p>Free to play science fiction wargame</p>
                     </div>
                 </section>
-                <section class="${styles.homeWelcome} ${styles.panel}">
+                <section class="home-welcome panel">
                     <h2>Welcome to Kh&ocirc;ra</h2>
-                    <div class="${styles.welcomeText}">
+                    <div class="welcome-text">
                         <h3>What is Kh&ocirc;ra?</h3>
                         <p>
                             Kh&ocirc;ra is a free to play Sci-fi skirmish game, with
@@ -39,32 +38,29 @@ export default function (): RenderProps {
                         </p>
                     </div>
 
-                    <div class="${styles.buttonGroup}">
-                        <a
-                            class="${styles.outlineButton}"
-                            href="${rulesPaths.quickstart}"
-                        >
+                    <div class="button-group col-to-row">
+                        <a class="outline-button" href="${rulesPaths.quickstart}">
                             Learn to play
                         </a>
-                        <a class="${styles.outlineButton}" href="/game/rules">
-                            Read the rules
-                        </a>
-                        <a class="${styles.outlineButton}" href="/game/downloads">
-                            Downloads
-                        </a>
+                        <a class="outline-button" href="/game/rules"> Read the rules </a>
+                        <a class="outline-button" href="/game/downloads"> Downloads </a>
                     </div>
                 </section>
-                <section class="${styles.explorerPanel} ${styles.panel}">
+                <section class="explorer-panel panel">
                     <h2>The Universe</h2>
-                    <ul class="${styles.explorerLinks}">
-                        <li><a href="/explore/timeline">The timeline</a></li>
-                        <li><a href="/explore/factions">The factions</a></li>
-                        <li><a href="/explore/locations">The locations</a></li>
+                    <ul class="explorer-links col-to-row">
+                        <li>
+                            <a class="callout" href="/explore/timeline">The timeline</a>
+                        </li>
+                        <li>
+                            <a class="callout" href="/explore/factions">The factions</a>
+                        </li>
+                        <li>
+                            <a class="callout" href="/explore/locations">The locations</a>
+                        </li>
                     </ul>
 
-                    <a href="/explore" class="${styles.outlineButton}"
-                        >Explore the universe</a
-                    >
+                    <a href="/explore" class="outline-button">Explore the universe</a>
                 </section>
             </main>
         `,

@@ -1,5 +1,5 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { RenderProps } from '../../utils/render-template.js';
 
 type ErrorData = {
     error: string | object;
@@ -9,8 +9,7 @@ type ErrorData = {
 export default function (data: ErrorData): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [],
+            inlineStyles: [],
         },
         template: html`
             <main class="page--404">

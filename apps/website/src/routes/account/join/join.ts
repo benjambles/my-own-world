@@ -1,23 +1,22 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
 import '../../../static/js/components/forms/join.js';
 import '../../../static/js/components/forms/login.js';
-import { RenderProps } from '../../../utils/render-template.js';
 import { paths as userPaths } from '../config.js';
-import styles from './join.css.js';
+import { joinStyles } from './join.styles.js';
 
 export default function (): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [{ href: '/static/styles/routes/account/join/join.css' }],
+            inlineStyles: joinStyles,
         },
         template: html`
             <main class="page--join">
-                <section class="${styles.joinIntro}">
-                    <h1>Welcome Explorer</h1>
+                <section class="cont-m">
+                    <h1 class="gradient-text">Welcome Explorer</h1>
 
                     <login-form redirectUrl="${userPaths.account}"></login-form>
-                    <p class="${styles.barred}">Not Registered?</p>
+                    <p class="barred-text">Not Registered?</p>
                     <join-form></join-form>
                 </section>
             </main>

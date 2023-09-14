@@ -1,14 +1,13 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { RenderProps } from '../../../utils/render-template.js';
 import { paths as rosterPaths } from '../../tools/roster/config.js';
 import { paths as rulesPaths } from '../config.js';
-import styles from './quick-start.css.js';
+import { quickStartStyles } from './quick-start.styles.js';
 
 export default function (): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [{ href: '/static/styles/routes/rules/quick-start/quick-start.css' }],
+            inlineStyles: quickStartStyles,
         },
         template: html`
             <section-header sectionname="Quick Start">
@@ -17,7 +16,7 @@ export default function (): RenderProps {
                 <a href="/game/missions">Missions</a>
                 <a href="/downloads">Downloads</a>
             </section-header>
-            <main class="page--quick-start ${styles.quickStart}">
+            <main class="page--quickstart">
                 <nav>
                     <ul>
                         <li><a href="${rulesPaths.index}">Rules</a></li>
@@ -119,7 +118,7 @@ export default function (): RenderProps {
                         until all of their actions are used up.
                     </p>
 
-                    <aside class="${styles.callout}">
+                    <aside class="callout">
                         <b>Note:</b><br />
                         Whilst the actions take place simultaneously players are
                         recommended to take turns stating and performing their action to

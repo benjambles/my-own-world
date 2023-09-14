@@ -1,22 +1,12 @@
 import { RenderResult } from '@lit-labs/ssr';
 import Koa, { Context } from 'koa';
-import { TemplateResult } from 'lit';
 import { streamResponse } from '../../../utils/routes/responses.js';
+import { RenderProps } from '../../../utils/web-rendering/render-template.js';
 
 type ErrorCodes = '401' | '403' | '404' | '500';
 
 type ErrorTemplates = {
     [key in ErrorCodes]: (data: any) => RenderProps;
-};
-
-export type StylesheetParams = { href: string; lazy?: boolean };
-export type ScriptParams = { src: string; lazy?: string; type?: string };
-export type RenderProps = {
-    assets: {
-        styles: StylesheetParams[];
-        scripts: ScriptParams[];
-    };
-    template: TemplateResult<1> | TemplateResult<1>[];
 };
 
 type ErrorHandlerArgs<T> = {

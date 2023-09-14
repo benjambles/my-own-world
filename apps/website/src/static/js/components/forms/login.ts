@@ -1,14 +1,14 @@
+import { textInput } from '@benjambles/mow-ui/core.js';
 import {
     buttonStyles,
     callOutStyles,
     inputStyles,
-    textInput,
-} from '@benjambles/mow-ui/core.js';
+    speechBubbleStyles,
+} from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { speechBubbleStyles } from '../../styles/text.js';
 import { UserData, userContext } from '../contexts/user.js';
 
 @customElement('login-form')

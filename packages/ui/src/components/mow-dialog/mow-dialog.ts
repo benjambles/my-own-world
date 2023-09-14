@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { callOutStyles } from '../../global-css/callout.styles.js';
 import { composedEvent } from '../../utils/events.js';
-import { callOutStyles } from '../../global-css/callout.js';
 
 @customElement('mow-dialog')
 export class MowDialog extends LitElement {

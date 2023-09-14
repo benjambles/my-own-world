@@ -1,17 +1,16 @@
+import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
 import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { time } from '@benjambles/mow-ui/core.js';
 import { html, nothing } from 'lit';
-import { RenderProps } from '../../../utils/render-template.js';
 import { paths } from './config.js';
 import { RosterData } from './index.js';
-import styles from './roster.css.js';
+import { rosterStyles } from './roster.styles.js';
 
 export default function (data: RosterData): RenderProps {
     return {
         assets: {
-            scripts: [],
-            styles: [{ href: '/static/styles/routes/tools/roster/roster.css' }],
+            inlineStyles: rosterStyles,
         },
         template: html`
             <section-header sectionname="Roster">
@@ -19,9 +18,9 @@ export default function (data: RosterData): RenderProps {
                 <a href="/tools/scenarios">Scenario Builder</a>
                 <a href="/tools/npcs">NPC Builder</a>
             </section-header>
-            <main class="${styles.pageRoster}">
-                <section class="${styles.panel}">
-                    <h1 class="${styles.title}">${data.content.title}</h1>
+            <main class="page--roster">
+                <section class="panel">
+                    <h1>${data.content.title}</h1>
 
                     <form action="${paths.delete}">
                         <filter-bar>
@@ -41,17 +40,17 @@ export default function (data: RosterData): RenderProps {
                         </filter-bar>
 
                         <div class="cards">
-                            <ul class="${styles.cardList}">
+                            <ul class="card-list">
                                 ${data.content.games.map(gameTile)}
                             </ul>
                         </div>
                     </form>
 
-                    <div class="${styles.buttonGroup}">
-                        <a href="${paths.newSkirmish}" class="${styles.outlineButton}">
+                    <div class="button-group col-to-row">
+                        <a href="${paths.newSkirmish}" class="outline-button">
                             Hire a crew (Skirmish)
                         </a>
-                        <a href="${paths.newCampaign}" class="${styles.outlineButton}">
+                        <a href="${paths.newCampaign}" class="outline-button">
                             Hire a crew (Campaign)
                         </a>
                     </div>
@@ -62,7 +61,7 @@ export default function (data: RosterData): RenderProps {
 }
 
 function gameTile(data: RosterData['content']['games'][number]) {
-    return html`<li data-game-type="${data.type}" class="${styles.card}">
+    return html`<li data-game-type="${data.type}" class="card callout">
         <a href="${paths.rosterById.replace(':rosterId', data.id)}">
             <span>${data.name}</span>
             ${data.type === 'campaign'

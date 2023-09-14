@@ -2,12 +2,8 @@ import {
     dateDiff,
     formatLargestPart,
 } from '@benjambes/js-lib/dist/time/relative-time.js';
-import {
-    buttonStyles,
-    callOutStyles,
-    inputStyles,
-    textInput,
-} from '@benjambles/mow-ui/core.js';
+import { textInput } from '@benjambles/mow-ui/core.js';
+import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import Cookies from 'js-cookie';
 import { LitElement, css, html, isServer, nothing } from 'lit';

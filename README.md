@@ -15,7 +15,6 @@ Backend
 Frontend
 
 -   Lit
--   PostCSS
 
 ## Running the project
 
@@ -38,14 +37,7 @@ To start rollup compilation in dev mode run
 
 ```bash
 cd ./apps/website
-npm run css -- --watch
-```
-
-To start CSS compilation in dev mode run
-
-```bash
-cd ./apps/website
-npm run css -- --watch
+npm run rollup -- --watch
 ```
 
 The dev server uses docker compose, and nodemon with legacy watch configured

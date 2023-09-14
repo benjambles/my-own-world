@@ -1,8 +1,8 @@
 import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { ok } from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { getMockData } from '../../data/get-mock-data.js';
 import siteLayout from '../../layouts/core/site.js';
-import { renderTemplate } from '../../utils/render-template.js';
 import terms from '../public/terms/terms.js';
 import config from './config.js';
 import home from './home/home.js';
