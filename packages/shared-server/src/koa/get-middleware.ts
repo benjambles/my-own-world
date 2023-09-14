@@ -1,5 +1,6 @@
 import Koa, { Middleware } from 'koa';
-import compress from 'koa-compress';
+// import compress from 'koa-compress';
+import cors from '@koa/cors';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
 import helmet from 'koa-helmet';
@@ -8,7 +9,6 @@ import mount from 'koa-mount';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
-import cors from '@koa/cors';
 
 interface GetMiddlewareProps {
     corsConfig?: { origin: string };
@@ -38,7 +38,7 @@ export function getMiddleware({
         logger(),
         conditionalGet(),
         etag(), // Adds eTag headers to the response
-        compress(), // ctx.compress = false to disable compression
+        //compress(), // currently disabled as it increase page load time from 50ms to 250ms. Better to do it on the CDN
         setEnvOnState(env),
         helmet(helmetConfig), // Security layer
         cors(corsConfig),
