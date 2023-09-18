@@ -4,32 +4,14 @@ import {
 } from '@benjambes/js-lib/dist/time/relative-time.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
 import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
+import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
 import Cookies from 'js-cookie';
 import { LitElement, css, html, isServer, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../../routes/account/config.js';
 import { UserData, userContext } from '../contexts/user.js';
-
-export interface User {
-    accessTokens: {
-        accessToken: string;
-        fingerprint: string;
-        refreshToken: string;
-    }[];
-    createdOn: Date;
-    identities: {
-        hash: string;
-        identifier: string;
-        isDeleted: boolean;
-        type: string;
-        verified: boolean;
-    }[];
-    firstName: string;
-    lastName: string;
-    password: string;
-    screenName: string;
-}
+import { UserDetailsPayload } from '../with-user/with-user.js';
 
 @customElement('account-form')
 export class AccountForm extends LitElement {
@@ -101,23 +83,44 @@ export class AccountForm extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    private userData: UserData;
 
     @property({ type: String, reflect: false })
     redirectUrl = '/';
 
     @property({ type: String, reflect: false })
-    refreshCookie = 'mow-refreshtoken';
+    cookies = 'mow-refreshtoken|mow-fingerprint';
 
-    @property({ type: String, reflect: false })
-    fingerprintCookie = 'mow-fingerprint';
+    @query('#firstName')
+    private firstNameField: HTMLInputElement;
 
-    private _cookiesSet() {
-        return Cookies.get(this.refreshCookie) && Cookies.get(this.fingerprintCookie);
+    @query('#lastName')
+    private lastNameField: HTMLInputElement;
+
+    @query('#screenName')
+    private screenNameField: HTMLInputElement;
+
+    private isMaybeLoggedIn() {
+        const authCookies = this.cookies.split('|');
+        return authCookies.every((name) => !!Cookies.get(name));
+    }
+
+    private submitDetails(e: SubmitEvent) {
+        e.preventDefault();
+
+        const detailsEvent = composedEvent<UserDetailsPayload>('updatedetails', {
+            firstName: this.firstNameField?.value,
+            lastName: this.lastNameField?.value,
+            screenName: this.screenNameField?.value,
+        });
+
+        this.dispatchEvent(detailsEvent);
     }
 
     protected render() {
-        if (!this._cookiesSet() && !isServer) {
+        // We have the potential to be logged in but the User Context may
+        // not have initialised yet
+        if (!this.isMaybeLoggedIn() && !isServer) {
             window.location.replace(this.redirectUrl);
             return;
         }
@@ -138,7 +141,11 @@ export class AccountForm extends LitElement {
                           >${formatLargestPart(timeBetween)}</time
                       >
                   </p>
-                  <form action="${userPaths.account}" method="post">
+                  <form
+                      action="${userPaths.account}"
+                      method="post"
+                      @submit=${this.submitDetails}
+                  >
                       <fieldset class="callout">
                           <legend>Your details</legend>
                           ${textInput({
@@ -148,13 +155,31 @@ export class AccountForm extends LitElement {
                               type: 'text',
                               defaultText: this.userData?.user.screenName,
                           })}
+                          ${textInput({
+                              id: 'firstName',
+                              label: 'First Name',
+                              type: 'text',
+                              defaultText: this.userData?.user.firstName ?? '',
+                          })}
+                          ${textInput({
+                              id: 'lastName',
+                              label: 'Last Name',
+                              type: 'text',
+                              defaultText: this.userData?.user.lastName ?? '',
+                          })}
                       </fieldset>
 
+                      <button class="primary large">Identify</button>
+                  </form>
+
+                  <form action="${userPaths.account}" method="post">
                       <fieldset class="callout">
                           <legend>Your credentials</legend>
                           <ul></ul>
                       </fieldset>
+                  </form>
 
+                  <form action="${userPaths.account}" method="post">
                       <fieldset class="callout">
                           <legend>Passphrase</legend>
                           ${textInput({
@@ -178,6 +203,10 @@ export class AccountForm extends LitElement {
                           })}
                       </fieldset>
 
+                      <button class="primary large">Identify</button>
+                  </form>
+
+                  <form action="${userPaths.account}" method="post">
                       <fieldset class="callout">
                           <legend>Authorisations</legend>
                       </fieldset>
