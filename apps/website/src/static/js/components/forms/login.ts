@@ -10,6 +10,7 @@ import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from '../contexts/user.js';
+import { UserLoginPayload } from '../with-user/with-user.js';
 
 @customElement('login-form')
 export class LoginForm extends LitElement {
@@ -60,7 +61,7 @@ export class LoginForm extends LitElement {
     private _onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const loginEvent = composedEvent('userlogin', {
+        const loginEvent = composedEvent<UserLoginPayload>('userlogin', {
             identifier: this._emailField.value,
             password: this._passwordField.value,
         });

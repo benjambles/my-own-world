@@ -48,14 +48,7 @@ export default {
             UserResponse: {
                 description: 'The public facing user data',
                 type: 'object',
-                required: [
-                    '_id',
-                    'createdOn',
-                    'firstName',
-                    'lastLoggedIn',
-                    'lastName',
-                    'screenName',
-                ],
+                required: ['_id', 'createdOn', 'lastLoggedIn', 'screenName'],
                 properties: {
                     _id: {
                         type: 'string',
@@ -152,12 +145,7 @@ export default {
                                     },
                                     user: {
                                         type: 'object',
-                                        required: [
-                                            'firstName',
-                                            'lastName',
-                                            'password',
-                                            'screenName',
-                                        ],
+                                        required: ['password', 'screenName'],
                                         properties: {
                                             firstName: {
                                                 description:

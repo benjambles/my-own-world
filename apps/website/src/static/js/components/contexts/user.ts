@@ -1,16 +1,19 @@
 import { createContext } from '@lit-labs/context';
 
 export type UserData = {
-    accessToken: string;
-    fingerprint: string;
-    refreshToken: string;
+    errors?: {
+        [field: string]: string;
+    };
     status: 'logged-in' | 'logged-out' | 'error';
+    tokens: {
+        access: string;
+        fingerprint: string;
+        refresh: string;
+    };
     user?: {
         _id: string;
         createdOn: string;
-        firstName: string;
         lastLoggedIn: string;
-        lastName: string;
         screenName: string;
     };
 };
@@ -49,6 +52,10 @@ export class Users {
         this.actions.refreshToken = this._requestManager.getRequestor<
             UserClientTypes['refreshToken']
         >('/refreshToken', 'post');
+
+        this.actions.createUser = this._requestManager.getRequestor<
+            UserClientTypes['createUser']
+        >('/users', 'post');
     }
 
     public async call<T extends keyof UserClientTypes>(

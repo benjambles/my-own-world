@@ -141,21 +141,6 @@ export class AccountForm extends LitElement {
                   <form action="${userPaths.account}" method="post">
                       <fieldset class="callout">
                           <legend>Your details</legend>
-
-                          ${textInput({
-                              id: 'firstname',
-                              label: 'First Name',
-                              required: true,
-                              type: 'text',
-                              defaultText: this.userData?.user.firstName,
-                          })}
-                          ${textInput({
-                              id: 'lastName',
-                              label: 'Last Name',
-                              required: true,
-                              type: 'text',
-                              defaultText: this.userData?.user.lastName,
-                          })}
                           ${textInput({
                               id: 'screenName',
                               label: 'Code Name',

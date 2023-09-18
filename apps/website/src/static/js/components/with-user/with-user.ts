@@ -7,11 +7,25 @@ import { customElement, property } from 'lit/decorators.js';
 import { MowApiInstance, requestContext } from '../contexts/request.js';
 import { UserData, UserInstance, Users, userContext } from '../contexts/user.js';
 
+export type UserLoginPayload = {
+    identifier: string;
+    password: string;
+};
+
+export type UserRegistrationPayload = {
+    identifier: string;
+    password: string;
+    screenName: string;
+};
+
 const defaultUserData: UserData = {
-    accessToken: '',
-    fingerprint: '',
-    refreshToken: '',
+    errors: {},
     status: 'logged-out',
+    tokens: {
+        access: '',
+        fingerprint: '',
+        refresh: '',
+    },
     user: undefined,
 };
 
@@ -19,7 +33,10 @@ export const userEvents = {
     loggedIn: 'loginsuccess',
     login: 'userlogin',
     logout: 'userlogout',
+    loggedOut: 'logoutsuccess',
     openLoginModal: 'openlogin',
+    register: 'userjoin',
+    registered: 'joinsuccess',
 };
 
 @customElement('with-user')
@@ -46,8 +63,17 @@ export class WithUser extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener('userlogin', (e) => this._login(e));
-        this.addEventListener('userlogout', () => this._logout());
+        this.addEventListener(userEvents.login, (e: CustomEvent<UserLoginPayload>) =>
+            this._login(e.detail),
+        );
+        this.addEventListener(userEvents.logout, () => this._logout());
+
+        this.addEventListener(
+            userEvents.register,
+            (e: CustomEvent<UserRegistrationPayload>) => {
+                this._register(e.detail);
+            },
+        );
 
         //setup User API
         this.userApi = new Users();
@@ -56,14 +82,10 @@ export class WithUser extends LitElement {
         this._refreshTokens(); // try auto login
     }
 
-    private async _login(e) {
-        if (!e.detail.identifier || !e.detail.password) {
-            return false;
-        }
-
+    private async _login(data: UserLoginPayload) {
         try {
             const userData = await this.userApi.call('authenticateUser', {
-                body: e.detail,
+                body: data,
             });
 
             this.userData = {
@@ -72,21 +94,25 @@ export class WithUser extends LitElement {
                 ...userData,
             };
 
-            this.dispatchEvent(composedEvent('loginsuccess', undefined));
+            this.dispatchEvent(composedEvent(userEvents.loggedIn, undefined));
 
             this._setCookies();
         } catch (e) {
-            this._logout();
+            this._deleteCookies();
+            this.userData = {
+                ...defaultUserData,
+                errors: { login: 'We were unable to confirm your identification.' },
+            };
         }
     }
 
     private async _logout() {
-        const { fingerprint, refreshToken } = this.userData;
+        const { fingerprint, refresh } = this.userData.tokens;
         let userId = this.userData.user?._id;
 
         if (!userId) {
             try {
-                const parsedToken = jwtDecode.default<JwtPayload>(refreshToken);
+                const parsedToken = jwtDecode.default<JwtPayload>(refresh);
 
                 userId = parsedToken.sub;
 
@@ -102,7 +128,7 @@ export class WithUser extends LitElement {
 
         this.userData = { ...defaultUserData };
 
-        this.dispatchEvent(composedEvent('logoutsuccess', undefined));
+        this.dispatchEvent(composedEvent(userEvents.loggedOut, undefined));
     }
 
     private async _refreshTokens() {
@@ -126,7 +152,38 @@ export class WithUser extends LitElement {
 
             this._setCookies();
         } catch (e) {
-            this._logout();
+            this._deleteCookies();
+            this.userData = {
+                ...defaultUserData,
+                errors: { login: 'We were unable to confirm your identification.' },
+            };
+        }
+    }
+
+    private async _register(data: UserRegistrationPayload) {
+        try {
+            const userData = await this.userApi.call('createUser', {
+                body: {
+                    identifier: { identifier: data.identifier, type: 'email' },
+                    user: { screenName: data.screenName, password: data.password },
+                },
+            });
+
+            this.userData = {
+                ...this.userData,
+                status: 'logged-in',
+                ...userData,
+            };
+
+            this.dispatchEvent(composedEvent(userEvents.loggedIn, undefined));
+
+            this._setCookies();
+        } catch (e) {
+            this._deleteCookies();
+            this.userData = {
+                ...defaultUserData,
+                errors: { join: 'We were unable to create your account.' },
+            };
         }
     }
 
@@ -137,9 +194,11 @@ export class WithUser extends LitElement {
     }
 
     private _setCookies() {
-        Cookies.set(this.refreshCookie, this.userData.refreshToken); // TODO secure and time
-        Cookies.set(this.fingerprintCookie, this.userData.fingerprint);
-        Cookies.set(this.accessCookie, this.userData.accessToken);
+        const { access, fingerprint, refresh } = this.userData.tokens;
+        // TODO make secure and expiry
+        Cookies.set(this.refreshCookie, refresh);
+        Cookies.set(this.fingerprintCookie, fingerprint);
+        Cookies.set(this.accessCookie, access);
     }
 
     render() {

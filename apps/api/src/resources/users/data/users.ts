@@ -36,7 +36,7 @@ export interface User {
     }[];
     createdOn: Date;
     deletedOn?: Date;
-    firstName: string;
+    firstName?: string;
     identities: {
         hash: string;
         identifier: string;
@@ -46,12 +46,12 @@ export interface User {
     }[];
     isDeleted: boolean;
     lastLoggedIn?: Date;
-    lastName: string;
+    lastName?: string;
     password: string;
     screenName: string;
 }
 
-type NewUser = Pick<User, 'firstName' | 'lastName' | 'password' | 'screenName'>;
+type NewUser = Pick<User, 'password' | 'screenName'>;
 
 export function getUserCollection(db: Db) {
     return db.collection<User>('Users');
