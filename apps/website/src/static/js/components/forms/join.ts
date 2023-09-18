@@ -54,119 +54,110 @@ export class JoinForm extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    private _onSubmit(e: SubmitEvent) {
+    private onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
         const registerEvent = composedEvent<UserRegistrationPayload>('userjoin', {
-            identifier: this._emailField.value,
-            password: this._passwordField.value,
-            screenName: this._screennameField.value,
+            identifier: this.emailField.value,
+            password: this.passwordField.value,
+            screenName: this.screenNameField.value,
         });
 
         this.dispatchEvent(registerEvent);
     }
 
     @query('#join-email')
-    @property({ attribute: false })
-    private _emailField: HTMLInputElement;
+    private emailField: HTMLInputElement;
 
     @query('#join-password')
-    @property({ attribute: false })
-    private _passwordField: HTMLInputElement;
+    private passwordField: HTMLInputElement;
 
     @query('#join-screename')
-    @property({ attribute: false })
-    private _screennameField: HTMLInputElement;
+    private screenNameField: HTMLInputElement;
 
-    @property({ attribute: true })
+    @property()
     redirectUrl = '/';
 
-    protected render(): unknown {
+    protected render() {
         const isLoggedIn = this.userData?.status === 'logged-in';
 
         if (isLoggedIn) {
             window.location.replace(this.redirectUrl);
-            return;
+            return nothing;
         }
 
-        return isLoggedIn
-            ? nothing
-            : html`
-                  <form
-                      action="${userPaths.signup}"
-                      method="post"
-                      @submit=${this._onSubmit}
-                  >
-                      <div class="speech callout">
-                          <p>
-                              Oh, a new hire? Before you start on your adventures with us
-                              the agency needs a few details from you. In return you'll
-                              get access to our tools that help you manage your crews and
-                              plan your adventures.
-                          </p>
+        return html`
+            <form action="${userPaths.signup}" method="post" @submit=${this.onSubmit}>
+                <div class="speech callout">
+                    <p>
+                        Oh, a new hire? Before you start on your adventures with us the
+                        agency needs a few details from you. In return you'll get access
+                        to our tools that help you manage your crews and plan your
+                        adventures.
+                    </p>
 
-                          <p>Now, what should we call you Explorer?</p>
-                      </div>
+                    <p>Now, what should we call you Explorer?</p>
+                </div>
 
-                      ${textInput({
-                          label: 'Code name',
-                          id: 'join-screenname',
-                          name: 'screenname',
-                          required: true,
-                      })}
+                ${textInput({
+                    label: 'Code name',
+                    id: 'join-screenname',
+                    name: 'screenname',
+                    required: true,
+                })}
 
-                      <p class="speech callout">
-                          Perfect, thanks ${this._screennameField?.value || 'Explorer'}.
-                          Now, where should we contact you?
-                      </p>
+                <p class="speech callout">
+                    Perfect, thanks ${this.screenNameField?.value || 'Explorer'}. Now,
+                    where should we contact you?
+                </p>
 
-                      ${textInput({
-                          label: 'Email',
-                          id: 'join-email',
-                          name: 'email',
-                          type: 'email',
-                          required: true,
-                      })}
+                ${textInput({
+                    label: 'Email',
+                    id: 'join-email',
+                    name: 'email',
+                    type: 'email',
+                    required: true,
+                })}
 
-                      <p class="speech callout">
-                          Got it, thanks. Finally, you're probably already familiar with
-                          this process, but we'll need a password from you so that we can
-                          prove you are who you say you are.
-                      </p>
+                <p class="speech callout">
+                    Got it, thanks. Finally, you're probably already familiar with this
+                    process, but we'll need a password from you so that we can prove you
+                    are who you say you are.
+                </p>
 
-                      ${textInput({
-                          label: 'Pass code',
-                          id: 'join-password',
-                          name: 'password',
-                          type: 'password',
-                          required: true,
-                      })}
+                ${textInput({
+                    label: 'Pass code',
+                    id: 'join-password',
+                    name: 'password',
+                    type: 'password',
+                    required: true,
+                })}
 
-                      <div class="speech callout">
-                          <p>
-                              Great. Infiltrators are everywhere - so keep that secure and
-                              try not to use it anywhere else.
-                          </p>
+                <div class="speech callout">
+                    <p>
+                        Great. Infiltrators are everywhere - so keep that secure and try
+                        not to use it anywhere else.
+                    </p>
 
-                          <p>
-                              I think that's us all done - if you're happy with your
-                              answers use the confirm button below.
-                          </p>
-                      </div>
+                    <p>
+                        I think that's us all done - if you're happy with your answers use
+                        the confirm button below.
+                    </p>
+                </div>
 
-                      <button class="primary large">Confirm</button>
+                <button class="primary large">Confirm</button>
 
-                      <small>
-                          By clicking “Confirm”, you agree to our
-                          ${link({
-                              href: '/terms',
-                              text: 'Terms of Service and Privacy Statement',
-                              display: { underlined: true },
-                          })}.
-                          We’ll occasionally send you account related emails.
-                      </small>
-                  </form>
-              `;
+                <small>
+                    By clicking “Confirm”, you agree to our
+                    ${link({
+                        href: '/terms',
+                        text: 'Terms of Service and Privacy Statement',
+                        display: { underlined: true },
+                    })}.
+                    We’ll occasionally send you account related emails.
+                </small>
+            </form>
+        `;
     }
 }
 

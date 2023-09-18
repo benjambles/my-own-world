@@ -39,7 +39,5 @@ export function formatLargestPart(timeSections: TimeSections): string {
     const rtf1 = new Intl.RelativeTimeFormat('en', { numeric: 'always' });
     const parts = rtf1.formatToParts(timeSections[largestPart], largestPart);
 
-    console.log(parts, largestPart);
-
     return `${parts[1].value}${parts[2].value}`;
 }

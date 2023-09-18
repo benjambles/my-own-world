@@ -46,57 +46,55 @@ export class LoginForm extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    @property({ attribute: true, type: Boolean })
+    @property({ type: Boolean })
     isModal = false;
 
-    @property({ attribute: true })
+    @property()
     redirectUrl = '/';
 
     @query('#email')
-    private _emailField: HTMLInputElement;
+    private emailField: HTMLInputElement;
 
     @query('#password')
-    private _passwordField: HTMLInputElement;
+    private passwordField: HTMLInputElement;
 
-    private _onSubmit(e: SubmitEvent) {
+    private onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
         const loginEvent = composedEvent<UserLoginPayload>('userlogin', {
-            identifier: this._emailField.value,
-            password: this._passwordField.value,
+            identifier: this.emailField.value,
+            password: this.passwordField.value,
         });
 
         this.dispatchEvent(loginEvent);
     }
 
-    protected render(): unknown {
+    protected render() {
         const isLoggedIn = this.userData?.status === 'logged-in';
 
         if (isLoggedIn && !this.isModal) {
             window.location.replace(this.redirectUrl);
-            return;
+            return nothing;
         }
 
-        return isLoggedIn
-            ? nothing
-            : html`
-                  <form action="/user/login" method="post" @submit=${this._onSubmit}>
-                      <p class="speech callout">Please identify yourself to proceed.</p>
-                      ${textInput({
-                          id: 'email',
-                          label: 'Email',
-                          required: true,
-                          type: 'email',
-                      })}
-                      ${textInput({
-                          id: 'password',
-                          label: 'Password',
-                          required: true,
-                          type: 'password',
-                      })}
-                      <button class="primary large">Identify</button>
-                  </form>
-              `;
+        return html`
+            <form action="/user/login" method="post" @submit=${this.onSubmit}>
+                <p class="speech callout">Please identify yourself to proceed.</p>
+                ${textInput({
+                    id: 'email',
+                    label: 'Email',
+                    required: true,
+                    type: 'email',
+                })}
+                ${textInput({
+                    id: 'password',
+                    label: 'Password',
+                    required: true,
+                    type: 'password',
+                })}
+                <button class="primary large">Identify</button>
+            </form>
+        `;
     }
 }
 

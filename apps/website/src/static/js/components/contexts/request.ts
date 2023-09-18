@@ -19,23 +19,23 @@ export const requestSymbol = Symbol('request');
 export const requestContext = createContext<MowApiInstance>(requestSymbol);
 
 export class MowApi {
-    private _rootUrl;
+    private rootUrl;
 
     constructor(rootUrl: string) {
-        this._rootUrl = rootUrl;
+        this.rootUrl = rootUrl;
     }
 
-    public getRequestor<T extends RouteConfig>(path: T[0], method: T[1]) {
+    getRequestor<T extends RouteConfig>(path: T[0], method: T[1]) {
         return async (args: T[2]): Promise<T[3]> =>
-            await this._request(path, method, args);
+            await this.request(path, method, args);
     }
 
-    private async _request<Args extends RequestParams, Res extends any>(
+    private async request<Args extends RequestParams, Res extends any>(
         path: string,
         method: HttpVerbs,
         args: Args,
     ): Promise<Res> {
-        const populatedUrl = new URL(this._rootUrl);
+        const populatedUrl = new URL(this.rootUrl);
         const populatedPath = Object.entries(args.params ?? {}).reduce(
             (acc, [key, value]) => acc.replace(`:${key}`, value),
             path,

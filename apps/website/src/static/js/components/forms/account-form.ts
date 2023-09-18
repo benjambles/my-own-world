@@ -83,12 +83,12 @@ export class AccountForm extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    private userData: UserData;
+    userData: UserData;
 
-    @property({ type: String, reflect: false })
+    @property()
     redirectUrl = '/';
 
-    @property({ type: String, reflect: false })
+    @property()
     cookies = 'mow-refreshtoken|mow-fingerprint';
 
     @query('#firstName')
@@ -122,7 +122,11 @@ export class AccountForm extends LitElement {
         // not have initialised yet
         if (!this.isMaybeLoggedIn() && !isServer) {
             window.location.replace(this.redirectUrl);
-            return;
+            return nothing;
+        }
+
+        if (this.userData?.status !== 'logged-in') {
+            return nothing;
         }
 
         const now = new Date();
@@ -132,86 +136,84 @@ export class AccountForm extends LitElement {
 
         const timeBetween = dateDiff(createdOn, now);
 
-        return this.userData?.status !== 'logged-in'
-            ? nothing
-            : html`
-                  <p>
-                      You've been charting the universe for
-                      <time datetime="${createdOn.toISOString()}"
-                          >${formatLargestPart(timeBetween)}</time
-                      >
-                  </p>
-                  <form
-                      action="${userPaths.account}"
-                      method="post"
-                      @submit=${this.submitDetails}
-                  >
-                      <fieldset class="callout">
-                          <legend>Your details</legend>
-                          ${textInput({
-                              id: 'screenName',
-                              label: 'Code Name',
-                              required: true,
-                              type: 'text',
-                              defaultText: this.userData?.user.screenName,
-                          })}
-                          ${textInput({
-                              id: 'firstName',
-                              label: 'First Name',
-                              type: 'text',
-                              defaultText: this.userData?.user.firstName ?? '',
-                          })}
-                          ${textInput({
-                              id: 'lastName',
-                              label: 'Last Name',
-                              type: 'text',
-                              defaultText: this.userData?.user.lastName ?? '',
-                          })}
-                      </fieldset>
+        return html`
+            <p>
+                You've been charting the universe for
+                <time datetime="${createdOn.toISOString()}"
+                    >${formatLargestPart(timeBetween)}</time
+                >
+            </p>
+            <form
+                action="${userPaths.account}"
+                method="post"
+                @submit=${this.submitDetails}
+            >
+                <fieldset class="callout">
+                    <legend>Your details</legend>
+                    ${textInput({
+                        id: 'screenName',
+                        label: 'Code Name',
+                        required: true,
+                        type: 'text',
+                        defaultText: this.userData?.user.screenName,
+                    })}
+                    ${textInput({
+                        id: 'firstName',
+                        label: 'First Name',
+                        type: 'text',
+                        defaultText: this.userData?.user.firstName ?? '',
+                    })}
+                    ${textInput({
+                        id: 'lastName',
+                        label: 'Last Name',
+                        type: 'text',
+                        defaultText: this.userData?.user.lastName ?? '',
+                    })}
+                </fieldset>
 
-                      <button class="primary large">Identify</button>
-                  </form>
+                <button class="primary large">Identify</button>
+            </form>
 
-                  <form action="${userPaths.account}" method="post">
-                      <fieldset class="callout">
-                          <legend>Your credentials</legend>
-                          <ul></ul>
-                      </fieldset>
-                  </form>
+            <form action="${userPaths.account}" method="post">
+                <fieldset class="callout">
+                    <legend>Your credentials</legend>
+                    <ul></ul>
+                </fieldset>
+            </form>
 
-                  <form action="${userPaths.account}" method="post">
-                      <fieldset class="callout">
-                          <legend>Passphrase</legend>
-                          ${textInput({
-                              id: 'newpassword1',
-                              label: 'New Passphrase',
-                              required: false,
-                              type: 'password',
-                          })}
-                          ${textInput({
-                              id: 'newpassword2',
-                              label: 'Confirm',
-                              required: false,
-                              type: 'password',
-                          })}
-                          <hr />
-                          ${textInput({
-                              id: 'oldpassword',
-                              label: 'Old Passphrase',
-                              required: false,
-                              type: 'password',
-                          })}
-                      </fieldset>
+            <form action="${userPaths.account}" method="post">
+                <fieldset class="callout">
+                    <legend>Passphrase</legend>
+                    ${textInput({
+                        id: 'newpassword1',
+                        label: 'New Passphrase',
+                        required: false,
+                        type: 'password',
+                    })}
+                    ${textInput({
+                        id: 'newpassword2',
+                        label: 'Confirm',
+                        required: false,
+                        type: 'password',
+                    })}
+                    <hr />
+                    ${textInput({
+                        id: 'oldpassword',
+                        label: 'Old Passphrase',
+                        required: false,
+                        type: 'password',
+                    })}
+                </fieldset>
 
-                      <button class="primary large">Identify</button>
-                  </form>
+                <button class="primary large">Identify</button>
+            </form>
 
-                  <form action="${userPaths.account}" method="post">
-                      <fieldset class="callout">
-                          <legend>Authorisations</legend>
-                      </fieldset>
-                  </form>
-              `;
+            <form action="${userPaths.account}" method="post">
+                <fieldset class="callout">
+                    <legend>Authorisations</legend>
+                </fieldset>
+            </form>
+        `;
     }
 }
 

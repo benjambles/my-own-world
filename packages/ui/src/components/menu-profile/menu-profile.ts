@@ -123,16 +123,16 @@ export class MenuProfile extends MowDetails {
 
     public toggleEventName = 'usermenutoggle';
 
-    @property({ attribute: true })
+    @property()
     imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
 
-    @property({ attribute: true })
+    @property()
     name;
 
-    @property({ attribute: true })
-    username;
+    @property()
+    screenName;
 
-    render() {
+    protected render() {
         return html`
             <details @toggle=${this.handleToggle}>
                 <summary aria-haspopup="true" role="button">
@@ -141,10 +141,10 @@ export class MenuProfile extends MowDetails {
                 <div class="dropdown-menu" role="menu">
                     <span class="user-label">
                         Signed in as <br />
-                        <a href="/profile/${this.username}">${this.name}</a>
+                        <a href="/profile/${this.screenName}">${this.name}</a>
                     </span>
                     <hr />
-                    <a href="/profile/${this.username}" class="bar-link">
+                    <a href="/profile/${this.screenName}" class="bar-link">
                         Your profile
                     </a>
                     <hr />

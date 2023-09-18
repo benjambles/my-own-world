@@ -1,10 +1,8 @@
-import '@benjambles/mow-ui/components/menu-profile/menu-profile.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { UserData, userContext } from '../contexts/user.js';
-
 import { paths as userPaths } from '../../../../routes/account/config.js';
+import { UserData, userContext } from '../contexts/user.js';
 
 @customElement('user-menu')
 export class UserMenu extends LitElement {
@@ -54,7 +52,7 @@ export class UserMenu extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    private _renderLoggedIn() {
+    private renderLoggedIn() {
         return html`
             <mow-action preventdefault eventtrigger="openusermenu">
                 <a href="${userPaths.account}" title="settings">Settings</a>
@@ -62,7 +60,7 @@ export class UserMenu extends LitElement {
         `;
     }
 
-    private _renderLoggedOut() {
+    private renderLoggedOut() {
         return html`
             <mow-action preventdefault eventtrigger="openlogin">
                 <a href="${userPaths.login}">Identify</a>
@@ -72,7 +70,7 @@ export class UserMenu extends LitElement {
 
     protected render() {
         const { status } = this.userData || {};
-        return status === 'logged-in' ? this._renderLoggedIn() : this._renderLoggedOut();
+        return status === 'logged-in' ? this.renderLoggedIn() : this.renderLoggedOut();
     }
 }
 

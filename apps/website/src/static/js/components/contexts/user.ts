@@ -35,40 +35,40 @@ type Handlers<T extends ApiMap> = Partial<{
 export type UserInstance = InstanceType<typeof Users>;
 
 export class Users {
-    private _requestManager: InstanceType<typeof MowApi>;
+    private requestManager: InstanceType<typeof MowApi>;
 
-    public actions: Handlers<UserClientTypes> = {};
+    private actions: Handlers<UserClientTypes> = {};
 
-    public addManager(requestManager: InstanceType<typeof MowApi>) {
-        if (this._requestManager) return;
-        this._requestManager = requestManager;
+    addManager(requestManager: InstanceType<typeof MowApi>) {
+        if (this.requestManager) return;
+        this.requestManager = requestManager;
 
-        this.actions.authenticateUser = this._requestManager.getRequestor<
+        this.actions.authenticateUser = this.requestManager.getRequestor<
             UserClientTypes['authenticateUser']
         >('/authenticate', 'post');
 
-        this.actions.deleteToken = this._requestManager.getRequestor<
+        this.actions.deleteToken = this.requestManager.getRequestor<
             UserClientTypes['deleteToken']
         >('/users/:userId/tokens/:fingerprint', 'delete');
 
-        this.actions.refreshToken = this._requestManager.getRequestor<
+        this.actions.refreshToken = this.requestManager.getRequestor<
             UserClientTypes['refreshToken']
         >('/refreshToken', 'post');
 
-        this.actions.createUser = this._requestManager.getRequestor<
+        this.actions.createUser = this.requestManager.getRequestor<
             UserClientTypes['createUser']
         >('/users', 'post');
 
-        this.actions.updateUserById = this._requestManager.getRequestor<
+        this.actions.updateUserById = this.requestManager.getRequestor<
             UserClientTypes['updateUserById']
         >('/users/:userId', 'put');
     }
 
-    public async call<T extends keyof UserClientTypes>(
+    async call<T extends keyof UserClientTypes>(
         action: T,
         params: UserClientTypes[T][2],
     ): Promise<UserClientTypes[T][3]> {
-        if (!this._requestManager) {
+        if (!this.requestManager) {
             throw new Error('No request manager to handle the request.');
         }
 

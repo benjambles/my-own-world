@@ -119,7 +119,7 @@ export class FixedHeader extends MowDetails {
         }
     `;
 
-    render() {
+    protected render() {
         return html`
             <header>
                 <details @toggle=${this.handleToggle}>

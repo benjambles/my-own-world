@@ -67,13 +67,13 @@ export class DiceCheck extends LitElement {
         `,
     ];
 
-    @property({ type: Number, attribute: true })
+    @property({ type: Number })
     roll: number = 0;
 
-    @property({ type: Number, attribute: true })
+    @property({ type: Number })
     target: number = 0;
 
-    protected render(): unknown {
+    protected render() {
         const result = this.roll >= this.target ? 'success' : 'fail';
         const resultText = result === 'success' ? '✓' : '✕';
 
@@ -174,19 +174,19 @@ export class OpposedCheck extends LitElement {
         `,
     ];
 
-    @property({ type: Number, attribute: true })
+    @property({ type: Number })
     actorValue: number = 0;
 
-    @property({ type: String, attribute: true })
+    @property()
     actorText: string = '';
 
-    @property({ type: Number, attribute: true })
+    @property({ type: Number })
     targetValue: number = 0;
 
-    @property({ type: String, attribute: true })
+    @property()
     targetText: string = '';
 
-    @property({ type: Number, attribute: true })
+    @property({ type: Number })
     roll: number = 0;
 
     protected render() {

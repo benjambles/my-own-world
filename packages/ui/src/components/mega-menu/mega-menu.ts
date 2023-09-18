@@ -58,7 +58,7 @@ export class MegaMenu extends LitElement {
         }
     `;
 
-    protected render(): unknown {
+    protected render() {
         return html`<nav><slot></slot></nav>`;
     }
 }

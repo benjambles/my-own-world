@@ -6,9 +6,9 @@ import { MowApi, requestContext } from '../contexts/request.js';
 @customElement('with-api')
 class WithApi extends LitElement {
     @provide({ context: requestContext })
-    api = new MowApi('http://localhost:3000/api/v1');
+    private api = new MowApi('http://localhost:3000/api/v1');
 
-    render() {
+    protected render() {
         return html`<slot></slot>`;
     }
 }

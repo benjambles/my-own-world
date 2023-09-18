@@ -100,7 +100,7 @@ export class GlowButton extends LitElement {
         }
     `;
 
-    render() {
+    protected render() {
         return html`
             <button>
                 <span class="glow">

@@ -21,11 +21,11 @@ export class ViewLock extends LitElement {
         const eventList = this.watchedEvents.split(' ').filter(Boolean);
 
         eventList.forEach((eventName) => {
-            this.addEventListener(eventName, this._setConstrained);
+            this.addEventListener(eventName, this.setConstrained);
         });
     }
 
-    private _setConstrained(e: CustomEvent) {
+    private setConstrained(e: CustomEvent) {
         this.isConstrained = e.detail;
     }
 

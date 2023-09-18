@@ -100,28 +100,24 @@ export class UserForm extends LitElement {
     userData: UserData;
 
     protected render() {
-        return this.userData?.status === 'logged-in'
-            ? html`
-                  <span class="user-label">
-                      Identified as <br />
-                      <a href="${userPaths.account}">${this.userData.user.screenName}</a>
-                  </span>
-                  <hr />
-                  <a href="${rosterPaths.index}" class="bar-link"> Your squads </a>
-                  <hr />
-                  <a href="${userPaths.account}" class="bar-link"> Preferences </a>
-                  <a href="/help" class="bar-link"> Help </a>
+        if (this.userData?.status !== 'logged-in') {
+            return nothing;
+        }
 
-                  <mow-action preventdefault eventtrigger="userlogout">
-                      <a class="button" href="${userPaths.logout}">Sign off</a>
-                  </mow-action>
-              `
-            : nothing;
-    }
-}
+        return html`
+            <span class="user-label">
+                Identified as <br />
+                <a href="${userPaths.account}">${this.userData.user.screenName}</a>
+            </span>
+            <hr />
+            <a href="${rosterPaths.index}" class="bar-link"> Your squads </a>
+            <hr />
+            <a href="${userPaths.account}" class="bar-link"> Preferences </a>
+            <a href="/help" class="bar-link"> Help </a>
 
-declare global {
-    interface HTMLElementTagNameMap {
-        'user-form': UserForm;
+            <mow-action preventdefault eventtrigger="userlogout">
+                <a class="button" href="${userPaths.logout}">Sign off</a>
+            </mow-action>
+        `;
     }
 }

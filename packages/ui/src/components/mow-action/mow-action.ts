@@ -29,7 +29,7 @@ export class MowAction extends LitElement {
         });
     }
 
-    render() {
+    protected render() {
         return html`<slot></slot>`;
     }
 }

@@ -51,22 +51,22 @@ export const userEvents = {
 export class WithUser extends LitElement {
     private userApi: UserInstance;
 
-    @property({ type: String, reflect: false })
-    accessCookie = 'mow-auth';
-
-    @property({ type: String, reflect: false })
-    fingerprintCookie = 'mow-fingerprint';
-
-    @property({ type: String, reflect: false })
-    refreshCookie = 'mow-refreshtoken';
-
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
-    private requestManager?: MowApiInstance;
+    requestManager?: MowApiInstance;
 
     @provide({ context: userContext })
     @property({ attribute: false })
-    private userData: UserData = defaultUserData;
+    userData: UserData = defaultUserData;
+
+    @property()
+    accessCookie = 'mow-auth';
+
+    @property()
+    fingerprintCookie = 'mow-fingerprint';
+
+    @property()
+    refreshCookie = 'mow-refreshtoken';
 
     connectedCallback() {
         super.connectedCallback();
@@ -209,13 +209,6 @@ export class WithUser extends LitElement {
         }
     }
 
-    private setUserData(newData: Partial<UserData>) {
-        this.userData = {
-            ...this.userData,
-            ...newData,
-        };
-    }
-
     private async updateDetails(data: UserDetailsPayload) {
         try {
             const userData = await this.userApi.call('updateUserById', {
@@ -247,7 +240,14 @@ export class WithUser extends LitElement {
         Cookies.set(this.accessCookie, access);
     }
 
-    render() {
+    private setUserData(newData: Partial<UserData>) {
+        this.userData = {
+            ...this.userData,
+            ...newData,
+        };
+    }
+
+    protected render() {
         return html`<slot></slot>`;
     }
 }

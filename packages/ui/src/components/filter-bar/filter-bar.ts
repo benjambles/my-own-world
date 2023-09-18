@@ -17,7 +17,7 @@ export class FilterBar extends LitElement {
         }
     `;
 
-    render() {
+    protected render() {
         return html`<slot></slot>`;
     }
 }
@@ -60,10 +60,10 @@ export class FilterItem extends LitElement {
         }
     `;
 
-    @property({ attribute: true })
+    @property()
     filter;
 
-    @property({ attribute: true })
+    @property()
     href;
 
     protected render() {

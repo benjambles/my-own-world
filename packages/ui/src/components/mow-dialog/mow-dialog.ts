@@ -51,7 +51,7 @@ export class MowDialog extends LitElement {
         `,
     ];
 
-    static DefaultEventName = 'modaltoggle';
+    static ToggleEventName = 'modaltoggle';
 
     @property()
     onCloseEventName = '';
@@ -63,48 +63,53 @@ export class MowDialog extends LitElement {
     triggerOpenEventName = '';
 
     @query('dialog', true)
-    private _dialogElement!: HTMLDialogElement;
+    private dialogElement!: HTMLDialogElement;
 
     connectedCallback() {
         super.connectedCallback();
 
-        window.addEventListener(this.triggerOpenEventName, this._openDialog);
+        if (this.triggerOpenEventName) {
+            window.addEventListener(this.triggerOpenEventName, this.openDialog);
+        }
 
         if (this.triggerCloseEventName) {
-            window.addEventListener(this.triggerCloseEventName, this._closeDialog);
+            window.addEventListener(this.triggerCloseEventName, this.closeDialog);
         }
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
 
-        window.removeEventListener(this.triggerOpenEventName, this._openDialog);
-        window.removeEventListener(this.triggerCloseEventName, this._closeDialog);
+        if (this.triggerOpenEventName) {
+            window.removeEventListener(this.triggerOpenEventName, this.openDialog);
+        }
+
+        if (this.triggerCloseEventName) {
+            window.removeEventListener(this.triggerCloseEventName, this.closeDialog);
+        }
     }
 
-    private _closeDialog = () => {
-        this._dialogElement.close();
+    private closeDialog = () => {
+        this.dialogElement.close();
     };
 
-    private _openDialog = () => {
-        this._dialogElement.showModal();
-        this.dispatchEvent(composedEvent(MowDialog.DefaultEventName, true));
+    private openDialog = () => {
+        this.dialogElement.showModal();
+        this.dispatchEvent(composedEvent(MowDialog.ToggleEventName, true));
     };
 
-    private _onDialogClose() {
-        [MowDialog.DefaultEventName, this.onCloseEventName].forEach((eventName) => {
+    private onDialogClose() {
+        [MowDialog.ToggleEventName, this.onCloseEventName].forEach((eventName) => {
             if (!eventName) return;
             this.dispatchEvent(composedEvent(eventName, false));
         });
     }
 
-    render() {
+    protected render() {
         return html`
-            <dialog @close=${this._onDialogClose} class="callout">
+            <dialog @close=${this.onDialogClose} class="callout">
                 <slot></slot>
-                <button @click=${this._closeDialog} class="close-button">
-                    &#128473;
-                </button>
+                <button @click=${this.closeDialog} class="close-button">&#128473;</button>
             </dialog>
         `;
     }

@@ -10,13 +10,13 @@ export class MowDetails extends LitElement {
         }
     `;
 
-    public toggleEventName = 'menutoggle';
+    static ToggleEventName = 'menutoggle';
 
     @query('details', true)
-    protected menuElement!: HTMLDetailsElement;
+    private menuElement!: HTMLDetailsElement;
 
     @query('details summary', true)
-    protected summaryElement!: HTMLElement;
+    private summaryElement!: HTMLElement;
 
     connectedCallback() {
         super.connectedCallback();
@@ -28,18 +28,20 @@ export class MowDetails extends LitElement {
         window.removeEventListener('keydown', this.handleKeydown);
     }
 
-    public handleToggle() {
-        this.dispatchEvent(composedEvent(this.toggleEventName, this.menuElement.open));
+    handleToggle() {
+        this.dispatchEvent(
+            composedEvent(MowDetails.ToggleEventName, this.menuElement.open),
+        );
     }
 
-    public handleKeydown = ({ key }: KeyboardEvent) => {
+    private handleKeydown = ({ key }: KeyboardEvent) => {
         if (key !== 'Escape' || !this.menuElement.open) return;
 
         this.summaryElement.focus();
         this.menuElement.open = false;
     };
 
-    render() {
+    protected render() {
         return html`
             <details @toggle=${this.handleToggle}>
                 <summary aria-haspopup="true" role="button">
