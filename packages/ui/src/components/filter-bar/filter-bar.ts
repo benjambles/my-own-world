@@ -9,9 +9,10 @@ export class FilterBar extends LitElement {
         }
 
         :host {
+            --_border: var(--fb-border, 1px solid var(--shade-3));
             display: flex;
-            border: 1px solid var(--shade-3);
-            border-width: 1px 0;
+            border: var(--_border);
+            border-inline-width: 0;
             overflow: hidden;
         }
     `;
@@ -25,35 +26,36 @@ export class FilterBar extends LitElement {
 export class FilterItem extends LitElement {
     static styles = css`
         :host {
-            --border-color: var(--filter-border, var(--shade-3));
-            --highlight-color: var(--filter-color, rgba(255, 0, 0, 0.8));
-            --text-color: var(--filter-border, var(--shade-0));
+            --_border: var(--fi-border, 1px solid var(--shade-3));
+            --_highlight-color: var(--fi-color-highlight, rgba(255, 0, 0, 0.8));
+            --_color: var(--fi-color, var(--shade-0));
+            --_offset: var(--fi-offset, -10px);
         }
 
         :host(:first-of-type) a {
-            margin-left: -10px;
-            padding-left: 30px;
+            margin-inline-start: var(--_offset);
+            padding-inline-start: 30px;
         }
 
         a {
             display: block;
-            padding: 0 2rem;
-            border-right: 1px solid var(--border-color);
+            padding-inline: 2rem;
+            border-inline-end: var(--_border);
             color: var(--highlight-color);
             text-decoration: none;
-            transform: skew(20deg, 0deg);
+            transform: skewX(20deg);
         }
 
         a:hover,
         a:focus-within {
-            background: var(--highlight-color);
-            border-color: var(--highlight-color);
-            color: var(--text-color);
+            background: var(--_highlight-color);
+            border-color: var(--_highlight-color);
+            color: var(--_color);
         }
 
         slot {
             display: block;
-            padding: 1rem 0rem;
+            padding-block: 1rem;
             transform: skewX(-20deg);
         }
     `;

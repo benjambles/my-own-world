@@ -36,8 +36,7 @@ export const homeStyles: CSSResult[] = [
         }
 
         .home-intro p {
-            margin-bottom: 8rem;
-            margin-top: 0;
+            margin-block: 0 8rem;
             position: relative;
             top: -2rem;
             font-size: 1.6rem;
@@ -45,7 +44,7 @@ export const homeStyles: CSSResult[] = [
         }
 
         .home-intro p:not(:first-of-type) {
-            margin-bottom: 0;
+            margin-block-end: 0;
             font-size: 2rem;
             letter-spacing: 0.2em;
         }
@@ -72,7 +71,7 @@ export const homeStyles: CSSResult[] = [
         }
 
         .explorer-links {
-            margin: 8rem 0;
+            margin-block: 8rem;
             padding: 0;
             list-style: none;
         }

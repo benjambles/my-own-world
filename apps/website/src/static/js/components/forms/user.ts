@@ -51,16 +51,16 @@ export class UserForm extends LitElement {
         }
 
         .user-label {
-            padding: 0 15px;
             display: block;
+            padding: 0 15px;
         }
 
         hr {
             height: 1px;
             margin: 5px 0;
             border: none;
-            color: #ccc;
             background-color: #ccc;
+            color: #ccc;
         }
 
         a {

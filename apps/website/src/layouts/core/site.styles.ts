@@ -78,7 +78,7 @@ export default css`
         margin: 0;
         padding: 0;
         max-width: 100%;
-        background: #e1e1e1;
+        background: var(--shade-1);
         color: var(--shade-4);
     }
 
@@ -125,7 +125,7 @@ export default css`
     h1,
     h2,
     h3 {
-        margin: 15px 0;
+        margin-block: 15px;
         line-height: 1.3;
         font-family: var(--font-special);
         font-weight: 300;
@@ -144,7 +144,7 @@ export default css`
     }
 
     h4 {
-        margin: 15px 0;
+        margin-block: 15px;
         font-size: 2rem;
     }
 
@@ -153,7 +153,7 @@ export default css`
     }
 
     p {
-        margin: 15px 0;
+        margin-block: 15px;
     }
 
     table {
@@ -190,7 +190,6 @@ export default css`
         }
 
         .content-wrapper {
-            display: block;
             margin-left: 100px;
         }
     }

@@ -16,7 +16,7 @@ export default function (): RenderProps {
                     <h1 class="gradient-text">Welcome Explorer</h1>
 
                     <login-form redirectUrl="${userPaths.account}"></login-form>
-                    <p class="barred-text">Not Registered?</p>
+                    <p class="barred">Not Registered?</p>
                     <join-form></join-form>
                 </section>
             </main>
