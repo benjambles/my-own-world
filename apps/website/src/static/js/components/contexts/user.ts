@@ -13,7 +13,9 @@ export type UserData = {
     user?: {
         _id: string;
         createdOn: string;
+        firstName?: string;
         lastLoggedIn: string;
+        lastName?: string;
         screenName: string;
     };
 };
@@ -56,6 +58,10 @@ export class Users {
         this.actions.createUser = this._requestManager.getRequestor<
             UserClientTypes['createUser']
         >('/users', 'post');
+
+        this.actions.updateUserById = this._requestManager.getRequestor<
+            UserClientTypes['updateUserById']
+        >('/users/:userId', 'put');
     }
 
     public async call<T extends keyof UserClientTypes>(
