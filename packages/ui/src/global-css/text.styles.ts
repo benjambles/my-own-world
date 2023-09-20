@@ -4,6 +4,7 @@ export const speechBubbleStyles = css`
     .speech {
         --co-bg-color: #cacaca;
         --_margin: var(--speech-margin, 20px 0);
+
         margin: var(--_margin);
         padding: 20px 20px 20px 40px;
         position: relative;
@@ -34,6 +35,7 @@ export const barredText = css`
         --_border: var(--barred-border, 1px solid #333);
         --_gap: var(--barred-gap, 20px);
         --_margin: var(--barred-margin-block, 60px);
+
         display: flex;
         align-items: center;
         flex-direction: row;

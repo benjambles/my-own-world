@@ -13,8 +13,7 @@ export class MenuProfile extends MowDetails {
             --highlight: var(--profile-highlight, rgba(255, 0, 0, 0.8));
         }
 
-        summary:focus img,
-        summary:hover img {
+        summary:is(:focus, :hover) img {
             border-color: var(--highlight);
         }
 
@@ -31,10 +30,7 @@ export class MenuProfile extends MowDetails {
             transition: color 0.1s;
         }
 
-        a:hover,
-        a:active,
-        a:focus,
-        a.active {
+        a:is(:hover, :active, :focus, .active) {
             outline: none;
             color: var(--highlight);
         }
@@ -48,10 +44,7 @@ export class MenuProfile extends MowDetails {
                 color 0.1s;
         }
 
-        .bar-link:hover,
-        .bar-link:active,
-        .bar-link:focus,
-        .bar-link.active {
+        .bar-link:is(:hover, :active, :focus, .active) {
             background-color: var(--highlight);
             color: var(--shade-0);
         }
@@ -79,13 +72,11 @@ export class MenuProfile extends MowDetails {
             color: white;
         }
 
-        details > summary:hover::-webkit-details-marker,
-        details > summary:focus::-webkit-details-marker {
+        details > summary:is(:hover, :focus)::-webkit-details-marker {
             color: var(--highlight);
         }
 
-        details > summary:hover .profile-image,
-        details > summary:focus .profile-image {
+        details > summary:is(:hover, :focus) .profile-image {
             border-color: var(--highlight);
         }
 

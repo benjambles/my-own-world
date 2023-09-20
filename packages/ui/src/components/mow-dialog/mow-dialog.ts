@@ -44,8 +44,7 @@ export class MowDialog extends LitElement {
                 cursor: pointer;
             }
 
-            .close-button:hover,
-            .close-button:focus {
+            .close-button:is(:hover, :focus) {
                 color: var(--close-hover);
             }
         `,

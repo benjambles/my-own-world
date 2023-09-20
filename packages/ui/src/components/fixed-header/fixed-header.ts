@@ -18,6 +18,7 @@ export class FixedHeader extends MowDetails {
             --menu-bg: var(--header-menu-bg, #1a1a1a);
             --menu-btn-font: var(--header-menu-btn-font, 3rem);
 
+            container: navbar / inline-size;
             height: 60px;
             width: 100%;
             position: fixed;
@@ -44,7 +45,7 @@ export class FixedHeader extends MowDetails {
             text-align: center;
         }
 
-        details summary {
+        summary {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -56,13 +57,12 @@ export class FixedHeader extends MowDetails {
         }
 
         details[open] summary,
-        details summary:hover,
-        details summary:focus {
+        summary:is(:hover, :focus) {
             background-color: var(--btn-hover-bg);
             color: var(--link-text-color);
         }
 
-        details summary:focus {
+        summary:focus {
             box-shadow: inset 0 0 0px 2px #ff8d00;
             outline: none;
         }
@@ -86,10 +86,6 @@ export class FixedHeader extends MowDetails {
             }
 
             header {
-                flex-direction: row;
-            }
-
-            header {
                 flex-direction: column;
             }
 
@@ -103,18 +99,18 @@ export class FixedHeader extends MowDetails {
                 justify-content: center;
             }
 
-            details summary {
+            summary {
                 height: 101px;
                 width: 100px;
                 border-bottom: 1px solid var(--border-color);
             }
 
-            details[open] .navigation-panel {
-                inset: 0 calc(-100vw + 100px) 0 100px;
-            }
-
             .navigation-panel {
                 inset: 0 calc(-100vw + 100px) 100px 100px;
+            }
+
+            details[open] .navigation-panel {
+                inset: 0 calc(-100vw + 100px) 0 100px;
             }
         }
     `;

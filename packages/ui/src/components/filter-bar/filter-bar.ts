@@ -45,9 +45,7 @@ export class FilterItem extends LitElement {
             text-decoration: none;
             transform: skewX(20deg);
         }
-
-        a:hover,
-        a:focus-within {
+        a:is(:hover, :focus-within) {
             background: var(--_highlight-color);
             border-color: var(--_highlight-color);
             color: var(--_color);

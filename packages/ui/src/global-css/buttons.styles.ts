@@ -15,17 +15,15 @@ export const outlineButton = css`
         text-transform: uppercase;
     }
 
-    .outline-button-small {
-        padding: 1rem 2rem;
-    }
-
-    .outline-button:hover,
-    .outline-button:active,
-    .outline-button:focus {
+    .outline-button:is(:hover, :active, :focus) {
         background: var(--gradient-glow);
         border-color: transparent;
         border-image: var(--gradient-glow);
         color: var(--shade-0);
         text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .outline-button-small {
+        padding: 1rem 2rem;
     }
 `;

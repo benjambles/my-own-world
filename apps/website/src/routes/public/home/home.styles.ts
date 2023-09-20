@@ -12,6 +12,12 @@ export const homeStyles: CSSResult[] = [
     callOutStyles,
     outlineButton,
     css`
+        h1 {
+            margin: 0;
+            position: relative;
+            font-size: 10rem;
+        }
+
         .panel {
             padding: 0 6rem;
         }
@@ -27,12 +33,6 @@ export const homeStyles: CSSResult[] = [
             color: var(--shade-4);
             text-align: center;
             text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 0;
-            position: relative;
-            font-size: 10rem;
         }
 
         .home-intro p {
@@ -62,7 +62,7 @@ export const homeStyles: CSSResult[] = [
         }
 
         .explorer-panel {
-            margin-bottom: 120px;
+            margin-bottom: 12rem;
         }
 
         .explorer-panel h2 {

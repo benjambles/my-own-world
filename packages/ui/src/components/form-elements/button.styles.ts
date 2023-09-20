@@ -27,8 +27,7 @@ export const buttonStyles = css`
         line-height: 1;
     }
 
-    button:hover,
-    button:focus {
+    button:is(:hover, :focus) {
         --bgColor: #b95a1a;
     }
 
@@ -46,8 +45,7 @@ export const buttonStyles = css`
         --bgColor: #2b792b;
     }
 
-    button.primary:hover,
-    button.primary:focus {
+    button.primary:is(:hover, :focus) {
         --bgColor: #1b4b1b;
     }
 
@@ -55,8 +53,7 @@ export const buttonStyles = css`
         --bgColor: #ac2222;
     }
 
-    button.destructive:hover,
-    button.destructive:focus {
+    button.destructive:is(:hover, :focus) {
         --bgColor: #6b1515;
     }
 
@@ -66,8 +63,7 @@ export const buttonStyles = css`
         --borderColor: var(--shade-4);
     }
 
-    button.outline:hover,
-    button.outline:focus {
+    button.outline:is(:hover, :focus) {
         --bgColor: #f57723;
         --color: var(--shade-1);
         --borderColor: #f57723;
@@ -78,8 +74,7 @@ export const buttonStyles = css`
         --bgColor: transparent;
     }
 
-    button.text:hover,
-    button.text:focus {
+    button.text:is(:hover, :focus) {
         --color: #f57723;
         --bgColor: transparent;
     }

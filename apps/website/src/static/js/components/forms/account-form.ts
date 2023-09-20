@@ -169,9 +169,8 @@ export class AccountForm extends LitElement {
                         type: 'text',
                         defaultText: this.userData?.user.lastName ?? '',
                     })}
+                    <button class="primary large">Identify</button>
                 </fieldset>
-
-                <button class="primary large">Identify</button>
             </form>
 
             <form action="${userPaths.account}" method="post">

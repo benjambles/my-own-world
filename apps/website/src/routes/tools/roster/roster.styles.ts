@@ -33,7 +33,6 @@ export const rosterStyles: CSSResult[] = [
             --co-bg-color: #ccc;
             display: flex;
             flex-direction: column;
-            padding: 30px 20px;
             position: relative;
             text-transform: capitalize;
         }
@@ -42,7 +41,7 @@ export const rosterStyles: CSSResult[] = [
             flex: 1 1 100%;
             display: flex;
             flex-direction: column;
-            margin: 40px 0;
+            padding: 70px 20px;
             color: #333;
             font-size: 1.8rem;
         }
@@ -58,8 +57,7 @@ export const rosterStyles: CSSResult[] = [
             font-size: 2.6rem;
         }
 
-        .card a:hover span:first-child,
-        .card a:focus span:first-child {
+        .card a:is(:hover, :focus) span:first-child {
             color: rgba(255, 0, 0, 0.8);
         }
     `,

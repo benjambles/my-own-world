@@ -16,9 +16,9 @@ export const joinStyles: CSSResult[] = [
 
         .cont-m login-form {
             margin-bottom: 60px;
+            --form-padding: 0 var(--inline-padding);
         }
 
-        .cont-m login-form,
         .cont-m join-form {
             --form-padding: 0 var(--inline-padding);
         }

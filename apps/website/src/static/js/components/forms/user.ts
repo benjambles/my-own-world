@@ -46,8 +46,7 @@ export class UserForm extends LitElement {
             text-transform: uppercase;
         }
 
-        .button:hover,
-        .button:focus {
+        button:is(:hover, :focus) {
             --bgColor: #1b4b1b;
         }
 
@@ -70,10 +69,7 @@ export class UserForm extends LitElement {
             transition: color 0.1s;
         }
 
-        a:hover,
-        a:active,
-        a:focus,
-        a.active {
+        a:is(:hover, :active, :focus, .active) {
             outline: none;
             color: var(--highlight);
         }
@@ -87,10 +83,7 @@ export class UserForm extends LitElement {
             flex-grow: 1;
         }
 
-        .bar-link:hover,
-        .bar-link:active,
-        .bar-link:focus,
-        .bar-link.active {
+        .bar-link:is(:hover, :active, :focus, .active) {
             background-color: var(--highlight);
             color: var(--shade-0);
         }

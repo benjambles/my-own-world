@@ -32,13 +32,12 @@ export class UserMenu extends LitElement {
             transition: color 0.1s;
         }
 
-        a:hover,
-        a:focus-visible {
+        a:is(:hover, :focus-visible) {
             color: white;
             background-color: var(--special-4);
         }
 
-        @media screen and (min-width: 992px) {
+        @container (min-width: 100px) {
             :host {
                 height: 101px;
                 width: 100px;

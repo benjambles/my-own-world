@@ -11,6 +11,10 @@ export class LabelledList extends LitElement {
             box-sizing: border-box;
         }
 
+        :host {
+            container: list / inline-size;
+        }
+
         p {
             margin-bottom: 3rem;
             font-size: 1.8rem;
@@ -30,7 +34,7 @@ export class LabelledList extends LitElement {
             letter-spacing: 0.1em;
         }
 
-        @media screen and (min-width: 992px) {
+        @container list (min-width: 300px) {
             p {
                 margin-bottom: 4rem;
             }
@@ -83,9 +87,7 @@ export class LabelledListItem extends LitElement {
             color: var(--shade-0);
             text-decoration: none;
         }
-
-        a:hover,
-        a:focus {
+        a:is(:hover, a:focus) {
             color: var(--basic-4);
         }
     `;
