@@ -69,6 +69,12 @@ export class LoginForm extends LitElement {
         this.dispatchEvent(loginEvent);
     }
 
+    protected updated(): void {
+        if (this.userData?.status === 'logged-in' && this.isModal) {
+            this.dispatchEvent(composedEvent('closelogin', true));
+        }
+    }
+
     protected render() {
         const isLoggedIn = this.userData?.status === 'logged-in';
 

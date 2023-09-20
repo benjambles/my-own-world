@@ -1,4 +1,3 @@
-import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume, provide } from '@lit-labs/context';
 import Cookies from 'js-cookie';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
@@ -37,13 +36,9 @@ const defaultUserData: UserData = {
 };
 
 export const userEvents = {
-    loggedIn: 'loginsuccess',
     login: 'userlogin',
     logout: 'userlogout',
-    loggedOut: 'logoutsuccess',
-    openLoginModal: 'openlogin',
     register: 'userjoin',
-    registered: 'joinsuccess',
     updateDetails: 'updatedetails',
 };
 
@@ -113,8 +108,6 @@ export class WithUser extends LitElement {
                 },
             });
 
-            this.dispatchEvent(composedEvent(userEvents.loggedIn, undefined));
-
             this.setCookies();
         } catch (e) {
             this.deleteCookies();
@@ -146,8 +139,6 @@ export class WithUser extends LitElement {
         this.deleteCookies();
 
         this.setUserData(defaultUserData);
-
-        this.dispatchEvent(composedEvent(userEvents.loggedOut, undefined));
     }
 
     private async refreshTokens() {
@@ -196,9 +187,6 @@ export class WithUser extends LitElement {
                 status: 'logged-in',
                 user: userData,
             });
-
-            this.dispatchEvent(composedEvent(userEvents.loggedIn, undefined));
-
             this.setCookies();
         } catch (e) {
             this.deleteCookies();

@@ -86,13 +86,13 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                         </div>
                         <mow-dialog
                             triggeropeneventname="openlogin"
-                            triggercloseeventname="loginsuccess"
+                            triggercloseeventname="closelogin"
                         >
                             <login-form ismodal></login-form>
                         </mow-dialog>
                         <mow-dialog
                             triggeropeneventname="openusermenu"
-                            triggercloseeventname="logoutsuccess"
+                            triggercloseeventname="closeusermenu"
                         >
                             <user-form></user-form>
                         </mow-dialog>

@@ -1,3 +1,4 @@
+import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -98,6 +99,12 @@ export class UserForm extends LitElement {
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
     userData: UserData;
+
+    protected updated(): void {
+        if (this.userData?.status !== 'logged-in') {
+            this.dispatchEvent(composedEvent('closeusermenu', true));
+        }
+    }
 
     protected render() {
         if (this.userData?.status !== 'logged-in') {
