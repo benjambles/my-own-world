@@ -19,9 +19,7 @@ export type RenderProps = {
 };
 
 type MetaData = {
-    meta: {
-        title: string;
-    };
+    title: string;
 };
 
 export function* renderTemplate<T extends MetaData>(
@@ -34,7 +32,7 @@ export function* renderTemplate<T extends MetaData>(
             <head>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>${data.meta.title}</title>
+                <title>${data.title}</title>
                 ${
                     rootComponent.assets?.inlineStyles
                         ? `<style>

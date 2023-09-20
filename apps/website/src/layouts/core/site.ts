@@ -10,7 +10,6 @@ import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
-import { mockData } from '@benjambles/mow-ui/utils.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import '../../static/js/components/forms/login.js';
@@ -18,15 +17,49 @@ import '../../static/js/components/forms/user.js';
 import '../../static/js/components/user-menu/user-menu.js';
 import styles from './site.styles.js';
 
-interface Data {
-    footer: typeof mockData.footer;
-    header: typeof mockData.header;
-    meta: {
-        title: string;
-    };
-}
+type Link = { href: string; text: string };
+type LinkList = { links: Link[]; title?: string };
 
-export default function site(data: Data, page: RenderProps): RenderProps {
+export default function site(page: RenderProps): RenderProps {
+    const footerLinks: Link[] = [
+        { text: 'Terms', href: '/terms' },
+        { text: 'Privacy', href: '/privacy' },
+        { text: 'Accessibility', href: '/accessibility' },
+    ];
+
+    const menuLinks: LinkList[] = [
+        {
+            links: [
+                { href: '/', text: 'Home' },
+                { href: '/setting', text: 'The Setting' },
+                { href: '/rules', text: 'The Rules' },
+                { href: '/downloads', text: 'Downloads' },
+                { href: '/tools', text: 'Tools' },
+                { href: '/faq', text: 'FAQ' },
+                { href: '/contact', text: 'Contact Us' },
+            ],
+        },
+        {
+            title: 'The rules',
+            links: [
+                { href: '/rules/quick-start', text: 'Quick Start' },
+                { href: '/rules/turn-sequence', text: 'Turn sequence' },
+                { href: '/rules/operatives', text: 'Operatives' },
+                { href: '/rules/skirmishes', text: 'Skirmishes' },
+                { href: '/rules/campaigns', text: 'Campaigns' },
+            ],
+        },
+        {
+            title: 'The Setting',
+            links: [
+                { href: '/explore', text: 'The Universe' },
+                { href: '/explore/timeline', text: 'The timeline' },
+                { href: '/explore/factions', text: 'The factions' },
+                { href: '/explore/locations', text: 'The locations' },
+            ],
+        },
+    ];
+
     return {
         assets: mergeRenderAssets(
             {
@@ -51,24 +84,7 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                     <with-user>
                         <fixed-header>
                             <mega-menu slot="nav-menu">
-                                ${data.header.menuData.map(
-                                    ({ links, title }, index) => html`
-                                        <labelled-list
-                                            header=${ifDefined(title)}
-                                            type="${index === 0
-                                                ? 'primary'
-                                                : 'secondary'}"
-                                        >
-                                            ${links.map(
-                                                ({ href, title }) => html`
-                                                    <labelled-list-item href="${href}">
-                                                        ${title}
-                                                    </labelled-list-item>
-                                                `,
-                                            )}
-                                        </labelled-list>
-                                    `,
-                                )}
+                                ${renderMenuContents(menuLinks)}
                             </mega-menu>
                             <a href="/" slot="logo">Logo</a>
                             <user-menu slot="account-button"></user-menu>
@@ -77,7 +93,7 @@ export default function site(data: Data, page: RenderProps): RenderProps {
                             <div id="content">${page.template}</div>
                             <site-footer>
                                 <span slot="site-name">Kh&ocirc;ra</span>
-                                ${data.footer.links.map(
+                                ${footerLinks.map(
                                     ({ href, text }) => html`
                                         <a href="${href}" role="listitem">${text}</a>
                                     `,
@@ -101,4 +117,21 @@ export default function site(data: Data, page: RenderProps): RenderProps {
             </view-lock>
         `,
     };
+}
+
+function renderMenuContents(linkLists: LinkList[]) {
+    return html`${linkLists.map(
+        ({ links, title }, index) => html`
+            <labelled-list
+                header=${ifDefined(title)}
+                type="${index === 0 ? 'primary' : 'secondary'}"
+            >
+                ${links.map(
+                    ({ href, text }) => html`
+                        <labelled-list-item href="${href}"> ${text} </labelled-list-item>
+                    `,
+                )}
+            </labelled-list>
+        `,
+    )}`;
 }

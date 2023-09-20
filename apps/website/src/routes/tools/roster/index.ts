@@ -4,7 +4,6 @@ import {
     redirectAction,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
-import { getMockData } from '../../../data/get-mock-data.js';
 import siteLayout from '../../../layouts/core/site.js';
 import config from './config.js';
 import create from './create.js';
@@ -14,47 +13,40 @@ import list from './list.js';
 export default function () {
     return createResource(config)
         .operation('getNewCampaign', async (ctx) => {
-            const pageData = await getMockData(ctx);
             const gameData = await getRosterData();
             const tpl = renderTemplate(
-                pageData,
-                siteLayout(pageData, create({ game: gameData.content.games[0] })),
+                { title: 'Create A Campaign Squad: Khora' },
+                siteLayout(create({ game: gameData.content.games[0] })),
                 ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getNewSkirmish', async (ctx) => {
-            const pageData = await getMockData(ctx);
-
             const gameData = await getRosterData();
             const tpl = renderTemplate(
-                pageData,
-                siteLayout(pageData, create({ game: gameData.content.games[0] })),
+                { title: 'Create A Skirmish Squad: Khora' },
+                siteLayout(create({ game: gameData.content.games[0] })),
                 ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getRosterById', async (ctx) => {
-            const pageData = await getMockData(ctx);
             const tpl = renderTemplate(
-                pageData,
-                siteLayout(pageData, edit()),
+                { title: 'Update Squad: Khora' },
+                siteLayout(edit()),
                 ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getRosters', async (ctx) => {
-            const [pageData, rosterData] = await Promise.all([
-                getMockData(ctx),
-                getRosterData(),
-            ]);
+            const rosterData = await getRosterData();
 
             const tpl = renderTemplate(
-                pageData,
-                siteLayout(pageData, list(rosterData)),
+                { title: 'Your Squads: Khora' },
+                siteLayout(list(rosterData)),
                 ctx.state.env.NODE_ENV,
             );
 
@@ -67,10 +59,9 @@ export default function () {
             return redirectAction(ctx.state.path.replace('new-skirmish', 'someid'));
         })
         .operation('updateRosterById', async (ctx) => {
-            const pageData = await getMockData(ctx);
             const tpl = renderTemplate(
-                pageData,
-                siteLayout(pageData, edit()),
+                { title: 'Update Squad: Khora' },
+                siteLayout(edit()),
                 ctx.state.env.NODE_ENV,
             );
 
