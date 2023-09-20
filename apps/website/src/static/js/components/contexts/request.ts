@@ -8,6 +8,7 @@ type RequestParams = {
         [key: string]: string;
     };
     query?: string | Record<string, string>;
+    headers?: Record<string, string>;
 };
 type RouteConfig = [string, HttpVerbs, RequestParams, any];
 
@@ -26,14 +27,15 @@ export class MowApi {
     }
 
     getRequestor<T extends RouteConfig>(path: T[0], method: T[1]) {
-        return async (args: T[2]): Promise<T[3]> =>
-            await this.request(path, method, args);
+        return async (args: T[2], authToken?: string): Promise<T[3]> =>
+            await this.request(path, method, args, authToken);
     }
 
     private async request<Args extends RequestParams, Res extends any>(
         path: string,
         method: HttpVerbs,
         args: Args,
+        authToken?: string,
     ): Promise<Res> {
         const populatedUrl = new URL(this.rootUrl);
         const populatedPath = Object.entries(args.params ?? {}).reduce(
@@ -50,6 +52,7 @@ export class MowApi {
             cache: 'default',
             headers: {
                 'Content-Type': 'application/json',
+                ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
             },
             method,
             mode: 'cors',

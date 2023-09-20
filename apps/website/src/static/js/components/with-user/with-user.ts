@@ -211,10 +211,14 @@ export class WithUser extends LitElement {
 
     private async updateDetails(data: UserDetailsPayload) {
         try {
-            const userData = await this.userApi.call('updateUserById', {
-                params: { userId: this.userData.user._id },
-                body: data,
-            });
+            const userData = await this.userApi.call(
+                'updateUserById',
+                {
+                    params: { userId: this.userData.user._id },
+                    body: data,
+                },
+                this.userData.tokens.access,
+            );
 
             this.setUserData({ user: userData });
             this.setCookies();

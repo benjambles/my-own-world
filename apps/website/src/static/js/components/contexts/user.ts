@@ -29,7 +29,7 @@ import { ApiMap, MowApi } from './request.js';
 type UserClientTypes = ClientApiTypes['user'];
 
 type Handlers<T extends ApiMap> = Partial<{
-    [key in keyof T]: (args: T[key][2]) => Promise<T[key][3]>;
+    [key in keyof T]: (args: T[key][2], authToken?: string) => Promise<T[key][3]>;
 }>;
 
 export type UserInstance = InstanceType<typeof Users>;
@@ -67,6 +67,7 @@ export class Users {
     async call<T extends keyof UserClientTypes>(
         action: T,
         params: UserClientTypes[T][2],
+        accessToken?: string,
     ): Promise<UserClientTypes[T][3]> {
         if (!this.requestManager) {
             throw new Error('No request manager to handle the request.');
@@ -76,6 +77,6 @@ export class Users {
             throw new Error('No action for the given key.');
         }
 
-        return this.actions[action](params);
+        return this.actions[action](params, accessToken);
     }
 }
