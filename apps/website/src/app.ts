@@ -7,7 +7,6 @@ import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
-import { getMockData } from './data/get-mock-data.js';
 import siteLayout from './layouts/core/site.js';
 import { paths as userPaths } from './routes/account/config.js';
 import errorTemplates from './routes/errors/errors.js';
@@ -52,7 +51,9 @@ export const serve = configureServer({
         app,
         errorTemplates,
         layoutComponent: siteLayout,
-        layoutDataProvider: getMockData,
+        layoutDataProvider: async () => {
+            return { title: 'Error: Khora' };
+        },
         loginPath: userPaths.login,
         renderer: renderTemplate,
     }),

@@ -22,8 +22,8 @@ type MetaData = {
     title: string;
 };
 
-export function* renderTemplate<T extends MetaData>(
-    data: T,
+export function* renderTemplate(
+    data: MetaData,
     rootComponent: RenderProps,
     nodeEnv: string = 'production',
 ) {

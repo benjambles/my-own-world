@@ -6,19 +6,24 @@ import { RenderProps } from '../../../utils/web-rendering/render-template.js';
 type ErrorCodes = '401' | '403' | '404' | '500';
 
 type ErrorTemplates = {
-    [key in ErrorCodes]: (data: any) => RenderProps;
+    [key in ErrorCodes]: (data: ErrorData) => RenderProps;
 };
 
 type ErrorHandlerArgs<T> = {
     app: Koa;
     errorTemplates: ErrorTemplates;
-    layoutComponent: (data: T, children: RenderProps) => RenderProps;
+    layoutComponent: (children: RenderProps) => RenderProps;
     layoutDataProvider?: (ctx: Context) => Promise<T>;
     loginPath: string;
     renderer: (
         data: T,
         template: RenderProps,
     ) => Generator<string | Promise<RenderResult>, void, undefined>;
+};
+
+export type ErrorData = {
+    error: string | object;
+    status: string;
 };
 
 /**
@@ -70,7 +75,6 @@ export function webErrorHandler<T extends object>({
             const page = await renderer(
                 data,
                 layoutComponent(
-                    data,
                     errorTemplates[err.status]({
                         status,
                         error: parsedError,
