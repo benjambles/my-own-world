@@ -8,6 +8,7 @@ import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
 import { getConsumableModel } from '../resources/items/consumables/consumables.js';
+import { getGameModel } from '../resources/games/data/games.js';
 
 type Model = (db: Db, env: any) => ModelReturn;
 
@@ -57,5 +58,6 @@ export function bindModels(db: Db, env: Env) {
         .bind('tokens', getTokenModel)
         .bind('users', getUserModel)
         .bind('weapons', getWeaponModel)
+        .bind('games', getGameModel)
         .get();
 }
