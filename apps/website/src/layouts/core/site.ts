@@ -5,16 +5,12 @@ import {
 import '@benjambles/mow-ui/components/fixed-header/fixed-header.js';
 import '@benjambles/mow-ui/components/mega-menu/labelled-list.js';
 import '@benjambles/mow-ui/components/mega-menu/mega-menu.js';
-import '@benjambles/mow-ui/components/mow-action/mow-action.js';
 import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
-import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { paths as userPaths } from '../../routes/account/config.js';
-import '../../static/js/components/forms/login.js';
-import '../../static/js/components/forms/user.js';
 import '../../static/js/components/user-menu/user-menu.js';
 import styles from './site.styles.js';
 
