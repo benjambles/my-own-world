@@ -1,4 +1,5 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
+import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { html } from 'lit';
 import { paths } from './config.js';
@@ -39,15 +40,20 @@ export default function (props: GameListProps): RenderProps {
                     </game-list>
 
                     <div class="button-group col-to-row">
-                        <a href="${paths.newSkirmish}" class="outline-button">
-                            Hire a crew (Skirmish)
-                        </a>
+                        <mow-action preventdefault eventtrigger="opencreateskirmish">
+                            <a href="${paths.newSkirmish}" class="outline-button">
+                                Hire a crew (Skirmish)
+                            </a>
+                        </mow-action>
                         <a href="${paths.newCampaign}" class="outline-button">
                             Hire a crew (Campaign)
                         </a>
                     </div>
                 </section>
             </main>
+            <mow-dialog triggeropeneventname="opencreateskirmish">
+                <create-skirmish rosterurl=${paths.rosterById} ismodal></create-skirmish>
+            </mow-dialog>
         `,
     };
 }

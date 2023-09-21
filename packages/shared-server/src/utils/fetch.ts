@@ -14,8 +14,6 @@ export function buildUrl<Params extends KoaRequestParams>({
     urlParams,
     prefix = '',
 }: BuildUrlParams<Params>): URL {
-    console.log(urlParams);
-
     const populatedUrl = new URL(rootUrl);
     const populatedPath = Object.entries(urlParams.params ?? {}).reduce(
         (acc, [key, value]) => acc.replace(`:${key}`, value),

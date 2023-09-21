@@ -18,7 +18,7 @@ export default function () {
         .operation('getNewCampaign', async (ctx) => {
             const tpl = renderTemplate(
                 { title: 'Create A Campaign Squad: Khora' },
-                siteLayout(create({ type: 'campaign' }), true),
+                siteLayout(create(), true),
                 ctx.state.env.NODE_ENV,
             );
 
@@ -27,7 +27,7 @@ export default function () {
         .operation('getNewSkirmish', async (ctx) => {
             const tpl = renderTemplate(
                 { title: 'Create A Skirmish Squad: Khora' },
-                siteLayout(create({ type: 'skirmish' }), true),
+                siteLayout(create(), true),
                 ctx.state.env.NODE_ENV,
             );
 

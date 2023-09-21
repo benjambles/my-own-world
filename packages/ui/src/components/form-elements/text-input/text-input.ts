@@ -41,6 +41,11 @@ export const inputStyles = css`
         letter-spacing: 0.2ch;
     }
 
+    textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
     .text-input {
         display: flex;
         align-items: center;
@@ -66,14 +71,14 @@ export const inputStyles = css`
         z-index: -1;
     }
 
-    .text-input input {
+    .text-input :is(input, textarea) {
         width: 100%;
         padding: 12px 20px 10px;
         border: 0 none;
         border-radius: 2px;
     }
 
-    .text-input input:focus-visible {
+    .text-input :is(input, textarea):focus-visible {
         filter: opacity(0.9);
         outline: none;
     }

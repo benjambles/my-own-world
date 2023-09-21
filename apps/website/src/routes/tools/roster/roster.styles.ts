@@ -1,10 +1,18 @@
-import { callOutStyles, flexColToRow, outlineButton } from '@benjambles/mow-ui/styles.js';
+import {
+    callOutStyles,
+    containerMC,
+    flexColToRow,
+    gradientText,
+    outlineButton,
+} from '@benjambles/mow-ui/styles.js';
 import { CSSResult, css } from 'lit';
 
 export const rosterStyles: CSSResult[] = [
     flexColToRow,
     callOutStyles,
     outlineButton,
+    gradientText,
+    containerMC,
     css`
         .col-to-row {
             --col-to-row-gap: 20px;
@@ -17,6 +25,16 @@ export const rosterStyles: CSSResult[] = [
         h1 {
             margin: 12rem 0 8rem;
             font-size: 6rem;
+        }
+
+        mow-action {
+            flex: 1 1 100%;
+            display: flex;
+        }
+
+        create-skirmish[ismodal] {
+            --cs-width: 500px;
+            --form-padding: 35px 0 0;
         }
     `,
 ];
