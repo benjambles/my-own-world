@@ -12,6 +12,7 @@
         "lib": ["ES2022", "esnext.array", "dom", "ES2020.String", "ES2020.Intl"],
         "module": "esnext",
         "moduleResolution": "nodenext",
+        "noErrorTruncation": true,
         "pretty": true,
         "removeComments": true,
         "skipLibCheck": true,
