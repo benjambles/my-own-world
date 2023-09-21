@@ -8,6 +8,7 @@ import { Game } from '../../../../routes/tools/roster/index.js';
 import { GameApi, GameApiInstance } from '../contexts/game.js';
 import { MowApiInstance, requestContext } from '../contexts/request.js';
 import { UserData, userContext } from '../contexts/user.js';
+import { callOutStyles } from '@benjambles/mow-ui/styles.js';
 
 @customElement('game-list')
 export class GameList extends LitElement {
@@ -15,21 +16,37 @@ export class GameList extends LitElement {
 
     static ClickEventName = 'gamelistpaginate';
 
-    static styles = css`
-        * {
-            box-sizing: border-box;
-        }
+    static styles = [
+        callOutStyles,
+        css`
+            * {
+                box-sizing: border-box;
+            }
 
-        .card-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-            grid-auto-rows: minmax(100px, auto);
-            gap: 30px;
-            padding: 0;
-            margin: 50px 0;
-        }
-    `;
+            .card-list slot {
+                list-style: none;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+                grid-auto-rows: minmax(100px, auto);
+                gap: 30px;
+                padding: 0;
+                margin: 50px 0;
+            }
+
+            .callout {
+                --co-bg-color: #ccc;
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                font-variant: small-caps;
+                font-family: var(--font-special);
+                padding: 150px 0;
+                margin: 0;
+            }
+        `,
+    ];
 
     @property()
     rootUrl = '/';
@@ -99,7 +116,7 @@ export class GameList extends LitElement {
                       )
                     : html`
                           <slot>
-                              <p>No rosters found</p>
+                              <p class="callout">No crews found</p>
                           </slot>
                       `}
             </div>

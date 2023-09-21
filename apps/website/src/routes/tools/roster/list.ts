@@ -28,16 +28,14 @@ export default function (props: GameListProps): RenderProps {
                 <section class="panel">
                     <h1>Crews</h1>
 
-                    <game-list rooturl=${paths.index} rosterurl=${paths.rosterById}>
-                        ${props.games.map((data) => {
-                            return html`
-                                <game-tile
-                                    .data=${data}
-                                    urlpattern=${paths.rosterById}
-                                ></game-tile>
-                            `;
-                        })}
-                    </game-list>
+                    <game-list rooturl=${paths.index} rosterurl=${paths.rosterById}
+                        >${props.games.map((data) => {
+                            return html`<game-tile
+                                .data=${data}
+                                urlpattern=${paths.rosterById}
+                            ></game-tile>`;
+                        })}</game-list
+                    >
 
                     <div class="button-group col-to-row">
                         <mow-action preventdefault eventtrigger="opencreateskirmish">
