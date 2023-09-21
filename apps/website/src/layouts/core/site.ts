@@ -12,6 +12,7 @@ import '@benjambles/mow-ui/components/skip-links/skip-links.js';
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { paths as userPaths } from '../../routes/account/config.js';
 import '../../static/js/components/forms/login.js';
 import '../../static/js/components/forms/user.js';
 import '../../static/js/components/user-menu/user-menu.js';
@@ -20,7 +21,10 @@ import styles from './site.styles.js';
 type Link = { href: string; text: string };
 type LinkList = { links: Link[]; title?: string };
 
-export default function site(page: RenderProps): RenderProps {
+export default function site(
+    page: RenderProps,
+    isProtected: Boolean = false,
+): RenderProps {
     const footerLinks: Link[] = [
         { text: 'Terms', href: '/terms' },
         { text: 'Privacy', href: '/privacy' },
@@ -81,7 +85,10 @@ export default function site(page: RenderProps): RenderProps {
             </skip-links>
             <view-lock watchedevents="menutoggle modaltoggle">
                 <with-api>
-                    <with-user>
+                    <with-user
+                        ?protectedpage=${isProtected}
+                        redirectUrl=${userPaths.login}
+                    >
                         <fixed-header>
                             <mega-menu slot="nav-menu">
                                 ${renderMenuContents(menuLinks)}

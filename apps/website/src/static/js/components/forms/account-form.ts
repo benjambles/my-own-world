@@ -6,8 +6,7 @@ import { textInput } from '@benjambles/mow-ui/core.js';
 import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils.js';
 import { consume } from '@lit-labs/context';
-import Cookies from 'js-cookie';
-import { LitElement, css, html, isServer, nothing } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../../routes/account/config.js';
 import { UserData, userContext } from '../contexts/user.js';
@@ -85,12 +84,6 @@ export class AccountForm extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    @property()
-    redirectUrl = '/';
-
-    @property()
-    cookies = 'mow-refreshtoken|mow-fingerprint';
-
     @query('#firstName')
     private firstNameField: HTMLInputElement;
 
@@ -99,11 +92,6 @@ export class AccountForm extends LitElement {
 
     @query('#screenName')
     private screenNameField: HTMLInputElement;
-
-    private isMaybeLoggedIn() {
-        const authCookies = this.cookies.split('|');
-        return authCookies.every((name) => !!Cookies.get(name));
-    }
 
     private submitDetails(e: SubmitEvent) {
         e.preventDefault();
@@ -118,13 +106,6 @@ export class AccountForm extends LitElement {
     }
 
     protected render() {
-        // We have the potential to be logged in but the User Context may
-        // not have initialised yet
-        if (!this.isMaybeLoggedIn() && !isServer) {
-            window.location.replace(this.redirectUrl);
-            return nothing;
-        }
-
         if (this.userData?.status !== 'logged-in') {
             return nothing;
         }

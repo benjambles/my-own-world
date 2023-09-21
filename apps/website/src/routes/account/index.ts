@@ -11,7 +11,7 @@ export default function () {
         .operation('getAccount', async (ctx) => {
             const tpl = renderTemplate(
                 { title: 'Your Information: Khora' },
-                siteLayout(account()),
+                siteLayout(account(), true),
                 ctx.state.env.NODE_ENV,
             );
             return ok(tpl);

@@ -1,7 +1,7 @@
 import { consume, provide } from '@lit-labs/context';
 import Cookies from 'js-cookie';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { MowApiInstance, requestContext } from '../contexts/request.js';
 import { UserData, UserInstance, Users, userContext } from '../contexts/user.js';
@@ -63,6 +63,12 @@ export class WithUser extends LitElement {
     @property()
     refreshCookie = 'mow-refreshtoken';
 
+    @property({ type: Boolean })
+    protectedPage: Boolean = false;
+
+    @property()
+    redirectUrl = '/';
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -90,6 +96,10 @@ export class WithUser extends LitElement {
         this.userApi.addManager(this.requestManager);
 
         this.refreshTokens();
+    }
+
+    private isMaybeLoggedIn() {
+        return !!Cookies.get(this.refreshCookie);
     }
 
     private async login(data: UserLoginPayload) {
@@ -240,6 +250,11 @@ export class WithUser extends LitElement {
     }
 
     protected render() {
+        if (!this.isMaybeLoggedIn() && this.protectedPage) {
+            window.location.replace(this.redirectUrl);
+            return nothing;
+        }
+
         return html`<slot></slot>`;
     }
 }
