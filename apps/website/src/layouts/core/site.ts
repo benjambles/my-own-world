@@ -80,7 +80,7 @@ export default function site(
                 <a href="#footer">Skip to the footer</a>
             </skip-links>
             <view-lock watchedevents="menutoggle modaltoggle">
-                <with-api>
+                <with-api apihost="http://localhost:3000" apipathprefix="/api/v1">
                     <with-user
                         ?protectedpage=${isProtected}
                         redirectUrl=${userPaths.login}

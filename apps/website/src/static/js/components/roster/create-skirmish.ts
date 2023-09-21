@@ -1,10 +1,10 @@
+import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
 import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { GameApi, GameApiInstance } from '../contexts/game.js';
-import { MowApiInstance, requestContext } from '../contexts/request.js';
 
 @customElement('create-skirmish')
 export class CreateSkirmish extends LitElement {
@@ -72,14 +72,20 @@ export class CreateSkirmish extends LitElement {
     connectedCallback(): void {
         super.connectedCallback();
 
-        this.gameApi = new GameApi();
-        this.gameApi.addManager(this.requestManager);
+        if (this.requestManager) {
+            this.gameApi = new GameApi();
+            this.gameApi.addManager(this.requestManager);
+        }
     }
 
     private async onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
         const formData = new FormData(this.formElem);
+
+        if (!this.gameApi) {
+            throw new Error('No request manager registered');
+        }
 
         try {
             const result = await this.gameApi.call('createGame', {

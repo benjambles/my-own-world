@@ -1,14 +1,14 @@
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
 import { PaginationDetails } from '@benjambles/mow-ui/components/mow-pagination/mow-pagination.js';
+import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { time } from '@benjambles/mow-ui/core.js';
+import { callOutStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Game } from '../../../../routes/tools/roster/index.js';
 import { GameApi, GameApiInstance } from '../contexts/game.js';
-import { MowApiInstance, requestContext } from '../contexts/request.js';
 import { UserData, userContext } from '../contexts/user.js';
-import { callOutStyles } from '@benjambles/mow-ui/styles.js';
 
 @customElement('game-list')
 export class GameList extends LitElement {
@@ -77,20 +77,32 @@ export class GameList extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener(
-            GameList.ClickEventName,
-            (e: CustomEvent<PaginationDetails>) => {
-                e.preventDefault();
+        this.addEventListener(GameList.ClickEventName, this.fetchGames);
 
-                this.gameApi.call('getGames', {
-                    query: { userId: this.userData.user._id, ...e.detail },
-                });
-            },
-        );
-
-        this.gameApi = new GameApi();
-        this.gameApi.addManager(this.requestManager);
+        if (this.requestManager) {
+            this.gameApi = new GameApi();
+            this.gameApi.addManager(this.requestManager);
+        }
     }
+
+    private fetchGames = async (e: CustomEvent<PaginationDetails>) => {
+        e.preventDefault();
+
+        if (!this.gameApi) {
+            throw new Error('No request manager registered');
+        }
+
+        try {
+            const { count, games } = await this.gameApi.call('getGames', {
+                query: { userId: this.userData.user._id, ...e.detail },
+            });
+
+            this.games = games;
+            this.count = count;
+        } catch (e) {
+            // do something with error
+        }
+    };
 
     protected render() {
         return html`

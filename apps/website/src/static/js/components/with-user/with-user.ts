@@ -1,9 +1,9 @@
+import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { consume, provide } from '@lit-labs/context';
 import Cookies from 'js-cookie';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { MowApiInstance, requestContext } from '../contexts/request.js';
 import { UserData, UserInstance, Users, userContext } from '../contexts/user.js';
 
 //#region Types
@@ -92,10 +92,12 @@ export class WithUser extends LitElement {
         );
         //#endregion EventListeners
 
-        this.userApi = new Users();
-        this.userApi.addManager(this.requestManager);
+        if (this.requestManager) {
+            this.userApi = new Users();
+            this.userApi.addManager(this.requestManager);
 
-        this.refreshTokens();
+            this.refreshTokens();
+        }
     }
 
     private isMaybeLoggedIn() {
@@ -103,6 +105,10 @@ export class WithUser extends LitElement {
     }
 
     private async login(data: UserLoginPayload) {
+        if (!this.userApi) {
+            throw new Error('No request manager registered');
+        }
+
         try {
             const response = await this.userApi.call('authenticateUser', {
                 body: data,
@@ -129,6 +135,10 @@ export class WithUser extends LitElement {
     }
 
     private async logout() {
+        if (!this.userApi) {
+            throw new Error('No request manager registered');
+        }
+
         const { fingerprint, refresh } = this.userData.tokens;
         let userId = this.userData.user?._id;
 
@@ -152,6 +162,10 @@ export class WithUser extends LitElement {
     }
 
     private async refreshTokens() {
+        if (!this.userApi) {
+            throw new Error('No request manager registered');
+        }
+
         const refreshToken = Cookies.get(this.refreshCookie);
         const fingerprint = Cookies.get(this.fingerprintCookie);
 
@@ -185,6 +199,10 @@ export class WithUser extends LitElement {
     }
 
     private async register(data: UserRegistrationPayload) {
+        if (!this.userApi) {
+            throw new Error('No request manager registered');
+        }
+
         try {
             const userData = await this.userApi.call('createUser', {
                 body: {
@@ -208,6 +226,10 @@ export class WithUser extends LitElement {
     }
 
     private async updateDetails(data: UserDetailsPayload) {
+        if (!this.userApi) {
+            throw new Error('No request manager registered');
+        }
+
         try {
             const userData = await this.userApi.call(
                 'updateUserById',

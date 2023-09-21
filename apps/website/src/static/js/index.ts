@@ -1,6 +1,6 @@
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 
-import './components/with-api/with-api.js';
+import '@benjambles/mow-ui/components/with-api/with-api.js';
 import './components/with-user/with-user.js';
 import './components/user-menu/user-menu.js';
 import './components/forms/account-form.js';

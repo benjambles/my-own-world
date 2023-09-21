@@ -1,5 +1,5 @@
 import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
-import { Handlers, MowApi } from './request.js';
+import { Handlers, MowApi } from '@benjambles/mow-ui/contexts/request.js';
 
 type GameClientTypes = ClientApiTypes['games'];
 

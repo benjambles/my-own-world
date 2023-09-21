@@ -17,6 +17,8 @@
         "./templates/*": "./dist/templates/*",
         "./components": "./dist/components",
         "./components/*": "./dist/components/*",
+        "./contexts": "./dist/contexts",
+        "./contexts/*": "./dist/contexts/*",
         "./styles.js": "./dist/global-css/index.styles.js"
     },
     "type": "module",
@@ -37,8 +39,10 @@
     "author": "Ben Allen",
     "license": "ISC",
     "dependencies": {
+        "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
+        "@lit-labs/context": "0.4.0",
         "lit": "2.8.0"
     },
     "devDependencies": {
