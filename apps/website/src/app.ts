@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { getApiHelpers } from '@benjambles/mow-api/dist/app.js';
 import { cleanUp, configureServer } from '@benjambles/mow-server/dist/index.js';
 import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/web-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
@@ -27,6 +28,8 @@ const paths = {
 loadEnv(resolveImportPath(paths.base, paths.env));
 const env = validateEnv(envSchema, process.env);
 const app = new Koa();
+
+export const apiHelpers = getApiHelpers(env.API_HOST);
 
 export const serve = configureServer({
     app,

@@ -8,7 +8,11 @@ export default function (data): RenderProps {
         },
         template: html`
             <div class="page--game-create">
-                <form action="/game/create?type=${data.game.type}"></form>
+                <h1>Form a crew</h1>
+
+                <form action="/game/create?type=${data.type}">
+                    <button>Submit</button>
+                </form>
             </div>
         `,
     };

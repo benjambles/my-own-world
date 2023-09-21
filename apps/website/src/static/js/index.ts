@@ -7,6 +7,7 @@ import './components/forms/account-form.js';
 import './components/forms/join.js';
 import './components/forms/login.js';
 import './components/forms/user.js';
+import './components/roster/game-list.js';
 
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import '@benjambles/mow-ui/components/mow-action/mow-action.js';

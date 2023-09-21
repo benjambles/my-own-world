@@ -27,7 +27,7 @@ export default {
                         in: 'query',
                         description: 'How many records to fetch',
                         schema: {
-                            default: 10,
+                            default: 30,
                             format: 'int64',
                             type: 'integer',
                         },

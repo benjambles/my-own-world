@@ -10,16 +10,6 @@ export const rosterStyles: CSSResult[] = [
             --col-to-row-gap: 20px;
         }
 
-        .card-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-            grid-auto-rows: minmax(100px, auto);
-            gap: 30px;
-            padding: 0;
-            margin: 50px 0;
-        }
-
         .panel {
             padding: 0 6rem;
         }
@@ -27,38 +17,6 @@ export const rosterStyles: CSSResult[] = [
         h1 {
             margin: 12rem 0 8rem;
             font-size: 6rem;
-        }
-
-        .card {
-            --co-bg-color: #ccc;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            text-transform: capitalize;
-        }
-
-        .card > a {
-            flex: 1 1 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 70px 20px;
-            color: #333;
-            font-size: 1.8rem;
-        }
-
-        .card span {
-            padding-bottom: 5px;
-        }
-
-        .card span:first-child {
-            padding-bottom: 15px;
-            color: var(--shade-5);
-            font-family: 'Oxanium', monospace;
-            font-size: 2.6rem;
-        }
-
-        .card a:is(:hover, :focus) span:first-child {
-            color: rgba(255, 0, 0, 0.8);
         }
     `,
 ];
