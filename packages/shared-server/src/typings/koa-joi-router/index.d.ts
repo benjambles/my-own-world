@@ -5,5 +5,8 @@ declare module 'koa' {
         params: {
             [name: string]: any;
         };
+        query: {
+            [name: string]: number | string | string[];
+        };
     }
 }

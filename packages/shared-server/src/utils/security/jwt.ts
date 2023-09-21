@@ -42,3 +42,20 @@ export function verifyRefreshToken(
 
     return jwt.verify(refreshToken, JWT_SECRET, { jwtid: hashedId }) as JwtPayload;
 }
+
+export function getJwtFromCookie(ctx, cookieName): string {
+    const authCookie = ctx.cookies.get(cookieName);
+
+    if (!authCookie) {
+        throw new Error('No bearer token found');
+    }
+
+    console.log(ctx.state.env.JWT_SECRET, authCookie);
+
+    try {
+        parseToken(ctx.state.env.JWT_SECRET, authCookie);
+        return authCookie;
+    } catch (e) {
+        throw new Error('Invalid access token');
+    }
+}

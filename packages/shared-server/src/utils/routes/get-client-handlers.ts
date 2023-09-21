@@ -1,14 +1,12 @@
 import { Id, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
+import createError from 'http-errors';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
-import { URL, URLSearchParams } from 'url';
 import { ResourceConfig } from '../../routing/create-resource.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
 import { ApiDoc, MethodSchema, UnionFromProps } from '../joi/openapi-to-joi.js';
-import {
-    MaybeHandlerResponse,
-    ValidResponses,
-} from '../joi/responses/openapi-to-types.js';
+import { MaybeHandlerResponse } from '../joi/responses/openapi-to-types.js';
+import { buildUrl, parseResponse } from '../fetch.js';
 import { HTTPVerbs } from './get-http-methods.js';
 
 //#region Types
@@ -22,6 +20,7 @@ interface ResourceBinder<
     operation: <K extends keyof Config['operations']>(
         operationId: K,
         hostUrl: string,
+        prefix: string,
         fetchArgs: FetchHandlerArgs,
     ) => ResourceBinder<Config, D & { [key in K]: OperationConfig<Config['apiDoc'], K> }>;
 }
@@ -55,26 +54,27 @@ type MaybeOperation<
                   MaybeBodyContext<Schema['requestBody'], Components>,
                   Components
               >,
+              accessToken?: string,
           ) => Promise<MaybeHandlerResponse<Schema['responses'], Components>>;
       }
     : never;
 
 interface FetchHandlerArgs {
     method: HTTPVerbs;
-    responses: ValidResponses;
-    url: string;
+    path: string;
 }
 //#endregion Types
 
 export function getClientHandlers<T extends ResourceConfig>(
     resources: T,
     hostUrl: string,
+    prefix: string,
 ) {
     const fetchParams = extractParams(resources.apiDoc);
 
     return Object.keys(resources['operations'])
         .reduce((acc, operationId) => {
-            return acc.operation(operationId, hostUrl, fetchParams[operationId]);
+            return acc.operation(operationId, hostUrl, prefix, fetchParams[operationId]);
         }, getClientBinder<T>())
         .get() as ClientHandlers<T>;
 }
@@ -85,8 +85,13 @@ function getClientBinder<T extends ResourceConfig>(): ResourceBinder<T> {
             get() {
                 return data;
             },
-            operation(operationId: keyof T['operations'], hostUrl: string, fetchArgs) {
-                data[operationId] = getFetchHandler(hostUrl, fetchArgs);
+            operation(
+                operationId: keyof T['operations'],
+                hostUrl: string,
+                prefix: string,
+                fetchArgs,
+            ) {
+                data[operationId] = getFetchHandler(hostUrl, prefix, fetchArgs);
                 return clientBinder(data);
             },
         };
@@ -104,7 +109,6 @@ function extractParams<Doc extends ApiDoc>(doc: Doc): Record<string, FetchHandle
                     acc[methodConfig.operationId] = {
                         method,
                         path,
-                        responses: methodConfig.responses,
                     };
 
                     return acc;
@@ -116,33 +120,22 @@ function extractParams<Doc extends ApiDoc>(doc: Doc): Record<string, FetchHandle
 }
 
 function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
-    hostUrl: string,
-    { method, responses, url }: FetchHandlerArgs,
+    rootUrl: string,
+    prefix: string,
+    { method, path }: FetchHandlerArgs,
 ) {
-    return async (args: Params): Promise<Result> => {
-        const populatedUrl = new URL(
-            Object.entries(args.params ?? {}).reduce(
-                (acc, [key, value]) => acc.replace(`:${key}`, value),
-                url,
-            ),
-            hostUrl,
-        );
+    return async (args: Params, accessToken?: string): Promise<Result> => {
+        const populatedUrl = buildUrl({ path, prefix, rootUrl, urlParams: args });
 
-        populatedUrl.search += new URLSearchParams(args.query ?? '').toString();
-
-        const resp = await fetch(populatedUrl, {
-            method,
+        const response = await fetch(populatedUrl, {
             body: args.body ? JSON.stringify(args.body) : undefined,
+            headers: {
+                'Content-Type': 'application/json',
+                ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+            },
+            method,
         });
 
-        const [response] = Object.values(responses) as [ValidResponses];
-
-        if (!('content' in response)) {
-            return undefined;
-        }
-
-        return Object.keys(response.content)[0] === 'text/plain'
-            ? resp.text()
-            : resp.json();
+        return parseResponse(response, createError);
     };
 }

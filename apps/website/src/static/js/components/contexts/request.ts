@@ -1,16 +1,8 @@
+import { buildUrl, parseResponse } from '@benjambles/mow-server/dist/utils/fetch.js';
+import { KoaRequestParams } from '@benjambles/mow-server/dist/utils/joi/context/context.js';
 import { createContext } from '@lit-labs/context';
 
-type RequestParams = {
-    body?: {
-        [key: string]: unknown;
-    };
-    params?: {
-        [key: string]: string;
-    };
-    query?: string | Record<string, string>;
-    headers?: Record<string, string>;
-};
-type RouteConfig = [string, HttpVerbs, RequestParams, any];
+type RouteConfig = [string, HttpVerbs, KoaRequestParams, any];
 
 export type ApiMap = Record<string, RouteConfig>;
 export type HttpVerbs = 'delete' | 'get' | 'post' | 'put';
@@ -19,11 +11,17 @@ export type MowApiInstance = InstanceType<typeof MowApi>;
 export const requestSymbol = Symbol('request');
 export const requestContext = createContext<MowApiInstance>(requestSymbol);
 
+export type Handlers<T extends ApiMap> = Partial<{
+    [key in keyof T]: (args: T[key][2], authToken?: string) => Promise<T[key][3]>;
+}>;
+
 export class MowApi {
     private rootUrl;
+    private apiPrefix;
 
-    constructor(rootUrl: string) {
+    constructor(rootUrl: string, apiPrefix: string = '') {
         this.rootUrl = rootUrl;
+        this.apiPrefix = apiPrefix;
     }
 
     getRequestor<T extends RouteConfig>(path: T[0], method: T[1]) {
@@ -31,23 +29,20 @@ export class MowApi {
             await this.request(path, method, args, authToken);
     }
 
-    private async request<Args extends RequestParams, Res extends any>(
+    private async request<Args extends KoaRequestParams, Res extends any>(
         path: string,
         method: HttpVerbs,
         args: Args,
         authToken?: string,
     ): Promise<Res> {
-        const populatedUrl = new URL(this.rootUrl);
-        const populatedPath = Object.entries(args.params ?? {}).reduce(
-            (acc, [key, value]) => acc.replace(`:${key}`, value),
+        const populatedUrl = buildUrl({
             path,
-        );
+            rootUrl: this.rootUrl,
+            urlParams: args,
+            prefix: this.apiPrefix,
+        });
 
-        populatedUrl.pathname += populatedPath;
-
-        populatedUrl.search += new URLSearchParams(args.query ?? '').toString();
-
-        const resp: Response = await fetch(populatedUrl, {
+        const response = await fetch(populatedUrl, {
             body: args.body ? JSON.stringify(args.body) : '',
             cache: 'default',
             headers: {
@@ -58,15 +53,6 @@ export class MowApi {
             mode: 'cors',
         });
 
-        const contentType = resp.headers.get('Content-Type');
-        const responseBody = await (contentType.includes('application/json')
-            ? resp.json()
-            : resp.text());
-
-        if (resp.status > 400) {
-            throw new Error(responseBody);
-        }
-
-        return responseBody;
+        return parseResponse(response);
     }
 }

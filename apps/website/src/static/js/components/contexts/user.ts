@@ -1,4 +1,6 @@
+import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
 import { createContext } from '@lit-labs/context';
+import { Handlers, MowApi } from './request.js';
 
 export type UserData = {
     errors?: {
@@ -23,14 +25,7 @@ export type UserData = {
 export const userSymbol = Symbol('user');
 export const userContext = createContext<UserData>(userSymbol);
 
-import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
-import { ApiMap, MowApi } from './request.js';
-
 type UserClientTypes = ClientApiTypes['user'];
-
-type Handlers<T extends ApiMap> = Partial<{
-    [key in keyof T]: (args: T[key][2], authToken?: string) => Promise<T[key][3]>;
-}>;
 
 export type UserInstance = InstanceType<typeof Users>;
 

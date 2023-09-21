@@ -1,7 +1,7 @@
-import { Id, ObjectValues } from '@benjambles/js-lib/dist/index.js';
+import { Id, Identity } from '@benjambles/js-lib/dist/index.js';
 import { Context } from 'koa';
 import router from 'koa-joi-router';
-import { Filter } from 'ts-toolbelt/out/List/Filter.js';
+import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { catchJoiErrors } from '../koa/middleware/errors/catch-joi-errors.js';
 import { getAccessMiddleware } from '../koa/middleware/get-access-middleware.js';
 import { buildJoiSpec } from '../utils/joi/build-joi-spec.js';
@@ -48,9 +48,9 @@ export interface ResourceConfig extends ResourceData {
     apiDoc: ApiDoc;
 }
 
-type OperationHandler<A extends ApiDoc, K extends string> = Filter<
+type OperationHandler<A extends ApiDoc, K extends string> = Select<
     RouteHandlers<A>,
-    { operationId: Exclude<RequiredHandlers<A>, K> }
+    { operationId: K }
 >[0]['handler'];
 
 type CallBackSignature<H extends (ctx: Context) => unknown> = H extends (
@@ -67,35 +67,24 @@ type RouteConfig = {
     handler: (ctx) => Promise<any>;
 };
 
-export type ClientApi<T extends ApiDoc> = ToConfig<
-    ObjectValues<{
-        [key in keyof RouteHandlers<T>]: key extends string
-            ? RouteHandlers<T>[key] extends RouteConfig
-                ? Id<GetParams<RouteHandlers<T>[key]>>
-                : never
-            : never;
-    }>
->;
+export type ClientApi<T extends ApiDoc> = Identity<{
+    [key in Exclude<RequiredHandlers<T>, 'sendOptions'>]: GetParams<
+        Select<RouteHandlers<T>, { operationId: key }>[0]
+    >;
+}>;
 
-type ToConfig<Ops extends { method: string; params: any[] }> = {
-    [O in Ops as Exclude<O['method'], 'sendOptions'>]: O['params'];
-};
-
-type GetParams<T extends RouteConfig> = {
-    method: T['operationId'];
-    params: [
-        T['path'],
-        T['method'],
-        Parameters<T['handler']>[0] extends KoaContext<infer Params, any, any>
-            ? Params
-            : never,
-        Parameters<T['handler']>[0] extends KoaContext<any, any, infer Resp>
-            ? Resp extends { status: number; body: infer Body }
-                ? Body
-                : void
-            : void,
-    ];
-};
+export type GetParams<T extends RouteConfig> = [
+    T['path'],
+    T['method'],
+    Parameters<T['handler']>[0] extends KoaContext<infer Params, any, any>
+        ? Params
+        : never,
+    Parameters<T['handler']>[0] extends KoaContext<any, any, infer Resp>
+        ? Resp extends { status: number; body: infer Body }
+            ? Body
+            : void
+        : void,
+];
 
 export function createResource<T extends ApiDoc>(apiDoc: T): ResourceBinder<T> {
     /*

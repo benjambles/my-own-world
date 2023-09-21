@@ -12,7 +12,7 @@ import getResources from './resources/index.js';
 import { Env, envSchema } from './schema/env-schema.js';
 export type { ClientApiTypes } from './resources/index.js';
 
-const prefix = '/api/v1';
+export const prefix = '/api/v1';
 
 const paths = {
     base: import.meta.url,
