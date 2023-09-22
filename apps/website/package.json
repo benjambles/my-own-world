@@ -23,7 +23,6 @@
         "@benjambles/mow-api": "../api",
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/mow-ui": "../../packages/ui",
-        "@benjambes/js-lib": "../../packages/lib",
         "@lit-labs/context": "0.4.0",
         "@lit-labs/ssr": "3.1.5",
         "@lit-labs/ssr-client": "1.1.3",

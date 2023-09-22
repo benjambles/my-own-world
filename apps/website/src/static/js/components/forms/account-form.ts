@@ -1,8 +1,4 @@
-import {
-    dateDiff,
-    formatLargestPart,
-} from '@benjambes/js-lib/dist/time/relative-time.js';
-import { textInput } from '@benjambles/mow-ui/core.js';
+import { relativeTime, textInput } from '@benjambles/mow-ui/core.js';
 import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
@@ -110,19 +106,10 @@ export class AccountForm extends LitElement {
             return nothing;
         }
 
-        const now = new Date();
-        const createdOn = this.userData?.user?.createdOn
-            ? new Date(this.userData.user.createdOn)
-            : now;
-
-        const timeBetween = dateDiff(createdOn, now);
-
         return html`
             <p>
                 You've been charting the universe for
-                <time datetime="${createdOn.toISOString()}"
-                    >${formatLargestPart(timeBetween)}</time
-                >
+                ${relativeTime(this.userData?.user?.createdOn)}
             </p>
             <form
                 action="${userPaths.account}"

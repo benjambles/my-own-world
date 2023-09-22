@@ -33,6 +33,7 @@
     "author": "Ben Allen",
     "license": "ISC",
     "dependencies": {
+        "@benjambles/js-lib": "../../packages/lib",
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
