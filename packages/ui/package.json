@@ -7,19 +7,13 @@
             "import": "./dist/templates/index.js",
             "types": "./dist/templates/index.d.ts"
         },
-        "./utils.js": {
-            "import": "./dist/utils/index.js",
-            "types": "./dist/utils/index.d.ts"
-        },
         "./fonts": "./dist/fonts",
         "./fonts/*": "./dist/fonts/*",
-        "./templates": "./dist/templates",
         "./templates/*": "./dist/templates/*",
-        "./components": "./dist/components",
         "./components/*": "./dist/components/*",
-        "./contexts": "./dist/contexts",
         "./contexts/*": "./dist/contexts/*",
-        "./styles.js": "./dist/global-css/index.styles.js"
+        "./styles.js": "./dist/global-css/index.styles.js",
+        "./utils/*": "./dist/utils/*"
     },
     "type": "module",
     "browserslist": [

@@ -1,4 +1,4 @@
-import { composedEvent } from '@benjambles/mow-ui/utils.js';
+import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
