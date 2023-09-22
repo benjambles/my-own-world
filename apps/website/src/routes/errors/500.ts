@@ -13,13 +13,13 @@ export default function (data: ErrorData): RenderProps {
             inlineStyles: errorStyles,
         },
         template: html`
-            <main class="page--404">
+            <main class="page--500">
                 <section class="cont-m">
-                    <h1>404 - Not found!</h1>
+                    <h1>500 - It's happened again.</h1>
 
                     <p>
-                        Much like the rest of Humanity this page count not be found. If
-                        you got here from a link please let us know how it happened.
+                        Something has gone horribly wrong. It's not your fault, it's ours.
+                        We'll try to fix it as soon as possible.
                     </p>
 
                     <p>

@@ -13,13 +13,14 @@ export default function (data: ErrorData): RenderProps {
             inlineStyles: errorStyles,
         },
         template: html`
-            <main class="page--404">
+            <main class="page--403">
                 <section class="cont-m">
-                    <h1>404 - Not found!</h1>
+                    <h1>403 - You are not authorised!</h1>
 
                     <p>
-                        Much like the rest of Humanity this page count not be found. If
-                        you got here from a link please let us know how it happened.
+                        We're not sure how you got to this page, but according to our
+                        records you shouldn't be here. If you believe this is an error, do
+                        let us know. Otherwise please head back to the previous page.
                     </p>
 
                     <p>

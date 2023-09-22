@@ -3,7 +3,7 @@ import Koa, { Context } from 'koa';
 import { streamResponse } from '../../../utils/routes/responses.js';
 import { RenderProps } from '../../../utils/web-rendering/render-template.js';
 
-type ErrorCodes = '401' | '403' | '404' | '500';
+type ErrorCodes = '400' | '401' | '403' | '405' | '404' | '500';
 
 type ErrorTemplates = {
     [key in ErrorCodes]: (data: ErrorData) => RenderProps;
@@ -72,10 +72,12 @@ export function webErrorHandler<T extends object>({
                 return;
             }
 
+            const errorTemplate = errorTemplates[err.status] ?? errorTemplates['500'];
+
             const page = await renderer(
                 data,
                 layoutComponent(
-                    errorTemplates[err.status]({
+                    errorTemplate({
                         status,
                         error: parsedError,
                     }),
