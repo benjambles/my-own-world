@@ -17,6 +17,13 @@ export default function (props: GameListProps): RenderProps {
     return {
         assets: {
             inlineStyles: rosterStyles,
+            scripts: [
+                {
+                    src: '/static/js/roster-client.js',
+                    lazy: 'defer',
+                    module: true,
+                },
+            ],
         },
         template: html`
             <section-header sectionname="Roster">

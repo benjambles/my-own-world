@@ -66,7 +66,17 @@ export default function site(
                 inlineStyles: [styles],
                 scripts: [
                     {
-                        src: '/static/js/core.js',
+                        src: '/static/js/lit.js',
+                        lazy: 'defer',
+                        module: true,
+                    },
+                    {
+                        src: '/static/js/core-client.js',
+                        lazy: 'defer',
+                        module: true,
+                    },
+                    {
+                        src: '/static/js/text.styles.js',
                         lazy: 'defer',
                         module: true,
                     },

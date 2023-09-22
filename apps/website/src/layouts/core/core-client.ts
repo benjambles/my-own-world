@@ -1,14 +1,12 @@
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 
 import '@benjambles/mow-ui/components/with-api/with-api.js';
-import './components/with-user/with-user.js';
-import './components/user-menu/user-menu.js';
-import './components/forms/account-form.js';
-import './components/forms/join.js';
-import './components/forms/login.js';
-import './components/forms/user.js';
-import './components/roster/game-list.js';
-import './components/roster/create-skirmish.js';
+import '../../static/js/components/with-user/with-user.js';
+import '../../static/js/components/user-menu/user-menu.js';
+import '../../static/js/components/forms/account-form.js';
+import '../../static/js/components/forms/join.js';
+import '../../static/js/components/forms/login.js';
+import '../../static/js/components/forms/user.js';
 
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import '@benjambles/mow-ui/components/mow-action/mow-action.js';

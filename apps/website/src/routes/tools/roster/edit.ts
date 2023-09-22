@@ -7,6 +7,13 @@ export default function (game: Game): RenderProps {
     return {
         assets: {
             inlineStyles: [],
+            scripts: [
+                {
+                    src: '/static/js/roster-client.js',
+                    lazy: 'defer',
+                    module: true,
+                },
+            ],
         },
         template: html`
             <div class="page--game-edit">
