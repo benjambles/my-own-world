@@ -91,8 +91,20 @@ export default {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: [],
-                                properties: {},
+                                required: [
+                                    'description',
+                                    'game',
+                                    'name',
+                                    'points',
+                                    'type',
+                                ],
+                                properties: {
+                                    description: { type: 'string' },
+                                    game: { type: 'string' },
+                                    name: { type: 'string' },
+                                    points: { type: 'integer' },
+                                    type: { type: 'string' },
+                                },
                             },
                         },
                     },
@@ -138,8 +150,20 @@ export default {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: [],
-                                properties: {},
+                                required: [
+                                    'description',
+                                    'game',
+                                    'name',
+                                    'points',
+                                    'type',
+                                ],
+                                properties: {
+                                    description: { type: 'string' },
+                                    game: { type: 'string' },
+                                    name: { type: 'string' },
+                                    points: { type: 'integer' },
+                                    type: { type: 'string' },
+                                },
                             },
                         },
                     },
@@ -210,7 +234,11 @@ export default {
                             schema: {
                                 type: 'object',
                                 required: [],
-                                properties: {},
+                                properties: {
+                                    description: { type: 'string' },
+                                    name: { type: 'string' },
+                                    points: { type: 'integer' },
+                                },
                             },
                         },
                     },

@@ -8,7 +8,7 @@ import { getJwtFromCookie } from '@benjambles/mow-server/dist/utils/security/jwt
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { apiHelpers } from '../../../app.js';
 import siteLayout from '../../../layouts/core/site.js';
-import config from './config.js';
+import config, { paths } from './config.js';
 import create from './create.js';
 import edit from './edit.js';
 import list from './list.js';
@@ -67,15 +67,30 @@ export default function () {
             return ok(tpl);
         })
         .operation('postNewCampaign', async (ctx) => {
-            return redirectAction(ctx.state.path.replace('new-campaign', 'someid'));
+            const rosterData = await apiHelpers.games.createGame(
+                {
+                    body: ctx.request.body,
+                },
+                getJwtFromCookie(ctx, 'mow-auth'),
+            );
+
+            return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('postNewSkirmish', async (ctx) => {
-            return redirectAction(ctx.state.path.replace('new-skirmish', 'someid'));
+            const rosterData = await apiHelpers.games.createGame(
+                {
+                    body: ctx.request.body,
+                },
+                getJwtFromCookie(ctx, 'mow-auth'),
+            );
+
+            return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('updateRosterById', async (ctx) => {
-            const rosterData = await apiHelpers.games.getGameById(
+            const rosterData = await apiHelpers.games.updateGameById(
                 {
                     params: { gameId: ctx.request.params.rosterId },
+                    body: ctx.request.body,
                 },
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
