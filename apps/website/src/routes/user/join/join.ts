@@ -1,8 +1,8 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import '../../../static/js/components/forms/join.js';
-import '../../../static/js/components/forms/login.js';
+import '../../../layouts/components/login-form.js';
 import { paths as userPaths } from '../config.js';
+import './join-form.js';
 import { joinStyles } from './join.styles.js';
 
 export default function (): RenderProps {

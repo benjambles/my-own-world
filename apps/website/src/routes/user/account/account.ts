@@ -1,7 +1,7 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { paths as userPaths } from '../../../routes/account/config.js';
-import '../../../static/js/components/forms/account-form.js';
+import { paths as userPaths } from '../../../routes/user/config.js';
+import './account-form.js';
 import { accountStyles } from './account.styles.js';
 
 export default function (): RenderProps {

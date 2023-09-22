@@ -4,8 +4,8 @@ import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/sty
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { Game } from '../../../../routes/tools/roster/index.js';
-import { GameApi, GameApiInstance } from '../contexts/game.js';
+import { Game } from '../index.js';
+import { GameApi, GameApiInstance } from './game-api.js';
 
 @customElement('edit-skirmish')
 export class EditSkirmish extends LitElement {

@@ -2,8 +2,8 @@ import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/ren
 import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { html } from 'lit';
-import { paths } from './config.js';
-import { Game } from './index.js';
+import { paths } from '../config.js';
+import { Game } from '../index.js';
 import { rosterStyles } from './roster.styles.js';
 
 type GameListProps = {
@@ -19,7 +19,7 @@ export default function (props: GameListProps): RenderProps {
             inlineStyles: rosterStyles,
             scripts: [
                 {
-                    src: '/static/js/roster-client.js',
+                    src: '/static/js/roster.bundle.js',
                     lazy: 'defer',
                     module: true,
                 },

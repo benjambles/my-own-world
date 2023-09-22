@@ -6,9 +6,9 @@ import { callOutStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { Game } from '../../../../routes/tools/roster/index.js';
-import { GameApi, GameApiInstance } from '../contexts/game.js';
-import { UserData, userContext } from '../contexts/user.js';
+import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
+import { Game } from '../index.js';
+import { GameApi, GameApiInstance } from './game-api.js';
 
 @customElement('game-list')
 export class GameList extends LitElement {

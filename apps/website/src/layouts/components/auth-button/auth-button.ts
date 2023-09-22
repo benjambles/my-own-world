@@ -1,11 +1,11 @@
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { paths as userPaths } from '../../../../routes/account/config.js';
-import { UserData, userContext } from '../contexts/user.js';
+import { paths as userPaths } from '../../../routes/user/config.js';
+import { UserData, userContext } from '../with-user/user.js';
 
-@customElement('user-menu')
-export class UserMenu extends LitElement {
+@customElement('auth-button')
+export class AuthButton extends LitElement {
     static styles = css`
         * {
             box-sizing: border-box;
@@ -75,6 +75,6 @@ export class UserMenu extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'user-menu': UserMenu;
+        'auth-button': AuthButton;
     }
 }

@@ -1,7 +1,7 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { paths } from './config.js';
-import { Game } from './index.js';
+import { paths } from '../config.js';
+import { Game } from '../index.js';
 
 export default function (game: Game): RenderProps {
     return {
@@ -9,7 +9,7 @@ export default function (game: Game): RenderProps {
             inlineStyles: [],
             scripts: [
                 {
-                    src: '/static/js/roster-client.js',
+                    src: '/static/js/roster.bundle.js',
                     lazy: 'defer',
                     module: true,
                 },

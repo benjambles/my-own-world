@@ -1,12 +1,12 @@
 import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
 
 import '@benjambles/mow-ui/components/with-api/with-api.js';
-import '../../static/js/components/with-user/with-user.js';
-import '../../static/js/components/user-menu/user-menu.js';
-import '../../static/js/components/forms/account-form.js';
-import '../../static/js/components/forms/join.js';
-import '../../static/js/components/forms/login.js';
-import '../../static/js/components/forms/user.js';
+import '../components/with-user/with-user.js';
+import '../components/auth-button/auth-button.js';
+import '../components/login-form.js';
+import '../components/user-menu.js';
+import '../../routes/user/join/join-form.js';
+import '../../routes/user/account/account-form.js';
 
 import '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import '@benjambles/mow-ui/components/mow-action/mow-action.js';

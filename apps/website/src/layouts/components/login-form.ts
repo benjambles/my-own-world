@@ -9,8 +9,8 @@ import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { UserData, userContext } from '../contexts/user.js';
-import { UserLoginPayload } from '../with-user/with-user.js';
+import { UserData, userContext } from './with-user/user.js';
+import { UserLoginPayload } from './with-user/with-user.js';
 
 @customElement('login-form')
 export class LoginForm extends LitElement {

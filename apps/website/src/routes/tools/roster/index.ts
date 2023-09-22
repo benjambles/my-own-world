@@ -9,9 +9,9 @@ import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/
 import { apiHelpers } from '../../../app.js';
 import siteLayout from '../../../layouts/core/site.js';
 import config, { paths } from './config.js';
-import create from './create.js';
-import edit from './edit.js';
-import list from './list.js';
+import create from './pages/create.js';
+import edit from './pages/edit.js';
+import list from './pages/list.js';
 
 export default function () {
     return createResource(config)

@@ -2,12 +2,12 @@ import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { paths as userPaths } from '../../../../routes/account/config.js';
-import { paths as rosterPaths } from '../../../../routes/tools/roster/config.js';
-import { UserData, userContext } from '../contexts/user.js';
+import { paths as rosterPaths } from '../../routes/tools/roster/config.js';
+import { paths as userPaths } from '../../routes/user/config.js';
+import { UserData, userContext } from './with-user/user.js';
 
-@customElement('user-form')
-export class UserForm extends LitElement {
+@customElement('user-menu')
+export class UserMenu extends LitElement {
     static styles = css`
         * {
             box-sizing: border-box;
@@ -119,5 +119,11 @@ export class UserForm extends LitElement {
                 <a class="button" href="${userPaths.logout}">Sign off</a>
             </mow-action>
         `;
+    }
+}
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'user-menu': UserMenu;
     }
 }

@@ -10,8 +10,8 @@ import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { paths as userPaths } from '../../routes/account/config.js';
-import '../../static/js/components/user-menu/user-menu.js';
+import { paths as userPaths } from '../../routes/user/config.js';
+import '../components/auth-button/auth-button.js';
 import styles from './site.styles.js';
 
 type Link = { href: string; text: string };
@@ -71,7 +71,7 @@ export default function site(
                         module: true,
                     },
                     {
-                        src: '/static/js/core-client.js',
+                        src: '/static/js/core.bundle.js',
                         lazy: 'defer',
                         module: true,
                     },
@@ -100,7 +100,7 @@ export default function site(
                                 ${renderMenuContents(menuLinks)}
                             </mega-menu>
                             <a href="/" slot="logo">Logo</a>
-                            <user-menu slot="account-button"></user-menu>
+                            <auth-button slot="account-button"></auth-button>
                         </fixed-header>
                         <div class="content-wrapper">
                             <div id="content">${page.template}</div>
@@ -123,7 +123,7 @@ export default function site(
                             triggeropeneventname="openusermenu"
                             triggercloseeventname="closeusermenu"
                         >
-                            <user-form></user-form>
+                            <user-menu></user-menu>
                         </mow-dialog>
                     </with-user>
                 </with-api>

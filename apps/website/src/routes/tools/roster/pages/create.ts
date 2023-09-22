@@ -1,6 +1,6 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
-import { paths } from './config.js';
+import { paths } from '../config.js';
 
 export default function (): RenderProps {
     return {
@@ -8,7 +8,7 @@ export default function (): RenderProps {
             inlineStyles: [],
             scripts: [
                 {
-                    src: '/static/js/roster-client.js',
+                    src: '/static/js/roster.bundle.js',
                     lazy: 'defer',
                     module: true,
                 },

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { UserData, UserInstance, Users, userContext } from '../contexts/user.js';
+import { UserData, UserInstance, Users, userContext } from './user.js';
 
 //#region Types
 export type UserLoginPayload = {

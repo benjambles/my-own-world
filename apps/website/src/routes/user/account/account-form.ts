@@ -4,9 +4,9 @@ import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { paths as userPaths } from '../../../../routes/account/config.js';
-import { UserData, userContext } from '../contexts/user.js';
-import { UserDetailsPayload } from '../with-user/with-user.js';
+import { UserData, userContext } from '../../../layouts/components/with-user/user.js';
+import { UserDetailsPayload } from '../../../layouts/components/with-user/with-user.js';
+import { paths as userPaths } from '../config.js';
 
 @customElement('account-form')
 export class AccountForm extends LitElement {

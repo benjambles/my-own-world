@@ -5,8 +5,8 @@ import summary from 'rollup-plugin-summary';
 
 export default {
     input: [
-        'dist/layouts/core/core-client.js',
-        'dist/routes/tools/roster/roster-client.js',
+        'dist/layouts/core/core.bundle.js',
+        'dist/routes/tools/roster/roster.bundle.js',
     ],
     output: {
         chunkFileNames: '[name].js',

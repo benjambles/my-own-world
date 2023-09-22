@@ -9,9 +9,9 @@ import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
 import siteLayout from './layouts/core/site.js';
-import { paths as userPaths } from './routes/account/config.js';
 import errorTemplates from './routes/errors/errors.js';
 import { resources } from './routes/routes-config.js';
+import { paths as userPaths } from './routes/user/config.js';
 import { envSchema } from './schema/env-schema.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/fonts');
