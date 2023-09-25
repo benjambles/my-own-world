@@ -86,12 +86,6 @@ export default css`
         font-size: 1.6rem;
     }
 
-    body:has(> view-lock[isconstrained]) {
-        height: 100%;
-        width: 100%;
-        overflow: hidden !important;
-    }
-
     ::-webkit-scrollbar {
         width: 1em;
     }

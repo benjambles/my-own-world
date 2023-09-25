@@ -8,6 +8,7 @@ import '@benjambles/mow-ui/components/mega-menu/mega-menu.js';
 import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/site-footer/site-footer.js';
 import '@benjambles/mow-ui/components/skip-links/skip-links.js';
+import { viewLockBodyStyles } from '@benjambles/mow-ui/components/view-lock/view-lock.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { paths as userPaths } from '../../routes/user/config.js';
@@ -63,7 +64,7 @@ export default function site(
     return {
         assets: mergeRenderAssets(
             {
-                inlineStyles: [styles],
+                inlineStyles: [styles, viewLockBodyStyles],
                 scripts: [
                     {
                         src: '/static/js/lit.js',

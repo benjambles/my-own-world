@@ -1,5 +1,13 @@
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+
+export const viewLockBodyStyles = css`
+    body:has(> view-lock[isconstrained]) {
+        height: 100%;
+        width: 100%;
+        overflow: hidden !important;
+    }
+`;
 
 @customElement('view-lock')
 export class ViewLock extends LitElement {
