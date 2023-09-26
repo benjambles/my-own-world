@@ -27,11 +27,7 @@ test('formatData', async () => {
 });
 
 test('getDataFormatter', async () => {
-    const formatNoModel = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG', {
-        encrypted: [],
-        salted: [],
-        hmac: [],
-    });
+    const formatNoModel = getDataFormatter('XApHrj7g9FTPqX5hYxWiJuXHYewyygGG');
 
     const noModelUUID = await formatNoModel('_id', '235fwf-f34f43-3f4k3-f34fg-f34ggk');
     expect(noModelUUID).toEqual(null);

@@ -1,14 +1,13 @@
 import { Simplify } from '@benjambles/js-lib/dist/index.js';
-import { ModelOptions } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { Db } from 'mongodb';
+import { getGameModel } from '../resources/games/data/games.js';
+import { getConsumableModel } from '../resources/items/consumables/consumables.js';
 import { getWeaponModel } from '../resources/items/weapons/weapons.js';
 import { getServiceModel } from '../resources/service/service.js';
 import { getIdentifierModel } from '../resources/users/data/identifiers.js';
 import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
-import { getConsumableModel } from '../resources/items/consumables/consumables.js';
-import { getGameModel } from '../resources/games/data/games.js';
 
 type Model = (db: Db, env: any) => ModelReturn;
 
@@ -17,7 +16,7 @@ type BinderData = {
 };
 
 type ModelReturn = {
-    [name: string]: ModelOptions | Function;
+    [name: string]: Function;
 };
 
 type Binder2<T extends BinderData = {}> = {

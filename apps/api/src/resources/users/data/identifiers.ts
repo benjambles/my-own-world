@@ -22,14 +22,12 @@ function respond(password: string, identity: Identifier) {
 export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
     const users = getUserCollection(db);
 
-    const formatOptions = {
-        encrypted: ['identifier'],
-        hmac: ['hash'],
-        readOnly: [],
-        salted: [],
-    };
-
-    const formatIdentiferData = formatData(getDataFormatter(ENC_SECRET, formatOptions));
+    const formatIdentiferData = formatData(
+        getDataFormatter(ENC_SECRET, {
+            encrypted: ['identifier'],
+            hmac: ['hash'],
+        }),
+    );
 
     return {
         formatIdentiferData,

@@ -2,10 +2,9 @@ import { DeepPartial } from '@benjambles/js-lib/dist/index.js';
 import {
     formatData,
     getDataFormatter,
-    ModelOptions,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
-import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
+import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { Weapon } from '@benjambles/skirmish-engine/dist/item/weapons/weapons.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
@@ -31,14 +30,8 @@ type WeaponResponse = Omit<GameWeapon, RestrictedKeys | ToStringKeys> & {
 //#endregion Types
 
 export function getWeaponModel(db: Db, { ENC_SECRET }: Env) {
-    const formatOptions: ModelOptions = {
-        encrypted: [],
-        salted: [],
-        readOnly: ['_id'],
-        hmac: [],
-    };
+    const dataFormatter = formatData(getDataFormatter(ENC_SECRET));
 
-    const dataFormatter = formatData(getDataFormatter(ENC_SECRET, formatOptions));
     const items = db.collection<GameWeapon>('Weapons');
 
     const model = {

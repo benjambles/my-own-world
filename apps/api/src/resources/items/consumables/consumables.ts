@@ -2,10 +2,9 @@ import { DeepPartial } from '@benjambles/js-lib/dist/index.js';
 import {
     formatData,
     getDataFormatter,
-    ModelOptions,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
-import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
+import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { Consumable } from '@benjambles/skirmish-engine/dist/item/consumables/consumables.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
@@ -31,14 +30,8 @@ type ConsumableResponse = Omit<GameConsumable, RestrictedKeys | ToStringKeys> & 
 //#endregion Types
 
 export function getConsumableModel(db: Db, { ENC_SECRET }: Env) {
-    const formatOptions: ModelOptions = {
-        encrypted: [],
-        hmac: [],
-        readOnly: ['_id'],
-        salted: [],
-    };
+    const dataFormatter = formatData(getDataFormatter(ENC_SECRET));
 
-    const dataFormatter = formatData(getDataFormatter(ENC_SECRET, formatOptions));
     const items = db.collection<GameConsumable>('Consumables');
 
     const model = {

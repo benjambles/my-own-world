@@ -1,11 +1,11 @@
 import { bHash } from '../security/blowfish.js';
 import { encryptValue, hmac as getHmac } from '../security/encryption.js';
 
-export interface ModelOptions {
-    encrypted: string[];
-    salted: string[];
-    hmac: string[];
-    readOnly: string[];
+interface ModelOptions {
+    encrypted?: string[];
+    salted?: string[];
+    hmac?: string[];
+    readOnly?: string[];
 }
 
 /**
@@ -13,7 +13,7 @@ export interface ModelOptions {
  */
 export function getDataFormatter(
     password: string,
-    { encrypted, salted, hmac, readOnly = ['_id'] },
+    { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] }: ModelOptions = {},
 ) {
     return async (key: string, value: string): Promise<string | null> => {
         if (readOnly.includes(key)) return null;
