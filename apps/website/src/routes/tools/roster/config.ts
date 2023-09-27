@@ -100,7 +100,14 @@ export default {
                                 ],
                                 properties: {
                                     description: { type: 'string' },
-                                    game: { type: 'string' },
+                                    game: {
+                                        type: 'object',
+                                        required: ['name', 'version'],
+                                        properties: {
+                                            name: { type: 'string' },
+                                            version: { type: 'string' },
+                                        },
+                                    },
                                     name: { type: 'string' },
                                     points: { type: 'integer' },
                                     type: { type: 'string' },
@@ -159,7 +166,14 @@ export default {
                                 ],
                                 properties: {
                                     description: { type: 'string' },
-                                    game: { type: 'string' },
+                                    game: {
+                                        type: 'object',
+                                        required: ['name', 'version'],
+                                        properties: {
+                                            name: { type: 'string' },
+                                            version: { type: 'string' },
+                                        },
+                                    },
                                     name: { type: 'string' },
                                     points: { type: 'integer' },
                                     type: { type: 'string' },

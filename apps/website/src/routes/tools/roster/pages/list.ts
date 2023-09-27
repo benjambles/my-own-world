@@ -3,17 +3,17 @@ import '@benjambles/mow-ui/components/mow-dialog/mow-dialog.js';
 import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { html } from 'lit';
 import { paths } from '../config.js';
-import { Game } from '../index.js';
+import { Skirmish } from '../index.js';
 import { rosterStyles } from './roster.styles.js';
 
-type GameListProps = {
+type SkirmishListProps = {
     limit: number;
     offset: number;
     count: number;
-    games: Game[];
+    items: Skirmish[];
 };
 
-export default function (props: GameListProps): RenderProps {
+export default function (props: SkirmishListProps): RenderProps {
     return {
         assets: {
             inlineStyles: rosterStyles,
@@ -35,13 +35,13 @@ export default function (props: GameListProps): RenderProps {
                 <section class="panel">
                     <h1>Crews</h1>
 
-                    <game-list rooturl=${paths.index} rosterurl=${paths.rosterById}
-                        >${props.games.map((data) => {
-                            return html`<game-tile
+                    <skirmish-list rooturl=${paths.index} rosterurl=${paths.rosterById}
+                        >${props.items.map((data) => {
+                            return html`<skirmish-tile
                                 .data=${data}
                                 urlpattern=${paths.rosterById}
-                            ></game-tile>`;
-                        })}</game-list
+                            ></skirmish-tile>`;
+                        })}</skirmish-list
                     >
 
                     <div class="button-group col-to-row">

@@ -34,9 +34,9 @@ export default function () {
             return ok(tpl);
         })
         .operation('getRosterById', async (ctx) => {
-            const rosterData = await apiHelpers.games.getGameById(
+            const rosterData = await apiHelpers.skirmishes.getSkirmishById(
                 {
-                    params: { gameId: ctx.request.params.rosterId },
+                    params: { skirmishId: ctx.request.params.rosterId },
                 },
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
@@ -51,7 +51,7 @@ export default function () {
         })
         .operation('getRosters', async (ctx) => {
             const { limit = 30, offset = 0 } = ctx.request.query;
-            const { count, games } = await apiHelpers.games.getGames(
+            const { count, items } = await apiHelpers.skirmishes.getSkirmishes(
                 {
                     query: { userId: getAuthenticatedUserId(ctx), limit, offset },
                 },
@@ -60,14 +60,14 @@ export default function () {
 
             const tpl = renderTemplate(
                 { title: 'Your Squads: Khora' },
-                siteLayout(list({ count, games, limit, offset }), true),
+                siteLayout(list({ count, items, limit, offset }), true),
                 ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('postNewCampaign', async (ctx) => {
-            const rosterData = await apiHelpers.games.createGame(
+            const rosterData = await apiHelpers.skirmishes.createSkirmish(
                 {
                     body: ctx.request.body,
                 },
@@ -77,7 +77,7 @@ export default function () {
             return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('postNewSkirmish', async (ctx) => {
-            const rosterData = await apiHelpers.games.createGame(
+            const rosterData = await apiHelpers.skirmishes.createSkirmish(
                 {
                     body: ctx.request.body,
                 },
@@ -87,9 +87,9 @@ export default function () {
             return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('updateRosterById', async (ctx) => {
-            const rosterData = await apiHelpers.games.updateGameById(
+            const rosterData = await apiHelpers.skirmishes.updateSkirmishById(
                 {
-                    params: { gameId: ctx.request.params.rosterId },
+                    params: { skirmishId: ctx.request.params.rosterId },
                     body: ctx.request.body,
                 },
                 getJwtFromCookie(ctx, 'mow-auth'),
@@ -106,7 +106,7 @@ export default function () {
         .get();
 }
 
-export type Game = {
+export type Skirmish = {
     _id: string;
     createdOn: string;
     description: string;

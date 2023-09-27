@@ -5,11 +5,11 @@ import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { GameApi, GameApiInstance } from './game-api.js';
+import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
 
 @customElement('create-skirmish')
 export class CreateSkirmish extends LitElement {
-    private gameApi: GameApiInstance;
+    private skirmishApi: SkirmishApiInstance;
 
     static styles = [
         inputStyles,
@@ -74,8 +74,8 @@ export class CreateSkirmish extends LitElement {
         super.connectedCallback();
 
         if (this.requestManager) {
-            this.gameApi = new GameApi();
-            this.gameApi.addManager(this.requestManager);
+            this.skirmishApi = new SkirmishApi();
+            this.skirmishApi.addManager(this.requestManager);
         }
     }
 
@@ -84,15 +84,15 @@ export class CreateSkirmish extends LitElement {
 
         const formData = new FormData(this.formElem);
 
-        if (!this.gameApi) {
+        if (!this.skirmishApi) {
             throw new Error('No request manager registered');
         }
 
         try {
-            const result = await this.gameApi.call('createGame', {
+            const result = await this.skirmishApi.call('createSkirmish', {
                 body: {
                     description: formData.get('description') as string,
-                    game: 'khora',
+                    game: { name: 'khora', version: '1' }, // TODO grab from Games endpoints
                     name: formData.get('name') as string,
                     points: 0,
                     type: 'skirmish',
@@ -107,7 +107,7 @@ export class CreateSkirmish extends LitElement {
 
     protected render() {
         return html`
-            <form action="/game/create-skirmish" method="post" @submit=${this.onSubmit}>
+            <form action="/roster/create-skirmish" method="post" @submit=${this.onSubmit}>
                 <fieldset>
                     <legend>Mission Information</legend>
 

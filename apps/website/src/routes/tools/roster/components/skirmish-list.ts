@@ -7,14 +7,14 @@ import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
-import { Game } from '../index.js';
-import { GameApi, GameApiInstance } from './game-api.js';
+import { Skirmish } from '../index.js';
+import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
 
-@customElement('game-list')
-export class GameList extends LitElement {
-    private gameApi: GameApiInstance;
+@customElement('skirmish-list')
+export class SkirmishList extends LitElement {
+    private skirmishApi: SkirmishApiInstance;
 
-    static ClickEventName = 'gamelistpaginate';
+    static ClickEventName = 'skirmishlistpaginate';
 
     static styles = [
         callOutStyles,
@@ -72,32 +72,32 @@ export class GameList extends LitElement {
     requestManager: MowApiInstance;
 
     @state()
-    games: Game[] = [];
+    skirmishes: Skirmish[] = [];
 
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener(GameList.ClickEventName, this.fetchGames);
+        this.addEventListener(SkirmishList.ClickEventName, this.fetchSkirmishes);
 
         if (this.requestManager) {
-            this.gameApi = new GameApi();
-            this.gameApi.addManager(this.requestManager);
+            this.skirmishApi = new SkirmishApi();
+            this.skirmishApi.addManager(this.requestManager);
         }
     }
 
-    private fetchGames = async (e: CustomEvent<PaginationDetails>) => {
+    private fetchSkirmishes = async (e: CustomEvent<PaginationDetails>) => {
         e.preventDefault();
 
-        if (!this.gameApi) {
+        if (!this.skirmishApi) {
             throw new Error('No request manager registered');
         }
 
         try {
-            const { count, games } = await this.gameApi.call('getGames', {
+            const { count, items } = await this.skirmishApi.call('getSkirmishes', {
                 query: { userId: this.userData.user._id, ...e.detail },
             });
 
-            this.games = games;
+            this.skirmishes = items;
             this.count = count;
         } catch (e) {
             // do something with error
@@ -117,13 +117,13 @@ export class GameList extends LitElement {
             </filter-bar>
 
             <div class="card-list">
-                ${this.games.length
-                    ? this.games.map(
-                          (game) => html`
-                              <game-tile
-                                  .data=${game}
+                ${this.skirmishes.length
+                    ? this.skirmishes.map(
+                          (skirmish) => html`
+                              <skirmish-tile
+                                  .data=${skirmish}
                                   urlpattern=${this.rosterUrl}
-                              ></game-tile>
+                              ></skirmish-tile>
                           `,
                       )
                     : html`
@@ -136,7 +136,7 @@ export class GameList extends LitElement {
             ${this.count < this.limit
                 ? nothing
                 : html`<mow-pagination
-                      clickeventname=${GameList.ClickEventName}
+                      clickeventname=${SkirmishList.ClickEventName}
                       itemcount=${this.count}
                       limit=${this.limit}
                       offset=${this.offset}
@@ -146,8 +146,8 @@ export class GameList extends LitElement {
     }
 }
 
-@customElement('game-tile')
-export class GameTile extends LitElement {
+@customElement('skirmish-tile')
+export class SkirmishTile extends LitElement {
     static styles = css`
         :host {
             --co-bg-color: #ccc;
@@ -183,24 +183,19 @@ export class GameTile extends LitElement {
     `;
 
     @property({ attribute: false })
-    data: Game;
+    data: Skirmish;
 
     @property()
     urlPattern: string = '/:rosterId';
 
     protected render() {
         return html`
-            <div data-game-type="${this.data.type}" class="card callout">
+            <div class="card callout">
                 <a href="${this.urlPattern.replace(':rosterId', this.data._id)}">
                     <span>${this.data.name}</span>
 
                     <span>Created: ${time(new Date(this.data.createdOn))}</span>
-                    <span>
-                        ${this.data.type}:
-                        ${this.data.type === 'skirmish'
-                            ? `${this.data.points} credits`
-                            : nothing}
-                    </span>
+                    <span>Credits: ${this.data.points}</span>
                 </a>
             </div>
         `;
@@ -209,7 +204,7 @@ export class GameTile extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'game-list': GameList;
-        'game-tile': GameTile;
+        'skirmish-list': SkirmishList;
+        'skirmish-tile': SkirmishTile;
     }
 }

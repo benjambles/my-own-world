@@ -5,12 +5,12 @@ import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { Game } from '../index.js';
-import { GameApi, GameApiInstance } from './game-api.js';
+import { Skirmish } from '../index.js';
+import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
 
 @customElement('edit-skirmish')
 export class EditSkirmish extends LitElement {
-    private gameApi: GameApiInstance;
+    private skirmishApi: SkirmishApiInstance;
 
     static styles = [
         inputStyles,
@@ -62,7 +62,7 @@ export class EditSkirmish extends LitElement {
     requestManager: MowApiInstance;
 
     @property({ attribute: false })
-    gameData: Game;
+    skirmishData: Skirmish;
 
     @query('form')
     formElem: HTMLFormElement;
@@ -71,8 +71,8 @@ export class EditSkirmish extends LitElement {
         super.connectedCallback();
 
         if (this.requestManager) {
-            this.gameApi = new GameApi();
-            this.gameApi.addManager(this.requestManager);
+            this.skirmishApi = new SkirmishApi();
+            this.skirmishApi.addManager(this.requestManager);
         }
     }
 
@@ -81,14 +81,14 @@ export class EditSkirmish extends LitElement {
 
         const formData = new FormData(this.formElem);
 
-        if (!this.gameApi) {
+        if (!this.skirmishApi) {
             throw new Error('No request manager registered');
         }
 
         try {
-            const result = await this.gameApi.call('updateGameById', {
+            const result = await this.skirmishApi.call('updateSkirmishById', {
                 params: {
-                    gameId: this.gameData._id,
+                    skirmishId: this.skirmishData._id,
                 },
                 body: {
                     description: formData.get('description') as string,
@@ -96,17 +96,21 @@ export class EditSkirmish extends LitElement {
                 },
             });
 
-            this.gameData = result;
+            this.skirmishData = result;
         } catch (e) {
             // Render errors
         }
     }
 
     protected render() {
-        if (!this.gameData) return nothing;
+        if (!this.skirmishData) return nothing;
 
         return html`
-            <form action="/game/edit-skirmish" method="post" @submit=${this.onSubmit}>
+            <form
+                action="/roster/edit/${this.skirmishData._id}"
+                method="post"
+                @submit=${this.onSubmit}
+            >
                 <fieldset>
                     <legend>Mission Information</legend>
 
@@ -115,14 +119,14 @@ export class EditSkirmish extends LitElement {
                         label: 'Squad Name',
                         required: true,
                         type: 'text',
-                        defaultText: this.gameData.name,
+                        defaultText: this.skirmishData.name,
                     })}
 
                     <label for="description">Notes</label>
                     <div class="input-wrapper">
                         <div class="text-input">
                             <textarea id="description" name="description">
-${this.gameData.description ?? nothing}</textarea
+${this.skirmishData.description ?? nothing}</textarea
                             >
                         </div>
                     </div>
