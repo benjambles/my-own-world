@@ -6,12 +6,8 @@ import { customElement, property } from 'lit/decorators.js';
  * @param context - Lit HTML rendering context
  * @param data - Display data
  */
-@customElement('glow-button')
-export class GlowButton extends LitElement {
-    static get formAssociated() {
-        return true;
-    }
-
+@customElement('glow-link')
+export class GlowLink extends LitElement {
     static styles = css`
         * {
             box-sizing: border-box;
@@ -57,7 +53,7 @@ export class GlowButton extends LitElement {
             --_font-weight: 300;
         }
 
-        button {
+        a {
             display: block;
             width: 100%;
             padding: 0;
@@ -65,9 +61,10 @@ export class GlowButton extends LitElement {
             position: relative;
             background: transparent;
             z-index: 1;
+            text-decoration: none;
         }
 
-        button:focus-visible {
+        a:focus-visible {
             outline: none;
         }
 
@@ -112,54 +109,43 @@ export class GlowButton extends LitElement {
             z-index: -1;
         }
 
-        button:is(:hover, :active, :focus) .glow {
+        a:is(:hover, :focus) .glow {
             background-image: var(--_btn-hv-bg);
         }
 
-        button:is(:hover, :active, :focus) .glow::before {
+        a:is(:hover, :focus) .glow::before {
             background: var(--gradient-glow-reverse);
             animation-play-state: running;
         }
 
-        button:focus .glow::after {
+        a:focus .glow::after {
             content: ' ';
             border: 1px dotted rgb(0 0 0 / 80%);
             border-radius: 2px;
             position: absolute;
             inset: 5px;
         }
-
-        button[disabled] .glow::before,
-        button:active .glow::before {
-            opacity: 0.5;
-        }
     `;
 
-    @property({ attribute: false })
-    private internals: ElementInternals;
+    @property()
+    href = '';
 
-    connectedCallback() {
-        super.connectedCallback();
-        this.internals = this.attachInternals();
-    }
-
-    handleClick = () => {
-        this.internals.form.requestSubmit();
-    };
+    @property()
+    target = '_self';
 
     protected render() {
         return html`
-            <button @click=${this.handleClick}>
+            <a href=${this.href} target=${this.target}>
                 <span class="glow">
                     <slot></slot>
                 </span>
-            </button>
+            </a>
         `;
     }
 }
 
 declare global {
     interface HTMLElementTagNameMap {
-        'glow-button': GlowButton;
+        'glow-link': GlowLink;
     }
 }

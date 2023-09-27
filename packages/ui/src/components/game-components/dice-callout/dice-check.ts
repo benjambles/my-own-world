@@ -55,12 +55,12 @@ export class DiceCheck extends LitElement {
                 margin: 0 0 20px;
             }
 
-            .roll-success b.result {
+            .roll-success .result {
                 --border-color: green;
                 --text-color: green;
             }
 
-            .roll-fail b.result {
+            .roll-fail .result {
                 --border-color: red;
                 --text-color: red;
             }

@@ -23,8 +23,7 @@ export class SkipLinks extends LitElement {
             z-index: 100;
         }
 
-        ::slotted(a:focus),
-        ::slotted(a:target) {
+        ::slotted(a:is(:focus, :target)) {
             display: flex;
             flex-direction: column;
             height: auto;

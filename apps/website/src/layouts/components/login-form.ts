@@ -1,6 +1,6 @@
+import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
 import {
-    buttonStyles,
     callOutStyles,
     inputStyles,
     speechBubbleStyles,
@@ -16,7 +16,6 @@ import { UserLoginPayload } from './with-user/with-user.js';
 export class LoginForm extends LitElement {
     static styles = [
         inputStyles,
-        buttonStyles,
         speechBubbleStyles,
         callOutStyles,
         css`
@@ -29,6 +28,10 @@ export class LoginForm extends LitElement {
                 display: block;
             }
 
+            :host([ismodal]) .speech {
+                margin-bottom: 0;
+            }
+
             form {
                 display: flex;
                 flex-direction: column;
@@ -36,8 +39,13 @@ export class LoginForm extends LitElement {
                 overflow: auto;
             }
 
-            form button {
-                margin: 30px 0 0;
+            glow-button {
+                margin: 40px 0 0;
+            }
+
+            .speech {
+                --co-bg-color: #c6dbe5;
+                color: #057;
             }
         `,
     ];
@@ -98,7 +106,8 @@ export class LoginForm extends LitElement {
                     required: true,
                     type: 'password',
                 })}
-                <button class="primary large">Identify</button>
+
+                <glow-button class="large">Identify</glow-button>
             </form>
         `;
     }

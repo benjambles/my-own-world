@@ -1,5 +1,6 @@
+import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { relativeTime, textInput } from '@benjambles/mow-ui/core.js';
-import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
+import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
@@ -30,14 +31,26 @@ export class AccountForm extends LitElement {
                 color: var(--shade-4);
             }
 
-            form small {
+            small {
                 display: block;
                 margin-top: 5px;
                 font-size: 1.2rem;
             }
 
-            form button {
-                margin: 30px 0 25px;
+            glow-button {
+                margin: 40px 0 0;
+                --gb-btn-bg: linear-gradient(
+                    90deg,
+                    rgb(230 230 230),
+                    rgb(255 255 255),
+                    rgb(230 230 230)
+                );
+                --gb-btn-hover: linear-gradient(
+                    90deg,
+                    rgb(230 230 230 / 70%),
+                    rgb(255 255 255 / 70%),
+                    rgb(230 230 230 / 70%)
+                );
             }
 
             fieldset {
@@ -72,7 +85,6 @@ export class AccountForm extends LitElement {
                 color: rgb(157 143 245);
             }
         `,
-        buttonStyles,
         inputStyles,
     ];
 
@@ -137,7 +149,7 @@ export class AccountForm extends LitElement {
                         type: 'text',
                         defaultText: this.userData?.user.lastName ?? '',
                     })}
-                    <button class="primary large">Identify</button>
+                    <glow-button class="large">Update</glow-button>
                 </fieldset>
             </form>
 
@@ -170,9 +182,8 @@ export class AccountForm extends LitElement {
                         required: false,
                         type: 'password',
                     })}
+                    <glow-button class="large">Update</glow-button>
                 </fieldset>
-
-                <button class="primary large">Identify</button>
             </form>
 
             <form action="${userPaths.account}" method="post">

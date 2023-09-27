@@ -1,7 +1,7 @@
 import { css, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-export interface TextInputData {
+export type TextInputData = {
     defaultText?: string;
     disabled?: boolean;
     id: string;
@@ -23,7 +23,7 @@ export interface TextInputData {
         | 'url'
         | 'week';
     value?: string;
-}
+};
 
 export const inputStyles = css`
     .input-wrapper {
@@ -73,9 +73,10 @@ export const inputStyles = css`
 
     .text-input :is(input, textarea) {
         width: 100%;
-        padding: 12px 20px 10px;
+        padding: 12px 15px 10px;
         border: 0 none;
         border-radius: 2px;
+        font-size: 1.6rem;
     }
 
     .text-input :is(input, textarea):focus-visible {

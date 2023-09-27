@@ -1,3 +1,4 @@
+import '@benjambles/mow-ui/components/form-elements/glow-button/glow-link.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
@@ -16,38 +17,6 @@ export class UserMenu extends LitElement {
         :host {
             --highlight: var(--profile-highlight, rgba(255, 0, 0, 0.8));
             display: block;
-        }
-
-        .button {
-            --_btnBgColor: var(--bgColor, #2b792b);
-            --_btnBorderColor: var(--borderColor, var(--_btnBgColor));
-            --_btnColor: var(--color, var(--shade-1));
-            --_btnFontSize: var(--btnFontSize, 1.6rem);
-            --_btnPadding: var(--btnPadding, 20px);
-
-            display: block;
-            border: 1px solid var(--_btnBorderColor);
-            border-radius: 5px;
-            padding: var(--_btnPadding);
-            margin: 25px 0 0;
-            transition:
-                background-color 0.3s,
-                color 0.3s,
-                border-color 0.3s;
-            background-color: var(--_btnBgColor);
-            color: var(--_btnColor) !important;
-            cursor: pointer;
-            font-family: 'Oxanium', monospace;
-            font-size: var(--_btnFontSize);
-            font-weight: 500;
-            letter-spacing: 0.3ch;
-            line-height: 1;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        button:is(:hover, :focus) {
-            --bgColor: #1b4b1b;
         }
 
         .user-label {
@@ -72,6 +41,10 @@ export class UserMenu extends LitElement {
         a:is(:hover, :active, :focus, .active) {
             outline: none;
             color: var(--highlight);
+        }
+
+        glow-link {
+            margin: 30px 0 0;
         }
 
         .bar-link {
@@ -116,7 +89,7 @@ export class UserMenu extends LitElement {
             <a href="/help" class="bar-link"> Help </a>
 
             <mow-action preventdefault eventtrigger="userlogout">
-                <a class="button" href="${userPaths.logout}">Sign off</a>
+                <glow-link href="${userPaths.logout}">Sign off</glow-link>
             </mow-action>
         `;
     }

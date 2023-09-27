@@ -13,3 +13,5 @@ export default {
 };
 
 export const base = () => html`<glow-button>Test Button</glow-button>`;
+
+export const large = () => html`<glow-button class="large">Test Button</glow-button>`;

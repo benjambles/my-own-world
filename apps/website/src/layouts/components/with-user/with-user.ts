@@ -64,7 +64,7 @@ export class WithUser extends LitElement {
     refreshCookie = 'mow-refreshtoken';
 
     @property({ type: Boolean })
-    protectedPage: Boolean = false;
+    protectedPage = false;
 
     @property()
     redirectUrl = '/';

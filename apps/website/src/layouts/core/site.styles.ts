@@ -111,8 +111,7 @@ export default css`
         transition: color 0.1s;
     }
 
-    a:hover,
-    a:focus {
+    a:is(:hover, :focus) {
         color: var(--basic-4);
     }
 

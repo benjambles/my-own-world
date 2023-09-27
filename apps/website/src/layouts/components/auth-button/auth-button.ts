@@ -16,8 +16,17 @@ export class AuthButton extends LitElement {
             justify-content: center;
             align-items: center;
             height: 60px;
-            width: 60px;
+            width: 61px;
             border-right: 1px solid rgb(68, 68, 68);
+        }
+
+        @container (min-width: 100px) {
+            :host {
+                height: 101px;
+                width: 100px;
+                border-right: 0px none;
+                border-top: 1px solid rgb(68, 68, 68);
+            }
         }
 
         mow-action,
@@ -35,15 +44,6 @@ export class AuthButton extends LitElement {
         a:is(:hover, :focus-visible) {
             color: white;
             background-color: var(--special-4);
-        }
-
-        @container (min-width: 100px) {
-            :host {
-                height: 101px;
-                width: 100px;
-                border-right: 0px none;
-                border-top: 1px solid rgb(68, 68, 68);
-            }
         }
     `;
 

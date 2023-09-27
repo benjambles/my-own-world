@@ -54,16 +54,16 @@ export class MenuProfile extends MowDetails {
             position: relative;
         }
 
-        details > summary {
+        summary {
             display: flex;
             cursor: pointer;
         }
 
-        details > summary:focus {
+        summary:focus {
             outline: none;
         }
 
-        details > summary::-webkit-details-marker {
+        summary::-webkit-details-marker {
             height: 0.5em;
             width: 0.5em;
             margin-inline-end: 0.1em;
@@ -72,11 +72,11 @@ export class MenuProfile extends MowDetails {
             color: white;
         }
 
-        details > summary:is(:hover, :focus)::-webkit-details-marker {
+        summary:is(:hover, :focus)::-webkit-details-marker {
             color: var(--highlight);
         }
 
-        details > summary:is(:hover, :focus) .profile-image {
+        summary:is(:hover, :focus) .profile-image {
             border-color: var(--highlight);
         }
 

@@ -1,6 +1,7 @@
+import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
-import { buttonStyles, callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
+import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -13,7 +14,6 @@ export class EditSkirmish extends LitElement {
 
     static styles = [
         inputStyles,
-        buttonStyles,
         callOutStyles,
         css`
             * {
@@ -35,8 +35,8 @@ export class EditSkirmish extends LitElement {
                 color: var(--shade-4);
             }
 
-            form button {
-                margin: 30px 0 0;
+            glow-button {
+                margin: 40px 0 0;
             }
 
             fieldset {
@@ -127,7 +127,7 @@ ${this.gameData.description ?? nothing}</textarea
                         </div>
                     </div>
 
-                    <button class="primary large">Submit</button>
+                    <glow-button class="large">Submit</glow-button>
                 </fieldset>
             </form>
         `;

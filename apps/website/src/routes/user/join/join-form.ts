@@ -1,6 +1,6 @@
+import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { link, textInput } from '@benjambles/mow-ui/core.js';
 import {
-    buttonStyles,
     callOutStyles,
     inputStyles,
     speechBubbleStyles,
@@ -16,7 +16,6 @@ import { paths as userPaths } from '../config.js';
 @customElement('join-form')
 export class JoinForm extends LitElement {
     static styles = [
-        buttonStyles,
         inputStyles,
         callOutStyles,
         speechBubbleStyles,
@@ -38,14 +37,19 @@ export class JoinForm extends LitElement {
                 color: var(--shade-4);
             }
 
-            form small {
+            small {
                 display: block;
                 margin-top: 5px;
                 font-size: 1.2rem;
             }
 
-            form button {
+            glow-button {
                 margin: 30px 0 25px;
+            }
+
+            .speech {
+                --co-bg-color: #c6dbe5;
+                color: #057;
             }
         `,
     ];
@@ -145,7 +149,7 @@ export class JoinForm extends LitElement {
                     </p>
                 </div>
 
-                <button class="primary large">Confirm</button>
+                <glow-button class="large">Confirm</glow-button>
 
                 <small>
                     By clicking “Confirm”, you agree to our

@@ -98,8 +98,7 @@ export const homeStyles: CSSResult[] = [
             padding: 30px 20px;
         }
 
-        .explorer-links li a:hover,
-        .explorer-links li a:focus {
+        .explorer-links li a:is(:hover, :focus) {
             --co-bg-color: #777;
             color: white;
         }
