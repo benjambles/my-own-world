@@ -4,7 +4,7 @@ import {
     formatData,
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
-import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
+import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
@@ -26,7 +26,7 @@ type UserResponse = Omit<User, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
 
-export interface User {
+export type User = {
     _id: ObjectId;
     accessTokens: {
         accessToken: string;
@@ -48,7 +48,7 @@ export interface User {
     lastName?: string;
     password: string;
     screenName: string;
-}
+};
 
 type NewUser = Pick<User, 'password' | 'screenName'>;
 
