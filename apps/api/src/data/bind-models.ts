@@ -1,14 +1,14 @@
 import { Simplify } from '@benjambles/js-lib/dist/index.js';
 import { Db } from 'mongodb';
 import { getGameModel } from '../resources/games/data/games.js';
-import { getConsumableModel } from '../resources/items/consumables/consumables.js';
-import { getWeaponModel } from '../resources/items/weapons/weapons.js';
 import { getServiceModel } from '../resources/service/service.js';
 import { getSkirmishModel } from '../resources/skirmishes/skirmishes.js';
 import { getIdentifierModel } from '../resources/users/data/identifiers.js';
 import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
+import { getUnitModel } from '../resources/games/data/units.js';
+import { getItemsModel } from '../resources/games/data/items.js';
 
 type Model = (db: Db, env: any) => ModelReturn;
 
@@ -52,13 +52,13 @@ function withDb(db: Db, env: Env): Binder2 {
 
 export function bindModels(db: Db, env: Env) {
     return withDb(db, env)
-        .bind('consumables', getConsumableModel)
-        .bind('identifiers', getIdentifierModel)
-        .bind('system', getServiceModel)
-        .bind('skirmishes', getSkirmishModel)
-        .bind('tokens', getTokenModel)
-        .bind('users', getUserModel)
-        .bind('weapons', getWeaponModel)
         .bind('games', getGameModel)
+        .bind('identifiers', getIdentifierModel)
+        .bind('items', getItemsModel)
+        .bind('skirmishes', getSkirmishModel)
+        .bind('system', getServiceModel)
+        .bind('tokens', getTokenModel)
+        .bind('units', getUnitModel)
+        .bind('users', getUserModel)
         .get();
 }

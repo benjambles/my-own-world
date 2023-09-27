@@ -3,76 +3,89 @@ import {
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
-import { getObjectId, ModelResult } from '@benjambles/mow-server/dist/utils/db.js';
+import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
+import { Consumable } from '@benjambles/skirmish-engine/dist/item/consumables/consumables.js';
+import { Weapon } from '@benjambles/skirmish-engine/dist/item/weapons/weapons.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
 
-const restrictedKeys = ['deletedOn', 'isDeleted'] as const;
+const restrictedKeys = ['items', 'units'] as const;
 
 //#region Types
-export interface Game {
+export type Game = {
     _id: ObjectId;
-    createdOn: Date;
-    deletedOn?: Date;
     description: string;
-    isDeleted: boolean;
-    game: {
-        name: string;
-        version: string;
+    items: {
+        armour: [];
+        consumables: Consumable[];
+        upgrades: [];
+        weapons: Weapon[];
     };
     name: string;
-    points: number;
-    type: string;
-    userId: ObjectId;
-}
+    tags: string[];
+    units: {
+        _id: ObjectId;
+        movement: {
+            distance: number;
+            environment: string;
+            type: string; // 'rotory' | 'wing' | 'powered' | 'none';
+        }[];
+        playable: boolean;
+        species: string;
+        stats: {
+            abbreviation: string;
+            group: string;
+            key: string;
+            value: string;
+        }[];
+        type: string; // 'organic' | 'synthetic'
+        traits: {
+            base: string[];
+            options: string[];
+        };
+    }[];
+    version: string;
+};
 
-type NewGame = {
-    game: string;
-} & Pick<Game, 'description' | 'name' | 'points' | 'type'>;
+type NewGame = Pick<Game, 'description' | 'name' | 'tags' | 'version'>;
+type UpdateGame = Pick<Game, 'description' | 'name' | 'tags'>;
 
-type UpdateGame = Pick<Game, 'description' | 'name' | 'points'>;
-
-type ToStringKeys = '_id' | 'createdOn' | 'userId';
-
+type ToStringKeys = '_id';
 type RestrictedKeys = (typeof restrictedKeys)[number];
-
 type GameResponse = Omit<Game, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
 //#endregion Types
 
+export function getGamesCollection(db: Db) {
+    return db.collection<Game>('Games');
+}
+
 export function getGameModel(db: Db, { ENC_SECRET }: Env) {
     const dataFormatter = formatData(getDataFormatter(ENC_SECRET));
-    const items = db.collection<Game>('Games');
+    const games = getGamesCollection(db);
 
     const model = {
         dataFormatter,
-        count: async function (query: Partial<Game>): Promise<number> {
-            return await items.countDocuments(query);
+        count: async function (query?: Partial<Game>): Promise<number> {
+            return await games.countDocuments(query);
         },
-        get: async function (
-            userId?: string,
-            limit: number = 10,
-            skip: number = 0,
-        ): ModelResult<Game[]> {
-            const dbResult = await items
-                .find(
-                    {
-                        isDeleted: false,
-                        userId: userId ? getObjectId(userId) : undefined,
-                    },
-                    { limit, skip },
-                )
-                .toArray();
+        create: async function (data: NewGame): ModelResult<Game> {
+            const gameData: Game = {
+                ...data,
+                _id: getObjectId(randomUUID()),
+                items: { armour: [], consumables: [], upgrades: [], weapons: [] },
+                units: [],
+            };
+            const cleanData = await dataFormatter(gameData);
+            const { insertedId } = await games.insertOne(cleanData);
 
-            return { ok: true, value: dbResult };
+            return await model.find(insertedId.toString());
         },
-        find: async function (uuid: string, userId: string): ModelResult<Game> {
-            const dbResult = await items.findOne({
+        find: async function (uuid: string): ModelResult<Game> {
+            const dbResult = await games.findOne({
                 _id: getObjectId(uuid),
-                isDeleted: false,
-                userId: getObjectId(userId),
             });
 
             return {
@@ -80,55 +93,23 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
                 value: dbResult,
             };
         },
+        get: async function (limit: number = 10, skip: number = 0): ModelResult<Game[]> {
+            const dbResult = await games.find({ limit, skip }).toArray();
 
-        create: async function (data: NewGame, userId: string): ModelResult<Game> {
-            const gameData: Game = {
-                _id: getObjectId(randomUUID()),
-                createdOn: new Date(),
-                description: data.description,
-                game: {
-                    name: data.game,
-                    version: 'v1',
-                },
-                isDeleted: false,
-                name: data.name,
-                points: data.points,
-                type: data.type,
-                userId: getObjectId(userId),
-            };
-            const cleanData = await dataFormatter(gameData);
-            const { insertedId } = await items.insertOne(cleanData);
-
-            return await model.find(insertedId.toString(), userId);
+            return { ok: true, value: dbResult };
         },
-
         update: async function (
             uuid: string,
-            userId: string,
             data: Partial<UpdateGame>,
         ): ModelResult<Game> {
             const cleanData = await dataFormatter(data);
-            const { ok, value } = await items.findOneAndUpdate(
-                { _id: getObjectId(uuid), userId: getObjectId(userId) },
-                { set: cleanData },
+            const { ok, value } = await games.findOneAndUpdate(
+                { _id: getObjectId(uuid) },
+                { $set: cleanData },
                 { includeResultMetadata: true },
             );
 
             return { ok: !!ok, value };
-        },
-
-        delete: async function (uuid: string, userId: string): ModelResult<number> {
-            const { matchedCount, modifiedCount } = await items.updateOne(
-                { _id: getObjectId(uuid), userId: getObjectId(userId) },
-                {
-                    set: { deletedOn: new Date(), isDeleted: true },
-                },
-            );
-
-            return {
-                ok: !!matchedCount && matchedCount === modifiedCount,
-                value: matchedCount,
-            };
         },
     };
 
@@ -138,7 +119,5 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
 export function cleanResponse(data: Game): GameResponse {
     return Object.assign(omit(data, restrictedKeys), {
         _id: data._id.toString(),
-        createdOn: data.createdOn.toISOString(),
-        userId: data.userId.toString(),
     });
 }

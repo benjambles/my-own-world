@@ -2,9 +2,6 @@ import {
     ClientApi,
     createResource,
 } from '@benjambles/mow-server/dist/routing/create-resource.js';
-import { getAuthenticatedUserId } from '@benjambles/mow-server/dist/utils/access-checks/get-authenticated-user-id.js';
-import { isAdmin } from '@benjambles/mow-server/dist/utils/access-checks/is-admin.js';
-import { getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import {
     created,
     noResponse,
@@ -14,6 +11,7 @@ import createError from 'http-errors';
 import { DataModel } from '../../app.js';
 import config from './config.js';
 import { cleanResponse } from './data/games.js';
+import { cleanResponse as cleanUnitResponse } from './data/units.js';
 
 export type GameClientTypes = ClientApi<typeof config>;
 
@@ -22,12 +20,12 @@ export type GameClientTypes = ClientApi<typeof config>;
  */
 export default function games(dataModel: DataModel) {
     const games = dataModel.getKey('games');
+    const units = dataModel.getKey('units');
 
     return createResource(config)
         .operation('createGame', async (ctx) => {
             const { body } = ctx.request;
-            const userId = getAuthenticatedUserId(ctx);
-            const gameResult = await games.create(body, userId);
+            const gameResult = await games.create(body);
 
             if (!gameResult.ok) {
                 throw createError(400, 'There was an error creating the game');
@@ -35,34 +33,21 @@ export default function games(dataModel: DataModel) {
 
             return created(cleanResponse(gameResult.value));
         })
-        .operation('deleteGameById', async (ctx) => {
-            const { gameId } = ctx.request.params;
-            const userId = getAuthenticatedUserId(ctx);
-            const result = await games.delete(gameId, userId);
-
-            if (!result.ok) {
-                throw createError(400, 'There was an error whilst deleting the game');
-            }
-
-            return noResponse();
-        })
         .operation('getGames', async (ctx) => {
-            const { limit, offset, userId } = ctx.request.query;
+            const { limit, offset } = ctx.request.query;
 
-            if (!isAdmin(ctx) && userId !== getAuthenticatedUserId(ctx)) {
-                throw createError(403, 'Unable to access another users data');
-            }
+            const gamesResult = await games.get(limit, offset);
+            const gameCount = await games.count();
 
-            const gamesResult = await games.get(userId, limit, offset);
-            const gameCount = await games.count({ userId: getObjectId(userId) });
-
-            return ok({ count: gameCount, games: gamesResult.value.map(cleanResponse) });
+            return ok({
+                count: gameCount,
+                games: gamesResult.value.map(cleanResponse),
+            });
         })
         .operation('getGameById', async (ctx) => {
             const { gameId } = ctx.request.params;
-            const userId = getAuthenticatedUserId(ctx);
 
-            const gamesResult = await games.find(gameId, userId);
+            const gamesResult = await games.find(gameId);
 
             if (!gamesResult.ok) {
                 throw createError(404, 'There was an error whilst getting the game data');
@@ -71,10 +56,8 @@ export default function games(dataModel: DataModel) {
             return ok(cleanResponse(gamesResult.value));
         })
         .operation('updateGameById', async (ctx) => {
-            const userId = getAuthenticatedUserId(ctx);
             const gameResult = await games.update(
                 ctx.request.params.gameId,
-                userId,
                 ctx.request.body,
             );
 
@@ -83,6 +66,52 @@ export default function games(dataModel: DataModel) {
             }
 
             return ok(cleanResponse(gameResult.value));
+        })
+        .operation('getUnits', async (ctx) => {
+            const { gameId } = ctx.request.params;
+            const result = await units.get(gameId);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error whilst deleting the unit');
+            }
+
+            return ok(result.value.map(cleanUnitResponse));
+        })
+        .operation('createUnit', async (ctx) => {
+            const {
+                body,
+                params: { gameId },
+            } = ctx.request;
+            const gameResult = await units.create(gameId, body);
+
+            if (!gameResult.ok) {
+                throw createError(400, 'There was an error creating the game');
+            }
+
+            return created(cleanUnitResponse(gameResult.value));
+        })
+        .operation('deleteUnitById', async (ctx) => {
+            const { gameId, unitId } = ctx.request.params;
+            const result = await units.delete(unitId, gameId);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error whilst deleting the unit');
+            }
+
+            return noResponse();
+        })
+        .operation('updateUnitById', async (ctx) => {
+            const {
+                body,
+                params: { gameId, unitId },
+            } = ctx.request;
+            const result = await units.update(unitId, gameId, body);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error updating the game data');
+            }
+
+            return ok(cleanUnitResponse(result.value));
         })
         .get();
 }
