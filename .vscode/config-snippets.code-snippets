@@ -347,7 +347,7 @@
             "${1:200}: {", 
             "    description: 'OK,',",
             "    content: {",
-            "        '${2|application/json|text/plain|}': {",
+            "        '${2|application/json,text/plain|}': {",
             "            schema: {",
             "               ${0}",
             "            },",
@@ -356,6 +356,13 @@
             "}",
         ],
         "description": "Creates a HTTP method body when defining OpenAPI config - for the verbs property"
+    },
+    "Config Reference":{
+        "scope": "typescript",
+        "prefix": "$ref",
+        "body": [
+            "{ \\$ref: '#/components/${1|parameters,schemas|}/$0' }"
+        ]
     },
     // Snippets for adding UI components
     "Add Template": {
