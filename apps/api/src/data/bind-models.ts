@@ -4,6 +4,7 @@ import { getGameModel } from '../resources/games/data/games.js';
 import { getConsumableModel } from '../resources/items/consumables/consumables.js';
 import { getWeaponModel } from '../resources/items/weapons/weapons.js';
 import { getServiceModel } from '../resources/service/service.js';
+import { getSkirmishModel } from '../resources/skirmishes/skirmishes.js';
 import { getIdentifierModel } from '../resources/users/data/identifiers.js';
 import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
@@ -54,6 +55,7 @@ export function bindModels(db: Db, env: Env) {
         .bind('consumables', getConsumableModel)
         .bind('identifiers', getIdentifierModel)
         .bind('system', getServiceModel)
+        .bind('skirmishes', getSkirmishModel)
         .bind('tokens', getTokenModel)
         .bind('users', getUserModel)
         .bind('weapons', getWeaponModel)
