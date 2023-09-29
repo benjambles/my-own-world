@@ -42,6 +42,17 @@ export default {
             Offset: offset,
         },
         schemas: {
+            StatsArray: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    required: ['name', 'value'],
+                    properties: {
+                        name: { type: 'string' },
+                        value: { type: 'integer' },
+                    },
+                },
+            },
             GameListResponse: {
                 type: 'object',
                 required: ['_id', 'description', 'name', 'tags', 'version'],
@@ -119,17 +130,71 @@ export default {
                 type: 'object',
                 required: ['armour', 'consumables', 'upgrades', 'weapons'],
                 properties: {
-                    armour: { $ref: '#/components/schemas/Armour' },
-                    consumables: { $ref: '#/components/schemas/Consumables' },
-                    upgrades: { $ref: '#/components/schemas/Upgrades' },
-                    weapons: { $ref: '#/components/schemas/Weapons' },
+                    armour: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Armour' },
+                    },
+                    consumables: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Consumables' },
+                    },
+                    upgrades: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Upgrades' },
+                    },
+                    weapons: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/Weapons' },
+                    },
                 },
             },
             Armour: {
                 type: 'object',
-                required: [],
+                required: [
+                    'description',
+                    'entityId',
+                    'limit',
+                    'location',
+                    'name',
+                    'requirements',
+                    'stats',
+                    'traits',
+                    'type',
+                    'upgradeSlots',
+                    'value',
+                ],
                 properties: {
+                    description: { type: 'string' },
                     entityId: { type: 'string' },
+                    limit: { type: 'integer' },
+                    location: { type: 'string' },
+                    name: { type: 'string' },
+                    requirements: {
+                        type: 'object',
+                        required: ['skills', 'stats'],
+                        properties: {
+                            skills: { type: 'array', items: { type: 'string' } },
+                            stats: { $ref: '#/components/schemas/StatsArray' },
+                        },
+                    },
+                    stats: { $ref: '#/components/schemas/StatsArray' },
+                    traits: {
+                        type: 'array',
+                        items: { type: 'string' },
+                    },
+                    type: { type: 'string' },
+                    upgradeSlots: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            required: ['attachedId', 'type'],
+                            properties: {
+                                attachedId: { type: 'string' },
+                                type: { type: 'string' },
+                            },
+                        },
+                    },
+                    value: { type: 'integer' },
                 },
             },
             Consumables: {
@@ -167,9 +232,30 @@ export default {
             },
             Upgrades: {
                 type: 'object',
-                required: [],
+                required: [
+                    'description',
+                    'entityId',
+                    'limit',
+                    'location',
+                    'name',
+                    'stats',
+                    'traits',
+                    'type',
+                    'value',
+                ],
                 properties: {
+                    description: { type: 'string' },
                     entityId: { type: 'string' },
+                    limit: { type: 'integer' },
+                    location: { type: 'string' },
+                    name: { type: 'string' },
+                    stats: { $ref: '#/components/schemas/StatsArray' },
+                    traits: {
+                        type: 'array',
+                        items: { type: 'string' },
+                    },
+                    type: { type: 'string' },
+                    value: { type: 'integer' },
                 },
             },
             Weapons: {
@@ -182,6 +268,7 @@ export default {
                     'name',
                     'requirements',
                     'stats',
+                    'traits',
                     'type',
                     'value',
                 ],
@@ -196,31 +283,20 @@ export default {
                         required: ['skills', 'stats'],
                         properties: {
                             skills: { type: 'array', items: { type: 'string' } },
-                            stats: {
-                                type: 'object',
-                                required: [],
-                                properties: {
-                                    health: { type: 'integer' },
-                                    defense_physical: { type: 'integer' },
-                                    defense_technical: { type: 'integer' },
-                                    speed: { type: 'integer' },
-                                    strength: { type: 'integer' },
-                                    toughness: { type: 'integer' },
-                                    willpower: { type: 'integer' },
-                                },
-                            },
+                            stats: { $ref: '#/components/schemas/StatsArray' },
                         },
                     },
                     stats: {
                         type: 'object',
-                        required: ['dice', 'hands', 'modifier', 'range'],
+                        required: ['attacks', 'damage', 'hands', 'range'],
                         properties: {
-                            dice: { type: 'string' },
+                            attacks: { type: 'integer' },
+                            damage: { type: 'integer' },
                             hands: { type: 'integer' },
-                            modifier: { type: 'integer' },
                             range: { type: 'string' },
                         },
                     },
+                    traits: { type: 'array', items: { type: 'string' } },
                     type: { type: 'string' },
                     value: { type: 'integer' },
                 },
@@ -688,10 +764,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: {
-                                        $ref: '#/components/schemas/Item',
-                                    },
+                                    $ref: '#/components/schemas/Item',
                                 },
                             },
                         },
@@ -742,10 +815,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: {
-                                        $ref: '#/components/schemas/Item',
-                                    },
+                                    $ref: '#/components/schemas/Item',
                                 },
                             },
                         },
@@ -794,7 +864,7 @@ export default {
                 summary: 'Check which endpoints are available for working with games',
                 description: '',
                 operationId: 'sendOptions',
-                parameters: [{ $ref: '#/components/parameters/gameId' }],
+                parameters: [{ $ref: '#/components/parameters/GameId' }],
                 responses: {
                     '200': {
                         description: 'OK,',

@@ -21,6 +21,7 @@ export type GameClientTypes = ClientApi<typeof config>;
 export default function games(dataModel: DataModel) {
     const games = dataModel.getKey('games');
     const units = dataModel.getKey('units');
+    const items = dataModel.getKey('items');
 
     return createResource(config)
         .operation('createGame', async (ctx) => {
@@ -112,6 +113,47 @@ export default function games(dataModel: DataModel) {
             }
 
             return ok(cleanUnitResponse(result.value));
+        })
+        .operation('deleteItems', async (ctx) => {
+            const {
+                body,
+                params: { gameId },
+            } = ctx.request;
+
+            const result = await items.delete(gameId, body);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error deleting the items requested');
+            }
+
+            return noResponse();
+        })
+        .operation('getItems', async (ctx) => {
+            const {
+                params: { gameId },
+            } = ctx.request;
+
+            const result = await items.get(gameId);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error detching the items');
+            }
+
+            return ok(result.value);
+        })
+        .operation('updateItems', async (ctx) => {
+            const {
+                body,
+                params: { gameId },
+            } = ctx.request;
+
+            const result = await items.update(gameId, body);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error deleting the items requested');
+            }
+
+            return ok(result.value);
         })
         .get();
 }

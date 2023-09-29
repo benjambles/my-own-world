@@ -4,8 +4,12 @@ import {
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import { Consumable } from '@benjambles/skirmish-engine/dist/item/consumables/consumables.js';
-import { Weapon } from '@benjambles/skirmish-engine/dist/item/weapons/weapons.js';
+import {
+    Armour,
+    Consumable,
+    Upgrade,
+    Weapon,
+} from '@benjambles/skirmish-engine/dist/item/item.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
@@ -17,9 +21,9 @@ export type Game = {
     _id: ObjectId;
     description: string;
     items: {
-        armour: [];
+        armour: Armour[];
         consumables: Consumable[];
-        upgrades: [];
+        upgrades: Upgrade[];
         weapons: Weapon[];
     };
     name: string;

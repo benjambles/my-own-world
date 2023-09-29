@@ -2,7 +2,7 @@ import { append, dedupe } from '@benjambles/js-lib/dist/arrays/array.js';
 import { PartialBy } from '@benjambles/js-lib/dist/index.js';
 import { DamageState } from '../../combat/damage/states.js';
 import { GameEntity } from '../../entities/entities.js';
-import { Augmentation } from '../../item/augmentations/augmentation.js';
+import { Augmentation } from '../../item/item.js';
 import { BodyPart } from './body-parts.js';
 import { StatBlocks } from './stats.js';
 
