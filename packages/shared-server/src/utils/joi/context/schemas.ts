@@ -1,5 +1,5 @@
 import {
-    Id,
+    Identity,
     ObjectValues,
     PartialBy,
     TupleToUnion,
@@ -10,7 +10,7 @@ export type ContextFromBody<
     BodyConfig,
     Components extends {} = {},
 > = BodyConfig extends ApplicationJson
-    ? ParseProp<BodyConfig['application/json']['schema'], Components>
+    ? Identity<ParseProp<BodyConfig['application/json']['schema'], Components>>
     : BodyConfig extends TextPlain
     ? string
     : BodyConfig extends TextHtml
@@ -92,18 +92,16 @@ type ParseProp<Prop extends PropertySchemas, Components> = Prop extends ArraySch
     : Prop extends NumberSchema
     ? number
     : Prop extends ObjectSchema
-    ? Id<TypeFromObjectSchema<Prop, Components>>
+    ? TypeFromObjectSchema<Prop, Components>
     : Prop extends Ref
     ? TypeFromRefSchema<Prop, Components>
     : Prop extends StringSchema
     ? string
     : never;
 
-type TypeFromObjectSchema<Schema extends ObjectSchema, Components> = Id<
-    PartialBy<
-        ParseProperties<Schema['properties'], Components>,
-        GetOptionalProps<Schema, Components>
-    >
+type TypeFromObjectSchema<Schema extends ObjectSchema, Components> = PartialBy<
+    ParseProperties<Schema['properties'], Components>,
+    GetOptionalProps<Schema, Components>
 >;
 
 type ParseProperties<Props extends ObjectSchema['properties'], Components> = {

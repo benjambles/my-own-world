@@ -1,12 +1,12 @@
-import { Id, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
+import { Identity, UnionToTuple } from '@benjambles/js-lib/dist/index.js';
 import createError from 'http-errors';
 import { Select } from 'ts-toolbelt/out/List/Select.js';
 import { ResourceConfig } from '../../routing/create-resource.js';
+import { buildUrl, parseResponse } from '../fetch.js';
 import { HandlerArgs, KoaRequestParams } from '../joi/context/context.js';
 import { MaybeBodyContext } from '../joi/context/request-body.js';
 import { ApiDoc, MethodSchema, UnionFromProps } from '../joi/openapi-to-joi.js';
 import { MaybeHandlerResponse } from '../joi/responses/openapi-to-types.js';
-import { buildUrl, parseResponse } from '../fetch.js';
 import { HTTPVerbs } from './get-http-methods.js';
 
 //#region Types
@@ -16,7 +16,7 @@ interface ResourceBinder<
         [name: string]: (args: any) => Promise<unknown>;
     } = {},
 > {
-    get: () => Id<D>;
+    get: () => Identity<D>;
     operation: <K extends keyof Config['operations']>(
         operationId: K,
         hostUrl: string,

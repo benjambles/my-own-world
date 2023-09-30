@@ -1,4 +1,3 @@
-import { Identity } from '@benjambles/js-lib/dist/index.js';
 import { BodyMimes, ContextFromBody } from '../context/schemas.js';
 import { MethodSchema } from '../openapi-to-joi.js';
 
@@ -24,9 +23,9 @@ export type MaybeHandlerResponse<
     Components extends {} = {},
 > = M extends MethodSchema['responses']
     ? M extends OK
-        ? Identity<ContextFromBody<M['200']['content'], Components>>
+        ? ContextFromBody<M['200']['content'], Components>
         : M extends Created
-        ? Identity<ContextFromBody<M['201']['content'], Components>>
+        ? ContextFromBody<M['201']['content'], Components>
         : M extends NoContent
         ? void
         : M extends ActionRedirect

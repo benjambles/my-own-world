@@ -1,4 +1,3 @@
-import { Id } from '@benjambles/js-lib/dist/index.js';
 import { BodyMimes, ContextFromBody } from './schemas.js';
 
 export interface RequestBody {
@@ -11,8 +10,8 @@ export type MaybeBodyContext<
     Components extends {} = {},
 > = BodyConfig extends RequestBody
     ? BodyConfig['required'] extends true
-        ? { body: Id<ContextFromBody<BodyConfig['content'], Components>> }
+        ? { body: ContextFromBody<BodyConfig['content'], Components> }
         : {
-              body?: Id<ContextFromBody<BodyConfig['content'], Components>>;
+              body?: ContextFromBody<BodyConfig['content'], Components>;
           }
     : {};
