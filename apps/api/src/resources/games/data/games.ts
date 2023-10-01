@@ -4,51 +4,24 @@ import {
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import {
-    Armour,
-    Consumable,
-    Upgrade,
-    Weapon,
-} from '@benjambles/skirmish-engine/dist/item/item.js';
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
+import { Archetype } from './archetypes.js';
+import { Items } from './items.js';
+import { Npc } from './npcs.js';
 
-const restrictedKeys = ['items', 'units'] as const;
+const restrictedKeys = ['items', 'archetypes', 'npcs'] as const;
 
 //#region Types
 export type Game = {
     _id: ObjectId;
+    archetypes: Archetype[];
     description: string;
-    items: {
-        armour: Armour[];
-        consumables: Consumable[];
-        upgrades: Upgrade[];
-        weapons: Weapon[];
-    };
+    items: Items;
     name: string;
+    npcs: Npc[];
     tags: string[];
-    units: {
-        _id: ObjectId;
-        movement: {
-            distance: number;
-            environment: string;
-            type: string; // 'rotory' | 'wing' | 'powered' | 'none';
-        }[];
-        playable: boolean;
-        species: string;
-        stats: {
-            abbreviation: string;
-            group: string;
-            key: string;
-            value: string;
-        }[];
-        type: string; // 'organic' | 'synthetic'
-        traits: {
-            base: string[];
-            options: string[];
-        };
-    }[];
     version: string;
 };
 
@@ -79,8 +52,9 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
             const gameData: Game = {
                 ...data,
                 _id: getObjectId(randomUUID()),
+                archetypes: [],
                 items: { armour: [], consumables: [], upgrades: [], weapons: [] },
-                units: [],
+                npcs: [],
             };
             const cleanData = await dataFormatter(gameData);
             const { insertedId } = await games.insertOne(cleanData);
@@ -120,7 +94,7 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
     return model;
 }
 
-export function cleanResponse(data: Game): GameResponse {
+export function cleanGameResponse(data: Game): GameResponse {
     return Object.assign(omit(data, restrictedKeys), {
         _id: data._id.toString(),
     });

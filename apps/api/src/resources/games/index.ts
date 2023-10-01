@@ -10,8 +10,9 @@ import {
 import createError from 'http-errors';
 import { DataModel } from '../../app.js';
 import config from './config.js';
-import { cleanResponse } from './data/games.js';
-import { cleanResponse as cleanUnitResponse } from './data/units.js';
+import { cleanArchetypeResponse } from './data/archetypes.js';
+import { cleanGameResponse } from './data/games.js';
+import { cleanNpcResponse } from './data/npcs.js';
 
 export type GameClientTypes = ClientApi<typeof config>;
 
@@ -20,8 +21,9 @@ export type GameClientTypes = ClientApi<typeof config>;
  */
 export default function games(dataModel: DataModel) {
     const games = dataModel.getKey('games');
-    const units = dataModel.getKey('units');
+    const archetypes = dataModel.getKey('archetypes');
     const items = dataModel.getKey('items');
+    const npcs = dataModel.getKey('npcs');
 
     return createResource(config)
         .operation('createGame', async (ctx) => {
@@ -32,7 +34,7 @@ export default function games(dataModel: DataModel) {
                 throw createError(400, 'There was an error creating the game');
             }
 
-            return created(cleanResponse(gameResult.value));
+            return created(cleanGameResponse(gameResult.value));
         })
         .operation('getGames', async (ctx) => {
             const { limit, offset } = ctx.request.query;
@@ -42,7 +44,7 @@ export default function games(dataModel: DataModel) {
 
             return ok({
                 count: gameCount,
-                games: gamesResult.value.map(cleanResponse),
+                games: gamesResult.value.map(cleanGameResponse),
             });
         })
         .operation('getGameById', async (ctx) => {
@@ -54,7 +56,7 @@ export default function games(dataModel: DataModel) {
                 throw createError(404, 'There was an error whilst getting the game data');
             }
 
-            return ok(cleanResponse(gamesResult.value));
+            return ok(cleanGameResponse(gamesResult.value));
         })
         .operation('updateGameById', async (ctx) => {
             const gameResult = await games.update(
@@ -66,53 +68,65 @@ export default function games(dataModel: DataModel) {
                 throw createError(400, 'There was an error updating the game data');
             }
 
-            return ok(cleanResponse(gameResult.value));
+            return ok(cleanGameResponse(gameResult.value));
         })
-        .operation('getUnits', async (ctx) => {
-            const { gameId } = ctx.request.params;
-            const result = await units.get(gameId);
+        .operation('getArchetypes', async (ctx) => {
+            const {
+                params: { gameId },
+                query: { limit, offset },
+            } = ctx.request;
+            const result = await archetypes.get(gameId, limit, offset);
 
             if (!result.ok) {
-                throw createError(400, 'There was an error whilst deleting the unit');
+                throw createError(
+                    400,
+                    'There was an error whilst deleting the archetype',
+                );
             }
 
-            return ok(result.value.map(cleanUnitResponse));
+            return ok({
+                count: result.value.count,
+                items: result.value.items.map(cleanArchetypeResponse),
+            });
         })
-        .operation('createUnit', async (ctx) => {
+        .operation('createArchetype', async (ctx) => {
             const {
                 body,
                 params: { gameId },
             } = ctx.request;
-            const gameResult = await units.create(gameId, body);
+            const gameResult = await archetypes.create(gameId, body);
 
             if (!gameResult.ok) {
                 throw createError(400, 'There was an error creating the game');
             }
 
-            return created(cleanUnitResponse(gameResult.value));
+            return created(cleanArchetypeResponse(gameResult.value));
         })
-        .operation('deleteUnitById', async (ctx) => {
-            const { gameId, unitId } = ctx.request.params;
-            const result = await units.delete(unitId, gameId);
+        .operation('deleteArchetypeById', async (ctx) => {
+            const { gameId, archetypeId } = ctx.request.params;
+            const result = await archetypes.delete(archetypeId, gameId);
 
             if (!result.ok) {
-                throw createError(400, 'There was an error whilst deleting the unit');
+                throw createError(
+                    400,
+                    'There was an error whilst deleting the archetype',
+                );
             }
 
             return noResponse();
         })
-        .operation('updateUnitById', async (ctx) => {
+        .operation('updateArchetypeById', async (ctx) => {
             const {
                 body,
-                params: { gameId, unitId },
+                params: { gameId, archetypeId },
             } = ctx.request;
-            const result = await units.update(unitId, gameId, body);
+            const result = await archetypes.update(archetypeId, gameId, body);
 
             if (!result.ok) {
                 throw createError(400, 'There was an error updating the game data');
             }
 
-            return ok(cleanUnitResponse(result.value));
+            return ok(cleanArchetypeResponse(result.value));
         })
         .operation('deleteItems', async (ctx) => {
             const {
@@ -154,6 +168,72 @@ export default function games(dataModel: DataModel) {
             }
 
             return ok(result.value);
+        })
+        .operation('createNpc', async (ctx) => {
+            const {
+                body,
+                params: { gameId },
+            } = ctx.request;
+
+            const result = await npcs.create(gameId, body);
+            if (!result.ok) {
+                throw createError(400, 'There was an error creating the NPC');
+            }
+
+            return created(cleanNpcResponse(result.value));
+        })
+        .operation('deleteNpcById', async (ctx) => {
+            const { gameId, npcId } = ctx.request.params;
+
+            const result = await npcs.delete(gameId, npcId);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error deleteing the NPC');
+            }
+
+            return noResponse();
+        })
+        .operation('getNpcById', async (ctx) => {
+            const { gameId, npcId } = ctx.request.params;
+
+            const result = await npcs.find(gameId, npcId);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error deleteing the NPC');
+            }
+
+            return ok(cleanNpcResponse(result.value));
+        })
+        .operation('getNpcs', async (ctx) => {
+            const {
+                params: { gameId },
+                query: { limit, offset },
+            } = ctx.request;
+
+            const result = await npcs.get(gameId, limit, offset);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error fetching NPCs');
+            }
+
+            return ok({
+                count: result.value.count,
+                items: result.value.items.map(cleanNpcResponse),
+            });
+        })
+        .operation('updateNpcById', async (ctx) => {
+            const {
+                body,
+                params: { gameId, npcId },
+            } = ctx.request;
+
+            const result = await npcs.update(gameId, npcId, body);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error updating the NPC');
+            }
+
+            return ok(cleanNpcResponse(result.value));
         })
         .get();
 }

@@ -7,18 +7,18 @@ import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.j
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
+import { ArchetypeResponse } from '../games/data/archetypes.js';
 import { Items } from '../games/data/items.js';
-import { UnitResponse } from '../games/data/units.js';
 
 const restrictedKeys = ['deletedOn', 'isDeleted'] as const;
 
 //#region Types
 export type Skirmish = {
     _id: ObjectId;
-    baseUnits: UnitResponse[];
+    archetypes: ArchetypeResponse[];
     characters: {
         _id: string;
-        baseUnit: string;
+        archetypeId: string;
         equipment: Items;
         name: string;
         training: {
@@ -34,7 +34,7 @@ export type Skirmish = {
     description: string;
     drones: {
         _id: string;
-        baseUnit: string;
+        archetypeId: string;
         equipment: Items;
     }[];
     isDeleted: boolean;
@@ -49,9 +49,9 @@ export type Skirmish = {
 };
 
 type NewSkirmish = Pick<Skirmish, 'description' | 'game' | 'name' | 'points' | 'type'> &
-    Partial<Pick<Skirmish, 'baseUnits' | 'characters' | 'drones'>>;
+    Partial<Pick<Skirmish, 'archetypes' | 'characters' | 'drones'>>;
 type UpdateSkirmish = Partial<Omit<Skirmish, RestrictedKeys | ToStringKeys | 'game'>>;
-type SkirmishListView = Omit<Skirmish, 'baseUnits' | 'characters' | 'drones'>;
+type SkirmishListView = Omit<Skirmish, 'archetypes' | 'characters' | 'drones'>;
 
 type ToStringKeys = '_id' | 'createdOn' | 'userId';
 
@@ -85,7 +85,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
                     {
                         limit,
                         skip,
-                        projection: { baseUnits: 0, characters: 0, drones: 0 },
+                        projection: { archetypes: 0, characters: 0, drones: 0 },
                     },
                 )
                 .toArray();
@@ -110,7 +110,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
         ): ModelResult<Skirmish> {
             const gameData: Skirmish = {
                 _id: getObjectId(randomUUID()),
-                baseUnits: data.baseUnits ?? [],
+                archetypes: data.archetypes ?? [],
                 characters: data.characters ?? [],
                 createdOn: new Date(),
                 description: data.description,

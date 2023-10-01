@@ -1,10 +1,10 @@
 import { limit, offset } from '../../schema/shared-params.js';
 import {
+    archetypeResponse,
     armour,
     consumables,
     items,
     statsArray,
-    unitResponse,
     upgrades,
     weapons,
 } from '../games/config.js';
@@ -46,7 +46,10 @@ export default {
             },
         },
         schemas: {
-            StatsArray: statsArray,
+            Archetype: archetypeResponse,
+            Armour: armour,
+            Consumables: consumables,
+            Items: items,
             SkirmishListResponse: {
                 type: 'object',
                 required: [
@@ -81,7 +84,7 @@ export default {
                 type: 'object',
                 required: [
                     '_id',
-                    'baseUnits',
+                    'archetypes',
                     'characters',
                     'createdOn',
                     'description',
@@ -94,9 +97,9 @@ export default {
                 ],
                 properties: {
                     _id: { type: 'string' },
-                    baseUnits: {
+                    archetypes: {
                         type: 'array',
-                        items: { $ref: '#/components/schemas/UnitResponse' },
+                        items: { $ref: '#/components/schemas/Archetype' },
                     },
                     characters: {
                         type: 'array',
@@ -104,14 +107,14 @@ export default {
                             type: 'object',
                             required: [
                                 '_id',
-                                'baseUnit',
+                                'archetypeId',
                                 'equipment',
                                 'name',
                                 'training',
                             ],
                             properties: {
                                 _id: { type: 'string' },
-                                baseUnit: { type: 'string' },
+                                archetypeId: { type: 'string' },
                                 equipment: { $ref: '#/components/schemas/Items' },
                                 name: { type: 'string' },
                                 training: {
@@ -148,10 +151,10 @@ export default {
                         type: 'array',
                         items: {
                             type: 'object',
-                            required: ['_id', 'baseUnit', 'equipment'],
+                            required: ['_id', 'archetypeId', 'equipment'],
                             properties: {
                                 _id: { type: 'string' },
-                                baseUnit: { type: 'string' },
+                                archetypeId: { type: 'string' },
                                 equipment: { $ref: '#/components/schemas/Items' },
                             },
                         },
@@ -170,10 +173,7 @@ export default {
                     userId: { type: 'string' },
                 },
             },
-            UnitResponse: unitResponse,
-            Items: items,
-            Armour: armour,
-            Consumables: consumables,
+            StatsArray: statsArray,
             Upgrades: upgrades,
             Weapons: weapons,
         },
@@ -247,10 +247,10 @@ export default {
                                     'type',
                                 ],
                                 properties: {
-                                    baseUnits: {
+                                    archetypes: {
                                         type: 'array',
                                         items: {
-                                            $ref: '#/components/schemas/UnitResponse',
+                                            $ref: '#/components/schemas/Archetype',
                                         },
                                     },
                                     characters: {
@@ -259,14 +259,14 @@ export default {
                                             type: 'object',
                                             required: [
                                                 '_id',
-                                                'baseUnit',
+                                                'archetypeId',
                                                 'equipment',
                                                 'name',
                                                 'training',
                                             ],
                                             properties: {
                                                 _id: { type: 'string' },
-                                                baseUnit: { type: 'string' },
+                                                archetypeId: { type: 'string' },
                                                 equipment: {
                                                     $ref: '#/components/schemas/Items',
                                                 },
@@ -304,10 +304,10 @@ export default {
                                         type: 'array',
                                         items: {
                                             type: 'object',
-                                            required: ['_id', 'baseUnit', 'equipment'],
+                                            required: ['_id', 'archetypeId', 'equipment'],
                                             properties: {
                                                 _id: { type: 'string' },
-                                                baseUnit: { type: 'string' },
+                                                archetypeId: { type: 'string' },
                                                 equipment: {
                                                     $ref: '#/components/schemas/Items',
                                                 },
@@ -390,10 +390,10 @@ export default {
                                 type: 'object',
                                 required: [],
                                 properties: {
-                                    baseUnits: {
+                                    archetypes: {
                                         type: 'array',
                                         items: {
-                                            $ref: '#/components/schemas/UnitResponse',
+                                            $ref: '#/components/schemas/Archetype',
                                         },
                                     },
                                     characters: {
@@ -402,14 +402,14 @@ export default {
                                             type: 'object',
                                             required: [
                                                 '_id',
-                                                'baseUnit',
+                                                'archetypeId',
                                                 'equipment',
                                                 'name',
                                                 'training',
                                             ],
                                             properties: {
                                                 _id: { type: 'string' },
-                                                baseUnit: { type: 'string' },
+                                                archetypeId: { type: 'string' },
                                                 equipment: {
                                                     $ref: '#/components/schemas/Items',
                                                 },
@@ -447,10 +447,10 @@ export default {
                                         type: 'array',
                                         items: {
                                             type: 'object',
-                                            required: ['_id', 'baseUnit', 'equipment'],
+                                            required: ['_id', 'archetypeId', 'equipment'],
                                             properties: {
                                                 _id: { type: 'string' },
-                                                baseUnit: { type: 'string' },
+                                                archetypeId: { type: 'string' },
                                                 equipment: {
                                                     $ref: '#/components/schemas/Items',
                                                 },

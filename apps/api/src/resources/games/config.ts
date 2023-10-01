@@ -13,7 +13,7 @@ export const statsArray = {
     },
 } as const;
 
-export const unitResponse = {
+export const archetypeResponse = {
     type: 'object',
     required: ['_id', 'movement', 'playable', 'species', 'stats', 'type', 'traits'],
     properties: {
@@ -243,6 +243,13 @@ export default {
     },
     components: {
         parameters: {
+            ArchetypeId: {
+                name: 'archetypeId',
+                in: 'path',
+                description: 'Unique id representing a base NPC stat block',
+                required: true,
+                schema: { type: 'string' },
+            },
             GameId: {
                 name: 'gameId',
                 in: 'path',
@@ -250,10 +257,10 @@ export default {
                 required: true,
                 schema: { type: 'string' },
             },
-            UnitId: {
-                name: 'unitId',
+            NpcId: {
+                name: 'npcId',
                 in: 'path',
-                description: 'Unique id representing a base NPC stat block',
+                description: 'Unique id representing a game ready NPC stat block',
                 required: true,
                 schema: { type: 'string' },
             },
@@ -264,18 +271,14 @@ export default {
                 required: false,
                 schema: { type: 'string' },
             },
-            UserId: {
-                name: 'userId',
-                in: 'query',
-                description: 'UUID representing the user to filter data for',
-                required: false,
-                schema: { type: 'string' },
-            },
             Limit: limit,
             Offset: offset,
         },
         schemas: {
-            GameListResponse: {
+            Archetype: archetypeResponse,
+            Armour: armour,
+            Consumables: consumables,
+            Game: {
                 type: 'object',
                 required: ['_id', 'description', 'name', 'tags', 'version'],
                 properties: {
@@ -286,22 +289,42 @@ export default {
                     version: { type: 'string' },
                 },
             },
-            GameResponse: {
+            Items: items,
+            Npc: {
                 type: 'object',
-                required: ['_id', 'description', 'name', 'tags', 'version'],
+                required: [
+                    '_id',
+                    'archetype',
+                    'equipment',
+                    'gameId',
+                    'isUnique',
+                    'name',
+                    'training',
+                ],
                 properties: {
                     _id: { type: 'string' },
-                    description: { type: 'string' },
+                    archetype: { $ref: '#/components/schemas/Archetype' },
+                    equipment: { $ref: '#/components/schemas/Items' },
+                    gameId: { type: 'string' },
+                    isUnique: { type: 'boolean' },
                     name: { type: 'string' },
-                    tags: { type: 'array', items: { type: 'string' } },
-                    version: { type: 'string' },
+                    training: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            required: ['_id', 'level', 'name', 'stats', 'traits'],
+                            properties: {
+                                _id: { type: 'string' },
+                                level: { type: 'integer' },
+                                name: { type: 'string' },
+                                stats: { $ref: '#/components/schemas/StatsArray' },
+                                traits: { type: 'array', items: { type: 'string' } },
+                            },
+                        },
+                    },
                 },
             },
             StatsArray: statsArray,
-            UnitResponse: unitResponse,
-            Items: items,
-            Armour: armour,
-            Consumables: consumables,
             Upgrades: upgrades,
             Weapons: weapons,
         },
@@ -310,7 +333,7 @@ export default {
         '/games': {
             get: {
                 tags: ['game'],
-                summary: 'Fetches all games for the platform',
+                summary: 'Fetches all of the game variants available to the platform',
                 description: '',
                 operationId: 'getGames',
                 parameters: [
@@ -330,7 +353,7 @@ export default {
                                         games: {
                                             type: 'array',
                                             items: {
-                                                $ref: '#/components/schemas/GameListResponse',
+                                                $ref: '#/components/schemas/Game',
                                             },
                                         },
                                     },
@@ -353,7 +376,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/GameResponse',
+                                    $ref: '#/components/schemas/Game',
                                 },
                             },
                         },
@@ -403,7 +426,7 @@ export default {
         '/games/:gameId': {
             get: {
                 tags: ['game'],
-                summary: 'Fetches the game with the ID matching the url parameter',
+                summary: 'Fetches the base game data matching the UUID provided',
                 description: '',
                 operationId: 'getGameById',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
@@ -413,7 +436,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/GameResponse',
+                                    $ref: '#/components/schemas/Game',
                                 },
                             },
                         },
@@ -449,7 +472,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/GameResponse',
+                                    $ref: '#/components/schemas/Game',
                                 },
                             },
                         },
@@ -483,16 +506,17 @@ export default {
                 security: [],
             },
         },
-        '/games/:gameId/units': {
+        '/games/:gameId/archetypes': {
             get: {
-                tags: ['unit'],
-                summary: 'Fetches all units for the platform',
+                tags: ['archetype'],
+                summary: 'Fetches all NPC archetypes for the given game',
                 description: '',
-                operationId: 'getUnits',
+                operationId: 'getArchetypes',
                 parameters: [
                     { $ref: '#/components/parameters/GameId' },
                     { $ref: '#/components/parameters/Limit' },
                     { $ref: '#/components/parameters/Offset' },
+                    // TODO: Add playable filter
                 ],
                 responses: {
                     200: {
@@ -500,8 +524,17 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: { $ref: '#/components/schemas/UnitResponse' },
+                                    type: 'object',
+                                    required: ['count', 'items'],
+                                    properties: {
+                                        count: { type: 'integer' },
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                $ref: '#/components/schemas/Archetype',
+                                            },
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -510,10 +543,10 @@ export default {
                 security: [],
             },
             post: {
-                tags: ['game', 'unit'],
-                summary: 'Add a new unit to the platform',
+                tags: ['game', 'archetype'],
+                summary: 'Add a new NPC archetype to the given game',
                 description: '',
-                operationId: 'createUnit',
+                operationId: 'createArchetype',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
                 responses: {
                     201: {
@@ -521,7 +554,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/UnitResponse',
+                                    $ref: '#/components/schemas/Archetype',
                                 },
                             },
                         },
@@ -597,8 +630,8 @@ export default {
                 security: [{ http: ['role:admin'] }],
             },
             options: {
-                tags: ['unit', 'options'],
-                summary: 'Check which endpoints are available for working with units',
+                tags: ['archetype', 'options'],
+                summary: 'Check which endpoints are available for working with archetype',
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
@@ -618,15 +651,16 @@ export default {
                 security: [],
             },
         },
-        '/games/:gameId/units/:unitId': {
+        '/games/:gameId/archetypes/:archetypeId': {
             put: {
                 tags: ['game'],
-                summary: 'Updates the game at the ID given with the values provided',
+                summary:
+                    'Updates the NPC archetype at the IDs given with the values provided',
                 description: '',
-                operationId: 'updateUnitById',
+                operationId: 'updateArchetypeById',
                 parameters: [
                     { $ref: '#/components/parameters/GameId' },
-                    { $ref: '#/components/parameters/UnitId' },
+                    { $ref: '#/components/parameters/ArchetypeId' },
                 ],
                 requestBody: {
                     required: true,
@@ -694,7 +728,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/UnitResponse',
+                                    $ref: '#/components/schemas/Archetype',
                                 },
                             },
                         },
@@ -708,12 +742,12 @@ export default {
             },
             delete: {
                 tags: ['game'],
-                summary: 'Deletes the unit with the given ID',
+                summary: 'Deletes the NPC archetype with the given ID',
                 description: '',
-                operationId: 'deleteUnitById',
+                operationId: 'deleteArchetypeById',
                 parameters: [
                     { $ref: '#/components/parameters/GameId' },
-                    { $ref: '#/components/parameters/UnitId' },
+                    { $ref: '#/components/parameters/ArchetypeId' },
                 ],
                 responses: {
                     '204': {
@@ -733,7 +767,7 @@ export default {
                 operationId: 'sendOptions',
                 parameters: [
                     { $ref: '#/components/parameters/GameId' },
-                    { $ref: '#/components/parameters/UnitId' },
+                    { $ref: '#/components/parameters/ArchetypeId' },
                 ],
                 responses: {
                     '200': {
@@ -754,7 +788,7 @@ export default {
         '/games/:gameId/items': {
             get: {
                 tags: ['game'],
-                summary: 'Fetches all games for the platform',
+                summary: 'Fetches all of the items available for the given game',
                 description: '',
                 operationId: 'getItems',
                 parameters: [
@@ -777,7 +811,8 @@ export default {
             },
             put: {
                 tags: ['game'],
-                summary: 'Fetches all games for the platform',
+                summary:
+                    'Creates new items provided in each category ID for the given gameId',
                 description: '',
                 operationId: 'updateItems',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
@@ -828,7 +863,7 @@ export default {
             },
             delete: {
                 tags: ['game'],
-                summary: 'Fetches all games for the platform',
+                summary: 'Deletes the items from each category using the Ids provided',
                 description: '',
                 operationId: 'deleteItems',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
@@ -864,10 +899,278 @@ export default {
             },
             options: {
                 tags: ['game', 'options'],
-                summary: 'Check which endpoints are available for working with games',
+                summary: 'Check which endpoints are available for working with items',
                 description: '',
                 operationId: 'sendOptions',
                 parameters: [{ $ref: '#/components/parameters/GameId' }],
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        '/games/:gameId/npcs': {
+            get: {
+                tags: ['npc'],
+                summary: 'Fetches all pregenerated NPCs for the given game',
+                description: '',
+                operationId: 'getNpcs',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
+                ],
+                responses: {
+                    200: {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    required: ['count', 'items'],
+                                    properties: {
+                                        count: { type: 'integer' },
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                $ref: '#/components/schemas/Npc',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+            post: {
+                tags: ['game', 'npc'],
+                summary: 'Add a new NPC to the given game',
+                description: '',
+                operationId: 'createNpc',
+                parameters: [{ $ref: '#/components/parameters/GameId' }],
+                responses: {
+                    201: {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/Npc',
+                                },
+                            },
+                        },
+                    },
+                },
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: [
+                                    'archetype',
+                                    'equipment',
+                                    'isUnique',
+                                    'name',
+                                    'training',
+                                ],
+                                properties: {
+                                    archetype: {
+                                        $ref: '#/components/schemas/Archetype',
+                                    },
+                                    equipment: { $ref: '#/components/schemas/Items' },
+                                    isUnique: { type: 'boolean' },
+                                    name: { type: 'string' },
+                                    training: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: [
+                                                '_id',
+                                                'level',
+                                                'name',
+                                                'stats',
+                                                'traits',
+                                            ],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                level: { type: 'integer' },
+                                                name: { type: 'string' },
+                                                stats: {
+                                                    $ref: '#/components/schemas/StatsArray',
+                                                },
+                                                traits: {
+                                                    type: 'array',
+                                                    items: { type: 'string' },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [{ http: ['role:admin'] }],
+            },
+            options: {
+                tags: ['npc', 'options'],
+                summary: 'Check which endpoints are available for working with Npcs',
+                description: '',
+                operationId: 'sendOptions',
+                parameters: [{ $ref: '#/components/parameters/GameId' }],
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        '/games/:gameId/npcs/:npcId': {
+            get: {
+                tags: ['game', 'npc'],
+                summary: 'Fetches the NPC data for the UUID provided',
+                description: '',
+                operationId: 'getNpcById',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/NpcId' },
+                ],
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/Npc',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+            put: {
+                tags: ['game', 'npc'],
+                summary: 'Updates the NPC at the IDs given with the values provided',
+                description:
+                    'Updates the NPC at the IDs given with the values provided - this is an overwrite not a merge',
+                operationId: 'updateNpcById',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/NpcId' },
+                ],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: [],
+                                properties: {
+                                    archetype: {
+                                        $ref: '#/components/schemas/Archetype',
+                                    },
+                                    equipment: { $ref: '#/components/schemas/Items' },
+                                    isUnique: { type: 'boolean' },
+                                    name: { type: 'string' },
+                                    training: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: [
+                                                '_id',
+                                                'level',
+                                                'name',
+                                                'stats',
+                                                'traits',
+                                            ],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                level: { type: 'integer' },
+                                                name: { type: 'string' },
+                                                stats: {
+                                                    $ref: '#/components/schemas/StatsArray',
+                                                },
+                                                traits: {
+                                                    type: 'array',
+                                                    items: { type: 'string' },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/Npc',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [
+                    {
+                        http: ['role:admin'],
+                    },
+                ],
+            },
+            delete: {
+                tags: ['game'],
+                summary: 'Deletes the NPC with the given ID',
+                description: '',
+                operationId: 'deleteNpcById',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/NpcId' },
+                ],
+                responses: {
+                    '204': {
+                        description: 'OK,',
+                    },
+                },
+                security: [
+                    {
+                        http: ['role:admin'],
+                    },
+                ],
+            },
+            options: {
+                tags: ['game', 'options'],
+                summary: 'Check which endpoints are available for working with an Npc',
+                description: '',
+                operationId: 'sendOptions',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/NpcId' },
+                ],
                 responses: {
                     '200': {
                         description: 'OK,',

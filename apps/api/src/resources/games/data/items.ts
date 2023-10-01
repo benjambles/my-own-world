@@ -1,9 +1,20 @@
 import { getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
+import {
+    Armour,
+    Consumable,
+    Upgrade,
+    Weapon,
+} from '@benjambles/skirmish-engine/dist/item/item.js';
 import { Db } from 'mongodb';
-import { Game, getGamesCollection } from './games.js';
+import { getGamesCollection } from './games.js';
 
 //#region Types
-export type Items = Game['items'];
+export type Items = {
+    armour: Armour[];
+    consumables: Consumable[];
+    upgrades: Upgrade[];
+    weapons: Weapon[];
+};
 
 type NewItems = Partial<Items>;
 type DeleteItems = Partial<Record<keyof Items, string[]>>;
@@ -15,8 +26,8 @@ export function getItemsModel(db: Db) {
     const model = {
         delete: async function (gameId: string, data: DeleteItems) {
             const preparedData = Object.fromEntries(
-                Object.entries(data).map(([key, _ids]) => {
-                    return [`items.${key}`, { _id: { $in: _ids } }];
+                Object.entries(data).map(([key, entityIds]) => {
+                    return [`items.${key}`, { entityId: { $in: entityIds } }];
                 }),
             );
 
