@@ -295,19 +295,23 @@ export default {
                 required: [
                     '_id',
                     'archetype',
+                    'description',
                     'equipment',
                     'gameId',
                     'isUnique',
                     'name',
+                    'summary',
                     'training',
                 ],
                 properties: {
                     _id: { type: 'string' },
                     archetype: { $ref: '#/components/schemas/Archetype' },
                     equipment: { $ref: '#/components/schemas/Items' },
+                    description: { type: 'string' },
                     gameId: { type: 'string' },
                     isUnique: { type: 'boolean' },
                     name: { type: 'string' },
+                    summary: { type: 'string' },
                     training: {
                         type: 'array',
                         items: {
@@ -980,18 +984,22 @@ export default {
                                 type: 'object',
                                 required: [
                                     'archetype',
+                                    'description',
                                     'equipment',
                                     'isUnique',
                                     'name',
+                                    'summary',
                                     'training',
                                 ],
                                 properties: {
                                     archetype: {
                                         $ref: '#/components/schemas/Archetype',
                                     },
+                                    description: { type: 'string' },
                                     equipment: { $ref: '#/components/schemas/Items' },
                                     isUnique: { type: 'boolean' },
                                     name: { type: 'string' },
+                                    summary: { type: 'string' },
                                     training: {
                                         type: 'array',
                                         items: {
@@ -1091,9 +1099,11 @@ export default {
                                     archetype: {
                                         $ref: '#/components/schemas/Archetype',
                                     },
+                                    description: { type: 'string' },
                                     equipment: { $ref: '#/components/schemas/Items' },
                                     isUnique: { type: 'boolean' },
                                     name: { type: 'string' },
+                                    summary: { type: 'string' },
                                     training: {
                                         type: 'array',
                                         items: {

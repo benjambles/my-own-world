@@ -14,11 +14,13 @@ export type Npc = {
     _id: ObjectId;
     archetype: ArchetypeResponse;
     deletedOn: Date;
+    description: string;
     equipment: Items;
     gameId: string;
     isDeleted: boolean;
     isUnique: boolean;
     name: string;
+    summary: string;
     training: {
         _id: string;
         level: number;
