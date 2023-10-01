@@ -7,15 +7,36 @@ import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.j
 import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../schema/env-schema.js';
+import { Items } from '../games/data/items.js';
+import { UnitResponse } from '../games/data/units.js';
 
 const restrictedKeys = ['deletedOn', 'isDeleted'] as const;
 
 //#region Types
 export type Skirmish = {
     _id: ObjectId;
+    baseUnits: UnitResponse[];
+    characters: {
+        _id: string;
+        baseUnit: string;
+        equipment: Items;
+        name: string;
+        training: {
+            _id: string;
+            level: number;
+            name: string;
+            stats: { name: string; value: number }[];
+            traits: string[];
+        }[];
+    }[];
     createdOn: Date;
     deletedOn?: Date;
     description: string;
+    drones: {
+        _id: string;
+        baseUnit: string;
+        equipment: Items;
+    }[];
     isDeleted: boolean;
     game: {
         name: string;
@@ -27,9 +48,10 @@ export type Skirmish = {
     userId: ObjectId;
 };
 
-type NewSkirmish = Pick<Skirmish, 'description' | 'game' | 'name' | 'points' | 'type'>;
-
-type UpdateSkirmish = Pick<Skirmish, 'description' | 'name' | 'points'>;
+type NewSkirmish = Pick<Skirmish, 'description' | 'game' | 'name' | 'points' | 'type'> &
+    Partial<Pick<Skirmish, 'baseUnits' | 'characters' | 'drones'>>;
+type UpdateSkirmish = Partial<Omit<Skirmish, RestrictedKeys | ToStringKeys | 'game'>>;
+type SkirmishListView = Omit<Skirmish, 'baseUnits' | 'characters' | 'drones'>;
 
 type ToStringKeys = '_id' | 'createdOn' | 'userId';
 
@@ -42,7 +64,7 @@ type SkirmishResponse = Omit<Skirmish, RestrictedKeys | ToStringKeys> & {
 
 export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
     const dataFormatter = formatData(getDataFormatter(ENC_SECRET));
-    const items = db.collection<Skirmish>('Skirmishs');
+    const items = db.collection<Skirmish>('Skirmishes');
 
     const model = {
         dataFormatter,
@@ -53,14 +75,18 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
             userId?: string,
             limit: number = 10,
             skip: number = 0,
-        ): ModelResult<Skirmish[]> {
+        ): ModelResult<SkirmishListView[]> {
             const dbResult = await items
                 .find(
                     {
                         isDeleted: false,
                         userId: userId ? getObjectId(userId) : undefined,
                     },
-                    { limit, skip },
+                    {
+                        limit,
+                        skip,
+                        projection: { baseUnits: 0, characters: 0, drones: 0 },
+                    },
                 )
                 .toArray();
 
@@ -84,8 +110,11 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
         ): ModelResult<Skirmish> {
             const gameData: Skirmish = {
                 _id: getObjectId(randomUUID()),
+                baseUnits: data.baseUnits ?? [],
+                characters: data.characters ?? [],
                 createdOn: new Date(),
                 description: data.description,
+                drones: data.drones ?? [],
                 game: data.game,
                 isDeleted: false,
                 name: data.name,
@@ -102,7 +131,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
         update: async function (
             uuid: string,
             userId: string,
-            data: Partial<UpdateSkirmish>,
+            data: UpdateSkirmish,
         ): ModelResult<Skirmish> {
             const cleanData = await dataFormatter(data);
             const { ok, value } = await items.findOneAndUpdate(

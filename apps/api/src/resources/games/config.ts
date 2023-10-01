@@ -1,5 +1,238 @@
 import { limit, offset } from '../../schema/shared-params.js';
 
+//#region Shared Config
+export const statsArray = {
+    type: 'array',
+    items: {
+        type: 'object',
+        required: ['name', 'value'],
+        properties: {
+            name: { type: 'string' },
+            value: { type: 'integer' },
+        },
+    },
+} as const;
+
+export const unitResponse = {
+    type: 'object',
+    required: ['_id', 'movement', 'playable', 'species', 'stats', 'type', 'traits'],
+    properties: {
+        _id: { type: 'string' },
+        movement: {
+            type: 'array',
+            items: {
+                type: 'object',
+                required: ['environment', 'distance', 'type'],
+                properties: {
+                    distance: { type: 'integer' },
+                    environment: { type: 'string' },
+                    type: { type: 'string' },
+                },
+            },
+        },
+        playable: { type: 'boolean' },
+        species: { type: 'string' },
+        stats: {
+            type: 'array',
+            items: {
+                type: 'object',
+                required: ['abbreviation', 'group', 'key', 'value'],
+                properties: {
+                    abbreviation: { type: 'string' },
+                    group: { type: 'string' },
+                    key: { type: 'string' },
+                    value: { type: 'string' },
+                },
+            },
+        },
+        type: { type: 'string' },
+        traits: {
+            type: 'object',
+            required: ['base', 'options'],
+            properties: {
+                base: { type: 'array', items: { type: 'string' } },
+                options: { type: 'array', items: { type: 'string' } },
+            },
+        },
+    },
+} as const;
+
+export const items = {
+    type: 'object',
+    required: ['armour', 'consumables', 'upgrades', 'weapons'],
+    properties: {
+        armour: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/Armour' },
+        },
+        consumables: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/Consumables' },
+        },
+        upgrades: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/Upgrades' },
+        },
+        weapons: {
+            type: 'array',
+            items: { $ref: '#/components/schemas/Weapons' },
+        },
+    },
+} as const;
+
+export const armour = {
+    type: 'object',
+    required: [
+        'description',
+        'entityId',
+        'limit',
+        'location',
+        'name',
+        'requirements',
+        'stats',
+        'traits',
+        'type',
+        'upgradeSlots',
+        'value',
+    ],
+    properties: {
+        description: { type: 'string' },
+        entityId: { type: 'string' },
+        limit: { type: 'integer' },
+        location: { type: 'string' },
+        name: { type: 'string' },
+        requirements: {
+            type: 'object',
+            required: ['skills', 'stats', 'traits'],
+            properties: {
+                skills: { type: 'array', items: { type: 'string' } },
+                stats: { $ref: '#/components/schemas/StatsArray' },
+                traits: { type: 'array', items: { type: 'string' } },
+            },
+        },
+        stats: { $ref: '#/components/schemas/StatsArray' },
+        traits: {
+            type: 'array',
+            items: { type: 'string' },
+        },
+        type: { type: 'string' },
+        upgradeSlots: {
+            type: 'array',
+            items: {
+                type: 'object',
+                required: ['attachedId', 'type'],
+                properties: {
+                    attachedId: { type: 'string' },
+                    type: { type: 'string' },
+                },
+            },
+        },
+        value: { type: 'integer' },
+    },
+} as const;
+
+export const consumables = {
+    type: 'object',
+    required: ['description', 'effects', 'entityId', 'limit', 'name', 'type', 'value'],
+    properties: {
+        description: { type: 'string' },
+        entityId: { type: 'string' },
+        effects: {
+            type: 'array',
+            items: {
+                type: 'object',
+                required: ['duration', 'target', 'type', 'value'],
+                properties: {
+                    duration: { type: 'string' },
+                    target: { type: 'array', items: { type: 'string' } },
+                    type: { type: 'string' },
+                    value: { type: 'string' },
+                },
+            },
+        },
+        limit: { type: 'integer' },
+        name: { type: 'string' },
+        type: { type: 'string' },
+        value: { type: 'integer' },
+    },
+} as const;
+
+export const upgrades = {
+    type: 'object',
+    required: [
+        'description',
+        'entityId',
+        'limit',
+        'location',
+        'name',
+        'stats',
+        'traits',
+        'type',
+        'value',
+    ],
+    properties: {
+        description: { type: 'string' },
+        entityId: { type: 'string' },
+        limit: { type: 'integer' },
+        location: { type: 'string' },
+        name: { type: 'string' },
+        stats: { $ref: '#/components/schemas/StatsArray' },
+        traits: {
+            type: 'array',
+            items: { type: 'string' },
+        },
+        type: { type: 'string' },
+        value: { type: 'integer' },
+    },
+} as const;
+
+export const weapons = {
+    type: 'object',
+    required: [
+        'description',
+        'entityId',
+        'limit',
+        'location',
+        'name',
+        'requirements',
+        'stats',
+        'traits',
+        'type',
+        'value',
+    ],
+    properties: {
+        description: { type: 'string' },
+        entityId: { type: 'string' },
+        limit: { type: 'integer' },
+        location: { type: 'string' },
+        name: { type: 'string' },
+        requirements: {
+            type: 'object',
+            required: ['skills', 'stats', 'traits'],
+            properties: {
+                skills: { type: 'array', items: { type: 'string' } },
+                stats: { $ref: '#/components/schemas/StatsArray' },
+                traits: { type: 'array', items: { type: 'string' } },
+            },
+        },
+        stats: {
+            type: 'object',
+            required: ['attacks', 'damage', 'hands', 'range'],
+            properties: {
+                attacks: { type: 'integer' },
+                damage: { type: 'integer' },
+                hands: { type: 'integer' },
+                range: { type: 'string' },
+            },
+        },
+        traits: { type: 'array', items: { type: 'string' } },
+        type: { type: 'string' },
+        value: { type: 'integer' },
+    },
+} as const;
+
+//#endregion Shared Config
+
 export default {
     openapi: '3.0.0',
     info: {
@@ -42,17 +275,6 @@ export default {
             Offset: offset,
         },
         schemas: {
-            StatsArray: {
-                type: 'array',
-                items: {
-                    type: 'object',
-                    required: ['name', 'value'],
-                    properties: {
-                        name: { type: 'string' },
-                        value: { type: 'integer' },
-                    },
-                },
-            },
             GameListResponse: {
                 type: 'object',
                 required: ['_id', 'description', 'name', 'tags', 'version'],
@@ -75,232 +297,13 @@ export default {
                     version: { type: 'string' },
                 },
             },
-            UnitResponse: {
-                type: 'object',
-                required: [
-                    '_id',
-                    'movement',
-                    'playable',
-                    'species',
-                    'stats',
-                    'type',
-                    'traits',
-                ],
-                properties: {
-                    _id: { type: 'string' },
-                    movement: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: ['environment', 'distance', 'type'],
-                            properties: {
-                                distance: { type: 'integer' },
-                                environment: { type: 'string' },
-                                type: { type: 'string' },
-                            },
-                        },
-                    },
-                    playable: { type: 'boolean' },
-                    species: { type: 'string' },
-                    stats: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: ['abbreviation', 'group', 'key', 'value'],
-                            properties: {
-                                abbreviation: { type: 'string' },
-                                group: { type: 'string' },
-                                key: { type: 'string' },
-                                value: { type: 'string' },
-                            },
-                        },
-                    },
-                    type: { type: 'string' },
-                    traits: {
-                        type: 'object',
-                        required: ['base', 'options'],
-                        properties: {
-                            base: { type: 'array', items: { type: 'string' } },
-                            options: { type: 'array', items: { type: 'string' } },
-                        },
-                    },
-                },
-            },
-            Item: {
-                type: 'object',
-                required: ['armour', 'consumables', 'upgrades', 'weapons'],
-                properties: {
-                    armour: {
-                        type: 'array',
-                        items: { $ref: '#/components/schemas/Armour' },
-                    },
-                    consumables: {
-                        type: 'array',
-                        items: { $ref: '#/components/schemas/Consumables' },
-                    },
-                    upgrades: {
-                        type: 'array',
-                        items: { $ref: '#/components/schemas/Upgrades' },
-                    },
-                    weapons: {
-                        type: 'array',
-                        items: { $ref: '#/components/schemas/Weapons' },
-                    },
-                },
-            },
-            Armour: {
-                type: 'object',
-                required: [
-                    'description',
-                    'entityId',
-                    'limit',
-                    'location',
-                    'name',
-                    'requirements',
-                    'stats',
-                    'traits',
-                    'type',
-                    'upgradeSlots',
-                    'value',
-                ],
-                properties: {
-                    description: { type: 'string' },
-                    entityId: { type: 'string' },
-                    limit: { type: 'integer' },
-                    location: { type: 'string' },
-                    name: { type: 'string' },
-                    requirements: {
-                        type: 'object',
-                        required: ['skills', 'stats'],
-                        properties: {
-                            skills: { type: 'array', items: { type: 'string' } },
-                            stats: { $ref: '#/components/schemas/StatsArray' },
-                        },
-                    },
-                    stats: { $ref: '#/components/schemas/StatsArray' },
-                    traits: {
-                        type: 'array',
-                        items: { type: 'string' },
-                    },
-                    type: { type: 'string' },
-                    upgradeSlots: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: ['attachedId', 'type'],
-                            properties: {
-                                attachedId: { type: 'string' },
-                                type: { type: 'string' },
-                            },
-                        },
-                    },
-                    value: { type: 'integer' },
-                },
-            },
-            Consumables: {
-                type: 'object',
-                required: [
-                    'description',
-                    'effects',
-                    'entityId',
-                    'limit',
-                    'name',
-                    'type',
-                    'value',
-                ],
-                properties: {
-                    description: { type: 'string' },
-                    entityId: { type: 'string' },
-                    effects: {
-                        type: 'array',
-                        items: {
-                            type: 'object',
-                            required: ['duration', 'target', 'type', 'value'],
-                            properties: {
-                                duration: { type: 'string' },
-                                target: { type: 'array', items: { type: 'string' } },
-                                type: { type: 'string' },
-                                value: { type: 'string' },
-                            },
-                        },
-                    },
-                    limit: { type: 'integer' },
-                    name: { type: 'string' },
-                    type: { type: 'string' },
-                    value: { type: 'integer' },
-                },
-            },
-            Upgrades: {
-                type: 'object',
-                required: [
-                    'description',
-                    'entityId',
-                    'limit',
-                    'location',
-                    'name',
-                    'stats',
-                    'traits',
-                    'type',
-                    'value',
-                ],
-                properties: {
-                    description: { type: 'string' },
-                    entityId: { type: 'string' },
-                    limit: { type: 'integer' },
-                    location: { type: 'string' },
-                    name: { type: 'string' },
-                    stats: { $ref: '#/components/schemas/StatsArray' },
-                    traits: {
-                        type: 'array',
-                        items: { type: 'string' },
-                    },
-                    type: { type: 'string' },
-                    value: { type: 'integer' },
-                },
-            },
-            Weapons: {
-                type: 'object',
-                required: [
-                    'description',
-                    'entityId',
-                    'limit',
-                    'location',
-                    'name',
-                    'requirements',
-                    'stats',
-                    'traits',
-                    'type',
-                    'value',
-                ],
-                properties: {
-                    description: { type: 'string' },
-                    entityId: { type: 'string' },
-                    limit: { type: 'integer' },
-                    location: { type: 'string' },
-                    name: { type: 'string' },
-                    requirements: {
-                        type: 'object',
-                        required: ['skills', 'stats'],
-                        properties: {
-                            skills: { type: 'array', items: { type: 'string' } },
-                            stats: { $ref: '#/components/schemas/StatsArray' },
-                        },
-                    },
-                    stats: {
-                        type: 'object',
-                        required: ['attacks', 'damage', 'hands', 'range'],
-                        properties: {
-                            attacks: { type: 'integer' },
-                            damage: { type: 'integer' },
-                            hands: { type: 'integer' },
-                            range: { type: 'string' },
-                        },
-                    },
-                    traits: { type: 'array', items: { type: 'string' } },
-                    type: { type: 'string' },
-                    value: { type: 'integer' },
-                },
-            },
+            StatsArray: statsArray,
+            UnitResponse: unitResponse,
+            Items: items,
+            Armour: armour,
+            Consumables: consumables,
+            Upgrades: upgrades,
+            Weapons: weapons,
         },
     },
     paths: {
@@ -764,7 +767,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/Item',
+                                    $ref: '#/components/schemas/Items',
                                 },
                             },
                         },
@@ -815,7 +818,7 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    $ref: '#/components/schemas/Item',
+                                    $ref: '#/components/schemas/Items',
                                 },
                             },
                         },

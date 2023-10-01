@@ -17,6 +17,7 @@ export interface Item extends GameEntity, Purchasable {
     requirements: {
         skills: string[];
         stats: { name: string; value: number }[];
+        traits: string[];
     };
 }
 

@@ -1,4 +1,13 @@
 import { limit, offset } from '../../schema/shared-params.js';
+import {
+    armour,
+    consumables,
+    items,
+    statsArray,
+    unitResponse,
+    upgrades,
+    weapons,
+} from '../games/config.js';
 
 export default {
     openapi: '3.0.0',
@@ -37,6 +46,7 @@ export default {
             },
         },
         schemas: {
+            StatsArray: statsArray,
             SkirmishListResponse: {
                 type: 'object',
                 required: [
@@ -71,8 +81,11 @@ export default {
                 type: 'object',
                 required: [
                     '_id',
+                    'baseUnits',
+                    'characters',
                     'createdOn',
                     'description',
+                    'drones',
                     'game',
                     'name',
                     'points',
@@ -81,8 +94,68 @@ export default {
                 ],
                 properties: {
                     _id: { type: 'string' },
+                    baseUnits: {
+                        type: 'array',
+                        items: { $ref: '#/components/schemas/UnitResponse' },
+                    },
+                    characters: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            required: [
+                                '_id',
+                                'baseUnit',
+                                'equipment',
+                                'name',
+                                'training',
+                            ],
+                            properties: {
+                                _id: { type: 'string' },
+                                baseUnit: { type: 'string' },
+                                equipment: { $ref: '#/components/schemas/Items' },
+                                name: { type: 'string' },
+                                training: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        required: [
+                                            '_id',
+                                            'level',
+                                            'name',
+                                            'stats',
+                                            'traits',
+                                        ],
+                                        properties: {
+                                            _id: { type: 'string' },
+                                            level: { type: 'integer' },
+                                            name: { type: 'string' },
+                                            stats: {
+                                                $ref: '#/components/schemas/StatsArray',
+                                            },
+                                            traits: {
+                                                type: 'array',
+                                                items: { type: 'string' },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                     createdOn: { type: 'string' },
                     description: { type: 'string' },
+                    drones: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            required: ['_id', 'baseUnit', 'equipment'],
+                            properties: {
+                                _id: { type: 'string' },
+                                baseUnit: { type: 'string' },
+                                equipment: { $ref: '#/components/schemas/Items' },
+                            },
+                        },
+                    },
                     game: {
                         type: 'object',
                         required: ['name', 'version'],
@@ -95,9 +168,14 @@ export default {
                     points: { type: 'integer' },
                     type: { type: 'string' }, // TODO add enum support
                     userId: { type: 'string' },
-                    // TODO Add Characters, Equipment etc.
                 },
             },
+            UnitResponse: unitResponse,
+            Items: items,
+            Armour: armour,
+            Consumables: consumables,
+            Upgrades: upgrades,
+            Weapons: weapons,
         },
     },
     paths: {
@@ -169,7 +247,73 @@ export default {
                                     'type',
                                 ],
                                 properties: {
+                                    baseUnits: {
+                                        type: 'array',
+                                        items: {
+                                            $ref: '#/components/schemas/UnitResponse',
+                                        },
+                                    },
+                                    characters: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: [
+                                                '_id',
+                                                'baseUnit',
+                                                'equipment',
+                                                'name',
+                                                'training',
+                                            ],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                baseUnit: { type: 'string' },
+                                                equipment: {
+                                                    $ref: '#/components/schemas/Items',
+                                                },
+                                                name: { type: 'string' },
+                                                training: {
+                                                    type: 'array',
+                                                    items: {
+                                                        type: 'object',
+                                                        required: [
+                                                            '_id',
+                                                            'level',
+                                                            'name',
+                                                            'stats',
+                                                            'traits',
+                                                        ],
+                                                        properties: {
+                                                            _id: { type: 'string' },
+                                                            level: { type: 'integer' },
+                                                            name: { type: 'string' },
+                                                            stats: {
+                                                                $ref: '#/components/schemas/StatsArray',
+                                                            },
+                                                            traits: {
+                                                                type: 'array',
+                                                                items: { type: 'string' },
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
                                     description: { type: 'string' },
+                                    drones: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: ['_id', 'baseUnit', 'equipment'],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                baseUnit: { type: 'string' },
+                                                equipment: {
+                                                    $ref: '#/components/schemas/Items',
+                                                },
+                                            },
+                                        },
+                                    },
                                     game: {
                                         type: 'object',
                                         required: ['name', 'version'],
@@ -246,7 +390,73 @@ export default {
                                 type: 'object',
                                 required: [],
                                 properties: {
+                                    baseUnits: {
+                                        type: 'array',
+                                        items: {
+                                            $ref: '#/components/schemas/UnitResponse',
+                                        },
+                                    },
+                                    characters: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: [
+                                                '_id',
+                                                'baseUnit',
+                                                'equipment',
+                                                'name',
+                                                'training',
+                                            ],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                baseUnit: { type: 'string' },
+                                                equipment: {
+                                                    $ref: '#/components/schemas/Items',
+                                                },
+                                                name: { type: 'string' },
+                                                training: {
+                                                    type: 'array',
+                                                    items: {
+                                                        type: 'object',
+                                                        required: [
+                                                            '_id',
+                                                            'level',
+                                                            'name',
+                                                            'stats',
+                                                            'traits',
+                                                        ],
+                                                        properties: {
+                                                            _id: { type: 'string' },
+                                                            level: { type: 'integer' },
+                                                            name: { type: 'string' },
+                                                            stats: {
+                                                                $ref: '#/components/schemas/StatsArray',
+                                                            },
+                                                            traits: {
+                                                                type: 'array',
+                                                                items: { type: 'string' },
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
                                     description: { type: 'string' },
+                                    drones: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            required: ['_id', 'baseUnit', 'equipment'],
+                                            properties: {
+                                                _id: { type: 'string' },
+                                                baseUnit: { type: 'string' },
+                                                equipment: {
+                                                    $ref: '#/components/schemas/Items',
+                                                },
+                                            },
+                                        },
+                                    },
                                     name: { type: 'string' },
                                     points: { type: 'integer' },
                                 },

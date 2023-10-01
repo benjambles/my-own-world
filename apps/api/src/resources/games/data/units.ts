@@ -10,7 +10,7 @@ type NewUnit = Omit<Unit, '_id'>;
 type UpdateUnit = Partial<NewUnit>;
 
 type ToStringKeys = '_id';
-type UnitResponse = Omit<Unit, ToStringKeys> & {
+export type UnitResponse = Omit<Unit, ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
 //#endregion Types
