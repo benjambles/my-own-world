@@ -1,7 +1,6 @@
 import { DeepPartial } from '@benjambles/js-lib/dist/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { ArchetypeResponse } from './archetypes.js';
 import { getGamesCollection } from './games.js';
@@ -84,7 +83,7 @@ export function getNpcModel(db: Db) {
         },
 
         create: async function (gameId: string, data: any): ModelResult<Npc> {
-            data._id = getObjectId(randomUUID());
+            data._id = getObjectId();
             data.isDeleted = false;
 
             const { ok, value } = await games.findOneAndUpdate(

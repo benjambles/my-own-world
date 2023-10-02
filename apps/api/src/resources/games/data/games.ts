@@ -4,7 +4,6 @@ import {
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
 import { Archetype } from './archetypes.js';
@@ -51,7 +50,7 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
         create: async function (data: NewGame): ModelResult<Game> {
             const gameData: Game = {
                 ...data,
-                _id: getObjectId(randomUUID()),
+                _id: getObjectId(),
                 archetypes: [],
                 items: { armour: [], consumables: [], upgrades: [], weapons: [] },
                 npcs: [],

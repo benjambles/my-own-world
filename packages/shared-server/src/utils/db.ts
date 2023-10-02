@@ -20,9 +20,7 @@ export async function closeConnection() {
     await client.close();
 }
 
-export function getObjectId(uuid: string): ObjectId {
-    if (!uuid) throw new Error('Invalid UUID passed');
-
+export function getObjectId(uuid?: string): ObjectId {
     return new MongoDB.ObjectId(uuid);
 }
 

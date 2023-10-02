@@ -1,5 +1,4 @@
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { getGamesCollection } from './games.js';
 
@@ -46,7 +45,7 @@ export function getArchetypeModel(db: Db) {
         ): ModelResult<Archetype> {
             const unitData: Archetype = {
                 ...data,
-                _id: getObjectId(randomUUID()),
+                _id: getObjectId(),
             };
             const { ok, value } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId) },

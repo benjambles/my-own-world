@@ -5,7 +5,6 @@ import {
     getDataFormatter,
 } from '@benjambles/mow-server/dist/utils/data/index.js';
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
-import { randomUUID } from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Env } from '../../../schema/env-schema.js';
 
@@ -92,7 +91,7 @@ export function getUserModel(db: Db, { ENC_SECRET }: Env) {
 
             const { insertedId } = await users.insertOne(
                 Object.assign(cleanData, {
-                    _id: getObjectId(randomUUID()),
+                    _id: getObjectId(),
                     accessTokens: [],
                     createdOn: new Date(),
                     identities: [],
