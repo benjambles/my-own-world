@@ -36,10 +36,15 @@ export const quickStartStyles: CSSResult[] = [
             .page--quickstart > section {
                 grid-column: col-start 1 / span 7;
                 grid-row: 1;
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
                 font-size: 1.8rem;
+            }
+
+            .page--quickstart > section h2 {
+                margin-block-start: 4.5rem;
+            }
+
+            .page--quickstart > section h3 {
+                margin-block-start: 3rem;
             }
 
             .page--quickstart > nav {
