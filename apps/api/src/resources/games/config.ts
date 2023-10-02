@@ -15,7 +15,16 @@ export const statsArray = {
 
 export const archetypeResponse = {
     type: 'object',
-    required: ['_id', 'movement', 'playable', 'species', 'stats', 'type', 'traits'],
+    required: [
+        '_id',
+        'movement',
+        'playable',
+        'points',
+        'species',
+        'stats',
+        'type',
+        'traits',
+    ],
     properties: {
         _id: { type: 'string' },
         movement: {
@@ -31,6 +40,7 @@ export const archetypeResponse = {
             },
         },
         playable: { type: 'boolean' },
+        points: { type: 'integer' },
         species: { type: 'string' },
         stats: {
             type: 'array',
@@ -300,6 +310,7 @@ export default {
                     'gameId',
                     'isUnique',
                     'name',
+                    'points',
                     'summary',
                     'training',
                 ],
@@ -311,6 +322,7 @@ export default {
                     gameId: { type: 'string' },
                     isUnique: { type: 'boolean' },
                     name: { type: 'string' },
+                    points: { type: 'integer' },
                     summary: { type: 'string' },
                     training: {
                         type: 'array',
@@ -573,6 +585,7 @@ export default {
                                 required: [
                                     'movement',
                                     'playable',
+                                    'points',
                                     'species',
                                     'stats',
                                     'type',
@@ -592,6 +605,7 @@ export default {
                                         },
                                     },
                                     playable: { type: 'boolean' },
+                                    points: { type: 'integer' },
                                     species: { type: 'string' },
                                     stats: {
                                         type: 'array',
@@ -687,6 +701,7 @@ export default {
                                         },
                                     },
                                     playable: { type: 'boolean' },
+                                    points: { type: 'integer' },
                                     species: { type: 'string' },
                                     stats: {
                                         type: 'array',
@@ -988,6 +1003,7 @@ export default {
                                     'equipment',
                                     'isUnique',
                                     'name',
+                                    'points',
                                     'summary',
                                     'training',
                                 ],
@@ -999,6 +1015,7 @@ export default {
                                     equipment: { $ref: '#/components/schemas/Items' },
                                     isUnique: { type: 'boolean' },
                                     name: { type: 'string' },
+                                    points: { type: 'integer' },
                                     summary: { type: 'string' },
                                     training: {
                                         type: 'array',
@@ -1103,6 +1120,7 @@ export default {
                                     equipment: { $ref: '#/components/schemas/Items' },
                                     isUnique: { type: 'boolean' },
                                     name: { type: 'string' },
+                                    points: { type: 'integer' },
                                     summary: { type: 'string' },
                                     training: {
                                         type: 'array',

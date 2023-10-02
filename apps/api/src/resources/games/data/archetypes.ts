@@ -12,6 +12,7 @@ export type Archetype = {
         type: string; // 'rotory' | 'wing' | 'powered' | 'none';
     }[];
     playable: boolean;
+    points: number;
     species: string;
     stats: {
         abbreviation: string;

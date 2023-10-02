@@ -20,6 +20,7 @@ export type Npc = {
     isDeleted: boolean;
     isUnique: boolean;
     name: string;
+    points: number;
     summary: string;
     training: {
         _id: string;
