@@ -2,6 +2,7 @@ import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/ren
 import { html } from 'lit';
 import { paths as rulesPaths } from '../../rules/config.js';
 import { homeStyles } from './home.styles.js';
+import { resourcePaths } from '../../resources/config.js';
 
 export default function (): RenderProps {
     return {
@@ -43,7 +44,9 @@ export default function (): RenderProps {
                             Learn to play
                         </a>
                         <a class="outline-button" href="/game/rules"> Read the rules </a>
-                        <a class="outline-button" href="/game/downloads"> Downloads </a>
+                        <a class="outline-button" href="${resourcePaths.downloads}">
+                            Downloads
+                        </a>
                     </div>
                 </section>
                 <section class="explorer-panel panel">

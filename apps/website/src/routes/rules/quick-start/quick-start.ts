@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { paths as rosterPaths } from '../../tools/roster/config.js';
 import { paths as rulesPaths } from '../config.js';
 import { quickStartStyles } from './quick-start.styles.js';
+import { resourcePaths } from '../../resources/config.js';
 
 export default function (): RenderProps {
     return {
@@ -14,7 +15,7 @@ export default function (): RenderProps {
                 <a slot="root-link" href="${rulesPaths.index}">Rules</a>
                 <a href="${rosterPaths.index}">Squad Creator</a>
                 <a href="/game/missions">Missions</a>
-                <a href="/downloads">Downloads</a>
+                <a href="${resourcePaths.downloads}">Downloads</a>
             </section-header>
             <main class="page--quickstart">
                 <nav>
