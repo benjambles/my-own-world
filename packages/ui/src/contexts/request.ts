@@ -42,8 +42,10 @@ export class MowApi {
             prefix: this.apiPrefix,
         });
 
+        const body = args.body ? { body: JSON.stringify(args.body) } : {};
+
         const response = await fetch(populatedUrl, {
-            body: args.body ? JSON.stringify(args.body) : '',
+            ...body,
             cache: 'default',
             headers: {
                 'Content-Type': 'application/json',

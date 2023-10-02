@@ -50,8 +50,6 @@ export function getJwtFromCookie(ctx, cookieName): string {
         throw new Error('No bearer token found');
     }
 
-    console.log(ctx.state.env.JWT_SECRET, authCookie);
-
     try {
         parseToken(ctx.state.env.JWT_SECRET, authCookie);
         return authCookie;

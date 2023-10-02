@@ -126,9 +126,10 @@ function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
 ) {
     return async (args: Params, accessToken?: string): Promise<Result> => {
         const populatedUrl = buildUrl({ path, prefix, rootUrl, urlParams: args });
+        const body = args.body ? { body: JSON.stringify(args.body) } : {};
 
         const response = await fetch(populatedUrl, {
-            body: args.body ? JSON.stringify(args.body) : undefined,
+            ...body,
             headers: {
                 'Content-Type': 'application/json',
                 ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
