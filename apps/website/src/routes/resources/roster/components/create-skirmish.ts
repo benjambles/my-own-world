@@ -5,6 +5,7 @@ import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
 import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
 
 @customElement('create-skirmish')
@@ -57,9 +58,13 @@ export class CreateSkirmish extends LitElement {
         `,
     ];
 
-    @consume({ context: requestContext })
+    @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
     requestManager: MowApiInstance;
+
+    @consume({ context: userContext, subscribe: true })
+    @property({ attribute: false })
+    userData: UserData;
 
     @property()
     rosterUrl: string = '';
@@ -88,16 +93,24 @@ export class CreateSkirmish extends LitElement {
             throw new Error('No request manager registered');
         }
 
+        if (!this.userData) {
+            throw new Error('You must be logged in');
+        }
+
         try {
-            const result = await this.skirmishApi.call('createSkirmish', {
-                body: {
-                    description: formData.get('description') as string,
-                    game: { name: 'khora', version: '1' }, // TODO grab from Games endpoints
-                    name: formData.get('name') as string,
-                    points: 0,
-                    type: 'skirmish',
+            const result = await this.skirmishApi.call(
+                'createSkirmish',
+                {
+                    body: {
+                        description: formData.get('description') as string,
+                        game: { name: 'khora', version: '1' }, // TODO grab from Games endpoints
+                        name: formData.get('name') as string,
+                        points: 0,
+                        type: 'skirmish',
+                    },
                 },
-            });
+                this.userData.tokens.access,
+            );
 
             window.location.replace(this.rosterUrl.replace(':rosterId', result._id));
         } catch (e) {

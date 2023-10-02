@@ -1,5 +1,8 @@
-const index = '/roster';
-export const paths = {
+import { resourcePaths } from '../config.js';
+
+const index = `${resourcePaths.tools}/rosters` as const;
+
+export const rosterPaths = {
     index,
     delete: `${index}/delete`,
     newCampaign: `${index}/new-campaign`,
@@ -15,7 +18,7 @@ export default {
         version: '1.0.0',
     },
     paths: {
-        [paths.index]: {
+        [rosterPaths.index]: {
             get: {
                 tags: ['roster'],
                 summary: 'Display a list of all the users game sessions',
@@ -58,7 +61,7 @@ export default {
                 security: [{ http: ['role:user'] }],
             },
         },
-        [paths.newSkirmish]: {
+        [rosterPaths.newSkirmish]: {
             get: {
                 tags: ['roster'],
                 summary: 'Returns the page for creating a new Skirmish roster',
@@ -124,7 +127,7 @@ export default {
                 security: [{ http: ['role:user'] }],
             },
         },
-        [paths.newCampaign]: {
+        [rosterPaths.newCampaign]: {
             get: {
                 tags: ['roster'],
                 summary: 'Returns the page for creating a new Campaign roster',
@@ -190,7 +193,7 @@ export default {
                 security: [{ http: ['role:user'] }],
             },
         },
-        [paths.rosterById]: {
+        [rosterPaths.rosterById]: {
             get: {
                 tags: ['roster'],
                 summary: 'Fetches the roster with the ID matching the url parameter',

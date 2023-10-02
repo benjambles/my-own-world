@@ -8,7 +8,7 @@ import { getJwtFromCookie } from '@benjambles/mow-server/dist/utils/security/jwt
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { apiHelpers } from '../../../app.js';
 import siteLayout from '../../../layouts/core/site.js';
-import config, { paths } from './config.js';
+import config, { rosterPaths } from './config.js';
 import create from './pages/create.js';
 import edit from './pages/edit.js';
 import list from './pages/list.js';
@@ -74,7 +74,9 @@ export default function () {
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
 
-            return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
+            return redirectAction(
+                rosterPaths.rosterById.replace(':rosterId', rosterData._id),
+            );
         })
         .operation('postNewSkirmish', async (ctx) => {
             const rosterData = await apiHelpers.skirmishes.createSkirmish(
@@ -84,7 +86,9 @@ export default function () {
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
 
-            return redirectAction(paths.rosterById.replace(':rosterId', rosterData._id));
+            return redirectAction(
+                rosterPaths.rosterById.replace(':rosterId', rosterData._id),
+            );
         })
         .operation('updateRosterById', async (ctx) => {
             const rosterData = await apiHelpers.skirmishes.updateSkirmishById(

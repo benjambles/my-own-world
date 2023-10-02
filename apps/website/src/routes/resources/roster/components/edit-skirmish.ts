@@ -7,6 +7,7 @@ import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { Skirmish } from '../index.js';
 import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
+import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
 
 @customElement('edit-skirmish')
 export class EditSkirmish extends LitElement {
@@ -57,9 +58,13 @@ export class EditSkirmish extends LitElement {
         `,
     ];
 
-    @consume({ context: requestContext })
+    @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
     requestManager: MowApiInstance;
+
+    @consume({ context: userContext, subscribe: true })
+    @property({ attribute: false })
+    userData: UserData;
 
     @property({ attribute: false })
     skirmishData: Skirmish;
@@ -85,16 +90,24 @@ export class EditSkirmish extends LitElement {
             throw new Error('No request manager registered');
         }
 
+        if (!this.userData) {
+            throw new Error('You must be logged in');
+        }
+
         try {
-            const result = await this.skirmishApi.call('updateSkirmishById', {
-                params: {
-                    skirmishId: this.skirmishData._id,
+            const result = await this.skirmishApi.call(
+                'updateSkirmishById',
+                {
+                    params: {
+                        skirmishId: this.skirmishData._id,
+                    },
+                    body: {
+                        description: formData.get('description') as string,
+                        name: formData.get('name') as string,
+                    },
                 },
-                body: {
-                    description: formData.get('description') as string,
-                    name: formData.get('name') as string,
-                },
-            });
+                this.userData.tokens.access,
+            );
 
             this.skirmishData = result;
         } catch (e) {

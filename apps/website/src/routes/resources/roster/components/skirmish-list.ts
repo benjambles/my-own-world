@@ -23,7 +23,7 @@ export class SkirmishList extends LitElement {
                 box-sizing: border-box;
             }
 
-            .card-list slot {
+            .card-list {
                 list-style: none;
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
@@ -77,7 +77,13 @@ export class SkirmishList extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this.addEventListener(SkirmishList.ClickEventName, this.fetchSkirmishes);
+        this.addEventListener(
+            SkirmishList.ClickEventName,
+            (e: CustomEvent<PaginationDetails>) => {
+                e.preventDefault();
+                this.fetchSkirmishes(e.detail);
+            },
+        );
 
         if (this.requestManager) {
             this.skirmishApi = new SkirmishApi();
@@ -85,22 +91,35 @@ export class SkirmishList extends LitElement {
         }
     }
 
-    private fetchSkirmishes = async (e: CustomEvent<PaginationDetails>) => {
-        e.preventDefault();
+    protected updated(): void {
+        if (this.userData?.status === 'logged-in' && !this.skirmishes.length) {
+            this.fetchSkirmishes({ limit: this.limit, offset: this.offset });
+        }
+    }
 
+    private fetchSkirmishes = async (detail: PaginationDetails) => {
         if (!this.skirmishApi) {
             throw new Error('No request manager registered');
         }
 
+        if (!this.userData?.tokens?.access) {
+            return;
+        }
+
         try {
-            const { count, items } = await this.skirmishApi.call('getSkirmishes', {
-                query: { userId: this.userData.user._id, ...e.detail },
-            });
+            const { count, items } = await this.skirmishApi.call(
+                'getSkirmishes',
+                {
+                    query: { userId: this.userData.user._id, ...detail },
+                },
+                this.userData.tokens.access,
+            );
 
             this.skirmishes = items;
             this.count = count;
         } catch (e) {
             // do something with error
+            console.log(e);
         }
     };
 
@@ -121,16 +140,15 @@ export class SkirmishList extends LitElement {
                     ? this.skirmishes.map(
                           (skirmish) => html`
                               <skirmish-tile
-                                  .data=${skirmish}
+                                  createdon=${skirmish.createdOn}
+                                  id=${skirmish._id}
+                                  name=${skirmish.name}
+                                  points=${skirmish.points}
                                   urlpattern=${this.rosterUrl}
                               ></skirmish-tile>
                           `,
                       )
-                    : html`
-                          <slot>
-                              <p class="callout">No crews found</p>
-                          </slot>
-                      `}
+                    : html`<slot><p class="callout">No crews found</p></slot>`}
             </div>
 
             ${this.count < this.limit
@@ -148,57 +166,72 @@ export class SkirmishList extends LitElement {
 
 @customElement('skirmish-tile')
 export class SkirmishTile extends LitElement {
-    static styles = css`
-        :host {
-            --co-bg-color: #ccc;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            text-transform: capitalize;
-        }
+    static styles = [
+        callOutStyles,
+        css`
+            :host {
+                --co-bg-color: #ccc;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                text-transform: capitalize;
+            }
 
-        .card > a {
-            flex: 1 1 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 70px 20px;
-            color: #333;
-            font-size: 1.8rem;
-        }
+            .card > a {
+                flex: 1 1 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 70px 20px;
+                color: #333;
+                font-size: 1.8rem;
+                text-decoration: none;
+            }
 
-        .card span {
-            padding-bottom: 5px;
-        }
+            .card span {
+                padding-bottom: 5px;
+            }
 
-        .card span:first-child {
-            padding-bottom: 15px;
-            color: var(--shade-5);
-            font-family: 'Oxanium', monospace;
-            font-size: 2.6rem;
-        }
+            .card span:first-child {
+                padding-bottom: 15px;
+                color: var(--shade-5);
+                font-family: 'Oxanium', monospace;
+                font-size: 2.6rem;
+            }
 
-        .card a:is(:hover, :focus) span:first-child {
-            color: rgba(255, 0, 0, 0.8);
-        }
-    `;
+            .card a:is(:hover, :focus) span:first-child {
+                color: rgba(255, 0, 0, 0.8);
+            }
+        `,
+    ];
 
-    @property({ attribute: false })
-    data: Skirmish;
+    @property()
+    id: string;
+
+    @property()
+    name: string;
+
+    @property()
+    createdOn: string;
+
+    @property({ type: Number })
+    points: number;
 
     @property()
     urlPattern: string = '/:rosterId';
 
     protected render() {
-        return html`
-            <div class="card callout">
-                <a href="${this.urlPattern.replace(':rosterId', this.data._id)}">
-                    <span>${this.data.name}</span>
+        return this.name
+            ? html`
+                  <div class="card callout">
+                      <a href="${this.urlPattern.replace(':rosterId', this.id)}">
+                          <span>${this.name}</span>
 
-                    <span>Created: ${time(new Date(this.data.createdOn))}</span>
-                    <span>Credits: ${this.data.points}</span>
-                </a>
-            </div>
-        `;
+                          <span>Created: ${time(new Date(this.createdOn))}</span>
+                          <span>Credits: ${this.points}</span>
+                      </a>
+                  </div>
+              `
+            : nothing;
     }
 }
 
