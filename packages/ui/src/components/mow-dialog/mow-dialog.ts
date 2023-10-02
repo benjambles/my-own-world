@@ -27,8 +27,9 @@ export class MowDialog extends LitElement {
             }
 
             dialog::backdrop {
-                --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.9));
+                --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.5));
                 background-color: var(--overlay);
+                backdrop-filter: blur(3px);
             }
 
             .close-button {
