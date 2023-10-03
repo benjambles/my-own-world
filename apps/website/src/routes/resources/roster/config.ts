@@ -105,8 +105,9 @@ export default {
                                     description: { type: 'string' },
                                     game: {
                                         type: 'object',
-                                        required: ['name', 'version'],
+                                        required: ['_id', 'name', 'version'],
                                         properties: {
+                                            _id: { type: 'string' },
                                             name: { type: 'string' },
                                             version: { type: 'string' },
                                         },
@@ -171,8 +172,9 @@ export default {
                                     description: { type: 'string' },
                                     game: {
                                         type: 'object',
-                                        required: ['name', 'version'],
+                                        required: ['_id', 'name', 'version'],
                                         properties: {
+                                            _id: { type: 'string' },
                                             name: { type: 'string' },
                                             version: { type: 'string' },
                                         },

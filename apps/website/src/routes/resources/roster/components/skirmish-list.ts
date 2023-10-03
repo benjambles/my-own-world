@@ -1,3 +1,4 @@
+import { SkirmishListView } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
 import { PaginationDetails } from '@benjambles/mow-ui/components/mow-pagination/mow-pagination.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
@@ -7,8 +8,7 @@ import { consume } from '@lit-labs/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
-import { Skirmish } from '../index.js';
-import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
+import { SkirmishApi, SkirmishApiInstance } from './apis/skirmish-api.js';
 
 @customElement('skirmish-list')
 export class SkirmishList extends LitElement {
@@ -72,7 +72,7 @@ export class SkirmishList extends LitElement {
     requestManager: MowApiInstance;
 
     @state()
-    skirmishes: Skirmish[] = [];
+    skirmishes: SkirmishListView[] = [];
 
     connectedCallback() {
         super.connectedCallback();
@@ -107,6 +107,7 @@ export class SkirmishList extends LitElement {
         }
 
         try {
+            /* TODO: Add game filter - Ben Allen */
             const { count, items } = await this.skirmishApi.call(
                 'getSkirmishes',
                 {
@@ -177,7 +178,7 @@ export class SkirmishTile extends LitElement {
                 text-transform: capitalize;
             }
 
-            .card > a {
+            a {
                 flex: 1 1 100%;
                 display: flex;
                 flex-direction: column;
@@ -193,13 +194,18 @@ export class SkirmishTile extends LitElement {
 
             .card span:first-child {
                 padding-bottom: 15px;
-                color: var(--shade-5);
+                color: rgba(255, 0, 0, 0.8);
                 font-family: 'Oxanium', monospace;
                 font-size: 2.6rem;
             }
 
-            .card a:is(:hover, :focus) span:first-child {
-                color: rgba(255, 0, 0, 0.8);
+            .card:is(:hover, :focus) {
+                --co-bg-color: #777;
+                color: white;
+            }
+
+            .card:is(:hover, :focus) span:first-child {
+                color: white;
             }
         `,
     ];
@@ -222,14 +228,15 @@ export class SkirmishTile extends LitElement {
     protected render() {
         return this.name
             ? html`
-                  <div class="card callout">
-                      <a href="${this.urlPattern.replace(':rosterId', this.id)}">
-                          <span>${this.name}</span>
+                  <a
+                      class="card callout"
+                      href="${this.urlPattern.replace(':rosterId', this.id)}"
+                  >
+                      <span>${this.name}</span>
 
-                          <span>Created: ${time(new Date(this.createdOn))}</span>
-                          <span>Credits: ${this.points}</span>
-                      </a>
-                  </div>
+                      <span>Created: ${time(new Date(this.createdOn))}</span>
+                      <span>Credits: ${this.points}</span>
+                  </a>
               `
             : nothing;
     }

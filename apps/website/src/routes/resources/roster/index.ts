@@ -16,18 +16,32 @@ import list from './pages/list.js';
 export default function () {
     return createResource(config)
         .operation('getNewCampaign', async (ctx) => {
+            const {
+                games: [{ _id: gameId }],
+            } = await apiHelpers.games.getGames(
+                { query: { limit: 1, offset: 0, gameName: 'khora' } },
+                getJwtFromCookie(ctx, 'mow-auth'),
+            );
+
             const tpl = renderTemplate(
                 { title: 'Create A Campaign Squad: Khora' },
-                siteLayout(create(), true),
+                siteLayout(create({ gameId }), true),
                 ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getNewSkirmish', async (ctx) => {
+            const {
+                games: [{ _id: gameId }],
+            } = await apiHelpers.games.getGames(
+                { query: { limit: 1, offset: 0, gameName: 'khora' } },
+                getJwtFromCookie(ctx, 'mow-auth'),
+            );
+
             const tpl = renderTemplate(
                 { title: 'Create A Skirmish Squad: Khora' },
-                siteLayout(create(), true),
+                siteLayout(create({ gameId }), true),
                 ctx.state.env.NODE_ENV,
             );
 
@@ -51,16 +65,29 @@ export default function () {
         })
         .operation('getRosters', async (ctx) => {
             const { limit = 30, offset = 0 } = ctx.request.query;
-            const { count, items } = await apiHelpers.skirmishes.getSkirmishes(
+            const accessToken = getJwtFromCookie(ctx, 'mow-auth');
+
+            const [
+                { count, items },
                 {
-                    query: { userId: getAuthenticatedUserId(ctx), limit, offset },
+                    games: [{ _id: gameId }],
                 },
-                getJwtFromCookie(ctx, 'mow-auth'),
-            );
+            ] = await Promise.all([
+                apiHelpers.skirmishes.getSkirmishes(
+                    {
+                        query: { userId: getAuthenticatedUserId(ctx), limit, offset },
+                    },
+                    accessToken,
+                ),
+                apiHelpers.games.getGames(
+                    { query: { limit: 1, offset: 0, gameName: 'khora' } },
+                    accessToken,
+                ),
+            ]);
 
             const tpl = renderTemplate(
                 { title: 'Your Squads: Khora' },
-                siteLayout(list({ count, items, limit, offset }), true),
+                siteLayout(list({ count, items, limit, offset, gameId }), true),
                 ctx.state.env.NODE_ENV,
             );
 
@@ -109,17 +136,3 @@ export default function () {
         })
         .get();
 }
-
-export type Skirmish = {
-    _id: string;
-    createdOn: string;
-    description: string;
-    game: {
-        name: string;
-        version: string;
-    };
-    name: string;
-    points: number;
-    type: string;
-    userId: string;
-};

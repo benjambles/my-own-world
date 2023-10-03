@@ -60,6 +60,7 @@ export default {
                     'name',
                     'points',
                     'type',
+                    'updatedOn',
                     'userId',
                 ],
                 properties: {
@@ -68,8 +69,9 @@ export default {
                     description: { type: 'string' },
                     game: {
                         type: 'object',
-                        required: ['name', 'version'],
+                        required: ['_id', 'name', 'version'],
                         properties: {
+                            _id: { type: 'string' },
                             name: { type: 'string' },
                             version: { type: 'string' },
                         },
@@ -77,6 +79,7 @@ export default {
                     name: { type: 'string' },
                     points: { type: 'integer' },
                     type: { type: 'string' }, // TODO add enum support
+                    updatedOn: { type: 'string' },
                     userId: { type: 'string' },
                 },
             },
@@ -93,6 +96,7 @@ export default {
                     'name',
                     'points',
                     'type',
+                    'updatedOn',
                     'userId',
                 ],
                 properties: {
@@ -161,8 +165,9 @@ export default {
                     },
                     game: {
                         type: 'object',
-                        required: ['name', 'version'],
+                        required: ['_id', 'name', 'version'],
                         properties: {
+                            _id: { type: 'string' },
                             name: { type: 'string' },
                             version: { type: 'string' },
                         },
@@ -170,6 +175,7 @@ export default {
                     name: { type: 'string' },
                     points: { type: 'integer' },
                     type: { type: 'string' }, // TODO add enum support
+                    updatedOn: { type: 'string' },
                     userId: { type: 'string' },
                 },
             },
@@ -316,8 +322,9 @@ export default {
                                     },
                                     game: {
                                         type: 'object',
-                                        required: ['name', 'version'],
+                                        required: ['_id', 'name', 'version'],
                                         properties: {
+                                            _id: { type: 'string' },
                                             name: { type: 'string' },
                                             version: { type: 'string' },
                                         },

@@ -1,13 +1,13 @@
+import { SkirmishResponse } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
-import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
+import { callOutStyles, flexColToRow, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit-labs/context';
-import { LitElement, css, html, nothing } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
-import { Skirmish } from '../index.js';
-import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
+import { LitElement, PropertyValues, css, html } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
+import { SkirmishApi, SkirmishApiInstance } from './apis/skirmish-api.js';
 
 @customElement('edit-skirmish')
 export class EditSkirmish extends LitElement {
@@ -16,6 +16,7 @@ export class EditSkirmish extends LitElement {
     static styles = [
         inputStyles,
         callOutStyles,
+        flexColToRow,
         css`
             * {
                 box-sizing: border-box;
@@ -38,11 +39,26 @@ export class EditSkirmish extends LitElement {
 
             glow-button {
                 margin: 40px 0 0;
+                --gb-btn-bg: linear-gradient(
+                    90deg,
+                    rgb(230 230 230),
+                    rgb(255 255 255),
+                    rgb(230 230 230)
+                );
+                --gb-btn-hover: linear-gradient(
+                    90deg,
+                    rgb(230 230 230 / 70%),
+                    rgb(255 255 255 / 70%),
+                    rgb(230 230 230 / 70%)
+                );
             }
 
             fieldset {
+                --co-bg-color: white;
+                --col-to-row-gap: 20px;
                 border: none;
                 padding: var(--_form-padding);
+                margin-bottom: 6rem;
             }
 
             legend {
@@ -55,6 +71,33 @@ export class EditSkirmish extends LitElement {
                 font-size: 1.8rem;
                 font-variant: small-caps;
             }
+
+            .flex-container {
+                flex: 1 1 50%;
+            }
+
+            .flex-container:last-of-type {
+                text-transform: capitalize;
+            }
+
+            .label {
+                display: inline-block;
+                width: 130px;
+            }
+
+            .detail-item {
+                border-bottom: 1px dashed #999;
+            }
+
+            @media screen and (min-width: 992px) {
+                fieldset {
+                    --col-to-row-gap: 50px;
+                }
+
+                .flex-container:last-of-type {
+                    padding-block: 25px;
+                }
+            }
         `,
     ];
 
@@ -66,8 +109,23 @@ export class EditSkirmish extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
-    @property({ attribute: false })
-    skirmishData: Skirmish;
+    @state()
+    skirmishData: SkirmishResponse;
+
+    @property()
+    skirmishId: string;
+
+    @property()
+    skirmishCreatedOn: string;
+
+    @property()
+    skirmishDescription: string;
+
+    @property()
+    skirmishName: string;
+
+    @property()
+    skirmishPoints: string;
 
     @query('form')
     formElem: HTMLFormElement;
@@ -78,6 +136,30 @@ export class EditSkirmish extends LitElement {
         if (this.requestManager) {
             this.skirmishApi = new SkirmishApi();
             this.skirmishApi.addManager(this.requestManager);
+        }
+    }
+
+    fetchSkirmishData = async () => {
+        if (!this.requestManager && !this.userData?.tokens.access) {
+            return;
+        }
+
+        this.skirmishData = await this.skirmishApi.call(
+            'getSkirmishById',
+            {
+                params: { skirmishId: this.skirmishId },
+            },
+            this.userData.tokens.access,
+        );
+    };
+
+    updated(changedProperties: PropertyValues<this>): void {
+        if (
+            changedProperties.has('userData') &&
+            this.userData.status === 'logged-in' &&
+            this.skirmishId
+        ) {
+            this.fetchSkirmishData();
         }
     }
 
@@ -116,39 +198,65 @@ export class EditSkirmish extends LitElement {
     }
 
     protected render() {
-        if (!this.skirmishData) return nothing;
+        const id = this.skirmishData?._id ?? this.skirmishId;
+        const name = this.skirmishData?.name ?? this.skirmishName;
+        const description = this.skirmishData?.description ?? this.skirmishDescription;
+        const createdOn = new Date(
+            this.skirmishData?.createdOn ?? this.skirmishCreatedOn,
+        );
+        const points = this.skirmishData?.points ?? this.skirmishPoints;
+        const game = this.skirmishData?.game ?? { name: '', version: '' };
 
         return html`
-            <form
-                action="/roster/edit/${this.skirmishData._id}"
-                method="post"
-                @submit=${this.onSubmit}
-            >
-                <fieldset>
-                    <legend>Mission Information</legend>
+            <form action="/roster/edit/${id}" method="post" @submit=${this.onSubmit}>
+                <fieldset class="callout">
+                    <legend>Squad Information</legend>
 
-                    ${textInput({
-                        id: 'name',
-                        label: 'Squad Name',
-                        required: true,
-                        type: 'text',
-                        defaultText: this.skirmishData.name,
-                    })}
+                    <div class="col-to-row">
+                        <div class="flex-container">
+                            ${textInput({
+                                id: 'name',
+                                label: 'Squad Name',
+                                required: true,
+                                type: 'text',
+                                defaultText: name,
+                            })}
 
-                    <label for="description">Notes</label>
-                    <div class="input-wrapper">
-                        <div class="text-input">
-                            <textarea id="description" name="description">
-${this.skirmishData.description ?? nothing}</textarea
-                            >
+                            <label for="description">Notes</label>
+                            <div class="input-wrapper">
+                                <div class="text-input">
+                                    <textarea id="description" name="description">
+${description}</textarea
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-container">
+                            ${detailItems([
+                                ['Created On', createdOn.toLocaleString()],
+                                ['Points', points],
+                                ['Game', `${game.name} v${game.version}`],
+                                ['Type', this.skirmishData?.type],
+                            ])}
                         </div>
                     </div>
+
+                    <!-- TODO: Render Characters/Drones etc and add panel for drag/drop - Ben Allen -->
+                    <slot></slot>
 
                     <glow-button class="large">Submit</glow-button>
                 </fieldset>
             </form>
         `;
     }
+}
+
+function detailItems(items: [string, string | number][]) {
+    return items.map(
+        ([label, value]) => html`
+            <div class="detail-item"><span class="label">${label}</span> ${value}</div>
+        `,
+    );
 }
 
 declare global {

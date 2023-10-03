@@ -32,7 +32,8 @@ export const inputStyles = css`
         z-index: 1;
     }
 
-    label {
+    label,
+    .label {
         display: block;
         margin-top: 20px;
         font-family: 'Oxanium', monospace;
@@ -76,6 +77,7 @@ export const inputStyles = css`
         padding: 12px 15px 10px;
         border: 0 none;
         border-radius: 2px;
+        font-family: var(--font-text);
         font-size: 1.6rem;
     }
 

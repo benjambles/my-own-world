@@ -1,12 +1,23 @@
+import { SkirmishResponse } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
-import { html } from 'lit';
+import { css, html } from 'lit';
 import { rosterPaths } from '../config.js';
-import { Skirmish } from '../index.js';
 
-export default function (skirmish: Skirmish): RenderProps {
+export default function (skirmish: SkirmishResponse): RenderProps {
     return {
         assets: {
-            inlineStyles: [],
+            inlineStyles: [
+                css`
+                    .panel {
+                        padding: 0 6rem;
+                    }
+
+                    h1 {
+                        margin: 8rem 0 4rem;
+                        font-size: 6rem;
+                    }
+                `,
+            ],
             scripts: [
                 {
                     src: '/static/js/roster.bundle.js',
@@ -22,13 +33,19 @@ export default function (skirmish: Skirmish): RenderProps {
                     <a href="/tools/mission-creator">Mission Creator</a>
                     <a href="/tools/npc-creator">NPC Creator</a>
                 </section-header>
-                <section class="cont-m">
-                    <h1 class="gradient-text">Form a crew</h1>
+                <section class="panel">
+                    <h1>Form a crew</h1>
 
-                    <edit-skirmish
-                        rosterurl=${rosterPaths.rosterById}
-                        .skirmishdata=${skirmish}
-                    ></edit-skirmish>
+                    <with-game gameid=${skirmish.game._id}>
+                        <edit-skirmish
+                            rosterurl=${rosterPaths.rosterById}
+                            skirmishid=${skirmish._id}
+                            skirmishcreatedon=${skirmish.createdOn}
+                            skirmishdescription=${skirmish.description}
+                            skirmishname=${skirmish.name}
+                            skirmishpoints=${skirmish.points}
+                        ></edit-skirmish>
+                    </with-game>
                 </section>
             </main>
         `,

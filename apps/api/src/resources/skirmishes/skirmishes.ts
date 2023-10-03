@@ -38,27 +38,32 @@ export type Skirmish = {
     }[];
     isDeleted: boolean;
     game: {
+        _id: string;
         name: string;
         version: string;
     };
     name: string;
     points: number;
     type: string;
+    updatedOn: Date;
     userId: ObjectId;
 };
 
 type NewSkirmish = Pick<Skirmish, 'description' | 'game' | 'name' | 'points' | 'type'> &
     Partial<Pick<Skirmish, 'archetypes' | 'characters' | 'drones'>>;
 type UpdateSkirmish = Partial<Omit<Skirmish, RestrictedKeys | ToStringKeys | 'game'>>;
-type SkirmishListView = Omit<Skirmish, 'archetypes' | 'characters' | 'drones'>;
 
-type ToStringKeys = '_id' | 'createdOn' | 'userId';
+type ToStringKeys = '_id' | 'createdOn' | 'userId' | 'updatedOn';
 
 type RestrictedKeys = (typeof restrictedKeys)[number];
 
-type SkirmishResponse = Omit<Skirmish, RestrictedKeys | ToStringKeys> & {
+export type SkirmishResponse = Omit<Skirmish, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
+export type SkirmishListView = Omit<
+    SkirmishResponse,
+    'archetypes' | 'characters' | 'drones'
+>;
 //#endregion Types
 
 export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
@@ -74,7 +79,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
             userId?: string,
             limit: number = 10,
             skip: number = 0,
-        ): ModelResult<SkirmishListView[]> {
+        ): ModelResult<Skirmish[]> {
             const dbResult = await items
                 .find(
                     {
@@ -85,6 +90,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
                         limit,
                         skip,
                         projection: { archetypes: 0, characters: 0, drones: 0 },
+                        sort: { createdOn: -1 },
                     },
                 )
                 .toArray();
@@ -107,11 +113,12 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
             data: NewSkirmish,
             userId: string,
         ): ModelResult<Skirmish> {
+            const now = new Date();
             const gameData: Skirmish = {
                 _id: getObjectId(),
                 archetypes: data.archetypes ?? [],
                 characters: data.characters ?? [],
-                createdOn: new Date(),
+                createdOn: now,
                 description: data.description,
                 drones: data.drones ?? [],
                 game: data.game,
@@ -119,6 +126,7 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
                 name: data.name,
                 points: data.points,
                 type: data.type,
+                updatedOn: now,
                 userId: getObjectId(userId),
             };
             const cleanData = await dataFormatter(gameData);
@@ -133,9 +141,10 @@ export function getSkirmishModel(db: Db, { ENC_SECRET }: Env) {
             data: UpdateSkirmish,
         ): ModelResult<Skirmish> {
             const cleanData = await dataFormatter(data);
+
             const { ok, value } = await items.findOneAndUpdate(
                 { _id: getObjectId(uuid), userId: getObjectId(userId) },
-                { $set: cleanData },
+                { $set: Object.assign(cleanData, { updatedOn: new Date() }) },
                 { includeResultMetadata: true },
             );
 
@@ -164,6 +173,7 @@ export function cleanResponse(data: Skirmish): SkirmishResponse {
     return Object.assign(omit(data, restrictedKeys), {
         _id: data._id.toString(),
         createdOn: data.createdOn.toISOString(),
+        updatedOn: data.updatedOn.toISOString(),
         userId: data.userId.toString(),
     });
 }

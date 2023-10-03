@@ -2,7 +2,11 @@ import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/ren
 import { html } from 'lit';
 import { rosterPaths } from '../config.js';
 
-export default function (): RenderProps {
+type CreateGameProps = {
+    gameId: string;
+};
+
+export default function (data: CreateGameProps): RenderProps {
     return {
         assets: {
             inlineStyles: [],
@@ -23,10 +27,11 @@ export default function (): RenderProps {
                 </section-header>
                 <section class="cont-m">
                     <h1 class="gradient-text">Form a crew</h1>
-
-                    <create-skirmish
-                        rosterurl=${rosterPaths.rosterById}
-                    ></create-skirmish>
+                    <with-game gameid="${data.gameId}">
+                        <create-skirmish
+                            rosterurl=${rosterPaths.rosterById}
+                        ></create-skirmish>
+                    </with-game>
                 </section>
             </main>
         `,

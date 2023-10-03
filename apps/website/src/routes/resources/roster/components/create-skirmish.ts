@@ -1,3 +1,4 @@
+import { GameResponse } from '@benjambles/mow-api/src/resources/games/data/games.js';
 import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
@@ -6,7 +7,8 @@ import { consume } from '@lit-labs/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
-import { SkirmishApi, SkirmishApiInstance } from './skirmish-api.js';
+import { gameContext } from './apis/game-api.js';
+import { SkirmishApi, SkirmishApiInstance } from './apis/skirmish-api.js';
 
 @customElement('create-skirmish')
 export class CreateSkirmish extends LitElement {
@@ -66,6 +68,10 @@ export class CreateSkirmish extends LitElement {
     @property({ attribute: false })
     userData: UserData;
 
+    @consume({ context: gameContext, subscribe: true })
+    @property({ attribute: false })
+    gameData: GameResponse;
+
     @property()
     rosterUrl: string = '';
 
@@ -97,13 +103,21 @@ export class CreateSkirmish extends LitElement {
             throw new Error('You must be logged in');
         }
 
+        if (!this.gameData) {
+            throw new Error('No game found');
+        }
+
         try {
             const result = await this.skirmishApi.call(
                 'createSkirmish',
                 {
                     body: {
                         description: formData.get('description') as string,
-                        game: { name: 'khora', version: '1' }, // TODO grab from Games endpoints
+                        game: {
+                            _id: this.gameData._id,
+                            name: this.gameData.name,
+                            version: this.gameData.version,
+                        },
                         name: formData.get('name') as string,
                         points: 0,
                         type: 'skirmish',
