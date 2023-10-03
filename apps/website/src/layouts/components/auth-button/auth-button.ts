@@ -12,21 +12,12 @@ export class AuthButton extends LitElement {
         }
 
         :host {
+            --_size: var(--auth-btn-size, 60px);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 60px;
-            width: 61px;
-            border-right: 1px solid rgb(68, 68, 68);
-        }
-
-        @container (min-width: 100px) {
-            :host {
-                height: 101px;
-                width: 100px;
-                border-right: 0px none;
-                border-top: 1px solid rgb(68, 68, 68);
-            }
+            height: var(--_size);
+            width: var(--_size);
         }
 
         mow-action,

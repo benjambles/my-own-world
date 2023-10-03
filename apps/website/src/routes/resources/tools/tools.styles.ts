@@ -16,7 +16,7 @@ export const toolsStyles: CSSResult[] = [
         }
 
         .tool-links {
-            margin-block: 8rem;
+            margin-block: 4rem 12rem;
             padding: 0;
             list-style: none;
         }

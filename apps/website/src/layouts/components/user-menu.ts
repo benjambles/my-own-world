@@ -21,7 +21,7 @@ export class UserMenu extends LitElement {
 
         .user-label {
             display: block;
-            padding: 0 15px;
+            padding: 0 15px 20px;
         }
 
         hr {

@@ -23,7 +23,7 @@ export const rosterStyles: CSSResult[] = [
         }
 
         h1 {
-            margin: 12rem 0 8rem;
+            margin: 8rem 0 4rem;
             font-size: 6rem;
         }
 

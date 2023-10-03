@@ -37,7 +37,9 @@ export class FixedHeader extends MowDetails {
         }
 
         .account-links {
-            padding-right: 20px;
+            --auth-btn-size: 60px;
+            display: block;
+            border-right: 1px solid rgb(68, 68, 68);
         }
 
         .logo {
@@ -90,7 +92,9 @@ export class FixedHeader extends MowDetails {
             }
 
             .account-links {
-                width: 100%;
+                --auth-btn-size: 100px;
+                border-right: 0px none;
+                border-top: 1px solid rgb(68, 68, 68);
             }
 
             .logo {

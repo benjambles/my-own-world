@@ -84,6 +84,7 @@ export default css`
 
     body {
         font-size: 1.6rem;
+        padding-bottom: 60px;
     }
 
     ::-webkit-scrollbar {
@@ -162,6 +163,10 @@ export default css`
     }
 
     @media screen and (min-width: 992px) {
+        body {
+            padding-bottom: 0;
+        }
+
         h1 {
             font-size: 7rem;
         }

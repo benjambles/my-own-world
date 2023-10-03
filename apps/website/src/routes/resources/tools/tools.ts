@@ -17,20 +17,18 @@ export default function (): RenderProps {
                     <a href="${resourcePaths.downloads}">Downloads</a>
                 </section-header>
                 <section class="panel">
-                    <h1>Game Aides</h1>
+                    <h1>Resources</h1>
 
-                    <h2>Resources</h2>
+                    <h2>Databases</h2>
                     <ul class="tool-links col-to-row">
                         <li>
-                            <a class="callout" href="/resources/npcs">NPC Codex</a>
+                            <a class="callout" href="/resources/npcs">Adversaries</a>
                         </li>
                         <li>
                             <a class="callout" href="/resources/missions/">Missions</a>
                         </li>
                         <li>
-                            <a class="callout" href="/resources/items">
-                                Equipment Database
-                            </a>
+                            <a class="callout" href="/resources/items">Catalogue</a>
                         </li>
                     </ul>
 
