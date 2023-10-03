@@ -10,12 +10,13 @@ import { Archetype } from './archetypes.js';
 import { Items } from './items.js';
 import { Npc } from './npcs.js';
 
-const restrictedKeys = ['items', 'archetypes', 'npcs'] as const;
+const restrictedKeys = ['createdOn', 'items', 'archetypes', 'npcs'] as const;
 
 //#region Types
 export type Game = {
     _id: ObjectId;
     archetypes: Archetype[];
+    createdOn: Date;
     description: string;
     items: Items;
     name: string;
@@ -29,7 +30,7 @@ type UpdateGame = Pick<Game, 'description' | 'name' | 'tags'>;
 
 type ToStringKeys = '_id';
 type RestrictedKeys = (typeof restrictedKeys)[number];
-type GameResponse = Omit<Game, RestrictedKeys | ToStringKeys> & {
+export type GameResponse = Omit<Game, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
 //#endregion Types
@@ -52,6 +53,7 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
                 ...data,
                 _id: getObjectId(),
                 archetypes: [],
+                createdOn: new Date(),
                 items: { armour: [], consumables: [], upgrades: [], weapons: [] },
                 npcs: [],
             };
@@ -70,8 +72,15 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
                 value: dbResult,
             };
         },
-        get: async function (limit: number = 10, skip: number = 0): ModelResult<Game[]> {
-            const dbResult = await games.find({ limit, skip }).toArray();
+        get: async function (
+            gameName?: string,
+            limit: number = 10,
+            skip: number = 0,
+        ): ModelResult<Game[]> {
+            const filter = gameName ? { name: gameName } : {};
+            const dbResult = await games
+                .find(filter, { limit, skip, sort: { createdOn: -1 } })
+                .toArray();
 
             return { ok: true, value: dbResult };
         },

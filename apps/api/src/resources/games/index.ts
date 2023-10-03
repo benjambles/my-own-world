@@ -37,9 +37,9 @@ export default function games(dataModel: DataModel) {
             return created(cleanGameResponse(gameResult.value));
         })
         .operation('getGames', async (ctx) => {
-            const { limit, offset } = ctx.request.query;
+            const { limit, offset, gameName } = ctx.request.query;
 
-            const gamesResult = await games.get(limit, offset);
+            const gamesResult = await games.get(gameName, limit, offset);
             const gameCount = await games.count();
 
             return ok({

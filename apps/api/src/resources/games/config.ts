@@ -281,6 +281,13 @@ export default {
                 required: false,
                 schema: { type: 'string' },
             },
+            GameNameFilter: {
+                name: 'gameName',
+                in: 'query',
+                description: 'The game name to filter by',
+                required: false,
+                schema: { type: 'string' },
+            },
             Limit: limit,
             Offset: offset,
         },
@@ -353,6 +360,7 @@ export default {
                 description: '',
                 operationId: 'getGames',
                 parameters: [
+                    { $ref: '#/components/parameters/GameNameFilter' },
                     { $ref: '#/components/parameters/Limit' },
                     { $ref: '#/components/parameters/Offset' },
                 ],
