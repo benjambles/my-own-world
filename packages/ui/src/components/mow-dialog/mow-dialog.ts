@@ -19,6 +19,13 @@ export class MowDialog extends LitElement {
             }
 
             dialog {
+                padding: 40px;
+                border: 0 none;
+                background: transparent;
+            }
+
+            slot {
+                display: block;
                 min-width: 300px;
                 padding: 25px 20px;
                 border: 0 none;
@@ -27,12 +34,13 @@ export class MowDialog extends LitElement {
             }
 
             dialog::backdrop {
-                --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.5));
+                --overlay: var(--dialog-overlay, rgba(0, 0, 0, 0.6));
                 background-color: var(--overlay);
                 backdrop-filter: blur(3px);
             }
 
             .close-button {
+                --co-slice-size: 5px;
                 border: 0;
                 padding: 5px;
                 position: absolute;
@@ -40,13 +48,14 @@ export class MowDialog extends LitElement {
                 right: 5px;
                 font-size: 2.4rem;
                 line-height: 1;
-                background: none;
                 color: var(--close-color);
                 cursor: pointer;
             }
 
-            .close-button:is(:hover, :focus) {
-                color: var(--close-hover);
+            .close-button:is(:hover, :focus, :focus-visible) {
+                --co-bg-color: var(--close-hover);
+                color: white;
+                outline: none;
             }
         `,
     ];
@@ -107,9 +116,11 @@ export class MowDialog extends LitElement {
 
     protected render() {
         return html`
-            <dialog @close=${this.onDialogClose} class="callout">
-                <slot></slot>
-                <button @click=${this.closeDialog} class="close-button">&#128473;</button>
+            <dialog @close=${this.onDialogClose}>
+                <slot class="callout"></slot>
+                <button @click=${this.closeDialog} class="close-button callout">
+                    &#128473;
+                </button>
             </dialog>
         `;
     }
