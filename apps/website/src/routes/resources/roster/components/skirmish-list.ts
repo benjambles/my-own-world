@@ -141,7 +141,7 @@ export class SkirmishList extends LitElement {
                     ? this.skirmishes.map(
                           (skirmish) => html`
                               <skirmish-tile
-                                  createdon=${skirmish.createdOn}
+                                  updatedOn=${skirmish.updatedOn}
                                   id=${skirmish._id}
                                   name=${skirmish.name}
                                   points=${skirmish.points}
@@ -217,7 +217,7 @@ export class SkirmishTile extends LitElement {
     name: string;
 
     @property()
-    createdOn: string;
+    updatedOn: string;
 
     @property({ type: Number })
     points: number;
@@ -234,7 +234,7 @@ export class SkirmishTile extends LitElement {
                   >
                       <span>${this.name}</span>
 
-                      <span>Created: ${time(new Date(this.createdOn))}</span>
+                      <span>Modified: ${time(new Date(this.updatedOn))}</span>
                       <span>Credits: ${this.points}</span>
                   </a>
               `

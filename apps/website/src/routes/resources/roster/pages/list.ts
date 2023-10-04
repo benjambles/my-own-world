@@ -45,7 +45,7 @@ export default function (props: SkirmishListProps): RenderProps {
                             rosterurl=${rosterPaths.rosterById}
                             >${props.items.map((skirmish) => {
                                 return html`<skirmish-tile
-                                    createdon=${skirmish.createdOn}
+                                    updatedOn=${skirmish.updatedOn}
                                     id=${skirmish._id}
                                     name=${skirmish.name}
                                     points=${skirmish.points}
