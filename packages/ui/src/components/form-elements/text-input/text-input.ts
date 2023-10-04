@@ -101,7 +101,7 @@ export const inputStyles = css`
         position: absolute;
         right: 2px;
         top: 0;
-        color: rgba(255, 0, 255, 0.8);
+        color: rgb(255 0 255 / 0.8);
         font-size: 18px;
         z-index: 2;
     }
@@ -111,8 +111,8 @@ export const inputStyles = css`
     }
 
     ::-webkit-calendar-picker-indicator {
-        filter: invert(15%) sepia(86%) saturate(6721%) hue-rotate(295deg) brightness(85%)
-            contrast(120%);
+        filter: invert(77%) sepia(46%) saturate(3126%) hue-rotate(172deg) brightness(100%)
+            contrast(84%);
     }
 
     .input-wrapper:has(:hover, :focus-within) ::-webkit-calendar-picker-indicator {
