@@ -36,10 +36,10 @@ const defaultUserData: UserData = {
 };
 
 export const userEvents = {
-    login: 'userlogin',
-    logout: 'userlogout',
-    register: 'userjoin',
-    updateDetails: 'updatedetails',
+    login: 'mow:user.login',
+    logout: 'mow:user.logout',
+    register: 'mow:user.join',
+    updateDetails: 'mow:user.updatedetails',
 };
 
 @customElement('with-user')

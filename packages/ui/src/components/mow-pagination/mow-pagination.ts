@@ -19,7 +19,7 @@ export class MowPagination extends LitElement {
     rootUrl = '/';
 
     @property()
-    clickEventName = 'paginate';
+    clickEventName = 'mow:pagination.click';
 
     @property({ type: Number })
     itemCount: number = 0;

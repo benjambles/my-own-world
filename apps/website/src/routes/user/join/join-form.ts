@@ -61,7 +61,7 @@ export class JoinForm extends LitElement {
     private onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const registerEvent = composedEvent<UserRegistrationPayload>('userjoin', {
+        const registerEvent = composedEvent<UserRegistrationPayload>('mow:user.join', {
             identifier: this.emailField.value,
             password: this.passwordField.value,
             screenName: this.screenNameField.value,

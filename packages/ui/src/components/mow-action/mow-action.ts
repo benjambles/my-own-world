@@ -8,7 +8,7 @@ export class MowAction extends LitElement {
     eventData = '';
 
     @property()
-    eventTrigger = '';
+    eventName = '';
 
     @property({ type: Boolean })
     preventDefault = false;
@@ -16,7 +16,7 @@ export class MowAction extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        if (!this.eventTrigger) {
+        if (!this.eventName) {
             throw new Error('Invalid event name');
         }
 
@@ -25,7 +25,7 @@ export class MowAction extends LitElement {
                 event.preventDefault();
             }
 
-            this.dispatchEvent(composedEvent(this.eventTrigger, this.eventData));
+            this.dispatchEvent(composedEvent(this.eventName, this.eventData));
         });
     }
 

@@ -90,7 +90,7 @@ export default function site(
                 <a href="#content">Skip to the content</a>
                 <a href="#footer">Skip to the footer</a>
             </skip-links>
-            <view-lock watchedevents="menutoggle modaltoggle">
+            <view-lock watchedevents="mow:menu.toggle mow:modal.toggle">
                 <with-api apihost="http://localhost:3000" apipathprefix="/api/v1">
                     <with-user
                         ?protectedpage=${isProtected}
@@ -115,14 +115,14 @@ export default function site(
                             </site-footer>
                         </div>
                         <mow-dialog
-                            triggeropeneventname="openlogin"
-                            triggercloseeventname="closelogin"
+                            triggeropeneventname="mow:login.open"
+                            triggercloseeventname="mow:login.close"
                         >
                             <login-form ismodal></login-form>
                         </mow-dialog>
                         <mow-dialog
-                            triggeropeneventname="openusermenu"
-                            triggercloseeventname="closeusermenu"
+                            triggeropeneventname="mow:usermenu.open"
+                            triggercloseeventname="mow:usermenu.close"
                         >
                             <user-menu></user-menu>
                         </mow-dialog>

@@ -10,7 +10,7 @@ export class MowDetails extends LitElement {
         }
     `;
 
-    static ToggleEventName = 'menutoggle';
+    static ToggleEventName = 'mow:menu.toggle';
 
     @query('details', true)
     private menuElement!: HTMLDetailsElement;

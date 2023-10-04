@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/web-components';
-import { storyRenderer } from '../../utils/storybook/story-renderer.js';
 import { html } from 'lit';
+import { storyRenderer } from '../../utils/storybook/story-renderer.js';
 import './mow-dialog.js';
 
 export default {
@@ -12,13 +12,15 @@ export default {
 } as Meta;
 
 export const base = () => {
+    const openLoginTrigger = 'mow:login.open';
+
     return html`
-        <mow-dialog triggeropeneventname="openlogin">
+        <mow-dialog triggeropeneventname=${openLoginTrigger}>
             <p>Some text</p>
         </mow-dialog>
         <button
             @click=${() => {
-                window.dispatchEvent(new CustomEvent('openlogin'));
+                window.dispatchEvent(new CustomEvent(openLoginTrigger));
             }}
         >
             Log in

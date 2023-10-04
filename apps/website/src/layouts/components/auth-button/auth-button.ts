@@ -44,7 +44,7 @@ export class AuthButton extends LitElement {
 
     private renderLoggedIn() {
         return html`
-            <mow-action preventdefault eventtrigger="openusermenu">
+            <mow-action preventdefault eventname="mow:usermenu.open">
                 <a href="${userPaths.account}" title="settings">Settings</a>
             </mow-action>
         `;
@@ -52,7 +52,7 @@ export class AuthButton extends LitElement {
 
     private renderLoggedOut() {
         return html`
-            <mow-action preventdefault eventtrigger="openlogin">
+            <mow-action preventdefault eventname="mow:login.open">
                 <a href="${userPaths.login}">Identify</a>
             </mow-action>
         `;

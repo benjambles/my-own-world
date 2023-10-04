@@ -15,6 +15,10 @@ type SkirmishListProps = {
 };
 
 export default function (props: SkirmishListProps): RenderProps {
+    const eventTriggers = {
+        createSkirmish: { open: 'mow:createskirmish.open' },
+    };
+
     return {
         assets: {
             inlineStyles: rosterStyles,
@@ -51,7 +55,10 @@ export default function (props: SkirmishListProps): RenderProps {
                         >
 
                         <div class="button-group col-to-row">
-                            <mow-action preventdefault eventtrigger="opencreateskirmish">
+                            <mow-action
+                                preventdefault
+                                eventname=${eventTriggers.createSkirmish.open}
+                            >
                                 <a
                                     href="${rosterPaths.newSkirmish}"
                                     class="outline-button"
@@ -64,7 +71,9 @@ export default function (props: SkirmishListProps): RenderProps {
                             </a>
                         </div>
 
-                        <mow-dialog triggeropeneventname="opencreateskirmish">
+                        <mow-dialog
+                            triggeropeneventname=${eventTriggers.createSkirmish.open}
+                        >
                             <create-skirmish
                                 rosterurl=${rosterPaths.rosterById}
                                 ismodal

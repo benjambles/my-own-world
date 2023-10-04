@@ -112,7 +112,7 @@ export class MenuProfile extends MowDetails {
         }
     `;
 
-    public toggleEventName = 'usermenutoggle';
+    public toggleEventName = 'mow:usermenu.toggle';
 
     @property()
     imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';

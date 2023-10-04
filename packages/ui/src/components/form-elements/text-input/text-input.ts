@@ -68,7 +68,7 @@ export const inputStyles = css`
         border-radius: inherit;
         position: absolute;
         inset: 0;
-        background-image: var(--gradient-glow);
+        background: rgb(35 169 232 / 80%);
         z-index: -1;
     }
 
@@ -101,13 +101,13 @@ export const inputStyles = css`
         position: absolute;
         right: 2px;
         top: 0;
-        color: #f15148;
+        color: rgba(255, 0, 255, 0.8);
         font-size: 18px;
         z-index: 2;
     }
 
     .input-wrapper:has(:hover, :focus-within) .text-input::before {
-        background: var(--gradient-glow-reverse);
+        background: var(--gradient-glow);
     }
 
     ::-webkit-calendar-picker-indicator {
@@ -116,8 +116,8 @@ export const inputStyles = css`
     }
 
     .input-wrapper:has(:hover, :focus-within) ::-webkit-calendar-picker-indicator {
-        filter: invert(7%) sepia(88%) saturate(7111%) hue-rotate(0deg) brightness(115%)
-            contrast(104%);
+        filter: invert(15%) sepia(86%) saturate(6721%) hue-rotate(295deg) brightness(85%)
+            contrast(120%);
     }
 `;
 

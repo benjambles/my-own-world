@@ -69,7 +69,7 @@ export class LoginForm extends LitElement {
     private onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const loginEvent = composedEvent<UserLoginPayload>('userlogin', {
+        const loginEvent = composedEvent<UserLoginPayload>('mow:user.login', {
             identifier: this.emailField.value,
             password: this.passwordField.value,
         });
@@ -79,7 +79,7 @@ export class LoginForm extends LitElement {
 
     protected updated(): void {
         if (this.userData?.status === 'logged-in' && this.isModal) {
-            this.dispatchEvent(composedEvent('closelogin', true));
+            this.dispatchEvent(composedEvent('mow:login.close', true));
         }
     }
 

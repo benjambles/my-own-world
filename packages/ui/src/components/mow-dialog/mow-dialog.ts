@@ -60,7 +60,7 @@ export class MowDialog extends LitElement {
         `,
     ];
 
-    static ToggleEventName = 'modaltoggle';
+    static ToggleEventName = 'mow:modal.toggle';
 
     @property()
     onCloseEventName = '';

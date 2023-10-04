@@ -104,7 +104,7 @@ export class AccountForm extends LitElement {
     private submitDetails(e: SubmitEvent) {
         e.preventDefault();
 
-        const detailsEvent = composedEvent<UserDetailsPayload>('updatedetails', {
+        const detailsEvent = composedEvent<UserDetailsPayload>('mow:user.updatedetails', {
             firstName: this.firstNameField?.value,
             lastName: this.lastNameField?.value,
             screenName: this.screenNameField?.value,

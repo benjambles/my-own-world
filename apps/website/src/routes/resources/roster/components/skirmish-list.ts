@@ -14,7 +14,7 @@ import { SkirmishApi, SkirmishApiInstance } from './apis/skirmish-api.js';
 export class SkirmishList extends LitElement {
     private skirmishApi: SkirmishApiInstance;
 
-    static ClickEventName = 'skirmishlistpaginate';
+    static ClickEventName = 'mow:skirmishlist.paginate';
 
     static styles = [
         callOutStyles,

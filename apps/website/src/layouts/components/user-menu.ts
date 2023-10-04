@@ -68,7 +68,7 @@ export class UserMenu extends LitElement {
 
     protected updated(): void {
         if (this.userData?.status !== 'logged-in') {
-            this.dispatchEvent(composedEvent('closeusermenu', true));
+            this.dispatchEvent(composedEvent('mow:usermenu.close', true));
         }
     }
 
@@ -88,7 +88,7 @@ export class UserMenu extends LitElement {
             <a href="${userPaths.account}" class="bar-link"> Preferences </a>
             <a href="/help" class="bar-link"> Help </a>
 
-            <mow-action preventdefault eventtrigger="userlogout">
+            <mow-action preventdefault eventname="mow:user.logout">
                 <glow-link href="${userPaths.logout}">Sign off</glow-link>
             </mow-action>
         `;

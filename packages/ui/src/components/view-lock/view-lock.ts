@@ -12,7 +12,7 @@ export const viewLockBodyStyles = css`
 
 @customElement('view-lock')
 export class ViewLock extends LitElement {
-    static EventNameRegex = new RegExp(/^[a-zA-Z ]*/);
+    static EventNameRegex = new RegExp(/^[a-zA-Z:/. ]*/);
 
     @property({ reflect: true, type: Boolean })
     isConstrained = false;
