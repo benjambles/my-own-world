@@ -155,11 +155,14 @@ export default css`
         border-spacing: 0;
     }
 
-    [class^='page--'],
-    [class*=' page--'] {
+    .content-wrapper {
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+    }
+
+    #content {
+        flex: 1 1 auto;
     }
 
     @media screen and (min-width: 992px) {
