@@ -3,6 +3,9 @@
     --ON: initial;
     --OFF: ;
 
+    --font-special: 'Oxanium', monospace;
+    --font-text: 'Segoe UI', 'Roboto', 'San Fransisco', sans-serif;
+
     /* Colours */
     --basic-1: #ede6f2;
     --basic-2: #d5c7e1;
@@ -33,4 +36,26 @@
         rgba(255, 0, 0, 0.8),
         rgba(144, 238, 144, 0.8)
     );
+}
+
+@font-face {
+    font-family: 'Oxanium';
+    src:
+        local('Oxanium Medium'),
+        local('Oxanium-Medium'),
+        url('/mow-ui/fonts/oxanium/Oxanium-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Oxanium';
+    src:
+        local('Oxanium Light'),
+        local('Oxanium-Light'),
+        url('/mow-ui/fonts/oxanium/Oxanium-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
 }

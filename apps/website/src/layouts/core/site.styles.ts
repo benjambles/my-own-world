@@ -71,6 +71,9 @@ export default css`
         font-family: var(--font-text);
         font-size: 62.5%;
         line-height: 1.5;
+        -moz-text-size-adjust: none;
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
     }
 
     html,
@@ -106,9 +109,14 @@ export default css`
         outline: none;
     }
 
+    :target {
+        scroll-margin-block: 5ex;
+    }
+
     a {
         color: var(--special-4);
         text-decoration: none;
+        text-decoration-skip-ink: auto;
         transition: color 0.1s;
     }
 
@@ -123,6 +131,7 @@ export default css`
         line-height: 1.3;
         font-family: var(--font-special);
         font-weight: 300;
+        text-wrap: balance;
     }
 
     h1 {
@@ -153,6 +162,13 @@ export default css`
     table {
         border-collapse: collapse;
         border-spacing: 0;
+    }
+
+    input,
+    button,
+    textarea,
+    select {
+        font: inherit;
     }
 
     .content-wrapper {
