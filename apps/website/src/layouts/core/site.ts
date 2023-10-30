@@ -14,6 +14,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { paths as userPaths } from '../../routes/user/config.js';
 import '../components/auth-button/auth-button.js';
 import styles from './site.styles.js';
+import { rulesPaths } from '../../routes/rules/config.js';
+import { resourcePaths } from '../../routes/resources/config.js';
 
 type Link = { href: string; text: string };
 type LinkList = { links: Link[]; title?: string };
@@ -33,9 +35,9 @@ export default function site(
             links: [
                 { href: '/', text: 'Home' },
                 { href: '/setting', text: 'The Setting' },
-                { href: '/rules', text: 'The Rules' },
-                { href: '/downloads', text: 'Downloads' },
-                { href: '/tools', text: 'Tools' },
+                { href: rulesPaths.index, text: 'The Rules' },
+                { href: resourcePaths.downloads, text: 'Downloads' },
+                { href: resourcePaths.tools, text: 'Tools' },
                 { href: '/faq', text: 'FAQ' },
                 { href: '/contact', text: 'Contact Us' },
             ],
@@ -43,11 +45,11 @@ export default function site(
         {
             title: 'The rules',
             links: [
-                { href: '/rules/quick-start', text: 'Quick Start' },
-                { href: '/rules/turn-sequence', text: 'Turn sequence' },
-                { href: '/rules/operatives', text: 'Operatives' },
-                { href: '/rules/skirmishes', text: 'Skirmishes' },
-                { href: '/rules/campaigns', text: 'Campaigns' },
+                { href: rulesPaths.quickstart, text: 'Quick Start' },
+                { href: rulesPaths.turnorder, text: 'Turn sequence' },
+                { href: rulesPaths.operatives, text: 'Operatives' },
+                { href: rulesPaths.skirmishes, text: 'Skirmishes' },
+                { href: rulesPaths.campaigns, text: 'Campaigns' },
             ],
         },
         {

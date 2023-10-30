@@ -1,7 +1,7 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
 import { rosterPaths } from '../../resources/roster/config.js';
-import { paths as rulesPaths } from '../config.js';
+import { rulesPaths as rulesPaths } from '../config.js';
 import { quickStartStyles } from './quick-start.styles.js';
 import { resourcePaths } from '../../resources/config.js';
 
