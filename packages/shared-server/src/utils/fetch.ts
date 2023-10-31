@@ -9,32 +9,36 @@ type BuildUrlParams<Params extends KoaRequestParams> = {
 };
 
 export function buildUrl<Params extends KoaRequestParams>({
-    rootUrl,
     path,
+    rootUrl,
     urlParams,
     prefix = '',
 }: BuildUrlParams<Params>): URL {
     const populatedUrl = new URL(rootUrl);
-    const populatedPath = Object.entries(urlParams.params ?? {}).reduce(
-        (acc, [key, value]) => acc.replace(`:${key}`, value),
-        path,
-    );
+    const populatedPath = urlParams.params
+        ? path.replace(
+              /(?<=\/)(:[a-zA-Z]*)/g,
+              (param) => urlParams.params[param.replace(':', '')] ?? '',
+          )
+        : path;
 
     populatedUrl.pathname = `${prefix}${populatedPath}`;
 
-    const cleanQueryParams = urlParams.query
-        ? Object.fromEntries(
-              Object.entries(urlParams.query).map(([k, v]) => {
-                  if (typeof v === 'number') return [k, `${v}`];
-                  if (Array.isArray(v)) return [k, v.join(',')];
-                  return [k, v];
-              }),
-          )
-        : '';
+    const cleanQueryParams = urlParams.query ? toQueryStringParams(urlParams.query) : '';
 
     populatedUrl.search += new URLSearchParams(cleanQueryParams).toString();
 
     return populatedUrl;
+}
+
+function toQueryStringParams(query: KoaRequestParams['query']): Record<string, string> {
+    return Object.fromEntries(
+        Object.entries(query).map(([k, v]) => {
+            if (typeof v === 'number') return [k, `${v}`];
+            if (Array.isArray(v)) return [k, v.join(',')];
+            return [k, v];
+        }),
+    );
 }
 
 export async function parseResponse(
