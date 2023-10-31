@@ -13,10 +13,10 @@ export class MowDetails extends LitElement {
     static ToggleEventName = 'mow:menu.toggle';
 
     @query('details', true)
-    private menuElement!: HTMLDetailsElement;
+    private accessor menuElement!: HTMLDetailsElement;
 
     @query('details summary', true)
-    private summaryElement!: HTMLElement;
+    private accessor summaryElement!: HTMLElement;
 
     connectedCallback() {
         super.connectedCallback();

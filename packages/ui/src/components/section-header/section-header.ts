@@ -62,7 +62,7 @@ export class SectionHeader extends LitElement {
     `;
 
     @property()
-    sectionName = 'Home';
+    accessor sectionName = 'Home';
 
     protected render() {
         return html`

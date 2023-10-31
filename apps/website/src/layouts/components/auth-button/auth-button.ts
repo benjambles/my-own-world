@@ -1,4 +1,4 @@
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { paths as userPaths } from '../../../routes/user/config.js';
@@ -40,7 +40,7 @@ export class AuthButton extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     private renderLoggedIn() {
         return html`

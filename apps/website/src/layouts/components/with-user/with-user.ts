@@ -1,5 +1,5 @@
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
-import { consume, provide } from '@lit-labs/context';
+import { consume, provide } from '@lit/context';
 import Cookies from 'js-cookie';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { LitElement, html, nothing } from 'lit';
@@ -48,26 +48,26 @@ export class WithUser extends LitElement {
 
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
-    requestManager?: MowApiInstance;
+    accessor requestManager: MowApiInstance;
 
     @provide({ context: userContext })
     @property({ attribute: false })
-    userData: UserData = defaultUserData;
+    accessor userData: UserData = defaultUserData;
 
     @property()
-    accessCookie = 'mow-auth';
+    accessor accessCookie = 'mow-auth';
 
     @property()
-    fingerprintCookie = 'mow-fingerprint';
+    accessor fingerprintCookie = 'mow-fingerprint';
 
     @property()
-    refreshCookie = 'mow-refreshtoken';
+    accessor refreshCookie = 'mow-refreshtoken';
 
     @property({ type: Boolean })
-    protectedPage = false;
+    accessor protectedPage = false;
 
     @property()
-    redirectUrl = '/';
+    accessor redirectUrl = '/';
 
     connectedCallback() {
         super.connectedCallback();

@@ -2,7 +2,7 @@ import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { relativeTime, textInput } from '@benjambles/mow-ui/core.js';
 import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../layouts/components/with-user/user.js';
@@ -90,16 +90,16 @@ export class AccountForm extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     @query('#firstName')
-    private firstNameField: HTMLInputElement;
+    private accessor firstNameField: HTMLInputElement;
 
     @query('#lastName')
-    private lastNameField: HTMLInputElement;
+    private accessor lastNameField: HTMLInputElement;
 
     @query('#screenName')
-    private screenNameField: HTMLInputElement;
+    private accessor screenNameField: HTMLInputElement;
 
     private submitDetails(e: SubmitEvent) {
         e.preventDefault();

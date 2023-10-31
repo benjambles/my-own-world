@@ -1,5 +1,6 @@
+import { RenderResult } from '@lit-labs/ssr';
+import { RenderResultReadable } from '@lit-labs/ssr/lib/render-result-readable.js';
 import { Context, Middleware } from 'koa';
-import { Readable } from 'stream';
 import { throwSafeError } from '../errors.js';
 
 export function getDataMiddleware(callback: Middleware): Middleware {
@@ -13,7 +14,7 @@ export function getDataMiddleware(callback: Middleware): Middleware {
                 ctx.redirect(redirectUrl);
             }
 
-            ctx.body = isIterable(body) ? Readable.from(body) : body;
+            ctx.body = isIterable(body) ? new RenderResultReadable(body) : body;
 
             ctx.type = ctx.api === true ? 'application/json' : 'text/html';
 
@@ -26,13 +27,13 @@ export function getDataMiddleware(callback: Middleware): Middleware {
 
 export function streamResponse(
     ctx: Context,
-    body: Iterable<unknown>,
+    body: Iterable<string | Promise<RenderResult>>,
     status: number = 200,
     type = 'text/html',
 ) {
     ctx.status = status;
     ctx.type = type;
-    ctx.body = Readable.from(body);
+    ctx.body = new RenderResultReadable(body);
 }
 
 export function ok<B>(body: B) {

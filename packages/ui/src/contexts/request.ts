@@ -1,6 +1,6 @@
 import { buildUrl, parseResponse } from '@benjambles/mow-server/dist/utils/fetch.js';
 import { KoaRequestParams } from '@benjambles/mow-server/dist/utils/joi/context/context.js';
-import { createContext } from '@lit-labs/context';
+import { createContext } from '@lit/context';
 
 type RouteConfig = [string, HttpVerbs, KoaRequestParams, any];
 

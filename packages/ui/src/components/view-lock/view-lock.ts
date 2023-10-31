@@ -15,10 +15,10 @@ export class ViewLock extends LitElement {
     static EventNameRegex = new RegExp(/^[a-zA-Z:/. ]*/);
 
     @property({ reflect: true, type: Boolean })
-    isConstrained = false;
+    accessor isConstrained = false;
 
     @property()
-    watchedEvents = '';
+    accessor watchedEvents = '';
 
     connectedCallback() {
         super.connectedCallback();

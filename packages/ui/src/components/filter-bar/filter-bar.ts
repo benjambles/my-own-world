@@ -60,10 +60,10 @@ export class FilterItem extends LitElement {
     `;
 
     @property()
-    filter;
+    accessor filter;
 
     @property()
-    href;
+    accessor href;
 
     protected render() {
         return html`

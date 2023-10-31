@@ -68,10 +68,10 @@ export class DiceCheck extends LitElement {
     ];
 
     @property({ type: Number })
-    roll: number = 0;
+    accessor roll: number = 0;
 
     @property({ type: Number })
-    target: number = 0;
+    accessor target: number = 0;
 
     protected render() {
         const result = this.roll >= this.target ? 'success' : 'fail';
@@ -175,19 +175,19 @@ export class OpposedCheck extends LitElement {
     ];
 
     @property({ type: Number })
-    actorValue: number = 0;
+    accessor actorValue: number = 0;
 
     @property()
-    actorText: string = '';
+    accessor actorText: string = '';
 
     @property({ type: Number })
-    targetValue: number = 0;
+    accessor targetValue: number = 0;
 
     @property()
-    targetText: string = '';
+    accessor targetText: string = '';
 
     @property({ type: Number })
-    roll: number = 0;
+    accessor roll: number = 0;
 
     protected render() {
         const rollTargets = getOpposedRollTargets(this.actorValue, this.targetValue);

@@ -128,10 +128,10 @@ export class GlowLink extends LitElement {
     `;
 
     @property()
-    href = '';
+    accessor href = '';
 
     @property()
-    target = '_self';
+    accessor target = '_self';
 
     protected render() {
         return html`

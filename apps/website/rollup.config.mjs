@@ -15,7 +15,7 @@ export default {
             lit: [
                 '@lit-labs/ssr-client/lit-element-hydrate-support.js',
                 'lit',
-                '@lit-labs/context',
+                '@lit/context',
             ],
         },
     },

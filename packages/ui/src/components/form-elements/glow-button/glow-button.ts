@@ -136,7 +136,7 @@ export class GlowButton extends LitElement {
     `;
 
     @property({ attribute: false })
-    private internals: ElementInternals;
+    private accessor internals: ElementInternals;
 
     connectedCallback() {
         super.connectedCallback();

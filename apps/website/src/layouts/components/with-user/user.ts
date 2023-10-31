@@ -1,6 +1,6 @@
 import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
 import { Handlers, MowApi } from '@benjambles/mow-ui/contexts/request.js';
-import { createContext } from '@lit-labs/context';
+import { createContext } from '@lit/context';
 
 export type UserData = {
     errors?: {

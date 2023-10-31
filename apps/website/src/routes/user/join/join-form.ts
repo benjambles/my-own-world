@@ -6,7 +6,7 @@ import {
     speechBubbleStyles,
 } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../layouts/components/with-user/user.js';
@@ -56,7 +56,7 @@ export class JoinForm extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     private onSubmit(e: SubmitEvent) {
         e.preventDefault();
@@ -71,16 +71,16 @@ export class JoinForm extends LitElement {
     }
 
     @query('#join-email')
-    private emailField: HTMLInputElement;
+    private accessor emailField: HTMLInputElement;
 
     @query('#join-password')
-    private passwordField: HTMLInputElement;
+    private accessor passwordField: HTMLInputElement;
 
     @query('#join-screename')
-    private screenNameField: HTMLInputElement;
+    private accessor screenNameField: HTMLInputElement;
 
     @property()
-    redirectUrl = '/';
+    accessor redirectUrl = '/';
 
     protected render() {
         const isLoggedIn = this.userData?.status === 'logged-in';

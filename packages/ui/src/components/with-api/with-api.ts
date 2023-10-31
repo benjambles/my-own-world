@@ -1,4 +1,4 @@
-import { provide } from '@lit-labs/context';
+import { provide } from '@lit/context';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { MowApi, requestContext } from '../../contexts/request.js';
@@ -6,13 +6,13 @@ import { MowApi, requestContext } from '../../contexts/request.js';
 @customElement('with-api')
 class WithApi extends LitElement {
     @provide({ context: requestContext })
-    private api;
+    private accessor api;
 
     @property()
-    apiHost;
+    accessor apiHost;
 
     @property()
-    apiPathPrefix = '';
+    accessor apiPathPrefix = '';
 
     connectedCallback() {
         super.connectedCallback();

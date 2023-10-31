@@ -4,7 +4,7 @@ import { PaginationDetails } from '@benjambles/mow-ui/components/mow-pagination/
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { time } from '@benjambles/mow-ui/core.js';
 import { callOutStyles } from '@benjambles/mow-ui/styles.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
@@ -49,30 +49,30 @@ export class SkirmishList extends LitElement {
     ];
 
     @property()
-    rootUrl = '/';
+    accessor rootUrl = '/';
 
     @property()
-    rosterUrl = '/:rosterId';
+    accessor rosterUrl = '/:rosterId';
 
     @property({ type: Number })
-    count: number = 0;
+    accessor count: number = 0;
 
     @property({ type: Number })
-    limit: number = 30;
+    accessor limit: number = 30;
 
     @property({ type: Number })
-    offset: number = 0;
+    accessor offset: number = 0;
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
-    requestManager: MowApiInstance;
+    accessor requestManager: MowApiInstance;
 
     @state()
-    skirmishes: SkirmishListView[] = [];
+    accessor skirmishes: SkirmishListView[] = [];
 
     connectedCallback() {
         super.connectedCallback();
@@ -211,19 +211,19 @@ export class SkirmishTile extends LitElement {
     ];
 
     @property()
-    id: string;
+    accessor id: string;
 
     @property()
-    name: string;
+    accessor name: string;
 
     @property()
-    updatedOn: string;
+    accessor updatedOn: string;
 
     @property({ type: Number })
-    points: number;
+    accessor points: number;
 
     @property()
-    urlPattern: string = '/:rosterId';
+    accessor urlPattern: string = '/:rosterId';
 
     protected render() {
         return this.name

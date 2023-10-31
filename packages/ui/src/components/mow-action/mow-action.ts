@@ -5,13 +5,13 @@ import { composedEvent } from '../../utils/events.js';
 @customElement('mow-action')
 export class MowAction extends LitElement {
     @property()
-    eventData = '';
+    accessor eventData = '';
 
     @property()
-    eventName = '';
+    accessor eventName = '';
 
     @property({ type: Boolean })
-    preventDefault = false;
+    accessor preventDefault = false;
 
     connectedCallback() {
         super.connectedCallback();

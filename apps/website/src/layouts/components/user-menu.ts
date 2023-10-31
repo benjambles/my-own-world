@@ -1,6 +1,6 @@
 import '@benjambles/mow-ui/components/form-elements/glow-button/glow-link.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { rosterPaths } from '../../routes/resources/roster/config.js';
@@ -64,7 +64,7 @@ export class UserMenu extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     protected updated(): void {
         if (this.userData?.status !== 'logged-in') {

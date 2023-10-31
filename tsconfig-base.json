@@ -6,7 +6,6 @@
         "checkJs": true,
         "declaration": true,
         "declarationMap": true,
-        "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "incremental": true,
         "lib": ["ES2022", "esnext.array", "dom", "ES2020.String", "ES2020.Intl"],

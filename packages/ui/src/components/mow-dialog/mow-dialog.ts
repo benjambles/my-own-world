@@ -63,16 +63,16 @@ export class MowDialog extends LitElement {
     static ToggleEventName = 'mow:modal.toggle';
 
     @property()
-    onCloseEventName = '';
+    accessor onCloseEventName = '';
 
     @property()
-    triggerCloseEventName = '';
+    accessor triggerCloseEventName = '';
 
     @property()
-    triggerOpenEventName = '';
+    accessor triggerOpenEventName = '';
 
     @query('dialog', true)
-    private dialogElement!: HTMLDialogElement;
+    private accessor dialogElement!: HTMLDialogElement;
 
     connectedCallback() {
         super.connectedCallback();

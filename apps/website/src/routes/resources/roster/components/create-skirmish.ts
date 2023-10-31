@@ -3,7 +3,7 @@ import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
 import { callOutStyles, inputStyles } from '@benjambles/mow-ui/styles.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
@@ -62,24 +62,24 @@ export class CreateSkirmish extends LitElement {
 
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
-    requestManager: MowApiInstance;
+    accessor requestManager: MowApiInstance;
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     @consume({ context: gameContext, subscribe: true })
     @property({ attribute: false })
-    gameData: GameResponse;
+    accessor gameData: GameResponse;
 
     @property()
-    rosterUrl: string = '';
+    accessor rosterUrl: string = '';
 
     @property({ type: Boolean })
-    isModal = false;
+    accessor isModal = false;
 
     @query('form')
-    formElem: HTMLFormElement;
+    accessor formElem: HTMLFormElement;
 
     connectedCallback(): void {
         super.connectedCallback();

@@ -16,19 +16,19 @@ export class MowPagination extends LitElement {
     `;
 
     @property()
-    rootUrl = '/';
+    accessor rootUrl = '/';
 
     @property()
-    clickEventName = 'mow:pagination.click';
+    accessor clickEventName = 'mow:pagination.click';
 
     @property({ type: Number })
-    itemCount: number = 0;
+    accessor itemCount: number = 0;
 
     @property({ type: Number })
-    limit: number = 30;
+    accessor limit: number = 30;
 
     @property({ type: Number })
-    offset: number = 0;
+    accessor offset: number = 0;
 
     private requestPaginate(data: PaginationDetails) {
         this.dispatchEvent(composedEvent(this.clickEventName, data));

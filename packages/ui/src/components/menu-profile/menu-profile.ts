@@ -115,13 +115,13 @@ export class MenuProfile extends MowDetails {
     public toggleEventName = 'mow:usermenu.toggle';
 
     @property()
-    imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
+    accessor imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
 
     @property()
-    name;
+    accessor name;
 
     @property()
-    screenName;
+    accessor screenName;
 
     protected render() {
         return html`

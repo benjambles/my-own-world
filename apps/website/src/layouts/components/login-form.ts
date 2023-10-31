@@ -6,7 +6,7 @@ import {
     speechBubbleStyles,
 } from '@benjambles/mow-ui/styles.js';
 import { composedEvent } from '@benjambles/mow-ui/utils/events.js';
-import { consume } from '@lit-labs/context';
+import { consume } from '@lit/context';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { UserData, userContext } from './with-user/user.js';
@@ -52,19 +52,19 @@ export class LoginForm extends LitElement {
 
     @consume({ context: userContext, subscribe: true })
     @property({ attribute: false })
-    userData: UserData;
+    accessor userData: UserData;
 
     @property({ type: Boolean })
-    isModal = false;
+    accessor isModal = false;
 
     @property()
-    redirectUrl = '/';
+    accessor redirectUrl = '/';
 
     @query('#email')
-    private emailField: HTMLInputElement;
+    private accessor emailField: HTMLInputElement;
 
     @query('#password')
-    private passwordField: HTMLInputElement;
+    private accessor passwordField: HTMLInputElement;
 
     private onSubmit(e: SubmitEvent) {
         e.preventDefault();

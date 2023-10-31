@@ -51,10 +51,10 @@ export class LabelledList extends LitElement {
     `;
 
     @property()
-    header;
+    accessor header;
 
     @property()
-    type: MenuTypes = 'secondary';
+    accessor type: MenuTypes = 'secondary';
 
     protected render() {
         return html`
@@ -93,7 +93,7 @@ export class LabelledListItem extends LitElement {
     `;
 
     @property()
-    href;
+    accessor href;
 
     protected render() {
         return html`

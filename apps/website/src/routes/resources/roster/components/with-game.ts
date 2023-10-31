@@ -1,6 +1,6 @@
 import { GameResponse } from '@benjambles/mow-api/src/resources/games/data/games.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
-import { consume, provide } from '@lit-labs/context';
+import { consume, provide } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { GameApi, GameApiInstance, gameContext } from './apis/game-api.js';
@@ -21,13 +21,13 @@ export class WithGame extends LitElement {
 
     @consume({ context: requestContext, subscribe: true })
     @property({ attribute: false })
-    requestManager?: MowApiInstance;
+    accessor requestManager: MowApiInstance;
 
     @provide({ context: gameContext })
-    gameData: GameResponse;
+    accessor gameData: GameResponse;
 
     @property()
-    gameId: string;
+    accessor gameId: string;
 
     connectedCallback() {
         super.connectedCallback();

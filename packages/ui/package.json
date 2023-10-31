@@ -37,8 +37,8 @@
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
-        "@lit-labs/context": "0.4.0",
-        "lit": "2.8.0"
+        "@lit/context": "1.0.1",
+        "lit": "3.0.1"
     },
     "devDependencies": {
         "@babel/core": "7.22.10",
@@ -47,13 +47,13 @@
         "@babel/preset-env": "7.22.10",
         "@babel/preset-react": "7.22.5",
         "@babel/preset-typescript": "7.22.5",
-        "@storybook/addon-a11y": "7.3.2",
-        "@storybook/addon-actions": "7.3.2",
-        "@storybook/addon-essentials": "7.3.2",
-        "@storybook/addon-links": "7.3.2",
+        "@storybook/addon-a11y": "7.5.2",
+        "@storybook/addon-actions": "7.5.2",
+        "@storybook/addon-essentials": "7.5.2",
+        "@storybook/addon-links": "7.5.2",
         "@storybook/addon-postcss": "2.0.0",
-        "@storybook/addons": "7.3.2",
-        "@storybook/web-components-webpack5": "7.3.2",
+        "@storybook/addons": "7.5.2",
+        "@storybook/web-components-webpack5": "7.5.2",
         "@types/jest": "29.5.3",
         "babel-loader": "9.1.3",
         "copyfiles": "2.4.1",
@@ -67,10 +67,10 @@
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "resolve-typescript-plugin": "2.0.1",
-        "storybook": "7.3.2",
+        "storybook": "7.5.2",
         "style-loader": "3.3.3",
         "ts-jest": "29.1.1",
-        "ts-lit-plugin": "1.2.1",
+        "ts-lit-plugin": "2.0.1",
         "ts-loader": "9.4.4",
         "typescript": "5.2.2"
     }
