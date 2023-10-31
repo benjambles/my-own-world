@@ -49,7 +49,7 @@ export class CreateSkirmish extends LitElement {
 
             legend {
                 width: 100%;
-                border-bottom: 1px solid #333;
+                border-bottom: 1px dashed #ddd;
                 position: relative;
                 top: 30px;
                 color: #6b6b6b;

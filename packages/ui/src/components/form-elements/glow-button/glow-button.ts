@@ -107,7 +107,7 @@ export class GlowButton extends LitElement {
             inset: 0;
             animation: rotate 2s linear infinite;
             animation-play-state: paused;
-            background-image: var(--gradient-glow);
+            background: rgb(35 169 232 / 80%);
             transition: opacity 100ms ease-out;
             z-index: -1;
         }
@@ -117,7 +117,7 @@ export class GlowButton extends LitElement {
         }
 
         button:is(:hover, :active, :focus) .glow::before {
-            background: var(--gradient-glow-reverse);
+            background: var(--gradient-glow);
             animation-play-state: running;
         }
 

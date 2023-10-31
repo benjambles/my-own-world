@@ -62,7 +62,7 @@ export class AccountForm extends LitElement {
 
             legend {
                 width: 100%;
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px dashed #ddd;
                 position: relative;
                 top: 30px;
                 color: #6b6b6b;

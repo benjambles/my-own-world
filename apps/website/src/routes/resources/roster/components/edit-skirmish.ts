@@ -23,22 +23,19 @@ export class EditSkirmish extends LitElement {
             }
 
             :host {
-                --_form-padding: var(--form-padding, 35px 20px 30px);
-                --_width: var(--cs-width, 100%);
-                width: var(--_width);
+                width: 100%;
                 display: block;
             }
 
             form {
                 display: flex;
                 flex-direction: column;
-
                 overflow: auto;
+                position: relative;
                 color: var(--shade-4);
             }
 
             glow-button {
-                margin: 40px 0 0;
                 --gb-btn-bg: linear-gradient(
                     90deg,
                     rgb(230 230 230),
@@ -57,19 +54,50 @@ export class EditSkirmish extends LitElement {
                 --co-bg-color: white;
                 --col-to-row-gap: 20px;
                 border: none;
-                padding: var(--_form-padding);
-                margin-bottom: 6rem;
+                padding: 0 0 30px;
+                margin: 0 0 6rem;
             }
 
             legend {
+                --_bg-color: #333;
+                --_slice: 10px;
+
                 width: 100%;
-                border-bottom: 1px solid #333;
+                margin: 0 0 10px;
+                padding: 10px 20px;
                 position: relative;
-                top: 30px;
-                color: #6b6b6b;
+                background-color: transparent;
+                background-image: linear-gradient(
+                        45deg,
+                        var(--_bg-color) 0,
+                        var(--_bg-color) 0
+                    ),
+                    linear-gradient(135deg, var(--_bg-color) 0px, var(--_bg-color) 0px),
+                    linear-gradient(
+                        225deg,
+                        transparent var(--_slice),
+                        var(--_bg-color) var(--_slice)
+                    ),
+                    linear-gradient(315deg, var(--_bg-color) 0px, var(--_bg-color) 0px);
+                background-position:
+                    left bottom,
+                    right bottom,
+                    right top,
+                    left top;
+                background-repeat: no-repeat;
+                background-size: 51% 51%;
+                color: #fff;
                 font-family: 'Oxanium';
                 font-size: 1.8rem;
                 font-variant: small-caps;
+            }
+
+            .col-to-row {
+                margin-inline: 20px;
+            }
+
+            .fieldset-footer {
+                margin: 40px 20px 0;
             }
 
             .flex-container {
@@ -86,7 +114,7 @@ export class EditSkirmish extends LitElement {
             }
 
             .detail-item {
-                border-bottom: 1px dashed #999;
+                border-bottom: 1px dashed #ddd;
             }
 
             @media screen and (min-width: 992px) {
@@ -244,8 +272,12 @@ ${description}</textarea
                     <!-- TODO: Render Characters/Drones etc and add panel for drag/drop - Ben Allen -->
                     <slot></slot>
 
-                    <glow-button class="large">Submit</glow-button>
+                    <div class="fieldset-footer">
+                        <glow-button class="large">Submit</glow-button>
+                    </div>
                 </fieldset>
+
+                <ul class="units"></ul>
             </form>
         `;
     }
