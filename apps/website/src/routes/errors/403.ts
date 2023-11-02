@@ -1,11 +1,7 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
 import { errorStyles } from './error.styles.js';
-
-type ErrorData = {
-    error: string | object;
-    status: string;
-};
+import type { ErrorData } from './errors.js';
 
 export default function (data: ErrorData): RenderProps {
     return {

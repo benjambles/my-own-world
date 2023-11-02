@@ -3,6 +3,11 @@ import error403 from './403.js';
 import error404 from './404.js';
 import error500 from './500.js';
 
+export type ErrorData = {
+    error: string | object;
+    status: string;
+};
+
 export default {
     '400': error400,
     '401': error403,
