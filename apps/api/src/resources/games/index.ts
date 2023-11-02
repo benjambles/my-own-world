@@ -44,7 +44,7 @@ export default function games(dataModel: DataModel) {
 
             return ok({
                 count: gameCount,
-                games: gamesResult.value.map(cleanGameResponse),
+                items: gamesResult.value.map(cleanGameResponse),
             });
         })
         .operation('getGameById', async (ctx) => {

@@ -17,7 +17,7 @@ export default function () {
     return createResource(config)
         .operation('getNewCampaign', async (ctx) => {
             const {
-                games: [{ _id: gameId }],
+                items: [{ _id: gameId }],
             } = await apiHelpers.games.getGames(
                 { query: { limit: 1, offset: 0, gameName: 'khora' } },
                 getJwtFromCookie(ctx, 'mow-auth'),
@@ -33,7 +33,7 @@ export default function () {
         })
         .operation('getNewSkirmish', async (ctx) => {
             const {
-                games: [{ _id: gameId }],
+                items: [{ _id: gameId }],
             } = await apiHelpers.games.getGames(
                 { query: { limit: 1, offset: 0, gameName: 'khora' } },
                 getJwtFromCookie(ctx, 'mow-auth'),
@@ -70,7 +70,7 @@ export default function () {
             const [
                 { count, items },
                 {
-                    games: [{ _id: gameId }],
+                    items: [{ _id: gameId }],
                 },
             ] = await Promise.all([
                 apiHelpers.skirmishes.getSkirmishes(

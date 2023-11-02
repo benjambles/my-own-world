@@ -137,7 +137,7 @@ export default function users(dataModel: DataModel) {
             const { limit, offset } = ctx.request.query;
             const userResult = await users.get(limit, offset);
 
-            return ok(userResult.value.map(cleanResponse));
+            return ok({ items: userResult.value.map(cleanResponse) });
         })
         .operation('getUserById', async (ctx) => {
             const userResult = await users.find(ctx.request.params.userId);
@@ -196,7 +196,7 @@ export default function users(dataModel: DataModel) {
                 throw createError(404, 'No matching identities found');
             }
 
-            return ok(identitiesResult.value);
+            return ok({ items: identitiesResult.value });
         })
         .operation('createUserIdentifier', async (ctx) => {
             const { ok, value } = await identifiers.create(
@@ -232,7 +232,7 @@ export default function users(dataModel: DataModel) {
                 throw createError(400, 'There was an error whilst fetching the tokens');
             }
 
-            return ok(tokensResult.value);
+            return ok({ items: tokensResult.value });
         })
         .operation('deleteTokens', async (ctx) => {
             const deleteResult = await users.update(ctx.request.params.userId, {

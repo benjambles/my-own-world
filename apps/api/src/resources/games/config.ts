@@ -371,10 +371,10 @@ export default {
                             'application/json': {
                                 schema: {
                                     type: 'object',
-                                    required: ['count', 'games'],
+                                    required: ['count', 'items'],
                                     properties: {
                                         count: { type: 'integer' },
-                                        games: {
+                                        items: {
                                             type: 'array',
                                             items: {
                                                 $ref: '#/components/schemas/Game',

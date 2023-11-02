@@ -89,9 +89,15 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: {
-                                        $ref: '#/components/schemas/UserResponse',
+                                    type: 'object',
+                                    required: ['items'],
+                                    properties: {
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                $ref: '#/components/schemas/UserResponse',
+                                            },
+                                        },
                                     },
                                 },
                             },
@@ -338,9 +344,15 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: {
-                                        $ref: '#/components/schemas/IdentifierResponse',
+                                    type: 'object',
+                                    required: ['items'],
+                                    properties: {
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                $ref: '#/components/schemas/IdentifierResponse',
+                                            },
+                                        },
                                     },
                                 },
                             },
@@ -485,18 +497,24 @@ export default {
                         content: {
                             'application/json': {
                                 schema: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        required: [
-                                            'accessToken',
-                                            'fingerprint',
-                                            'refreshToken',
-                                        ],
-                                        properties: {
-                                            accessToken: { type: 'string' },
-                                            fingerprint: { type: 'string' },
-                                            refreshToken: { type: 'string' },
+                                    type: 'object',
+                                    required: ['items'],
+                                    properties: {
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                required: [
+                                                    'accessToken',
+                                                    'fingerprint',
+                                                    'refreshToken',
+                                                ],
+                                                properties: {
+                                                    accessToken: { type: 'string' },
+                                                    fingerprint: { type: 'string' },
+                                                    refreshToken: { type: 'string' },
+                                                },
+                                            },
                                         },
                                     },
                                 },
