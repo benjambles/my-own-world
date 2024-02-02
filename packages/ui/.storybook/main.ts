@@ -1,12 +1,12 @@
 import type { StorybookConfig } from '@storybook/web-components-webpack5';
-import { resolve } from 'path';
+import { resolve, dirname, join } from 'path';
 import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
 const config: StorybookConfig = {
     addons: [
-        '@storybook/addon-a11y',
-        '@storybook/addon-essentials',
-        '@storybook/addon-links',
+        getAbsolutePath("@storybook/addon-a11y"),
+        getAbsolutePath("@storybook/addon-essentials"),
+        getAbsolutePath("@storybook/addon-links"),
         {
             name: '@storybook/addon-postcss',
             options: {
@@ -23,7 +23,7 @@ const config: StorybookConfig = {
         autodocs: true,
     },
     framework: {
-        name: '@storybook/web-components-webpack5',
+        name: getAbsolutePath("@storybook/web-components-webpack5"),
         options: {},
     },
     staticDirs: [{ from: '../dist', to: '/mow-ui' }],
@@ -40,3 +40,7 @@ const config: StorybookConfig = {
 };
 
 export default config;
+
+function getAbsolutePath(value: string): any {
+    return dirname(require.resolve(join(value, "package.json")));
+}
