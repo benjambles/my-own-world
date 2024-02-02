@@ -1,7 +1,7 @@
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { consume, provide } from '@lit/context';
 import Cookies from 'js-cookie';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { UserData, UserInstance, Users, userContext } from './user.js';
@@ -144,7 +144,7 @@ export class WithUser extends LitElement {
 
         if (!userId) {
             try {
-                const parsedToken = jwtDecode.default<JwtPayload>(refresh);
+                const parsedToken = jwtDecode<JwtPayload>(refresh);
 
                 userId = parsedToken.sub;
 

@@ -18,9 +18,9 @@
     "dependencies": {
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
-        "joi": "17.9.2",
-        "koa": "2.14.2",
-        "mongodb": "6.0.0"
+        "joi": "17.12.1",
+        "koa": "2.15.0",
+        "mongodb": "6.3.0"
     },
     "devDependencies": {
         "@shopify/jest-koa-mocks": "5.1.1",

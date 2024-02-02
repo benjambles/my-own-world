@@ -37,8 +37,8 @@
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/rise-engine": "../../packages/rise-engine",
         "@benjambles/skirmish-engine": "../../packages/skirmish-engine",
-        "@lit/context": "1.0.1",
-        "lit": "3.0.1"
+        "@lit/context": "1.1.0",
+        "lit": "3.1.2"
     },
     "devDependencies": {
         "@babel/core": "7.22.10",
