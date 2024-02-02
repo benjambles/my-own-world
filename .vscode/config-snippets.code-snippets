@@ -1,5 +1,13 @@
 {
     // API Snippets
+    "TS Import":{
+        "scope":"typescript",
+        "prefix": "impt",
+        "description": "import statement that reverse arg order",
+        "body": [
+            "import ${0} from '${1}';"
+        ]
+    },
     "Resource Index":{
         "scope": "typescript",
         "prefix": "rsc",

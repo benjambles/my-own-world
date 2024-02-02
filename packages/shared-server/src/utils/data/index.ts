@@ -18,6 +18,8 @@ export function getDataFormatter(
     return async (key: string, value: string): Promise<string | null> => {
         if (readOnly.includes(key)) return null;
 
+        if (typeof value !== 'string') return value;
+
         if (encrypted.includes(key)) {
             return encryptValue(password, value);
         }
@@ -42,24 +44,15 @@ export function getDataFormatter(
 export function formatData(
     formatter: (key: string, value: string) => Promise<string | null>,
 ) {
-    return async <T>(data: T): Promise<T> => {
-        return await setKeyValues(formatter, {}, Object.entries(data));
+    return async <T extends Record<string, any>>(data: T): Promise<T> => {
+        const mappedData = await Promise.all(
+            Object.entries(data).map(async ([key, value]) => {
+                const maybeValue = await formatter(key, value);
+
+                return [key, maybeValue];
+            }),
+        );
+
+        return Object.fromEntries(mappedData.filter(([, value]) => value !== null));
     };
-}
-
-async function setKeyValues(
-    formatter: (key: string, value: string) => Promise<string | null>,
-    acc: Record<string, string>,
-    entries: [string, any][],
-) {
-    if (!entries.length) return acc;
-
-    const [[key, value], ...tail] = entries;
-    const maybeValue = await formatter(key, value);
-
-    if (maybeValue !== null) {
-        acc[key] = maybeValue;
-    }
-
-    return await setKeyValues(formatter, acc, tail);
 }
