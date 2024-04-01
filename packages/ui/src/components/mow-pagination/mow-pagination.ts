@@ -1,5 +1,5 @@
-import { LitElement, css, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement, PropertyValueMap, PropertyValues, css, html, nothing } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { composedEvent } from '../../utils/events.js';
 import { callOutStyles } from '../../global-css/callout.styles.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -10,8 +10,17 @@ export type PaginationDetails = {
     offset: number;
 };
 
+export interface PaginationProps {
+    clickEventName: string;
+    itemCount: number;
+    limit: number;
+    offset: number;
+    maxLinks: number;
+    rootUrl: string;
+}
+
 @customElement('mow-pagination')
-export class MowPagination extends LitElement {
+export class MowPagination extends LitElement implements PaginationProps {
     static styles = [
         callOutStyles,
         css`
@@ -110,6 +119,21 @@ export class MowPagination extends LitElement {
 
     private defaultCount = 10;
 
+    @state()
+    protected accessor _state = {
+        limit: 30,
+        maxLinks: 3,
+        pages: {
+            count: 0,
+            current: 1,
+            next: { number: 1, offset: 0 },
+            previous: { number: 1, offset: 0 },
+            last: { number: 1, offset: 0 },
+            cuts: { front: 0, back: 0 },
+            startOffset: 0,
+        },
+    };
+
     @property()
     accessor clickEventName = 'mow:pagination.click';
 
@@ -147,7 +171,7 @@ export class MowPagination extends LitElement {
                         if (isDisabled) return;
 
                         this.requestPaginate({
-                            limit: this.limit,
+                            limit: this._state.limit,
                             offset,
                         });
                     }}
@@ -156,7 +180,7 @@ export class MowPagination extends LitElement {
                         callout: true,
                         disabled: isDisabled,
                     })}"
-                    href="${this.rootUrl}?limit=${this.limit}&offset=${offset}"
+                    href="${this.rootUrl}?limit=${this._state.limit}&offset=${offset}"
                     aria-label="${ariaLabel}"
                     aria-disabled=${isDisabled}
                     >${text}
@@ -173,7 +197,7 @@ export class MowPagination extends LitElement {
         if (count === 1) {
             return this.renderLink({
                 ariaLabel: `Goto page ${fromIndex + 1}`,
-                offset: fromIndex * this.limit,
+                offset: fromIndex * this._state.limit,
                 text: fromIndex + 1,
             });
         }
@@ -187,7 +211,7 @@ export class MowPagination extends LitElement {
                         if (!e.target.value) return;
 
                         this.requestPaginate({
-                            limit: this.limit,
+                            limit: this._state.limit,
                             offset: parseInt(e.target.value, 10),
                         });
                     }}
@@ -195,7 +219,7 @@ export class MowPagination extends LitElement {
                     <option value="" hidden></option>
                     ${[...Array(count)].map(
                         (e, i) =>
-                            html`<option value="${(fromIndex + i) * this.limit}">
+                            html`<option value="${(fromIndex + i) * this._state.limit}">
                                 ${fromIndex + i + 1}
                             </option>`,
                     )}
@@ -228,21 +252,22 @@ export class MowPagination extends LitElement {
     }
 
     private calculateCuts(
+        maxLinks: number,
         page: number,
         totalItems: number,
         splitPoint: number | null = null,
     ) {
-        if (this.maxLinks >= totalItems) {
+        if (maxLinks >= totalItems) {
             return {
                 front: 0,
                 back: 0,
             };
         }
 
-        const split = splitPoint || Math.ceil(this.maxLinks / 2) - 1;
+        const split = splitPoint || Math.ceil(maxLinks / 2) - 1;
 
         let frontHidden = page + 1 - split;
-        let backHidden = totalItems - page - (this.maxLinks - split) + 1;
+        let backHidden = totalItems - page - (maxLinks - split) + 1;
 
         if (frontHidden <= 1) {
             backHidden -= frontHidden <= 0 ? Math.abs(frontHidden) + 1 : 0;
@@ -260,40 +285,74 @@ export class MowPagination extends LitElement {
         };
     }
 
-    protected render() {
-        const pages = Math.max(1, this.itemCount / this.limit);
-        const currentPage = this.offset ? Math.max(0, this.offset / this.limit) : 0;
-        const nextPage = Math.min(currentPage + 1, pages);
+    protected willUpdate(): void {
+        const limit = Math.max(1, this.limit);
+        const itemCount = Math.max(0, this.itemCount);
+        const remOffset = this.itemCount % this.limit || this.limit;
+        const maxOffset = Math.max(0, this.itemCount - remOffset);
+
+        const offset = Math.max(0, Math.min(this.offset, maxOffset));
+        const maxLinks = Math.max(this.maxLinks, 3);
+
+        const pageCount = itemCount ? Math.ceil(Math.max(1, itemCount / limit)) : 1;
+        const currentPage = offset ? Math.floor(offset / limit) : 0;
         const previousPage = Math.max(currentPage - 1, 0);
-        const cuts = this.calculateCuts(currentPage, pages);
-        const startOffset = this.maxLinks <= 4 && currentPage > 1 ? 0 : 1;
+        const nextPage = Math.min(currentPage + 1, pageCount);
+        const lastPage = Math.max(pageCount - 1, 1);
+
+        this._state = {
+            limit,
+            maxLinks,
+            pages: {
+                count: pageCount,
+                current: currentPage,
+                next: { number: nextPage, offset: Math.min(nextPage * limit, maxOffset) },
+                previous: { number: previousPage, offset: previousPage * offset },
+                last: { number: lastPage, offset: maxOffset },
+                cuts: this.calculateCuts(maxLinks, currentPage, pageCount),
+                startOffset: maxLinks <= 4 && currentPage > 1 ? 0 : 1,
+            },
+        };
+    }
+
+    protected render() {
+        const {
+            count: totalPages,
+            current: currentPage,
+            cuts,
+            last: lastPage,
+            next: nextPage,
+            previous: previousPage,
+            startOffset,
+        } = this._state.pages;
+
+        const isFirstPage = currentPage === 0;
 
         return html`
             <nav aria-label="Pagination">
                 <ol>
                     ${this.renderLink({
-                        ariaLabel: `Goto previous page, page ${previousPage}`,
-                        isDisabled: currentPage === 0,
-                        offset: previousPage * this.limit,
+                        ariaLabel: `Goto previous page, page ${previousPage.number}`,
+                        isDisabled: isFirstPage,
+                        offset: previousPage.offset,
                         text: '<',
                     })}
                     ${when(
-                        this.maxLinks >= 5 || (this.maxLinks <= 4 && currentPage <= 1),
+                        this._state.maxLinks >= 5 ||
+                            (this._state.maxLinks <= 4 && currentPage <= 1),
                         () =>
                             this.renderLink({
-                                ariaLabel:
-                                    currentPage === 0
-                                        ? `Current page, page ${pages}`
-                                        : `Goto page ${pages}`,
-                                isActive: currentPage === 0,
+                                ariaLabel: isFirstPage
+                                    ? `Current page, page 1`
+                                    : `Goto page 1`,
+                                isActive: isFirstPage,
                                 offset: 0,
                                 text: 1,
                             }),
                         () => nothing,
                     )}
                     ${this.renderOffset(startOffset, cuts.front)}
-                    ${[...Array(pages)]
-                        .map((e, i) => i)
+                    ${Array.from({ length: totalPages }, (_, i) => i)
                         .slice(startOffset + cuts.front, (1 + cuts.back) * -1)
                         .map((item) =>
                             this.renderLink({
@@ -302,32 +361,29 @@ export class MowPagination extends LitElement {
                                         ? `Current page, page ${item}`
                                         : `Goto page ${item}`,
                                 isActive: currentPage === item,
-                                offset: item * this.limit,
+                                offset: item * this._state.limit,
                                 text: item + 1,
                             }),
                         )}
-                    ${this.renderOffset(pages - cuts.back - 1, cuts.back)}
+                    ${this.renderOffset(totalPages - cuts.back - 1, cuts.back)}
                     ${when(
-                        pages > 1,
+                        totalPages > 1,
                         () =>
                             this.renderLink({
                                 ariaLabel:
-                                    currentPage === pages - 1
-                                        ? `Current page, page ${pages - 1}`
-                                        : `Goto page ${pages - 1}`,
-                                isActive: currentPage === pages - 1,
-                                offset: (pages - 1) * this.limit,
-                                text: pages,
+                                    currentPage === lastPage.number
+                                        ? `Current page, page ${lastPage.number}`
+                                        : `Goto page ${lastPage.number}`,
+                                isActive: currentPage === lastPage.number,
+                                offset: lastPage.offset,
+                                text: totalPages,
                             }),
                         () => nothing,
                     )}
                     ${this.renderLink({
-                        ariaLabel: `Goto next page, page ${nextPage}`,
-                        isDisabled: currentPage === pages - 1,
-                        offset: Math.max(
-                            0,
-                            Math.min(nextPage * this.limit, this.itemCount - this.limit),
-                        ),
+                        ariaLabel: `Goto next page, page ${nextPage.number}`,
+                        isDisabled: currentPage === totalPages - 1,
+                        offset: nextPage.offset,
                         text: '>',
                     })}
                 </ol>
