@@ -1,5 +1,6 @@
 import { SkirmishResponse } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
+import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { css, html } from 'lit';
 import { rosterPaths } from '../config.js';
 

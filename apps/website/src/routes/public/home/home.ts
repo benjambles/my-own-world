@@ -1,8 +1,8 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { html } from 'lit';
+import { resourcePaths } from '../../resources/config.js';
 import { rulesPaths } from '../../rules/config.js';
 import { homeStyles } from './home.styles.js';
-import { resourcePaths } from '../../resources/config.js';
 
 export default function (): RenderProps {
     return {

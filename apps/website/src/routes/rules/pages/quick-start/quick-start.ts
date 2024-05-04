@@ -1,9 +1,10 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
+import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { html } from 'lit';
-import { rosterPaths } from '../../resources/roster/config.js';
-import { rulesPaths as rulesPaths } from '../config.js';
+import { rulesHeader } from '../../components/rules-header.js';
+import '../../components/rules-nav.js';
+import { rulesPaths } from '../../config.js';
 import { quickStartStyles } from './quick-start.styles.js';
-import { resourcePaths } from '../../resources/config.js';
 
 export default function (): RenderProps {
     return {
@@ -11,19 +12,13 @@ export default function (): RenderProps {
             inlineStyles: quickStartStyles,
         },
         template: html`
-            <section-header sectionname="Quick Start">
-                <a slot="root-link" href="${rulesPaths.index}">Rules</a>
-                <a href="${rosterPaths.index}">Squad Creator</a>
-                <a href="/game/missions">Missions</a>
-                <a href="${resourcePaths.downloads}">Downloads</a>
-            </section-header>
-            <main class="page--quickstart">
-                <nav>
-                    <ul>
-                        <li><a href="${rulesPaths.index}">Rules</a></li>
-                        <li><a href="${rulesPaths.quickstart}">Quick Start</a></li>
-                    </ul>
-                </nav>
+            ${rulesHeader({
+                rootLinkText: 'Rules',
+                rootUrl: rulesPaths.index,
+                sectionName: 'Quick Start',
+            })}
+            <main class="page--quickstart two-col-grid">
+                <rules-nav></rules-nav>
 
                 <section>
                     <h1>Getting Started</h1>

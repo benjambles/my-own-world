@@ -1,4 +1,5 @@
 import { RenderProps } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
+import '@benjambles/mow-ui/components/section-header/section-header.js';
 import { html } from 'lit';
 import { rosterPaths } from '../config.js';
 

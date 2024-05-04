@@ -1,6 +1,6 @@
 import { SkirmishListView } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
-import { PaginationDetails } from '@benjambles/mow-ui/components/mow-pagination/mow-pagination.js';
+import '@benjambles/mow-ui/components/mow-pagination/mow-pagination.js';
 import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
 import { time } from '@benjambles/mow-ui/core.js';
 import { callOutStyles } from '@benjambles/mow-ui/styles.js';
@@ -9,6 +9,11 @@ import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { UserData, userContext } from '../../../../layouts/components/with-user/user.js';
 import { SkirmishApi, SkirmishApiInstance } from './apis/skirmish-api.js';
+
+type PaginationDetails = {
+    limit: number;
+    offset: number;
+};
 
 @customElement('skirmish-list')
 export class SkirmishList extends LitElement {
@@ -145,7 +150,7 @@ export class SkirmishList extends LitElement {
                                   id=${skirmish._id}
                                   name=${skirmish.name}
                                   points=${skirmish.points}
-                                  urlpattern=${this.rosterUrl}
+                                  urlPattern=${this.rosterUrl}
                               ></skirmish-tile>
                           `,
                       )
@@ -155,11 +160,11 @@ export class SkirmishList extends LitElement {
             ${this.count < this.limit
                 ? nothing
                 : html`<mow-pagination
-                      clickeventname=${SkirmishList.ClickEventName}
-                      itemcount=${this.count}
+                      clickEventName=${SkirmishList.ClickEventName}
+                      itemCount=${this.count}
                       limit=${this.limit}
                       offset=${this.offset}
-                      rooturl=${this.rootUrl}
+                      rootUrl=${this.rootUrl}
                   ></mow-pagination>`}
         `;
     }

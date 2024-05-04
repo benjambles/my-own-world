@@ -74,9 +74,7 @@ export default function () {
                 },
             ] = await Promise.all([
                 apiHelpers.skirmishes.getSkirmishes(
-                    {
-                        query: { userId: getAuthenticatedUserId(ctx), limit, offset },
-                    },
+                    { query: { limit, offset, userId: getAuthenticatedUserId(ctx) } },
                     accessToken,
                 ),
                 apiHelpers.games.getGames(
