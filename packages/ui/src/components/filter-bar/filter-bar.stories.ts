@@ -11,7 +11,7 @@ export default {
     decorators: [storyRenderer],
 } as Meta;
 
-export const base = () => {
+export const Base = () => {
     return html`
         <filter-bar>
             <filter-item href="?type=all" filter="all">All</filter-item>
@@ -20,4 +20,16 @@ export const base = () => {
         </filter-bar>
     `;
 };
-base.storyName = 'default';
+Base.storyName = 'default';
+
+export const Selected = () => {
+    return html`
+        <filter-bar>
+            <filter-item href="?type=all" filter="all">All</filter-item>
+            <filter-item class="selected" href="?type=campaign" filter="campaign"
+                >Campaign</filter-item
+            >
+            <filter-item href="?type=skirmish" filter="skirmish">Skirmish</filter-item>
+        </filter-bar>
+    `;
+};

@@ -1,6 +1,6 @@
 import { render } from '@lit-labs/ssr';
 import { CSSResult, TemplateResult } from 'lit';
-import { toCssString } from './styles.js';
+import { toCssString } from '@benjambles/mow-ui/utils/styles.js';
 import {
     ScriptParams,
     StylesheetParams,

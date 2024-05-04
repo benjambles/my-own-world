@@ -1,5 +1,6 @@
-import '../src/global-css/base.css';
 import 'lit';
+
+import './base.css';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },

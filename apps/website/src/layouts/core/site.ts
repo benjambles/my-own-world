@@ -66,7 +66,7 @@ export default function site(
     return {
         assets: mergeRenderAssets(
             {
-                inlineStyles: [styles, viewLockBodyStyles],
+                inlineStyles: [...styles, viewLockBodyStyles],
                 scripts: [
                     {
                         src: '/static/js/lit.js',
