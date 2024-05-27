@@ -1,6 +1,5 @@
 import { render } from '@lit-labs/ssr';
 import { CSSResult, TemplateResult } from 'lit';
-import { toCssString } from '@benjambles/mow-ui/utils/styles.js';
 import {
     ScriptParams,
     StylesheetParams,
@@ -8,6 +7,7 @@ import {
     scriptTag,
     stylesheetTag,
 } from './tags.js';
+import { toCssString } from './styles.js';
 
 export type RenderProps = {
     assets: {

@@ -21,9 +21,8 @@
         "not IE 11"
     ],
     "scripts": {
-        "build": "npm run css && npm run ts && npm run copy",
+        "build": "npm run ts && npm run copy",
         "ts": "tsc -b -v",
-        "css": "postcss src/**/*.css --base src --dir dist/styles",
         "copy": "copyfiles -u 1 src/fonts/**/*.woff2 dist",
         "test": "jest",
         "storybook": "storybook dev -p 6006",
