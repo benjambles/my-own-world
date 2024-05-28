@@ -9,8 +9,9 @@ import { Env } from '../../../schema/env-schema.js';
 import { Archetype } from './archetypes.js';
 import { Items } from './items.js';
 import { Npc } from './npcs.js';
+import { Mission } from './missions.js';
 
-const restrictedKeys = ['createdOn', 'items', 'archetypes', 'npcs'] as const;
+const restrictedKeys = ['archetypes', 'createdOn', 'items', 'missions', 'npcs'] as const;
 
 //#region Types
 export type Game = {
@@ -23,6 +24,7 @@ export type Game = {
     npcs: Npc[];
     tags: string[];
     version: string;
+    missions: Mission[];
 };
 
 type NewGame = Pick<Game, 'description' | 'name' | 'tags' | 'version'>;
@@ -55,6 +57,7 @@ export function getGameModel(db: Db, { ENC_SECRET }: Env) {
                 archetypes: [],
                 createdOn: new Date(),
                 items: { armour: [], consumables: [], upgrades: [], weapons: [] },
+                missions: [],
                 npcs: [],
             };
             const cleanData = await dataFormatter(gameData);

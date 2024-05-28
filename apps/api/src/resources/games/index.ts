@@ -13,6 +13,7 @@ import config from './config.js';
 import { cleanArchetypeResponse } from './data/archetypes.js';
 import { cleanGameResponse } from './data/games.js';
 import { cleanNpcResponse } from './data/npcs.js';
+import { cleanMissionResponse } from './data/missions.js';
 
 export type GameClientTypes = ClientApi<typeof config>;
 
@@ -24,6 +25,7 @@ export default function games(dataModel: DataModel) {
     const archetypes = dataModel.getKey('archetypes');
     const items = dataModel.getKey('items');
     const npcs = dataModel.getKey('npcs');
+    const missions = dataModel.getKey('missions');
 
     return createResource(config)
         .operation('createGame', async (ctx) => {
@@ -234,6 +236,37 @@ export default function games(dataModel: DataModel) {
             }
 
             return ok(cleanNpcResponse(result.value));
+        })
+        .operation('getGameMissions', async (ctx) => {
+            const {
+                params: { gameId },
+                query: { limit, offset },
+            } = ctx.request;
+
+            const result = await missions.get(gameId, limit, offset);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error fetching Missions');
+            }
+
+            return ok({
+                count: result.value.count,
+                items: result.value.items.map(cleanMissionResponse),
+            });
+        })
+        .operation('createMission', async (ctx) => {
+            const {
+                params: { gameId },
+                body,
+            } = ctx.request;
+
+            const result = await missions.create(gameId, body);
+
+            if (!result.ok) {
+                throw createError(400, 'There was an error whilst creating the mission');
+            }
+
+            return created(cleanMissionResponse(result.value));
         })
         .get();
 }

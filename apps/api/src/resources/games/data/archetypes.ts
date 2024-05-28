@@ -1,10 +1,15 @@
 import { ModelResult, getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import { Db, ObjectId } from 'mongodb';
 import { getGamesCollection } from './games.js';
+import { omit } from '@benjambles/mow-server/dist/utils/data/objects.js';
+
+const restrictedKeys = ['deletedOn', 'isDeleted'] as const;
 
 //#region Types
 export type Archetype = {
     _id: ObjectId;
+    deletedOn: Date;
+    isDeleted: boolean;
     movement: {
         distance: number;
         environment: string;
@@ -26,11 +31,13 @@ export type Archetype = {
     };
 };
 
-type NewArchetype = Omit<Archetype, '_id'>;
+type ToStringKeys = '_id';
+type RestrictedKeys = (typeof restrictedKeys)[number];
+
+type NewArchetype = Omit<Archetype, ToStringKeys | RestrictedKeys>;
 type UpdateArchetype = Partial<NewArchetype>;
 
-type ToStringKeys = '_id';
-export type ArchetypeResponse = Omit<Archetype, ToStringKeys> & {
+export type ArchetypeResponse = Omit<Archetype, RestrictedKeys | ToStringKeys> & {
     [key in ToStringKeys]: string;
 };
 //#endregion Types
@@ -43,15 +50,16 @@ export function getArchetypeModel(db: Db) {
             gameId: string,
             data: NewArchetype,
         ): ModelResult<Archetype> {
-            const unitData: Archetype = {
-                ...data,
-                _id: getObjectId(),
-            };
             const { ok, value } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId) },
                 {
                     $push: {
-                        archetypes: unitData,
+                        archetypes: {
+                            ...data,
+                            _id: getObjectId(),
+                            isDeleted: false,
+                            deletedOn: undefined,
+                        },
                     },
                 },
                 {
@@ -65,7 +73,15 @@ export function getArchetypeModel(db: Db) {
         delete: async function (unitId: string, gameId: string) {
             const { ok } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId) },
-                { $pull: { archetypes: { _id: getObjectId(unitId) } } },
+                {
+                    $pull: {
+                        archetypes: {
+                            _id: getObjectId(unitId),
+                            isDeleted: true,
+                            deletedOn: new Date(),
+                        },
+                    },
+                },
                 { includeResultMetadata: true, projection: { _id: 1 } },
             );
 
@@ -120,7 +136,5 @@ export function getArchetypeModel(db: Db) {
 }
 
 export function cleanArchetypeResponse(data: Archetype): ArchetypeResponse {
-    return Object.assign(data, {
-        _id: data._id.toString(),
-    });
+    return Object.assign(omit(data, restrictedKeys), { _id: data._id.toString() });
 }

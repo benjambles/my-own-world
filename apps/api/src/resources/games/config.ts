@@ -167,6 +167,16 @@ export const consumables = {
     },
 } as const;
 
+export const mission = {
+    type: 'object',
+    required: ['description', 'entityId', 'mapImage'],
+    properties: {
+        description: { type: 'string' },
+        entityId: { type: 'string' },
+        mapImage: { type: 'string' },
+    },
+} as const;
+
 export const upgrades = {
     type: 'object',
     required: [
@@ -307,6 +317,7 @@ export default {
                 },
             },
             Items: items,
+            Mission: mission,
             Npc: {
                 type: 'object',
                 required: [
@@ -1207,6 +1218,98 @@ export default {
                     { $ref: '#/components/parameters/GameId' },
                     { $ref: '#/components/parameters/NpcId' },
                 ],
+                responses: {
+                    '200': {
+                        description: 'OK,',
+                        content: {
+                            'text/plain': {
+                                schema: {
+                                    type: 'string',
+                                    example: 'pong',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        '/games/:gameId/missions': {
+            get: {
+                tags: ['game', 'mission'],
+                summary: 'Fetch all the preconfigured missions for the game',
+                description: '',
+                operationId: 'getGameMissions',
+                parameters: [
+                    { $ref: '#/components/parameters/GameId' },
+                    { $ref: '#/components/parameters/Limit' },
+                    { $ref: '#/components/parameters/Offset' },
+                ],
+                responses: {
+                    200: {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    required: ['count', 'items'],
+                                    properties: {
+                                        count: { type: 'integer' },
+                                        items: {
+                                            type: 'array',
+                                            items: {
+                                                $ref: '#/components/schemas/Mission',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+            post: {
+                tags: ['game', 'mission'],
+                summary: 'Add a new NPC mission to the given game',
+                description: '',
+                operationId: 'createMission',
+                parameters: [{ $ref: '#/components/parameters/GameId' }],
+                responses: {
+                    201: {
+                        description: 'OK,',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/Mission',
+                                },
+                            },
+                        },
+                    },
+                },
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['description', 'mapImage'],
+                                properties: {
+                                    description: { type: 'string' },
+                                    mapImage: { type: 'string' },
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [{ http: ['role:admin'] }],
+            },
+            options: {
+                tags: ['mission', 'options'],
+                summary: 'Check which endpoints are available for working with missions',
+                description: '',
+                operationId: 'sendOptions',
+                parameters: [{ $ref: '#/components/parameters/GameId' }],
                 responses: {
                     '200': {
                         description: 'OK,',

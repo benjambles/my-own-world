@@ -10,6 +10,7 @@ import { getTokenModel } from '../resources/users/data/tokens.js';
 import { getUserModel } from '../resources/users/data/users.js';
 import { Env } from '../schema/env-schema.js';
 import { getNpcModel } from '../resources/games/data/npcs.js';
+import { getMissionModel } from '../resources/games/data/missions.js';
 
 type Model = (db: Db, env: any) => ModelReturn;
 
@@ -57,6 +58,7 @@ export function bindModels(db: Db, env: Env) {
         .bind('games', getGameModel)
         .bind('identifiers', getIdentifierModel)
         .bind('items', getItemsModel)
+        .bind('missions', getMissionModel)
         .bind('npcs', getNpcModel)
         .bind('skirmishes', getSkirmishModel)
         .bind('system', getServiceModel)

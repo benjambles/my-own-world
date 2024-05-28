@@ -30,7 +30,7 @@ export type Npc = {
     }[];
 };
 
-export type NewNpc = Omit<Npc, '_id' | 'isDeleted' | 'deletedOn'>;
+export type NewNpc = Omit<Npc, ToStringKeys | RestrictedKeys>;
 
 type ToStringKeys = '_id';
 
