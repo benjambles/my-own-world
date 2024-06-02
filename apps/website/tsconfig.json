@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "dist",
+        "outDir": "./dist",
         "plugins": [
             {
                 "name": "ts-lit-plugin",
@@ -11,12 +11,11 @@
                 "strict": true
             }
         ],
-        "rootDir": "src",
-        "tsBuildInfoFile": "buildcache"
+        "rootDir": "./src"
     },
-    "exclude": ["src/**/__tests__", "./coverage"],
+    "exclude": ["./src/**/__tests__", "./coverage"],
     "extends": "../../tsconfig-base.json",
-    "include": ["src/**/*.ts"],
+    "include": ["./src/**/*.ts"],
     "references": [
         {
             "path": "../api"

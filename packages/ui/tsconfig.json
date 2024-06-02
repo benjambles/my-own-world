@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "composite": true,
-        "outDir": "dist",
+        "outDir": "./dist",
         "plugins": [
             {
                 "name": "ts-lit-plugin",
@@ -12,12 +12,11 @@
                 "strict": true
             }
         ],
-        "rootDir": "src",
-        "tsBuildInfoFile": "buildcache"
+        "rootDir": "./src"
     },
     "extends": "../../tsconfig-base.json",
-    "exclude": ["src/**/__tests__", "./coverage", "src/**/*.stories.ts"],
-    "include": ["src/**/*.ts", "src/**/*.css.json"],
+    "exclude": ["./src/**/__tests__", "./coverage", "./src/**/*.stories.ts"],
+    "include": ["./src/**/*.ts"],
     "references": [
         {
             "path": "../lib"
