@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:19 AS build
+FROM node:22.13 AS build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY ["../../packages",  "./packages"]
 
 RUN npm run build
 
-FROM node:20.6.0-bullseye-slim
+FROM node:22.13-bullseye-slim
 
 EXPOSE 3001
 

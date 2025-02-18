@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:21.6.1-bullseye-slim
+FROM node:22.13-bullseye-slim
 
 WORKDIR /app
 

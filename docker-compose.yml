@@ -48,7 +48,6 @@ services:
         image: mongo:latest
         ports:
             - 27017:27017
-        restart: always
         volumes:
             - ./mongo-entrypoint:/docker-entrypoint-initdb.d:ro
             - mongoconfig:/data/configdb
