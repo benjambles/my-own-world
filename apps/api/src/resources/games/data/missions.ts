@@ -11,7 +11,6 @@ export interface Mission {
     _id: ObjectId;
     deletedOn: Date;
     description: string;
-    entityId: string;
     isDeleted: boolean;
     mapImage: string;
 }
@@ -68,7 +67,7 @@ export function getMissionModel(db: Db) {
             };
         },
 
-        create: async function (gameId: string, data: any): ModelResult<Mission> {
+        create: async function (gameId: string, data: NewMission): ModelResult<Mission> {
             const { ok, value } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId) },
                 {
@@ -90,7 +89,7 @@ export function getMissionModel(db: Db) {
         update: async function (
             gameId: string,
             uuid: string,
-            data: DeepPartial<Mission>,
+            data: DeepPartial<NewMission>,
         ): ModelResult<Mission> {
             const { ok, value } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId), 'missions.id': getObjectId(uuid) },

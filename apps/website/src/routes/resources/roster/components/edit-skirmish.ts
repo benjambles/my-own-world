@@ -220,7 +220,7 @@ export class EditSkirmish extends LitElement {
             );
 
             this.skirmishData = result;
-        } catch (e) {
+        } catch {
             // Render errors
         }
     }

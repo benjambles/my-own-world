@@ -8,7 +8,7 @@ import { StatBlocks } from './stats.js';
 
 export interface Character extends Species {
     experience: number;
-    items: {};
+    items: object;
     preventedActions: string[];
     speciesId: string;
     stance: string;
@@ -16,7 +16,7 @@ export interface Character extends Species {
 }
 
 export interface Species extends GameEntity {
-    actions: {};
+    actions: object;
     bodyParts: (Augmentation | BodyPart)[];
     factions: string[];
     skills: {

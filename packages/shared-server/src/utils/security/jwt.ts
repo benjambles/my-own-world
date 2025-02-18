@@ -53,7 +53,7 @@ export function getJwtFromCookie(ctx, cookieName): string {
     try {
         parseToken(ctx.state.env.JWT_SECRET, authCookie);
         return authCookie;
-    } catch (e) {
+    } catch {
         throw new Error('Invalid access token');
     }
 }

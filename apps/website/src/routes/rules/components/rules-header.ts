@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { rosterPaths } from '../../resources/roster/config.js';
 import { resourcePaths } from '../../resources/config.js';
-import '../../../../../../packages/ui/src/components/section-header/section-header';
+import '@benjambles/mow-ui/components/section-header/section-header.js';
 
 interface RulesHeader {
     rootLinkText: string;

@@ -15,7 +15,7 @@ export function getDataFormatter(
     password: string,
     { encrypted = [], salted = [], hmac = [], readOnly = ['_id'] }: ModelOptions = {},
 ) {
-    return async (key: string, value: string): Promise<string | null> => {
+    return async (key: string, value: unknown): Promise<string | unknown | null> => {
         if (readOnly.includes(key)) return null;
 
         if (typeof value !== 'string') return value;
@@ -42,9 +42,9 @@ export function getDataFormatter(
  * @param formatter
  */
 export function formatData(
-    formatter: (key: string, value: string) => Promise<string | null>,
+    formatter: (key: string, value: unknown) => Promise<string | unknown | null>,
 ) {
-    return async <T extends Record<string, any>>(data: T): Promise<T> => {
+    return async <T extends Record<string, unknown>>(data: T): Promise<T> => {
         const mappedData = await Promise.all(
             Object.entries(data).map(async ([key, value]) => {
                 const maybeValue = await formatter(key, value);

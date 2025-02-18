@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/web-components';
 import { html } from 'lit';
 import { storyRenderer } from '../../utils/storybook/story-renderer.js';
-import type { PaginationProps } from './mow-pagination.js';
 import './mow-pagination.js';
+import { type PaginationProps } from './mow-pagination.js';
 
 export default {
     title: 'Components/Pagination',

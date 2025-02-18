@@ -8,7 +8,7 @@ export function loadEnv(envPath: string) {
 export function validateEnv<T>(
     envSchema: Joi.PartialSchemaMap<T>,
     env: NodeJS.ProcessEnv,
-): T | never {
+): { [key in keyof T]: string } | never {
     const { error, value } = Joi.object<T>(envSchema).unknown().validate(env);
 
     if (error !== undefined) {

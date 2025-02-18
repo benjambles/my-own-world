@@ -6,7 +6,7 @@ import { Param, ParseParam } from './request-parameters.js';
 export type ContextFromParams<
     Params extends readonly any[] = readonly [],
     Result extends object = {},
-    Body = any,
+    Body = unknown,
     State extends { method: string; path: string } = {
         method: 'get';
         path: '';

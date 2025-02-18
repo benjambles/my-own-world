@@ -15,7 +15,6 @@ export type Npc = {
     deletedOn: Date;
     description: string;
     equipment: Items;
-    gameId: string;
     isDeleted: boolean;
     isUnique: boolean;
     name: string;
@@ -36,7 +35,9 @@ type ToStringKeys = '_id';
 
 type RestrictedKeys = (typeof restrictedKeys)[number];
 
-type NpcResponse = Omit<Npc, RestrictedKeys | ToStringKeys> & {
+type NpcData = Omit<Npc, ToStringKeys | RestrictedKeys>;
+
+type NpcResponse = NpcData & {
     [key in ToStringKeys]: string;
 };
 //#endregion Types
@@ -82,13 +83,20 @@ export function getNpcModel(db: Db) {
             };
         },
 
-        create: async function (gameId: string, data: any): ModelResult<Npc> {
-            data._id = getObjectId();
-            data.isDeleted = false;
+        create: async function (gameId: string, data: NpcData): ModelResult<Npc> {
+            const newNpc: Npc = Object.assign(data, {
+                _id: getObjectId(),
+                isDeleted: false,
+                deletedOn: undefined,
+            });
 
             const { ok, value } = await games.findOneAndUpdate(
                 { _id: getObjectId(gameId) },
-                { $push: { npcs: data } },
+                {
+                    $push: {
+                        npcs: newNpc,
+                    },
+                },
                 { includeResultMetadata: true, projection: { $slice: -1 } },
             );
 

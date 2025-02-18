@@ -16,7 +16,7 @@ export type Validator<T> = (value: T) => {
     errors: ErrorArray[];
 };
 
-type ErrorArray = [msg: string, ...args: any];
+type ErrorArray = [msg: string, ...args: unknown[]];
 
 export function getStringValidator(
     label: string,

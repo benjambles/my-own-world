@@ -9,7 +9,7 @@ declare module 'koa' {
         invalid: object;
     }
     interface Request {
-        body?: any;
-        rawBody: {} | null | undefined;
+        body?: unknown;
+        rawBody: object | null | undefined;
     }
 }

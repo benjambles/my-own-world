@@ -47,6 +47,7 @@ export const serve = configureServer({
         console.log('Closing...');
         await closeConnection();
         abortController.abort();
+        process.kill(process.pid, 'SIGTERM');
     },
     customErrorHandler: apiErrorHandler(app),
     routes: Object.values(resources.routeHandlers).map((resource) =>

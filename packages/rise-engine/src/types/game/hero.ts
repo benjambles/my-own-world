@@ -64,7 +64,7 @@ export interface Aspect {
         actions?: {
             [name: string]: number;
         };
-        [name: string]: any;
+        [name: string]: unknown;
     };
 }
 

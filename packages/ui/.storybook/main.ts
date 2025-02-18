@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/web-components-webpack5';
-import { resolve, dirname, join } from 'path';
+import { dirname, join } from 'path';
 import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
 const config: StorybookConfig = {

@@ -1,15 +1,14 @@
 import Koa, { Middleware } from 'koa';
-import { getMiddleware } from './koa/get-middleware.js';
+import { GetMiddlewareProps, getMiddleware } from './koa/get-middleware.js';
 import { createServer } from 'http';
 interface BootHandlerOpts {
     app: Koa;
     cleanUp: (abortController: AbortController) => Promise<void>;
-    config: {
-        corsConfig?: { origin: string };
+    config: Pick<
+        GetMiddlewareProps,
+        'corsConfig' | 'helmetConfig' | 'isApi' | 'staticPaths'
+    > & {
         env: { HOST: string; JWT_SECRET: string; PORT: string };
-        helmetConfig?: any;
-        isApi: boolean;
-        staticPaths?: Record<string, string>;
     };
     customErrorHandler: Middleware;
     routes?: Koa.Middleware[];
@@ -49,6 +48,7 @@ export function configureServer({
 
         process.on('SIGINT', () => cleanUp(abortController));
         process.on('SIGTERM', () => cleanUp(abortController));
+        process.on('SIGUSR2', () => cleanUp(abortController));
 
         return server.listen(
             {
@@ -66,4 +66,5 @@ export function configureServer({
 export async function cleanUp(abortController: AbortController) {
     console.log('Closing...');
     abortController.abort();
+    process.kill(process.pid, 'SIGTERM');
 }

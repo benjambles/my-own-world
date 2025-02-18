@@ -127,7 +127,7 @@ export class CreateSkirmish extends LitElement {
             );
 
             window.location.replace(this.rosterUrl.replace(':rosterId', result._id));
-        } catch (e) {
+        } catch {
             // Render errors
         }
     }

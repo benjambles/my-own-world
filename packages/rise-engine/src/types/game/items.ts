@@ -29,7 +29,7 @@ export interface Anchor {
     name: string;
 }
 
-interface EqupimentBase {
+interface EquipmentBase {
     name: string;
     id: string;
 }
@@ -38,28 +38,28 @@ type AttackTypes = 'resistance' | 'toughness';
 type DefenseTypes = AttackTypes | 'dodge';
 type OffsetTypes = DefenseTypes | 'willpower';
 
-export interface Armour extends EqupimentBase {
+export interface Armour extends EquipmentBase {
     offsets: Partial<{
         [key in DefenseTypes]: number;
     }>;
 }
 
-export interface Weapon extends EqupimentBase {
+export interface Weapon extends EquipmentBase {
     type: 'melee' | 'ranged';
     range: number;
     damage: WeaponDamage;
     offsets: Partial<CapValues>;
     additional_effect: string;
-    affect_handler?: Function;
+    affect_handler?: (target: unknown) => void;
     hands?: number;
 }
 
-export interface OffhandWeapon extends EqupimentBase {
+export interface OffhandWeapon extends EquipmentBase {
     offsets: Partial<{
         [key in OffsetTypes | 'damage']: number;
     }>;
     additional_effect: string;
-    affect_handler?: Function;
+    affect_handler?: (target: unknown) => void;
 }
 
 interface WeaponDamage {

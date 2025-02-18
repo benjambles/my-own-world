@@ -61,7 +61,7 @@ export function webErrorHandler<T extends object>({
             try {
                 // Ugly but safe for when a non-JOI error is thrown
                 parsedError = JSON.parse(err.message);
-            } catch (e) {
+            } catch {
                 parsedError = err.message;
             }
 

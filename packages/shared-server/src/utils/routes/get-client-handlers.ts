@@ -13,7 +13,7 @@ import { HTTPVerbs } from './get-http-methods.js';
 interface ResourceBinder<
     Config extends ResourceConfig,
     D extends {
-        [name: string]: (args: any) => Promise<unknown>;
+        [name: string]: (args: unknown) => Promise<unknown>;
     } = {},
 > {
     get: () => Identity<D>;
@@ -119,7 +119,7 @@ function extractParams<Doc extends ApiDoc>(doc: Doc): Record<string, FetchHandle
     );
 }
 
-function getFetchHandler<Params extends KoaRequestParams, Result extends any>(
+function getFetchHandler<Params extends KoaRequestParams, Result>(
     rootUrl: string,
     prefix: string,
     { method, path }: FetchHandlerArgs,

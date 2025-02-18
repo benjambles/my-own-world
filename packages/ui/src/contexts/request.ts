@@ -29,12 +29,12 @@ export class MowApi {
             await this.request(path, method, args, authToken);
     }
 
-    private async request<Args extends KoaRequestParams, Res extends any>(
+    private async request<Args extends KoaRequestParams, Response>(
         path: string,
         method: HttpVerbs,
         args: Args,
         authToken?: string,
-    ): Promise<Res> {
+    ): Promise<Response> {
         const populatedUrl = buildUrl({
             path,
             rootUrl: this.rootUrl,

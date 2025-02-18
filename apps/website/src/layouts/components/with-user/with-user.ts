@@ -125,7 +125,7 @@ export class WithUser extends LitElement {
             });
 
             this.setCookies();
-        } catch (e) {
+        } catch {
             this.deleteCookies();
             this.setUserData({
                 ...defaultUserData,
@@ -151,7 +151,7 @@ export class WithUser extends LitElement {
                 await this.userApi.call('deleteToken', {
                     params: { fingerprint, userId },
                 });
-            } catch (e) {
+            } catch {
                 console.log('Could not get a user ID');
             }
         }
@@ -189,7 +189,7 @@ export class WithUser extends LitElement {
             });
 
             this.setCookies();
-        } catch (e) {
+        } catch {
             this.deleteCookies();
             this.setUserData({
                 ...defaultUserData,
@@ -216,7 +216,7 @@ export class WithUser extends LitElement {
                 user: userData,
             });
             this.setCookies();
-        } catch (e) {
+        } catch {
             this.deleteCookies();
             this.setUserData({
                 ...defaultUserData,
@@ -242,7 +242,7 @@ export class WithUser extends LitElement {
 
             this.setUserData({ user: userData });
             this.setCookies();
-        } catch (e) {
+        } catch {
             this.deleteCookies();
             this.setUserData({
                 errors: { details: 'There was an error whilst saving' },

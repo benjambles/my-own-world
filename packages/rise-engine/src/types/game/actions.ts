@@ -2,7 +2,7 @@ export type ActionSpeeds = 'fast' | 'free' | 'slow';
 export type ActionTypes = 'amplify' | 'sustain' | 'trigger';
 export type ClassActionBaseType = 'general' | ActionTypes;
 export type ClassActionSecondaryType = 'exploit' | 'spell';
-export type TargetConstraints = [any, any?];
+export type TargetConstraints = [unknown, unknown?];
 export type AttackType = 'autoHit' | 'autoCrit' | 'autoPierce' | 'basic';
 
 export interface CapValues {

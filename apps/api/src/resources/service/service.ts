@@ -5,7 +5,7 @@ export function getServiceModel(db: Db) {
     const system = db.collection('System');
 
     return {
-        find: async function getSystemKey(key: string): ModelResult<any> {
+        find: async function getSystemKey(key: string): ModelResult<string> {
             const { ok, value } = await system.findOne({ key });
 
             return { ok, value };

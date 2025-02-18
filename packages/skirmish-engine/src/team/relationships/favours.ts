@@ -2,7 +2,7 @@ import { ToUnion } from '@benjambles/js-lib/dist/index.js';
 import { eqProps } from '@benjambles/js-lib/dist/objects/props.js';
 import { Faction, getRelationship } from './relationships.js';
 
-const severity = ['trivial', 'small', 'medium', 'large'] as const;
+export const severity = ['trivial', 'small', 'medium', 'large'] as const;
 type Severity = ToUnion<typeof severity>;
 
 export interface Favour {

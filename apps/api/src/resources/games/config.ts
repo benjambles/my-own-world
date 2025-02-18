@@ -169,10 +169,9 @@ export const consumables = {
 
 export const mission = {
     type: 'object',
-    required: ['description', 'entityId', 'mapImage'],
+    required: ['description', 'mapImage'],
     properties: {
         description: { type: 'string' },
-        entityId: { type: 'string' },
         mapImage: { type: 'string' },
     },
 } as const;
@@ -325,7 +324,6 @@ export default {
                     'archetype',
                     'description',
                     'equipment',
-                    'gameId',
                     'isUnique',
                     'name',
                     'points',
@@ -337,7 +335,6 @@ export default {
                     archetype: { $ref: '#/components/schemas/Archetype' },
                     equipment: { $ref: '#/components/schemas/Items' },
                     description: { type: 'string' },
-                    gameId: { type: 'string' },
                     isUnique: { type: 'boolean' },
                     name: { type: 'string' },
                     points: { type: 'integer' },

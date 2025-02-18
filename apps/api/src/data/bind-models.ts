@@ -12,15 +12,9 @@ import { Env } from '../schema/env-schema.js';
 import { getNpcModel } from '../resources/games/data/npcs.js';
 import { getMissionModel } from '../resources/games/data/missions.js';
 
-type Model = (db: Db, env: any) => ModelReturn;
-
-type BinderData = {
-    [name: string]: ModelReturn;
-};
-
-type ModelReturn = {
-    [name: string]: Function;
-};
+type Model = (db: Db, env: Partial<Env>) => ModelReturn;
+type BinderData = Record<string, ModelReturn>;
+type ModelReturn = Record<string, (...args: unknown[]) => unknown>;
 
 type Binder2<T extends BinderData = {}> = {
     bind: <K extends string, V extends Model>(

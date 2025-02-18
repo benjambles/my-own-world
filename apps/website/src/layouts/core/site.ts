@@ -22,7 +22,7 @@ type LinkList = { links: Link[]; title?: string };
 
 export default function site(
     page: RenderProps,
-    isProtected: Boolean = false,
+    isProtected: boolean = false,
 ): RenderProps {
     const footerLinks: Link[] = [
         { text: 'Terms', href: '/terms' },

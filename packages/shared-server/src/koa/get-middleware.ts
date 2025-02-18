@@ -3,19 +3,19 @@ import Koa, { Middleware } from 'koa';
 import cors from '@koa/cors';
 import conditionalGet from 'koa-conditional-get';
 import etag from 'koa-etag';
-import helmet from 'koa-helmet';
+import koaHelmet from 'koa-helmet';
 import koaJWT from 'koa-jwt';
 import mount from 'koa-mount';
 import logger from 'koa-pino-logger';
 import serve from 'koa-static';
 import { setEnvOnState } from './middleware/set-env-on-state.js';
 
-interface GetMiddlewareProps {
+export interface GetMiddlewareProps {
     corsConfig?: { origin: string };
     customErrorHandler: Middleware;
     env: { JWT_SECRET: string };
     isApi: boolean;
-    helmetConfig?: any;
+    helmetConfig?: Parameters<typeof koaHelmet.default>[0];
     staticPaths?: Record<string, string>;
 }
 
@@ -40,7 +40,7 @@ export function getMiddleware({
         etag(), // Adds eTag headers to the response
         //compress(), // currently disabled as it increase page load time from 50ms to 250ms. Better to do it on the CDN
         setEnvOnState(env),
-        helmet(helmetConfig), // Security layer
+        koaHelmet.default(helmetConfig), // Security layer
         cors(corsConfig),
         customErrorHandler,
         koaJWT({

@@ -1,4 +1,4 @@
-import { LitElement, PropertyValueMap, PropertyValues, css, html, nothing } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { composedEvent } from '../../utils/events.js';
 import { callOutStyles } from '../../global-css/callout.styles.js';

@@ -1,13 +1,18 @@
 import { Meta, StoryFn } from '@storybook/web-components';
 import { html } from 'lit';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
-import './text-input.css.js';
-import { TextInputData, textInput } from './text-input.js';
+import { TextInputData, inputStyles, textInput } from './text-input.js';
 
 export default {
     title: 'Atoms/Forms/Text Input',
     decorators: [
-        (story) => html`<form style="max-width:500px;">${story()}</form>`,
+        (story) =>
+            html`<form style="max-width:500px;">
+                <style>
+                    ${inputStyles.cssText}
+                </style>
+                ${story()}
+            </form>`,
         storyRenderer,
     ],
 } as Meta;
