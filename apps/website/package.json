@@ -14,7 +14,7 @@
         "ts": "tsc -b -v",
         "test": "jest",
         "dev": "node dist/app.js --inspect-port=9229",
-        "lint": "eslint --fix --ext .js,.ts",
+        "lint": "eslint",
         "start": "node dist/app.js"
     },
     "author": "Ben Allen",
@@ -23,30 +23,30 @@
         "@benjambles/mow-api": "../api",
         "@benjambles/mow-server": "../../packages/shared-server",
         "@benjambles/mow-ui": "../../packages/ui",
-        "@lit-labs/ssr": "3.2.2",
+        "@lit-labs/ssr": "3.3.1",
         "@lit-labs/ssr-client": "1.1.7",
-        "@lit/context": "1.1.0",
+        "@lit/context": "1.1.4",
         "http-errors": "2.0.0",
-        "joi": "17.12.2",
+        "joi": "17.13.3",
         "js-cookie": "3.0.5",
         "jwt-decode": "4.0.0",
-        "koa": "2.15.0",
-        "lit": "3.1.2"
+        "koa": "2.15.4",
+        "lit": "3.2.1"
     },
     "devDependencies": {
-        "@rollup/plugin-node-resolve": "15.2.3",
+        "@rollup/plugin-node-resolve": "16.0.0",
         "@rollup/plugin-terser": "0.4.4",
-        "@shopify/jest-koa-mocks": "5.1.1",
+        "@shopify/jest-koa-mocks": "5.3.1",
         "@types/http-errors": "2.0.4",
-        "@types/jest": "29.5.12",
+        "@types/jest": "29.5.14",
         "@types/js-cookie": "3.0.6",
         "@types/koa": "2.15.0",
-        "@types/node": "20.11.20",
+        "@types/node": "22.13.4",
         "jest": "29.7.0",
-        "rollup": "4.12.0",
-        "rollup-plugin-summary": "2.0.0",
-        "ts-jest": "29.1.2",
+        "rollup": "4.34.8",
+        "rollup-plugin-summary": "3.0.0",
+        "ts-jest": "29.2.5",
         "ts-lit-plugin": "2.0.2",
-        "typescript": "5.4.5"
+        "typescript": "5.7.3"
     }
 }

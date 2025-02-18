@@ -4,7 +4,12 @@
         "start": "clear"
     },
     "exec": "npm run start",
+    "ext": "js,css",
     "legacyWatch": true,
     "verbose": false,
-    "watch": ["./dist", "../../packages/shared-server/dist"]
+    "watch": [
+        "./dist",
+        "../../packages/shared-server/dist",
+        "../../packages/skirmish-engine/dist"
+    ]
 }
