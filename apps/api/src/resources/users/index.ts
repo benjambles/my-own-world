@@ -165,14 +165,12 @@ export default function users(dataModel: DataModel) {
                 throw createError(500, 'There was an error creating the user');
             }
 
-            const idResult = await identifiers.create(
-                userResult.value._id.toString(),
-                identifier,
-            );
+            const userId = userResult.value._id.toString();
+            const idResult = await identifiers.create(userId, identifier);
 
             if (!idResult.ok) {
+                await users.delete(userId);
                 throw createError(400, 'There was an error whilst creating the user');
-                // TODO log + rollback user?
             }
 
             return created(cleanResponse(userResult.value));

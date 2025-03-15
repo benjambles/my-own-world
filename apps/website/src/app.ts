@@ -3,7 +3,7 @@ import { cleanUp, configureServer } from '@benjambles/mow-server/dist/index.js';
 import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/web-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { loadEnv, validateEnv } from '@benjambles/mow-server/dist/utils/env.js';
-import { resolveImportPath } from '@benjambles/mow-server/dist/utils/paths.js';
+import { resolveImportPath } from '@benjambles/mow-server/dist/utils/fs/paths.js';
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import Koa from 'koa';
 import { fileURLToPath } from 'url';
