@@ -1,6 +1,5 @@
 import type { StorybookConfig } from '@storybook/web-components-webpack5';
 import { dirname, join } from 'path';
-import ResolveTypeScriptPlugin from 'resolve-typescript-plugin';
 
 const config: StorybookConfig = {
     addons: [
@@ -8,24 +7,13 @@ const config: StorybookConfig = {
         getAbsolutePath('@storybook/addon-essentials'),
         getAbsolutePath('@storybook/addon-links'),
     ],
-    docs: {
-        autodocs: true,
-    },
+    docs: {},
     framework: {
-        name: getAbsolutePath('@storybook/web-components-webpack5'),
+        name: getAbsolutePath('@storybook/web-components-vite'),
         options: {},
     },
     staticDirs: [{ from: '../dist', to: '/mow-ui' }],
     stories: ['../src/**/*.stories.ts'],
-    webpackFinal: async (config) => {
-        config.resolve = {
-            ...config.resolve,
-            plugins: [...(config.resolve?.plugins ?? []), new ResolveTypeScriptPlugin()],
-        };
-
-        // Return the altered config
-        return config;
-    },
 };
 
 export default config;

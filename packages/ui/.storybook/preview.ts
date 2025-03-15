@@ -3,7 +3,6 @@ import 'lit';
 import './base.css';
 
 export const parameters = {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     backgrounds: {
         default: 'light',
         values: [
@@ -24,3 +23,4 @@ export const parameters = {
         },
     },
 };
+export const tags = ['autodocs'];

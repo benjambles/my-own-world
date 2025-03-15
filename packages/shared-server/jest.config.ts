@@ -13,7 +13,7 @@ const config: Config = {
             tsconfig: {
                 allowSyntheticDefaultImports: true,
                 esModuleInterop: true,
-                module: 'esnext',
+                module: 'ESNext',
             },
         },
     },

@@ -20,7 +20,7 @@ const config: JestConfigWithTsJest = {
             {
                 allowSyntheticDefaultImports: true,
                 esModuleInterop: true,
-                module: 'esnext',
+                module: 'ESNext',
             },
         ],
     },
