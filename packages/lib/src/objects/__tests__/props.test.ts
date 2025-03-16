@@ -1,5 +1,4 @@
 import * as props from '../props.js';
-import { test, expect } from '@jest/globals';
 
 test('eqProps', function () {
     expect(props.eqProps('name', { name: 'ben' }, { name: 'ben' })).toEqual(true);

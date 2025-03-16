@@ -1,1 +1,0 @@
-test.todo('hero component');

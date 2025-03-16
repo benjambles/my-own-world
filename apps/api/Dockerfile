@@ -8,7 +8,7 @@ COPY ["../../package.json", "../../package-lock.json", "./"]
 
 RUN npm install
 
-COPY ["../../jest.config.js", "../../tsconfig-base.json", "../../tsconfig.json", "./"]
+COPY ["../../tsconfig-base.json", "../../tsconfig.json", "./"]
 
 COPY ["../../apps",  "./apps"]
 COPY ["../../packages",  "./packages"]

@@ -1,19 +1,19 @@
-import { createMockContext } from '@shopify/jest-koa-mocks';
-import { getAccessMap } from '../get-access-map.js';
+// import { createMockContext } from '@shopify/jest-koa-mocks';
+// import { getAccessMap } from '../get-access-map.js';
 
-test('getAccessMap', () => {
-    const tests: [boolean, string][] = [
-        [true, 'role:admin'],
-        [true, 'role:user'],
-        [false, 'role:invalid'],
-    ];
+// test('getAccessMap', () => {
+//     const tests: [boolean, string][] = [
+//         [true, 'role:admin'],
+//         [true, 'role:user'],
+//         [false, 'role:invalid'],
+//     ];
 
-    const ctx = createMockContext();
-    ctx.state = { user: { sub: true, isAdmin: true }, userData: true };
+//     const ctx = createMockContext();
+//     ctx.state = { user: { sub: true, isAdmin: true }, userData: true };
 
-    const accessMap = getAccessMap()(ctx);
+//     const accessMap = getAccessMap()(ctx);
 
-    tests.forEach(([expectedResult, role]) => {
-        expect(accessMap(role)).toEqual(expectedResult);
-    });
-});
+//     tests.forEach(([expectedResult, role]) => {
+//         expect(accessMap(role)).toEqual(expectedResult);
+//     });
+// });

@@ -8,7 +8,6 @@
     "type": "module",
     "scripts": {
         "build": "tsc -b -v",
-        "test": "jest",
         "lint": "eslint"
     },
     "author": "Ben Allen",
@@ -17,9 +16,6 @@
         "@benjambles/js-lib": "../../packages/lib"
     },
     "devDependencies": {
-        "@types/jest": "29.5.14",
-        "jest": "29.7.0",
-        "ts-jest": "29.2.6",
         "typescript": "5.8.2"
     }
 }

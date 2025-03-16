@@ -13,7 +13,6 @@
         "css": "npm run css --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
         "prepare": "husky",
-        "test": "jest",
         "ts": "tsc -b -v",
         "ts:clean": "tsc -b --clean"
     },
@@ -24,11 +23,8 @@
         "eslint": "9.22.0",
         "globals": "16.0.0",
         "husky": "9.1.7",
-        "jest": "29.7.0",
         "lint-staged": "15.5.0",
         "prettier": "3.5.3",
-        "ts-jest": "29.2.5",
-        "ts-node": "10.9.2",
         "typescript": "5.8.2",
         "typescript-eslint": "8.26.1"
     }
