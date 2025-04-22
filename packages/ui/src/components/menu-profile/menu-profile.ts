@@ -118,10 +118,10 @@ export class MenuProfile extends MowDetails {
     accessor imageSrc = 'https://via.placeholder.com/32.webp/ddd/1a1a1a?text=U';
 
     @property()
-    accessor name;
+    accessor name = '';
 
     @property()
-    accessor screenName;
+    accessor screenName = '';
 
     protected render() {
         return html`

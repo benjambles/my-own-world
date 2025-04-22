@@ -1,4 +1,5 @@
 import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export type TextInputData = {
@@ -72,6 +73,10 @@ export const inputStyles = css`
         z-index: -1;
     }
 
+    .is-disabled .text-input::before {
+        background: rgb(225 225 225 / 80%);
+    }
+
     .text-input :is(input, textarea) {
         width: 100%;
         padding: 12px 15px 10px;
@@ -106,7 +111,7 @@ export const inputStyles = css`
         z-index: 2;
     }
 
-    .input-wrapper:has(:hover, :focus-within) .text-input::before {
+    .input-wrapper:not(.is-disabled):has(:hover, :focus-within) .text-input::before {
         background: var(--gradient-glow);
     }
 
@@ -115,7 +120,8 @@ export const inputStyles = css`
             contrast(84%);
     }
 
-    .input-wrapper:has(:hover, :focus-within) ::-webkit-calendar-picker-indicator {
+    .input-wrapper:not(.is-disabled):has(:hover, :focus-within)
+        ::-webkit-calendar-picker-indicator {
         filter: invert(15%) sepia(86%) saturate(6721%) hue-rotate(295deg) brightness(85%)
             contrast(120%);
     }
@@ -133,7 +139,12 @@ export function textInput({
 }: TextInputData) {
     return html`
         <label for="${id}">${label}</label>
-        <div class="input-wrapper">
+        <div
+            class="${classMap({
+                'input-wrapper': true,
+                'is-disabled': disabled,
+            })}"
+        >
             <div class="text-input">
                 <input
                     ?disabled=${disabled}

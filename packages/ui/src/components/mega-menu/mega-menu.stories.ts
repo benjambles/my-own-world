@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { storyRenderer } from '../../utils/storybook/story-renderer.js';
@@ -6,7 +6,7 @@ import './labelled-list.js';
 import { MegaMenu } from './mega-menu.js';
 
 export default {
-    title: 'Components/Mega Menu',
+    title: 'Components/Navigation/Mega Menu',
     parameters: {
         componentSubtitle: '',
         component: MegaMenu,
@@ -31,7 +31,7 @@ const data = [
         links: [
             { href: '/rules', title: 'Quick Start' },
             { href: '/rules/turn-sequence', title: 'Turn sequence' },
-            { href: '/rules/operatives', title: 'Operatives' },
+            { href: '/rules/operatives', title: 'Operatives', active: true },
             { href: '/rules/skirmishes', title: 'Skirmishes' },
             { href: '/rules/campaigns', title: 'Campaigns' },
         ],
@@ -56,8 +56,8 @@ export const megaMenu = () => {
                     type="${index === 0 ? 'primary' : 'secondary'}"
                 >
                     ${links.map(
-                        ({ href, title }) => html`
-                            <labelled-list-item href="${href}">
+                        ({ href, title, active = false }) => html`
+                            <labelled-list-item href="${href}" ?active=${active}>
                                 ${title}
                             </labelled-list-item>
                         `,

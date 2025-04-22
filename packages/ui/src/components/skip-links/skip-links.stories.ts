@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../utils/storybook/story-renderer.js';
 import './skip-links.js';
 
 export default {
-    title: 'Components/Skiplinks',
+    title: 'Components/Navigation/Skiplinks',
     parameters: {
         componentSubtitle: 'Skiplinks',
     },

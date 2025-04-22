@@ -90,14 +90,25 @@ export class LabelledListItem extends LitElement {
         a:is(:hover, a:focus) {
             color: var(--basic-4);
         }
+
+        .active {
+            text-decoration: underline var(--basic-4);
+        }
     `;
 
     @property()
     accessor href;
 
+    @property({ type: Boolean })
+    accessor active = false;
+
     protected render() {
         return html`
-            <a href="${this.href}" role="listitem">
+            <a
+                href="${this.href}"
+                role="listitem"
+                class=${classMap({ active: this.active })}
+            >
                 <slot></slot>
             </a>
         `;

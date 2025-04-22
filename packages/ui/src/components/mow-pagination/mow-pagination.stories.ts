@@ -1,11 +1,11 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../utils/storybook/story-renderer.js';
 import './mow-pagination.js';
 import { type PaginationProps } from './mow-pagination.js';
 
 export default {
-    title: 'Components/Pagination',
+    title: 'Components/Navigation/Pagination',
     parameters: {
         componentSubtitle: 'Pagination',
     },
@@ -27,16 +27,16 @@ Playground.args = {
     clickEventName: 'mow:pagination.click',
     itemCount: 180,
     limit: 30,
-    offset: 0,
     maxLinks: 10,
+    offset: 0,
     rootUrl: '/',
 };
 Playground.argTypes = {
     clickEventName: { control: { type: 'text', required: false } },
     itemCount: { control: { type: 'number', required: true } },
     limit: { control: { type: 'number', required: false } },
-    offset: { control: { type: 'number', required: false } },
     maxLinks: { control: { type: 'number', required: false } },
+    offset: { control: { type: 'number', required: false } },
     rootUrl: { control: { type: 'text', required: true } },
 };
 

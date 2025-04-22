@@ -1,4 +1,4 @@
-import { Meta, StoryFn } from '@storybook/web-components';
+import { Meta, StoryFn } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import { TextInputData, inputStyles, textInput } from './text-input.js';
@@ -22,6 +22,7 @@ const Template: StoryFn<TextInputData> = (args) => html`${textInput(args)}`;
 export const playground = Template.bind({});
 playground.args = {
     defaultText: '',
+    disabled: false,
     id: 'firstName',
     label: 'First Name',
     name: 'firstName',
@@ -30,6 +31,7 @@ playground.args = {
 };
 playground.argTypes = {
     defaultText: { control: { type: 'text', required: false } },
+    disabled: { control: { type: 'boolean' } },
     id: { control: { type: 'text', required: true } },
     label: { control: { type: 'text', required: true } },
     name: { control: { type: 'text', required: false } },

@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './dice-check.js';
 
 export default {
-    title: 'Game Components/Dice Callout',
+    title: 'Components/Game/Dice Callout',
     parameters: {
         componentSubtitle: '',
     },

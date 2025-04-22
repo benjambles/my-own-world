@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../utils/storybook/story-renderer.js';
 import './filter-bar.js';
 
 export default {
-    title: 'Components/Filter Bar',
+    title: 'Components/Navigation/Filter Bar',
     parameters: {
         componentSubtitle: 'Displays a filter bar component',
     },

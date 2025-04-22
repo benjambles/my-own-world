@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/web-components';
+import { Meta } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import { storyRenderer } from '../../../utils/storybook/story-renderer.js';
 import './unit-card.js';
 
 export default {
-    title: 'Game Components/Unit Card',
+    title: 'Components/Game/Unit Card',
     parameters: {
         componentSubtitle: '',
     },

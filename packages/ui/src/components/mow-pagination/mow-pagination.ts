@@ -125,10 +125,10 @@ export class MowPagination extends LitElement implements PaginationProps {
         maxLinks: 3,
         pages: {
             count: 0,
-            current: 1,
-            next: { number: 1, offset: 0 },
-            previous: { number: 1, offset: 0 },
-            last: { number: 1, offset: 0 },
+            currentPage: 1,
+            nextPage: { number: 1, offset: 0 },
+            previousPage: { number: 1, offset: 0 },
+            lastPage: { number: 1, offset: 0 },
             cuts: { front: 0, back: 0 },
             startOffset: 0,
         },
@@ -191,7 +191,7 @@ export class MowPagination extends LitElement implements PaginationProps {
 
     private renderOffset(fromIndex = NaN, count = NaN) {
         if (count <= 0 || isNaN(count)) {
-            return null;
+            return nothing;
         }
 
         if (count === 1) {
@@ -305,11 +305,14 @@ export class MowPagination extends LitElement implements PaginationProps {
             maxLinks,
             pages: {
                 count: pageCount,
-                current: currentPage,
-                next: { number: nextPage, offset: Math.min(nextPage * limit, maxOffset) },
-                previous: { number: previousPage, offset: previousPage * offset },
-                last: { number: lastPage, offset: maxOffset },
+                currentPage,
                 cuts: this.calculateCuts(maxLinks, currentPage, pageCount),
+                lastPage: { number: lastPage, offset: maxOffset },
+                nextPage: {
+                    number: nextPage,
+                    offset: Math.min(nextPage * limit, maxOffset),
+                },
+                previousPage: { number: previousPage, offset: previousPage * offset },
                 startOffset: maxLinks <= 4 && currentPage > 1 ? 0 : 1,
             },
         };
@@ -318,11 +321,11 @@ export class MowPagination extends LitElement implements PaginationProps {
     protected render() {
         const {
             count: totalPages,
-            current: currentPage,
+            currentPage,
             cuts,
-            last: lastPage,
-            next: nextPage,
-            previous: previousPage,
+            lastPage,
+            nextPage,
+            previousPage,
             startOffset,
         } = this._state.pages;
 

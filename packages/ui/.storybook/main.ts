@@ -1,10 +1,10 @@
-import type { StorybookConfig } from '@storybook/web-components-webpack5';
+import type { StorybookConfig } from '@storybook/web-components-vite';
 import { dirname, join } from 'path';
 
 const config: StorybookConfig = {
     addons: [
         getAbsolutePath('@storybook/addon-a11y'),
-        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-docs'),
         getAbsolutePath('@storybook/addon-links'),
     ],
     docs: {},
@@ -18,6 +18,6 @@ const config: StorybookConfig = {
 
 export default config;
 
-function getAbsolutePath(value: string): any {
+function getAbsolutePath(value: string) {
     return dirname(require.resolve(join(value, 'package.json')));
 }
