@@ -16,8 +16,8 @@ export type Handlers<T extends ApiMap> = Partial<{
 }>;
 
 export class MowApi {
-    private rootUrl;
-    private apiPrefix;
+    private rootUrl: string;
+    private apiPrefix: string;
 
     constructor(rootUrl: string, apiPrefix: string = '') {
         this.rootUrl = rootUrl;
@@ -37,23 +37,29 @@ export class MowApi {
     ): Promise<Response> {
         const populatedUrl = buildUrl({
             path,
+            prefix: this.apiPrefix,
             rootUrl: this.rootUrl,
             urlParams: args,
-            prefix: this.apiPrefix,
         });
 
-        const body = args.body ? { body: JSON.stringify(args.body) } : {};
-
-        const response = await fetch(populatedUrl, {
-            ...body,
+        const fetchParams: RequestInit = {
             cache: 'default',
             headers: {
                 'Content-Type': 'application/json',
-                ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
             },
             method,
             mode: 'cors',
-        });
+        };
+
+        if (authToken) {
+            fetchParams.headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        if (args.body) {
+            fetchParams.body = JSON.stringify(args.body);
+        }
+
+        const response = await fetch(populatedUrl, fetchParams);
 
         return parseResponse(response);
     }

@@ -10,9 +10,9 @@ type BuildUrlParams<Params extends KoaRequestParams> = {
 
 export function buildUrl<Params extends KoaRequestParams>({
     path,
+    prefix = '',
     rootUrl,
     urlParams,
-    prefix = '',
 }: BuildUrlParams<Params>): URL {
     const populatedUrl = new URL(rootUrl);
     const populatedPath = urlParams.params

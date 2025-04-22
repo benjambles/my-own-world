@@ -67,11 +67,8 @@ export class EditSkirmish extends LitElement {
                 padding: 10px 20px;
                 position: relative;
                 background-color: transparent;
-                background-image: linear-gradient(
-                        45deg,
-                        var(--_bg-color) 0,
-                        var(--_bg-color) 0
-                    ),
+                background-image:
+                    linear-gradient(45deg, var(--_bg-color) 0, var(--_bg-color) 0),
                     linear-gradient(135deg, var(--_bg-color) 0px, var(--_bg-color) 0px),
                     linear-gradient(
                         225deg,
@@ -139,6 +136,9 @@ export class EditSkirmish extends LitElement {
 
     @state()
     accessor skirmishData: SkirmishResponse;
+
+    @property()
+    accessor rosterUrl: string;
 
     @property()
     accessor skirmishId: string;
@@ -236,7 +236,7 @@ export class EditSkirmish extends LitElement {
         const game = this.skirmishData?.game ?? { name: '', version: '' };
 
         return html`
-            <form action="/roster/edit/${id}" method="post" @submit=${this.onSubmit}>
+            <form action="${this.rosterUrl}/${id}" method="post" @submit=${this.onSubmit}>
                 <fieldset class="callout">
                     <legend>Squad Information</legend>
 

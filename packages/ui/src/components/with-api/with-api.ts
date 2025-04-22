@@ -9,7 +9,7 @@ class WithApi extends LitElement {
     private accessor api;
 
     @property()
-    accessor apiHost;
+    accessor apiHost = '';
 
     @property()
     accessor apiPathPrefix = '';

@@ -24,14 +24,17 @@ export class ViewLock extends LitElement {
         super.connectedCallback();
 
         if (!ViewLock.EventNameRegex.test(this.watchedEvents)) {
-            throw new Error('Invalid event string passed in attributes');
+            throw new Error(
+                `Invalid event string passed in attributes. Event Name: ${ViewLock.EventNameRegex}`,
+            );
         }
 
-        const eventList = this.watchedEvents.split(' ').filter(Boolean);
-
-        eventList.forEach((eventName) => {
-            this.addEventListener(eventName, this.setConstrained);
-        });
+        this.watchedEvents
+            .split(' ')
+            .filter(Boolean)
+            .forEach((eventName) => {
+                this.addEventListener(eventName, this.setConstrained);
+            });
     }
 
     private setConstrained(e: CustomEvent) {

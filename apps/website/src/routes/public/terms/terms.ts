@@ -8,7 +8,7 @@ export default function (): RenderProps {
         },
         template: html`
             <main class="page--terms">
-                <div class="">
+                <div>
                     <h1>Terms and Conditions</h1>
                 </div>
             </main>
