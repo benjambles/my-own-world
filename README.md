@@ -40,7 +40,7 @@ cd ./apps/website
 npm run rollup -- --watch
 ```
 
-The dev server uses docker compose, and nodemon with legacy watch configured
+The dev server uses docker compose, and pm2 with watch mode
 
 ```bash
 docker-compose up

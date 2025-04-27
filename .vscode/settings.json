@@ -11,6 +11,5 @@
         "**/dist":true,
         "**/node_modules": true,
     },
-    "typescript.surveys.enabled": false,
     "typescript.tsdk": "node_modules\\typescript\\lib",
 }

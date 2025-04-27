@@ -1,4 +1,3 @@
-version: '3.8'
 x-source: &source-code
     - ./apps/api/dist:/app/apps/api/dist
     - ./apps/website/dist:/app/apps/website/dist
@@ -11,12 +10,7 @@ services:
     api:
         build:
             context: .
-        command:
-            [
-                sh,
-                -c,
-                'cd ./apps/api && exec nodemon --config nodemon.json --inspect=:9230',
-            ]
+        command: [sh, -c, 'cd ./apps/api && pm2-dev ecosystem.config.cjs']
         depends_on:
             - mow_db
         env_file: ./apps/api/.env
@@ -28,12 +22,7 @@ services:
     website:
         build:
             context: .
-        command:
-            [
-                sh,
-                -c,
-                'cd ./apps/website && exec nodemon --config nodemon.json --inspect=:9229',
-            ]
+        command: [sh, -c, 'cd ./apps/website && pm2-dev ecosystem.config.cjs']
         env_file: ./apps/website/.env
         ports:
             - 3001:3001
