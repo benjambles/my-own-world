@@ -39,8 +39,8 @@ export type User = {
         hash: string;
         identifier: string;
         isDeleted: boolean;
+        isVerified: boolean;
         type: string;
-        verified: boolean;
     }[];
     isDeleted: boolean;
     lastLoggedIn?: Date;

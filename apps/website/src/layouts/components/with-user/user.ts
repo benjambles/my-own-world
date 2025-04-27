@@ -20,6 +20,12 @@ export type UserData = {
         lastName?: string;
         screenName: string;
     };
+    identifiers?: {
+        hash: string;
+        identifier: string;
+        isVerified: boolean;
+        type: string;
+    }[];
 };
 
 export const userSymbol = Symbol('user');
@@ -57,6 +63,10 @@ export class Users {
         this.actions.updateUserById = this.requestManager.getRequestor<
             UserClientTypes['updateUserById']
         >('/users/:userId', 'put');
+
+        this.actions.getUserIdentifiers = this.requestManager.getRequestor<
+            UserClientTypes['getUserIdentifiers']
+        >('/users/:userId/identifiers', 'get');
     }
 
     async call<T extends keyof UserClientTypes>(

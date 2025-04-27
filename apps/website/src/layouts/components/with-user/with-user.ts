@@ -33,6 +33,7 @@ const defaultUserData: UserData = {
         refresh: '',
     },
     user: undefined,
+    identifiers: [],
 };
 
 export const userEvents = {
@@ -178,9 +179,19 @@ export class WithUser extends LitElement {
                 body: { refreshToken, fingerprint },
             });
 
+            const identifiers = await this.userApi.call(
+                'getUserIdentifiers',
+                {
+                    query: { limit: 10, offset: 0 },
+                    params: { userId: response.user._id },
+                },
+                response.accessToken,
+            );
+
             this.setUserData({
                 status: 'logged-in',
                 user: response.user,
+                identifiers: identifiers.items || [],
                 tokens: {
                     access: response.accessToken,
                     fingerprint: response.fingerprint,

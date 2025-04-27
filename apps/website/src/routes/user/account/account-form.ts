@@ -156,7 +156,17 @@ export class AccountForm extends LitElement {
             <form action="${userPaths.account}" method="post">
                 <fieldset class="callout">
                     <legend>Your credentials</legend>
-                    <ul></ul>
+                    <ul>
+                        ${this.userData?.identifiers.map((identifier) => {
+                            return html`
+                                <li>
+                                    <span>Value: [${identifier.identifier}]</span><br />
+                                    <span>Type: [${identifier.type}]</span><br />
+                                    <span>Verified: [${identifier.isVerified}]</span>
+                                </li>
+                            `;
+                        })}
+                    </ul>
                 </fieldset>
             </form>
 

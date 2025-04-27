@@ -37,12 +37,13 @@ export default {
         schemas: {
             IdentifierResponse: {
                 type: 'object',
-                required: ['hash', 'identifier', 'type', 'verified'],
+                required: ['hash', 'identifier', 'isVerified', 'isDeleted', 'type'],
                 properties: {
                     hash: { type: 'string' },
                     identifier: { type: 'string' },
+                    isDeleted: { type: 'boolean' },
+                    isVerified: { type: 'boolean' },
                     type: { type: 'string' },
-                    verified: { type: 'boolean' },
                 },
             },
             UserResponse: {

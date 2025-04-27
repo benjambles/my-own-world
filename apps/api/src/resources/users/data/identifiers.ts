@@ -50,9 +50,9 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
         ): ModelResult<Identifier> {
             const identityData = await formatIdentiferData(
                 Object.assign(data, {
-                    isDeleted: false,
                     hash: data.identifier,
-                    verified: false,
+                    isDeleted: false,
+                    isVerified: false,
                 }),
             );
 

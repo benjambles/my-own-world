@@ -76,7 +76,7 @@ export class JoinForm extends LitElement {
     @query('#join-password')
     private accessor passwordField: HTMLInputElement;
 
-    @query('#join-screename')
+    @query('#join-screenname')
     private accessor screenNameField: HTMLInputElement;
 
     @property()
