@@ -107,6 +107,7 @@ export class FixedHeader extends MowDetails {
                 height: 101px;
                 width: 100px;
                 border-bottom: 1px solid var(--border-color);
+                border-left: 0 none;
             }
 
             .navigation-panel {

@@ -81,18 +81,22 @@ export class LabelledListItem extends LitElement {
 
         :host {
             display: block;
+            --text-color: var(--list-item-text, var(--shade-0));
+            --text-color-active: var(--list-item-text-active, var(--shade-0));
+            --text-underline-active: var(--list-item-underline-active, var(--basic-4));
         }
 
         a {
-            color: var(--shade-0);
+            color: var(--text-color);
             text-decoration: none;
         }
         a:is(:hover, a:focus) {
-            color: var(--basic-4);
+            color: var(--text-color-active);
         }
 
         .active {
-            text-decoration: underline var(--basic-4);
+            color: var(--text-color-active);
+            text-decoration: underline var(--text-underline-active);
         }
     `;
 
