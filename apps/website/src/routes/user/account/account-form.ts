@@ -84,6 +84,42 @@ export class AccountForm extends LitElement {
             time {
                 color: rgb(157 143 245);
             }
+
+            .list-reset {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 0;
+                list-style: none;
+            }
+
+            .identifier-panel {
+                --co-bg-color: var(--shade-1);
+                display: flex;
+                padding: 10px 20px;
+            }
+
+            .part {
+                display: flex;
+                color: rgb(35 169 232 / 80%);
+            }
+
+            .part::before,
+            .part::after {
+                color: var(--shade-1);
+            }
+
+            .part::before {
+                content: '[';
+            }
+
+            .part::after {
+                content: ']::';
+            }
+
+            .part:last-child::after {
+                content: ']';
+            }
         `,
         inputStyles,
     ];
@@ -156,13 +192,17 @@ export class AccountForm extends LitElement {
             <form action="${userPaths.account}" method="post">
                 <fieldset class="callout">
                     <legend>Your credentials</legend>
-                    <ul>
+                    <ul class="list-reset">
                         ${this.userData?.identifiers.map((identifier) => {
                             return html`
-                                <li>
-                                    <span>Value: [${identifier.identifier}]</span><br />
-                                    <span>Type: [${identifier.type}]</span><br />
-                                    <span>Verified: [${identifier.isVerified}]</span>
+                                <li class="identifier-panel callout">
+                                    <span class="part">
+                                        ${identifier.isVerified
+                                            ? 'verified'
+                                            : 'unverified'}
+                                    </span>
+                                    <span class="part">${identifier.type}</span>
+                                    <span class="part">${identifier.identifier}</span>
                                 </li>
                             `;
                         })}

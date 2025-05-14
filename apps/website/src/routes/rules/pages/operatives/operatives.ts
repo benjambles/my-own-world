@@ -13,8 +13,8 @@ export default function (): RenderProps {
         },
         template: html`
             ${rulesHeader({
-                rootLinkText: 'Rules',
-                rootUrl: rulesPaths.index,
+                rootLinkText: rulesPaths.index.text,
+                rootUrl: rulesPaths.index.href,
                 sectionName: 'Operatives',
             })}
             <main class="page--turnorder two-col-grid">

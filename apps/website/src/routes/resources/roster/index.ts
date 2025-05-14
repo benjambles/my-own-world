@@ -12,6 +12,7 @@ import config, { rosterPaths } from './config.js';
 import create from './pages/create.js';
 import edit from './pages/edit.js';
 import list from './pages/list.js';
+import { gameNameString } from '../../../helpers.js';
 
 export default function () {
     return createResource(config)
@@ -24,9 +25,8 @@ export default function () {
             );
 
             const tpl = renderTemplate(
-                { title: 'Create A Campaign Squad: Khora' },
+                { title: `Create A Campaign Squad: ${gameNameString}` },
                 siteLayout(create({ gameId }), true),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
@@ -40,9 +40,8 @@ export default function () {
             );
 
             const tpl = renderTemplate(
-                { title: 'Create A Skirmish Squad: Khora' },
+                { title: `Create A Skirmish Squad: ${gameNameString}` },
                 siteLayout(create({ gameId }), true),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
@@ -56,9 +55,8 @@ export default function () {
             );
 
             const tpl = renderTemplate(
-                { title: 'Update Squad: Khora' },
+                { title: `Update Squad: ${gameNameString}` },
                 siteLayout(edit(rosterData), true),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
@@ -84,9 +82,8 @@ export default function () {
             ]);
 
             const tpl = renderTemplate(
-                { title: 'Your Squads: Khora' },
+                { title: `Your Squads: ${gameNameString}` },
                 siteLayout(list({ count, items, limit, offset, gameId }), true),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
@@ -125,9 +122,8 @@ export default function () {
             );
 
             const tpl = renderTemplate(
-                { title: 'Update Squad: Khora' },
+                { title: `Update Squad: ${gameNameString}` },
                 siteLayout(edit(rosterData), true),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);

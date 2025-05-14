@@ -14,13 +14,13 @@ export const twoColGrid: CSSResult = css`
             grid-gap: 20px;
         }
 
-        .two-col-grid > :nth-child(1) {
+        .two-col-grid > .grid-main {
             grid-column: col-start 1 / span 7;
             grid-row: 1;
             font-size: 1.8rem;
         }
 
-        .two-col-grid > :nth-child(2) {
+        .two-col-grid > .grid-aside {
             grid-column: col-start 8 / span 3;
             align-self: start;
         }

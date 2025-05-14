@@ -1,11 +1,11 @@
 const index = '/rules';
 export const rulesPaths = {
-    index,
-    quickstart: `${index}/quick-start`,
-    turnorder: `${index}/turn-order`,
-    operatives: `${index}/operatives`,
-    skirmishes: `${index}/skirmishes`,
-    campaigns: `${index}/campaigns`,
+    index: { text: 'The Rules', href: index },
+    quickstart: { text: 'Quickstart', href: `${index}/quick-start` },
+    turnorder: { text: 'Turn Order', href: `${index}/turn-order` },
+    operatives: { text: 'Operatives', href: `${index}/operatives` },
+    skirmishes: { text: 'Skirmishes', href: `${index}/skirmishes` },
+    campaigns: { text: 'Campaigns', href: `${index}/campaigns` },
 } as const;
 
 export default {
@@ -17,7 +17,29 @@ export default {
         version: '1.0.0',
     },
     paths: {
-        [rulesPaths.quickstart]: {
+        [rulesPaths.index.href]: {
+            get: {
+                tags: ['rules'],
+                summary: 'The index page for the rules',
+                description: '',
+                operationId: 'getRules',
+                parameters: [],
+                responses: {
+                    '200': {
+                        description: 'ok',
+                        content: {
+                            'text/html': {
+                                schema: {
+                                    type: 'string',
+                                },
+                            },
+                        },
+                    },
+                },
+                security: [],
+            },
+        },
+        [rulesPaths.quickstart.href]: {
             get: {
                 tags: ['rule'],
                 summary: 'Serves the user the Quick Start rules page',
@@ -39,7 +61,7 @@ export default {
                 security: [],
             },
         },
-        [rulesPaths.turnorder]: {
+        [rulesPaths.turnorder.href]: {
             get: {
                 tags: ['rule'],
                 summary: 'Serves the user the Turn Order rules page',
@@ -61,7 +83,7 @@ export default {
                 security: [],
             },
         },
-        [rulesPaths.operatives]: {
+        [rulesPaths.operatives.href]: {
             get: {
                 tags: ['rule'],
                 summary: 'Serves the user the Operatives rules page',
@@ -83,7 +105,7 @@ export default {
                 security: [],
             },
         },
-        [rulesPaths.skirmishes]: {
+        [rulesPaths.skirmishes.href]: {
             get: {
                 tags: ['rule'],
                 summary: 'Serves the user the Skirmishes rules page',
@@ -105,7 +127,7 @@ export default {
                 security: [],
             },
         },
-        [rulesPaths.campaigns]: {
+        [rulesPaths.campaigns.href]: {
             get: {
                 tags: ['rule'],
                 summary: 'Serves the user the Campaigns rules page',

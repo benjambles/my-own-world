@@ -12,6 +12,7 @@ import errorTemplates from './routes/errors/errors.js';
 import { resources } from './routes/routes-config.js';
 import { paths as userPaths } from './routes/user/config.js';
 import { envSchema } from './schema/env-schema.js';
+import { gameNameString } from './helpers.js';
 
 const uiStatic = await import.meta.resolve('@benjambles/mow-ui/fonts');
 
@@ -54,7 +55,7 @@ export const serve = configureServer({
         errorTemplates,
         layoutComponent: siteLayout,
         layoutDataProvider: async () => {
-            return { title: 'Error: Khora' };
+            return { title: `Error: ${gameNameString}` };
         },
         loginPath: userPaths.login,
         renderer: renderTemplate,

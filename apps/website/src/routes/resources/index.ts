@@ -6,30 +6,28 @@ import codex from './codex/codex.js';
 import config from './config.js';
 import downloads from './downloads/downloads.js';
 import tools from './tools/tools.js';
+import { gameNameString } from '../../helpers.js';
 
 export default function () {
     return createResource(config)
         .operation('getCodex', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'NPC Codex: Khora' },
+                { title: `NPC Codex: ${gameNameString}` },
                 siteLayout(codex()),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })
         .operation('getDownloads', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Downloads: Khora' },
+                { title: `Downloads: ${gameNameString}` },
                 siteLayout(downloads()),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })
         .operation('getTools', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Game Tools: Khora' },
+                { title: `Game Tools: ${gameNameString}` },
                 siteLayout(tools()),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })

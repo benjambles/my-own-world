@@ -5,6 +5,7 @@ import { rulesHeader } from '../../components/rules-header.js';
 import '../../components/rules-nav.js';
 import { rulesPaths } from '../../config.js';
 import { turnOrderStyles } from './turn-order.styles.js';
+import { gameNameHtml } from '../../../../helpers.js';
 
 export default function (): RenderProps {
     return {
@@ -13,8 +14,8 @@ export default function (): RenderProps {
         },
         template: html`
             ${rulesHeader({
-                rootLinkText: 'Rules',
-                rootUrl: rulesPaths.index,
+                rootLinkText: rulesPaths.index.text,
+                rootUrl: rulesPaths.index.href,
                 sectionName: 'Turn Order',
             })}
             <main class="page--turnorder two-col-grid">
@@ -24,7 +25,7 @@ export default function (): RenderProps {
                     <h1>The Turn Sequence</h1>
 
                     <p>
-                        The turn sequence for Kh&ocirc;ra consists of two phases. The
+                        The turn sequence for ${gameNameHtml} consists of two phases. The
                         first phase involves characters playing through their actions,
                         which take place 'simultaneously'. The second phase is for
                         resolving status effects (if necessary).

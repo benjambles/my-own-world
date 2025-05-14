@@ -16,6 +16,7 @@ import '../components/auth-button/auth-button.js';
 import styles from './site.styles.js';
 import { rulesPaths } from '../../routes/rules/config.js';
 import { resourcePaths } from '../../routes/resources/config.js';
+import { gameNameHtml } from '../../helpers.js';
 
 type Link = { href: string; text: string };
 type LinkList = { links: Link[]; title?: string };
@@ -35,7 +36,7 @@ export default function site(
             links: [
                 { href: '/', text: 'Home' },
                 { href: '/setting', text: 'The Setting' },
-                { href: rulesPaths.index, text: 'The Rules' },
+                rulesPaths.index,
                 { href: resourcePaths.downloads, text: 'Downloads' },
                 { href: resourcePaths.tools, text: 'Tools' },
                 { href: '/faq', text: 'FAQ' },
@@ -45,11 +46,11 @@ export default function site(
         {
             title: 'The rules',
             links: [
-                { href: rulesPaths.quickstart, text: 'Quick Start' },
-                { href: rulesPaths.turnorder, text: 'Turn sequence' },
-                { href: rulesPaths.operatives, text: 'Operatives' },
-                { href: rulesPaths.skirmishes, text: 'Skirmishes' },
-                { href: rulesPaths.campaigns, text: 'Campaigns' },
+                rulesPaths.quickstart,
+                rulesPaths.turnorder,
+                rulesPaths.operatives,
+                rulesPaths.skirmishes,
+                rulesPaths.campaigns,
             ],
         },
         {
@@ -108,7 +109,7 @@ export default function site(
                         <div class="content-wrapper">
                             <div id="content">${page.template}</div>
                             <site-footer>
-                                <span slot="site-name">Kh&ocirc;ra</span>
+                                <span slot="site-name">${gameNameHtml}</span>
                                 ${footerLinks.map(
                                     ({ href, text }) => html`
                                         <a href="${href}" role="listitem">${text}</a>

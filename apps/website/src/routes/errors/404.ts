@@ -14,7 +14,7 @@ export default function (data: ErrorData): RenderProps {
                     <h1>404 - Not found!</h1>
 
                     <p>
-                        Much like the rest of Humanity this page count not be found. If
+                        Much like the rest of humanity this page count not be found. If
                         you got here from a link please let us know how it happened.
                     </p>
 

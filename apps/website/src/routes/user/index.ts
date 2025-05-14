@@ -5,22 +5,21 @@ import siteLayout from '../../layouts/core/site.js';
 import account from './account/account.js';
 import config from './config.js';
 import join from './join/join.js';
+import { gameNameString } from '../../helpers.js';
 
 export default function () {
     return createResource(config)
         .operation('getAccount', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Your Information: Khora' },
+                { title: `Your Information: ${gameNameString}` },
                 siteLayout(account(), true),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })
         .operation('getLogIn', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Welcome Citizen: Khora' },
+                { title: `Welcome Citizen: ${gameNameString}` },
                 siteLayout(join()),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })
@@ -30,18 +29,16 @@ export default function () {
             ctx.cookies.set('mow-refreshtoken');
 
             const tpl = renderTemplate(
-                { title: 'Welcome Citizen: Khora' },
+                { title: `Welcome Citizen: ${gameNameString}` },
                 siteLayout(join()),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getSignUp', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Welcome Citizen: Khora' },
+                { title: `Welcome Citizen: ${gameNameString}` },
                 siteLayout(join()),
-                ctx.state.env.NODE_ENV,
             );
             return ok(tpl);
         })

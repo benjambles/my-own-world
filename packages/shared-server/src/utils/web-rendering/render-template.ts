@@ -22,11 +22,7 @@ type MetaData = {
     title: string;
 };
 
-export function* renderTemplate(
-    data: MetaData,
-    rootComponent: RenderProps,
-    nodeEnv: string = 'production',
-) {
+export function* renderTemplate(data: MetaData, rootComponent: RenderProps) {
     yield `<!DOCTYPE html>
         <html lang="en">
             <head>
@@ -36,7 +32,7 @@ export function* renderTemplate(
                 ${
                     rootComponent.assets?.inlineStyles
                         ? `<style>
-                              ${toCssString(rootComponent.assets?.inlineStyles, nodeEnv)}
+                              ${toCssString(rootComponent.assets?.inlineStyles)}
                           </style>`
                         : ''
                 }

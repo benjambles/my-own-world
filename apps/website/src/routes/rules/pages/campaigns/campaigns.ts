@@ -13,9 +13,9 @@ export default function (): RenderProps {
         },
         template: html`
             ${rulesHeader({
-                rootLinkText: 'Campaigns',
-                rootUrl: rulesPaths.index,
-                sectionName: 'Turn Order',
+                rootLinkText: rulesPaths.index.text,
+                rootUrl: rulesPaths.index.href,
+                sectionName: 'Campaigns',
             })}
             <main class="page--turnorder two-col-grid">
                 <rules-nav></rules-nav>

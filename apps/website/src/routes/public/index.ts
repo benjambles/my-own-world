@@ -5,41 +5,38 @@ import siteLayout from '../../layouts/core/site.js';
 import config from './config.js';
 import home from './home/home.js';
 import terms from './terms/terms.js';
+import { gameNameString } from '../../helpers.js';
 
 export default function () {
     return createResource(config)
         .operation('getAccessibilityPolicy', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Accessibility Policy: Khora' },
+                { title: `Accessibility Policy: ${gameNameString}` },
                 siteLayout(terms()),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getHome', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Welcome to the universe: Khora' },
+                { title: `Welcome to the universe: ${gameNameString}` },
                 siteLayout(home()),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getPrivacyPolicy', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Privacy Policy: Khora' },
+                { title: `Privacy Policy: ${gameNameString}` },
                 siteLayout(terms()),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);
         })
         .operation('getTerms', async (ctx) => {
             const tpl = renderTemplate(
-                { title: 'Terms of Use: Khora' },
+                { title: `Terms of Use: ${gameNameString}` },
                 siteLayout(terms()),
-                ctx.state.env.NODE_ENV,
             );
 
             return ok(tpl);

@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { resourcePaths } from '../../resources/config.js';
 import { rulesPaths } from '../../rules/config.js';
 import { homeStyles } from './home.styles.js';
+import { gameNameHtml } from '../../../helpers.js';
 
 export default function (): RenderProps {
     return {
@@ -13,17 +14,17 @@ export default function (): RenderProps {
             <main class="page--home">
                 <section class="home-intro">
                     <div class="panel">
-                        <h1 class="gradient-text">Kh&ocirc;ra</h1>
+                        <h1 class="gradient-text">${gameNameHtml}</h1>
                         <p>Rediscover the stars</p>
                         <p>Free to play science fiction wargame</p>
                     </div>
                 </section>
                 <section class="home-welcome panel">
-                    <h2>Welcome to Kh&ocirc;ra</h2>
+                    <h2>Welcome to ${gameNameHtml}</h2>
                     <div class="welcome-text">
-                        <h3>What is Kh&ocirc;ra?</h3>
+                        <h3>What is ${gameNameHtml}?</h3>
                         <p>
-                            Kh&ocirc;ra is a free to play Sci-fi skirmish game, with
+                            ${gameNameHtml} is a free to play Sci-fi skirmish game, with
                             modular rules that simulate well trained operatives acting in
                             real time against each other.
                         </p>
@@ -40,7 +41,7 @@ export default function (): RenderProps {
                     </div>
 
                     <div class="button-group col-to-row">
-                        <a class="outline-button" href="${rulesPaths.quickstart}">
+                        <a class="outline-button" href="${rulesPaths.quickstart.href}">
                             Learn to play
                         </a>
                         <a class="outline-button" href="/game/rules"> Read the rules </a>

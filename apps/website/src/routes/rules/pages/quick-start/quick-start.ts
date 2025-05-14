@@ -5,6 +5,7 @@ import { rulesHeader } from '../../components/rules-header.js';
 import '../../components/rules-nav.js';
 import { rulesPaths } from '../../config.js';
 import { quickStartStyles } from './quick-start.styles.js';
+import { gameNameHtml } from '../../../../helpers.js';
 
 export default function (): RenderProps {
     return {
@@ -13,18 +14,18 @@ export default function (): RenderProps {
         },
         template: html`
             ${rulesHeader({
-                rootLinkText: 'Rules',
-                rootUrl: rulesPaths.index,
+                rootLinkText: rulesPaths.index.text,
+                rootUrl: rulesPaths.index.href,
                 sectionName: 'Quick Start',
             })}
             <main class="page--quickstart two-col-grid">
-                <rules-nav></rules-nav>
+                <rules-nav class="grid-aside"></rules-nav>
 
-                <section>
+                <section class="grid-main">
                     <h1>Getting Started</h1>
 
                     <p>
-                        Kh&ocirc;ra is designed as a modular ruleset with simple core
+                        ${gameNameHtml} is designed as a modular ruleset with simple core
                         rules, that can be extended from the outset or as and when you
                         become more adept at leading your crews.
                     </p>
@@ -37,12 +38,13 @@ export default function (): RenderProps {
 
                     <h2>What you'll need</h2>
 
-                    <p>In order to play games of Kh&ocirc;ra you'll need a things.</p>
+                    <p>In order to play games of ${gameNameHtml} you'll need a things.</p>
 
                     <p>
-                        <b>Dice </b> - All rolls in Kh&ocirc;ra use 12 sided dice (known
-                        as d12), unlike many other games you're not rolling handfulls of
-                        dice so a few d12 or an app that can represent them is perfect.
+                        <b>Dice </b> - All rolls in ${gameNameHtml} use 12 sided dice
+                        (known as d12), unlike many other games you're not rolling
+                        handfulls of dice so a few d12 or an app that can represent them
+                        is perfect.
                     </p>
 
                     <p>
@@ -93,7 +95,7 @@ export default function (): RenderProps {
                     <h2>The turn sequence</h2>
 
                     <p>
-                        In Kh&ocirc;ra a turn (all characters using their actions)
+                        In ${gameNameHtml} a turn (all characters using their actions)
                         represents a very small slice of time. Turns are taken in a
                         sequence that represents simultaneous action/reaction by the
                         characters - with faster/more experienced characters performing
@@ -205,7 +207,7 @@ export default function (): RenderProps {
                     <h2>Congratulations!</h2>
 
                     <p>
-                        You've completed your first game of Kh&ocirc;ra. Feel free to
+                        You've completed your first game of ${gameNameHtml}. Feel free to
                         practice it a few times, or you head over to the rules section to
                         see what else awaits you.
                     </p>
