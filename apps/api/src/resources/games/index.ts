@@ -4,7 +4,7 @@ import {
 } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import {
     created,
-    noResponse,
+    noContent,
     ok,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import createError from 'http-errors';
@@ -115,7 +115,7 @@ export default function games(dataModel: DataModel) {
                 );
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('updateArchetypeById', async (ctx) => {
             const {
@@ -142,7 +142,7 @@ export default function games(dataModel: DataModel) {
                 throw createError(400, 'There was an error deleting the items requested');
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('getItems', async (ctx) => {
             const {
@@ -193,7 +193,7 @@ export default function games(dataModel: DataModel) {
                 throw createError(400, 'There was an error deleteing the NPC');
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('getNpcById', async (ctx) => {
             const { gameId, npcId } = ctx.request.params;

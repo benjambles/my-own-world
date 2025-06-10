@@ -9,7 +9,7 @@ import { KoaContext } from '../utils/joi/context/context.js';
 import { ApiDoc, RequiredHandlers, RouteHandlers } from '../utils/joi/openapi-to-joi.js';
 import { getAccessMap } from '../utils/routes/get-access-map.js';
 import { getHTTPMethods } from '../utils/routes/get-http-methods.js';
-import { getDataMiddleware, noResponse } from '../utils/routes/responses.js';
+import { getDataMiddleware, noContent } from '../utils/routes/responses.js';
 
 const defaultData = {
     accessMap: {},
@@ -159,6 +159,6 @@ function getSendOptions(verbs: string[]) {
     // TODO: Decide if I send all possible paths/HTTP options as body
     return async (ctx: Context) => {
         ctx.set('Allow', verbs.reduce(getHTTPMethods, []).join(', ').toUpperCase());
-        return noResponse();
+        return noContent();
     };
 }

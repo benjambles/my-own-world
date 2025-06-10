@@ -7,7 +7,7 @@ import { isAdmin } from '@benjambles/mow-server/dist/utils/access-checks/is-admi
 import { getObjectId } from '@benjambles/mow-server/dist/utils/db.js';
 import {
     created,
-    noResponse,
+    noContent,
     ok,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import createError from 'http-errors';
@@ -44,7 +44,7 @@ export default function skirmishes(dataModel: DataModel) {
                 throw createError(400, 'There was an error whilst deleting the skirmish');
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('getSkirmishes', async (ctx) => {
             const { limit, offset, userId } = ctx.request.query;

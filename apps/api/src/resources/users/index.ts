@@ -5,7 +5,7 @@ import {
 import { isCurrentUser } from '@benjambles/mow-server/dist/utils/access-checks/get-authenticated-user-id.js';
 import {
     created,
-    noResponse,
+    noContent,
     ok,
 } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { compareBHash } from '@benjambles/mow-server/dist/utils/security/blowfish.js';
@@ -155,7 +155,7 @@ export default function users(dataModel: DataModel) {
                 throw createError(400, 'There was an error whilst deleting the user');
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('createUser', async (ctx) => {
             const { identifier, user } = ctx.request.body;
@@ -221,7 +221,7 @@ export default function users(dataModel: DataModel) {
                 );
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('getTokens', async (ctx) => {
             const tokensResult = await tokens.get(ctx.request.params.userId);
@@ -241,7 +241,7 @@ export default function users(dataModel: DataModel) {
                 throw createError(400, 'There was an error whilst deleting the tokens');
             }
 
-            return noResponse();
+            return noContent();
         })
         .operation('deleteToken', async (ctx) => {
             const { fingerprint, userId } = ctx.request.params;
@@ -251,7 +251,7 @@ export default function users(dataModel: DataModel) {
                 throw createError(400, 'There was an error whilst deleting the token');
             }
 
-            return noResponse();
+            return noContent();
         })
         .get();
 }

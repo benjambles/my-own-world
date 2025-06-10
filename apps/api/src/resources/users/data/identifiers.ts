@@ -10,15 +10,6 @@ import { User, getUserCollection } from './users.js';
 
 export type Identifier = User['identities'][number];
 
-/**
- *
- * @param data
- */
-function respond(password: string, identity: Identifier) {
-    identity.identifier = decryptValue(password, identity.identifier);
-    return identity;
-}
-
 export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
     const users = getUserCollection(db);
 
@@ -93,4 +84,13 @@ export function getIdentifierModel(db: Db, { ENC_SECRET }: Env) {
             return { ok: !!value, value };
         },
     };
+}
+
+/**
+ *
+ * @param data
+ */
+function respond(password: string, identity: Identifier) {
+    identity.identifier = decryptValue(password, identity.identifier);
+    return identity;
 }

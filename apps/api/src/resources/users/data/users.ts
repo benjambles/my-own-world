@@ -51,11 +51,11 @@ export type User = {
 
 type NewUser = Pick<User, 'password' | 'screenName'>;
 
+//#endregion Types
+
 export function getUserCollection(db: Db) {
     return db.collection<User>('Users');
 }
-
-//#endregion Types
 
 export function getUserModel(db: Db, { ENC_SECRET }: Env) {
     const formatUserData = formatData(

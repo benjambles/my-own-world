@@ -44,11 +44,11 @@ export function created<B>(body: B) {
     return { status: 201, body } as const;
 }
 
-export function noResponse() {
+export function noContent() {
     return { status: 204 } as const;
 }
 
-export function redirectAction(redirectUrl) {
+export function seeOther(redirectUrl: string) {
     return { status: 303, redirectUrl } as const;
 }
 

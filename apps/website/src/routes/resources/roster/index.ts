@@ -1,9 +1,6 @@
 import { createResource } from '@benjambles/mow-server/dist/routing/create-resource.js';
 import { getAuthenticatedUserId } from '@benjambles/mow-server/dist/utils/access-checks/get-authenticated-user-id.js';
-import {
-    ok,
-    redirectAction,
-} from '@benjambles/mow-server/dist/utils/routes/responses.js';
+import { ok, seeOther } from '@benjambles/mow-server/dist/utils/routes/responses.js';
 import { getJwtFromCookie } from '@benjambles/mow-server/dist/utils/security/jwt.js';
 import { renderTemplate } from '@benjambles/mow-server/dist/utils/web-rendering/render-template.js';
 import { apiHelpers } from '../../../app.js';
@@ -96,9 +93,7 @@ export default function () {
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
 
-            return redirectAction(
-                rosterPaths.rosterById.replace(':rosterId', rosterData._id),
-            );
+            return seeOther(rosterPaths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('postNewSkirmish', async (ctx) => {
             const rosterData = await apiHelpers.skirmishes.createSkirmish(
@@ -108,9 +103,7 @@ export default function () {
                 getJwtFromCookie(ctx, 'mow-auth'),
             );
 
-            return redirectAction(
-                rosterPaths.rosterById.replace(':rosterId', rosterData._id),
-            );
+            return seeOther(rosterPaths.rosterById.replace(':rosterId', rosterData._id));
         })
         .operation('updateRosterById', async (ctx) => {
             const rosterData = await apiHelpers.skirmishes.updateSkirmishById(
