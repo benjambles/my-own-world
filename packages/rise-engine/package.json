@@ -13,6 +13,6 @@
     "author": "Ben Allen",
     "license": "ISC",
     "devDependencies": {
-        "typescript": "5.8.2"
+        "typescript": "5.9.2"
     }
 }

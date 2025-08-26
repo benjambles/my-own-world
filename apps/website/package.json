@@ -24,24 +24,26 @@
         "@benjambles/mow-ui": "../../packages/ui",
         "@lit-labs/ssr": "3.3.1",
         "@lit-labs/ssr-client": "1.1.7",
-        "@lit/context": "1.1.4",
+        "@lit/context": "1.1.6",
+        "@opentelemetry/auto-instrumentations-node": "0.62.1",
+        "@opentelemetry/instrumentation-koa": "0.51.0",
         "http-errors": "2.0.0",
-        "joi": "17.13.3",
+        "joi": "18.0.1",
         "js-cookie": "3.0.5",
         "jwt-decode": "4.0.0",
-        "koa": "2.16.1",
-        "lit": "3.2.1"
+        "koa": "3.0.1",
+        "lit": "3.3.1"
     },
     "devDependencies": {
         "@rollup/plugin-node-resolve": "16.0.1",
         "@rollup/plugin-terser": "0.4.4",
-        "@types/http-errors": "2.0.4",
+        "@types/http-errors": "2.0.5",
         "@types/js-cookie": "3.0.6",
-        "@types/koa": "2.15.0",
-        "@types/node": "22.13.10",
-        "rollup": "4.35.0",
-        "rollup-plugin-summary": "3.0.0",
+        "@types/koa": "3.0.0",
+        "@types/node": "24.3.0",
+        "rollup": "4.48.1",
+        "rollup-plugin-summary": "3.0.1",
         "ts-lit-plugin": "2.0.2",
-        "typescript": "5.8.2"
+        "typescript": "5.9.2"
     }
 }

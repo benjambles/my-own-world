@@ -12,6 +12,7 @@
         "build": "npm run build --workspaces",
         "css": "npm run css --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present",
         "prepare": "husky",
         "ts": "tsc -b -v",
         "ts:clean": "tsc -b --clean"
@@ -19,13 +20,13 @@
     "author": "Ben Allen",
     "license": "ISC",
     "devDependencies": {
-        "@eslint/js": "9.22.0",
-        "eslint": "9.22.0",
-        "globals": "16.0.0",
+        "@eslint/js": "9.34.0",
+        "eslint": "9.34.0",
+        "globals": "16.3.0",
         "husky": "9.1.7",
-        "lint-staged": "15.5.0",
-        "prettier": "3.5.3",
-        "typescript": "5.8.2",
-        "typescript-eslint": "8.26.1"
+        "lint-staged": "16.1.5",
+        "prettier": "3.6.2",
+        "typescript": "5.9.2",
+        "typescript-eslint": "8.41.0"
     }
 }

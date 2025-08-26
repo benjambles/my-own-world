@@ -16,6 +16,6 @@
         "@benjambles/js-lib": "../../packages/lib"
     },
     "devDependencies": {
-        "typescript": "5.8.2"
+        "typescript": "5.9.2"
     }
 }

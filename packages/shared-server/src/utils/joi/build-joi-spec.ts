@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import createRouter from 'koa-joi-router';
 import { Param } from './context/request-parameters.js';
 import { ArraySchema, ObjectSchema, PropertySchemas } from './context/schemas.js';
@@ -15,6 +14,7 @@ type ExtractByKey<T, K extends keyof any> = T extends infer R
 
 type KeyofUnion<T> = T extends infer R ? keyof R : never;
 
+type JoiRoot = typeof createRouter.Joi;
 declare global {
     interface ObjectConstructor {
         /**
@@ -53,7 +53,7 @@ declare global {
  * @param config
  */
 export function buildJoiSpec(
-    joi: Joi.Root,
+    joi: JoiRoot,
     { parameters, requestBody, responses }: MethodSchema,
     validateOutput: boolean = false,
     components: ApiDoc['components'] = {},
@@ -82,7 +82,7 @@ export function buildJoiSpec(
 }
 
 function getResponseValidator(
-    joi: Joi.Root,
+    joi: JoiRoot,
     responses: MethodSchema['responses'],
     validateOutput: boolean,
     components: ApiDoc['components'],
@@ -103,7 +103,7 @@ function getResponseValidator(
 }
 
 function parseBody(
-    joi: Joi.Root,
+    joi: JoiRoot,
     schema: ObjectSchema | ArraySchema | Ref,
     components: ApiDoc['components'],
 ) {
@@ -117,7 +117,7 @@ function parseBody(
 }
 
 function parseObject(
-    joi: Joi.Root,
+    joi: JoiRoot,
     { properties, required = [] }: ObjectSchema,
     components: ApiDoc['components'],
 ) {
@@ -139,7 +139,7 @@ function parseObject(
 }
 
 function parseParameters(
-    joi: Joi.Root,
+    joi: JoiRoot,
     parameters: MethodSchema['parameters'] = [],
     components: ApiDoc['components'] = {},
 ) {
@@ -165,7 +165,7 @@ type ParamOrBodyParam =
  * @param paramConf Swagger parameter definition
  */
 function buildParameter(
-    joi: Joi.Root,
+    joi: JoiRoot,
     param: ParamOrBodyParam,
     components: ApiDoc['components'],
 ) {
