@@ -1,3 +1,5 @@
+import './tracing.js';
+
 import { configureServer } from '@benjambles/mow-server/dist/index.js';
 import { apiErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/api-error-handler.js';
 import { getRouter } from '@benjambles/mow-server/dist/routing/create-resource.js';

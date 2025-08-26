@@ -1,3 +1,5 @@
+import './tracing.js';
+
 import { getApiHelpers } from '@benjambles/mow-api/dist/app.js';
 import { cleanUp, configureServer } from '@benjambles/mow-server/dist/index.js';
 import { webErrorHandler } from '@benjambles/mow-server/dist/koa/middleware/errors/web-error-handler.js';
