@@ -5,10 +5,7 @@ import { html } from 'lit';
  * @param href
  */
 export function lazyStylesheet(href: string) {
-    return html`<link
-        as="style"
-        href="${href}"
-        onload="this.rel='stylesheet'"
-        rel="preload"
-    />`;
+    return html`
+        <link as="style" href="${href}" onload="this.rel='stylesheet'" rel="preload" />
+    `;
 }

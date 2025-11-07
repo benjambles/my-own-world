@@ -31,6 +31,25 @@ export function buildUrl<Params extends KoaRequestParams>({
     return populatedUrl;
 }
 
+export function setBearerToken(params: RequestInit, authToken?: string): RequestInit {
+    if (authToken) {
+        params.headers = params.headers ?? [];
+        params.headers['Authorization'] = `Bearer ${authToken}`;
+    }
+
+    return params;
+}
+
+export function setBody(
+    params: RequestInit,
+    body?: { [key: string]: unknown },
+): RequestInit {
+    if (body) {
+        params.body = JSON.stringify(body);
+    }
+    return params;
+}
+
 function toQueryStringParams(query: KoaRequestParams['query']): Record<string, string> {
     return Object.fromEntries(
         Object.entries(query).map(([k, v]) => {

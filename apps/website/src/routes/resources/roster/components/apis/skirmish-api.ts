@@ -1,5 +1,5 @@
 import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
-import { Handlers, MowApi } from '@benjambles/mow-ui/contexts/request.js';
+import { Handlers, MowApi } from '../../../../../contexts/request.js';
 
 type SkirmishClientTypes = ClientApiTypes['skirmishes'];
 

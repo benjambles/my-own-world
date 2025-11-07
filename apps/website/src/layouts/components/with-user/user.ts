@@ -1,5 +1,5 @@
 import { ClientApiTypes } from '@benjambles/mow-api/dist/app.js';
-import { Handlers, MowApi } from '@benjambles/mow-ui/contexts/request.js';
+import { Handlers, MowApi } from '../../../contexts/request.js';
 import { createContext } from '@lit/context';
 
 export type UserData = {
@@ -34,13 +34,13 @@ export const userContext = createContext<UserData>(userSymbol);
 type UserClientTypes = ClientApiTypes['user'];
 
 export type UserInstance = InstanceType<typeof Users>;
-
+type MowApiInstance = InstanceType<typeof MowApi>;
 export class Users {
-    private requestManager: InstanceType<typeof MowApi>;
+    private requestManager: MowApiInstance;
 
     private actions: Handlers<UserClientTypes> = {};
 
-    addManager(requestManager: InstanceType<typeof MowApi>) {
+    addManager(requestManager: MowApiInstance) {
         if (this.requestManager) return;
         this.requestManager = requestManager;
 

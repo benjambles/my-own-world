@@ -21,7 +21,9 @@ export function relativeTime(createdOn: string | number | Date) {
     const createdDate = createdOn ? new Date(createdOn) : now;
     const timeBetween = dateDiff(createdDate, now);
 
-    return html`<time datetime="${createdDate.toISOString()}"
-        >${formatLargestPart(timeBetween)}</time
-    >`;
+    return html`
+        <time datetime="${createdDate.toISOString()}">
+            ${formatLargestPart(timeBetween)}
+        </time>
+    `;
 }

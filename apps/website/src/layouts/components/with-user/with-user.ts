@@ -1,4 +1,4 @@
-import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
+import { MowApiInstance, requestContext } from '../../../contexts/request.js';
 import { consume, provide } from '@lit/context';
 import Cookies from 'js-cookie';
 import { jwtDecode, JwtPayload } from 'jwt-decode';

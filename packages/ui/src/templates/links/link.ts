@@ -11,13 +11,5 @@ export interface LinkProps {
 }
 
 export function link({ text, href, display = {} }: LinkProps) {
-    return html`<a
-        href="${href}"
-        class="${classMap({
-            active: display.active,
-            underlined: display.underlined,
-            bold: display.bold,
-        })}"
-        >${text}</a
-    >`;
+    return html`<a href="${href}" class="${classMap(display)}">${text}</a>`;
 }

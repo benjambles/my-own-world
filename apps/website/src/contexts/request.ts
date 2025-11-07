@@ -1,4 +1,9 @@
-import { buildUrl, parseResponse } from '@benjambles/mow-server/dist/utils/fetch.js';
+import {
+    buildUrl,
+    parseResponse,
+    setBearerToken,
+    setBody,
+} from '@benjambles/mow-server/dist/utils/fetch.js';
 import { KoaRequestParams } from '@benjambles/mow-server/dist/utils/joi/context/context.js';
 import { createContext } from '@lit/context';
 
@@ -35,31 +40,28 @@ export class MowApi {
         args: Args,
         authToken?: string,
     ): Promise<Response> {
-        const populatedUrl = buildUrl({
-            path,
-            prefix: this.apiPrefix,
-            rootUrl: this.rootUrl,
-            urlParams: args,
-        });
-
-        const fetchParams: RequestInit = {
-            cache: 'default',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            method,
-            mode: 'cors',
-        };
-
-        if (authToken) {
-            fetchParams.headers['Authorization'] = `Bearer ${authToken}`;
-        }
-
-        if (args.body) {
-            fetchParams.body = JSON.stringify(args.body);
-        }
-
-        const response = await fetch(populatedUrl, fetchParams);
+        const response = await fetch(
+            buildUrl({
+                path,
+                prefix: this.apiPrefix,
+                rootUrl: this.rootUrl,
+                urlParams: args,
+            }),
+            setBody(
+                setBearerToken(
+                    {
+                        cache: 'default',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        method,
+                        mode: 'cors',
+                    },
+                    authToken,
+                ),
+                args.body,
+            ),
+        );
 
         return parseResponse(response);
     }

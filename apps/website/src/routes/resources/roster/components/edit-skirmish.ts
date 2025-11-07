@@ -1,6 +1,6 @@
 import { SkirmishResponse } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import '@benjambles/mow-ui/components/form-elements/glow-button/glow-button.js';
-import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
+import { MowApiInstance, requestContext } from '../../../../contexts/request.js';
 import { textInput } from '@benjambles/mow-ui/core.js';
 import { callOutStyles, flexColToRow, inputStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit/context';

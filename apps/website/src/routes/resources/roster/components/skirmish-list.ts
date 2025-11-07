@@ -1,7 +1,7 @@
 import { SkirmishListView } from '@benjambles/mow-api/src/resources/skirmishes/skirmishes.js';
 import '@benjambles/mow-ui/components/filter-bar/filter-bar.js';
 import '@benjambles/mow-ui/components/mow-pagination/mow-pagination.js';
-import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
+import { MowApiInstance, requestContext } from '../../../../contexts/request.js';
 import { time } from '@benjambles/mow-ui/core.js';
 import { callOutStyles } from '@benjambles/mow-ui/styles.js';
 import { consume } from '@lit/context';

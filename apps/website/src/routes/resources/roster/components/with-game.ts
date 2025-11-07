@@ -1,5 +1,5 @@
 import { GameResponse } from '@benjambles/mow-api/src/resources/games/data/games.js';
-import { MowApiInstance, requestContext } from '@benjambles/mow-ui/contexts/request.js';
+import { MowApiInstance, requestContext } from '../../../../contexts/request.js';
 import { consume, provide } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

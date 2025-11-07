@@ -1,7 +1,7 @@
 import { provide } from '@lit/context';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { MowApi, requestContext } from '../../contexts/request.js';
+import { MowApi, requestContext } from '../../../contexts/request.js';
 
 @customElement('with-api')
 class WithApi extends LitElement {
