@@ -4,7 +4,14 @@ import { projectConfig } from '../../eslint.config.js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-    { ignores: ['dist'] },
+    {
+        ignores: ['dist'],
+        languageOptions: {
+            parserOptions: {
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
     eslint.configs.recommended,
     tseslint.configs.recommended,
     // storybook.configs['flat/recommended'],

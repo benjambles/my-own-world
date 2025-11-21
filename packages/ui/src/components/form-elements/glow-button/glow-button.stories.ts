@@ -4,12 +4,19 @@ import { GlowButton } from './glow-button.js';
 
 export default {
     title: 'Atoms/Forms/Glow Button',
+
     parameters: {
         component: GlowButton,
         componentSubtitle: 'Glowy button',
-        backgrounds: { default: 'dark' },
     },
+
     decorators: [linkStoryRenderer],
+
+    globals: {
+        backgrounds: {
+            value: 'dark',
+        },
+    },
 };
 
 export const base = () => html`<glow-button>Test Button</glow-button>`;

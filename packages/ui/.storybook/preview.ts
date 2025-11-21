@@ -6,17 +6,17 @@ import type { Preview } from '@storybook/web-components-vite';
 const preview: Preview = {
     parameters: {
         backgrounds: {
-            default: 'light',
-            values: [
-                {
+            options: {
+                light: {
                     name: 'light',
                     value: '#fff',
                 },
-                {
+
+                dark: {
                     name: 'dark',
                     value: '#234',
-                },
-            ],
+                }
+            }
         },
         controls: {
             expanded: true,
@@ -36,7 +36,14 @@ const preview: Preview = {
             },
         },
     },
+
     tags: ['autodocs'],
+
+    initialGlobals: {
+        backgrounds: {
+            value: 'light'
+        }
+    }
 };
 
 export default preview;
